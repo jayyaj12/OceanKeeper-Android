@@ -1,18 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="24dp"
+            android:id="@+id/left_icon_iv"
+            android:src="@drawable/title_left_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오션키퍼가 되어\n바다를 구해주세요"
+            android:fontFamily="@font/pretendard_bold"
+            android:textColor="@color/primary_color"
+            android:textSize="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/logo_tv"
+            app:layout_constraintTop_toBottomOf="@+id/left_icon_iv"
+            android:layout_marginTop="34dp"/>
+
+        <com.letspl.oceankepper.ui.CustomLoginButton
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logo_tv"
+            android:layout_marginTop="16dp"
+            app:loginText="네이버로 로그인"
+            android:id="@+id/naver_login_btn"
+            app:loginTextColor="@color/white"
+            app:symbol="@drawable/naver_symbol"
+            app:bg="@drawable/custom_radius30_solid_03c75a"/>
+
+        <com.letspl.oceankepper.ui.CustomLoginButton
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/naver_login_btn"
+            android:layout_marginTop="16dp"
+            app:loginText="카카오톡으로 로그인"
+            android:id="@+id/kakao_login_btn"
+            app:loginTextColor="@color/black"
+            app:symbol="@drawable/kakao_symbol"
+            app:bg="@drawable/custom_radius30_solid_fae100"/>
+
+        <com.letspl.oceankepper.ui.CustomLoginButton
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/kakao_login_btn"
+            android:layout_marginTop="16dp"
+            app:loginText="Apple로 로그인"
+            android:id="@+id/apple_login_btn"
+            app:loginTextColor="@color/white"
+            app:symbol="@drawable/apple_symbol"
+            app:bg="@drawable/custom_radius30_solid_000000"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
