@@ -21,6 +21,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String","API_BASE_URL",properties['api_base_url']
     }
 
     buildTypes {
@@ -39,6 +40,9 @@ android {
     dataBinding {
         enabled = true
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -55,6 +59,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     // okHttp
     testImplementation("com.squareup.okhttp3:okhttp-urlconnection:4.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
