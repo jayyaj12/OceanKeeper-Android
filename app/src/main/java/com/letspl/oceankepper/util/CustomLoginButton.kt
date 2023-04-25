@@ -1,4 +1,4 @@
-package com.letspl.oceankepper.ui
+package com.letspl.oceankepper.util
 
 import android.content.Context
 import android.content.res.TypedArray
