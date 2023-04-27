@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.ActivityBaseBinding
+import com.letspl.oceankepper.util.ContextUtil
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class BaseActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBaseBinding
@@ -30,7 +33,7 @@ class BaseActivity : AppCompatActivity() {
 
         binding = ActivityBaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        ContextUtil.context = this
         Timber.e("asdasdads")
         setupSplashFragment()
     }

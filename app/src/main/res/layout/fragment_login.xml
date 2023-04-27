@@ -2,7 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.view.LoginActivity">
+    tools:context=".ui.view.LoginFragment">
+
+    <data>
+        <variable
+            name="naverLoginManager"
+            type="com.letspl.oceankepper.util.loginManager.NaverLoginManager" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,6 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_marginTop="16dp"
+            android:onClick="@{() -> naverLoginManager.startNaverLogin()}"
             app:bg="@drawable/custom_radius30_solid_03c75a"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

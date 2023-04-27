@@ -22,6 +22,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String","API_BASE_URL",properties['api_base_url']
+        buildConfigField "String","NAVER_CLIENT_ID",properties['naver_client_id']
+        buildConfigField "String","NAVER_SECRET_CLIEND_ID",properties['naver_serect_client_id']
     }
 
     buildTypes {
@@ -47,6 +49,8 @@ android {
 
 dependencies {
 
+    // NaverLogin
+    implementation("com.navercorp.nid:oauth:5.5.0") // jdk 11
     // glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     // by viewmodels

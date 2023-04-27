@@ -43,7 +43,7 @@ class SplashFragment: Fragment() {
         binding.splashTv.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.splash_anim))
 
         Handler(Looper.myLooper()!!).postDelayed({
-//            activity.onReplaceFragment(Login, false)
+            activity.onReplaceFragment(LoginFragment(), false)
         }, 3000)
     }
 

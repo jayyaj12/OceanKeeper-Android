@@ -3,9 +3,14 @@ package com.letspl.oceankepper.di.module
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.letspl.oceankepper.BuildConfig
 import com.letspl.oceankepper.data.network.ApiService
+import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
+import com.letspl.oceankepper.ui.view.BaseActivity
+import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -51,5 +56,10 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideApiService(retrofit: Retrofit) = retrofit.create(ApiService::class.java)
+
+
+    @Singleton
+    @Provides
+    fun provideLoginViewModel(apiService: ApiService) = LoginViewModel(LoginRepositoryImpl(apiService))
 
 }

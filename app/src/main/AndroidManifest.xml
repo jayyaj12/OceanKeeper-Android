@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".di.AppApplication"
         android:allowBackup="true"
@@ -27,7 +29,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.LoginActivity"
+            android:name=".ui.view.LoginFragment"
             android:exported="false">
 
             <meta-data
