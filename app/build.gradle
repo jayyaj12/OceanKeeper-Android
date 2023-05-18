@@ -48,7 +48,8 @@ android {
 }
 
 dependencies {
-
+    // cirlceImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     // NaverLogin
     implementation("com.navercorp.nid:oauth:5.5.0") // jdk 11
     // glide

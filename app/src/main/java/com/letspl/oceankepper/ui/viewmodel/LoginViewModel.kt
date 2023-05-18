@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.letspl.oceankepper.BuildConfig
@@ -27,6 +29,10 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl): ViewModel() {
 
+    private var _onNaverLoginResult = MutableLiveData<Boolean>(false)
+    val onNaverLoginResult: LiveData<Boolean>
+    get() =  _onNaverLoginResult
+
     // 로그인
     fun onLoginAccount(provider: String, providerId: String) {
         viewModelScope.launch {
@@ -42,9 +48,10 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                 true -> {
                     data.body()?.response.let { data ->
                         data?.let {
-
                         }
                     }
+                    _onNaverLoginResult.postValue(true)
+
                     Timber.e("data ${data.body()?.response}")
                 }
                 else -> Timber.e("data is not Successful")

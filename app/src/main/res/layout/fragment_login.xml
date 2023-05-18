@@ -5,6 +5,7 @@
     tools:context=".ui.view.LoginFragment">
 
     <data>
+
         <variable
             name="naverLoginManager"
             type="com.letspl.oceankepper.util.loginManager.NaverLoginManager" />
@@ -14,15 +15,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/left_icon_iv"
-            android:layout_width="7dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/title_left_icon"
+        <LinearLayout
+            android:id="@+id/back_icon_ll"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="18dp"
+            android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_icon_iv"
+                android:layout_width="9dp"
+                android:layout_height="16dp"
+                android:src="@drawable/title_left_icon" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/logo_tv"
@@ -32,11 +41,11 @@
             android:fontFamily="@font/pretendard_bold"
             android:gravity="center"
             android:text="오션키퍼가 되어\n바다를 구해주세요"
-            android:textColor="@color/p600"
+            android:textColor="@color/primary_color_p600"
             android:textSize="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/left_icon_iv" />
+            app:layout_constraintTop_toBottomOf="@+id/back_icon_ll" />
 
         <com.letspl.oceankepper.util.CustomLoginButton
             android:id="@+id/naver_login_btn"

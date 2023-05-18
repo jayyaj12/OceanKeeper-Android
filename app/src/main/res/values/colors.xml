@@ -7,8 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="p500">#00B6C4</color>
-    <color name="p600">#03A7B2</color>
     <color name="color_03c75a">#03c75A</color>
     <color name="color_fae100">#FAE100</color>
+    <color name="gray_scale_g900">#212121</color>
+    <color name="primary_color_p500">#00B6C4</color>
+    <color name="primary_color_p600">#03A7B2</color>
+    <color name="blue_grayscale_bg100">#CFD8DC</color>
+    <color name="blue_grayscale_bg400">#78909C</color>
 </resources>

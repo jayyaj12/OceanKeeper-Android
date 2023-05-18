@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="OceanKeeper"
-            android:textColor="@color/p500"/>
+            android:textColor="@color/primary_color_p500"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

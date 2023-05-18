@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.view.LoginFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/back_icon_ll"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_icon_iv"
+                android:layout_width="9dp"
+                android:layout_height="16dp"
+                android:src="@drawable/title_left_icon" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="기본 정보 입력"
+            android:textColor="@color/gray_scale_g900"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/back_icon_ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/back_icon_ll" />
+
+        <TextView
+            android:id="@+id/default_user_info_msg_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="35dp"
+            android:fontFamily="@font/pretendard_extrabold"
+            android:text="오션키퍼님의\n기본정보를 입력해주세요."
+            android:textColor="@color/gray_scale_g900"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/back_icon_ll" />
+
+        <LinearLayout
+            android:id="@+id/profile_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/default_user_info_msg_tv">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile_cv"
+                android:layout_width="112dp"
+                android:layout_height="112dp"
+                app:cardCornerRadius="45dp">
+
+                <ImageView
+                    android:id="@+id/profile_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/primary_color_p600" />
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/add_profile_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/add_profile_icon"
+            app:layout_constraintBottom_toBottomOf="@id/profile_ll"
+            app:layout_constraintEnd_toEndOf="@id/profile_ll" />
+
+        <TextView
+            android:id="@+id/nickname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="닉네임"
+            android:textColor="@color/gray_scale_g900"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="@+id/default_user_info_msg_tv"
+            app:layout_constraintTop_toBottomOf="@id/add_profile_iv" />
+
+        <EditText
+            android:id="@+id/nickname_et"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@null"
+            android:paddingStart="14dp"
+            android:text="asdasd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/nickname_tv"
+            app:layout_constraintTop_toBottomOf="@+id/nickname_tv" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/blue_grayscale_bg100"
+            app:layout_constraintEnd_toEndOf="@id/nickname_et"
+            app:layout_constraintStart_toStartOf="@+id/nickname_et"
+            app:layout_constraintTop_toBottomOf="@+id/nickname_et" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:lineSpacingExtra="6dp"
+            android:paddingStart="4dp"
+            android:text="· 프로필 사진 및 닉네임은 수정 가능합니다.\n· 수정하지 않을 경우 SNS 계정 정보로 자동 등록됩니다."
+            android:textColor="@color/blue_grayscale_bg400"
+            app:layout_constraintStart_toStartOf="@+id/nickname_tv"
+            app:layout_constraintTop_toBottomOf="@+id/nickname_et" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/join_btn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="44dp"
+            android:background="@drawable/custom_radius30_solid_00b6c4"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="회원가입 완료"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/nickname_et"
+            app:layout_constraintStart_toStartOf="@id/nickname_tv" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
