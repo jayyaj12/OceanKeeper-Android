@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "954599637849",
+    "project_id": "oceankeeper-39bda",
+    "storage_bucket": "oceankeeper-39bda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954599637849:android:9b20114fab112ddb424248",
+        "android_client_info": {
+          "package_name": "com.letspl.oceankepper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMQdItco7UpV2F1HzCOL5MSollVe_S-r0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

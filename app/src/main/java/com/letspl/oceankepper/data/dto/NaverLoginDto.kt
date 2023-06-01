@@ -1,6 +1,7 @@
 package com.letspl.oceankepper.data.dto
 
 import android.os.Parcelable
+import kotlinx.serialization.SerialName
 
 @kotlinx.serialization.Serializable
 data class NaverLoginDto(
@@ -13,7 +14,8 @@ data class NaverLoginDto(
 data class GetNaverLoginResponseDto(
     val id: String,
     val nickname: String,
-    val profile_image: String,
+    @SerialName("profile_image")
+    val profileImage: String,
     val email: String,
     val name: String,
 )

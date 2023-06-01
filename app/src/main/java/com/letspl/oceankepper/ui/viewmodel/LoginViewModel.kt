@@ -10,7 +10,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.letspl.oceankepper.BuildConfig
+import com.letspl.oceankepper.data.dto.LoginInfo
+import com.letspl.oceankepper.data.model.LoginModel
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.util.ContextUtil
@@ -48,19 +49,22 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                 true -> {
                     data.body()?.response.let { data ->
                         data?.let {
+                            LoginModel.login.provider = "naver"
+                            LoginModel.login.providerId = it.id
+                            LoginModel.login.nickname = it.nickname
+                            LoginModel.login.email = it.email
+                            LoginModel.login.profile = it.profileImage.replace("\\", "")
                         }
                     }
                     _onNaverLoginResult.postValue(true)
-
-                    Timber.e("data ${data.body()?.response}")
                 }
                 else -> Timber.e("data is not Successful")
             }
         }
     }
 
-    fun onLoginNaver() {
-
+    fun getLoginInfo(): LoginInfo {
+        return LoginModel.login
     }
 
 }

@@ -5,7 +5,6 @@
     tools:context=".ui.view.LoginFragment">
 
     <data>
-
         <variable
             name="naverLoginManager"
             type="com.letspl.oceankepper.util.loginManager.NaverLoginManager" />

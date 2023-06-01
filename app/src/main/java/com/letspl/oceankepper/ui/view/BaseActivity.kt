@@ -1,18 +1,26 @@
 package com.letspl.oceankepper.ui.view
 
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.ActivityBaseBinding
+import com.letspl.oceankepper.ui.viewmodel.BaseViewModel
 import com.letspl.oceankepper.util.ContextUtil
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+
 
 @AndroidEntryPoint
 class BaseActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBaseBinding
+    private val baseViewModel: BaseViewModel by viewModels()
 
     interface OnBackPressedListener {
         fun onBackPressed()
@@ -29,13 +37,29 @@ class BaseActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        FirebaseApp.initializeApp(this)
         super.onCreate(savedInstanceState)
 
         binding = ActivityBaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ContextUtil.context = this
-        Timber.e("asdasdads")
         setupSplashFragment()
+
+        getRegisterFcmToken()
+    }
+
+    // firebase fcm token 가져오기 및 저장
+    private fun getRegisterFcmToken() {
+        // 등록된 토큰 가져오기
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+
+            Timber.e("register Token ${task.result}")
+
+            baseViewModel.setFcmDeviceToken(task.result)
+        })
     }
 
     // splash setUp

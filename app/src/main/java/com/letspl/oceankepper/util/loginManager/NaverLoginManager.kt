@@ -13,6 +13,7 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+
 class NaverLoginManager @Inject constructor(private val loginViewModel: LoginViewModel) {
     // NaverLoginSdk 초기화
 

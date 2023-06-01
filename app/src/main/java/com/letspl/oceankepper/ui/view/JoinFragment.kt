@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.letspl.oceankepper.databinding.FragmentJoinBinding
 import com.letspl.oceankepper.databinding.FragmentLoginBinding
+import com.letspl.oceankepper.ui.viewmodel.JoinViewModel
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.util.ContextUtil
 import com.letspl.oceankepper.util.loginManager.NaverLoginManager
@@ -20,6 +22,8 @@ class JoinFragment: Fragment() {
     private val binding: FragmentJoinBinding get() = _binding!!
     @Inject lateinit var activity: BaseActivity
     @Inject lateinit var naverLoginManager: NaverLoginManager
+    private val loginViewModel: LoginViewModel by viewModels()
+    private val joinViewModel: JoinViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +40,11 @@ class JoinFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Glide.with(requireContext())
+            .load(loginViewModel.getLoginInfo().profile)
+            .into(binding.profileIv)
+        binding.nicknameEt.setText(loginViewModel.getLoginInfo().nickname)
     }
 
     override fun onDestroyView() {
