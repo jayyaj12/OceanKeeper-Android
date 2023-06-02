@@ -11,6 +11,7 @@ import com.letspl.oceankepper.databinding.FragmentJoinBinding
 import com.letspl.oceankepper.databinding.FragmentLoginBinding
 import com.letspl.oceankepper.ui.viewmodel.JoinViewModel
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
+import com.letspl.oceankepper.util.BaseUrlType
 import com.letspl.oceankepper.util.ContextUtil
 import com.letspl.oceankepper.util.loginManager.NaverLoginManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +29,8 @@ class JoinFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = FragmentJoinBinding.inflate(layoutInflater)
+        binding.joinViewModel = joinViewModel
+        binding.lifecycleOwner = this
     }
 
     override fun onCreateView(
@@ -40,11 +43,20 @@ class JoinFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        BaseUrlType.setBaseUrlType("naver")
 
         Glide.with(requireContext())
             .load(loginViewModel.getLoginInfo().profile)
             .into(binding.profileIv)
         binding.nicknameEt.setText(loginViewModel.getLoginInfo().nickname)
+        joinViewModel.profileTempFileCreated.observe(viewLifecycleOwner) {
+            joinViewModel.uploadImageFile(it)
+        }
+
+    }
+
+    private fun setUpUserProfile() {
+
     }
 
     override fun onDestroyView() {

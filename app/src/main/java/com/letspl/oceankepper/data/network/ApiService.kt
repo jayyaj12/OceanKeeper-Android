@@ -27,7 +27,7 @@ interface ApiService {
     ): Response<NaverLoginDto>
 
     @Multipart
-    @POST("image/user/profile")
+    @POST("image/profile")
     suspend fun uploadImageFile(
         @Part profile: MultipartBody.Part
     ): Response<UploadProfileImageDto>

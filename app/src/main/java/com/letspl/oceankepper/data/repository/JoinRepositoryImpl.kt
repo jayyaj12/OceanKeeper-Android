@@ -2,6 +2,7 @@ package com.letspl.oceankepper.data.repository
 
 import com.letspl.oceankepper.data.dto.UploadProfileImageDto
 import com.letspl.oceankepper.data.network.ApiService
+import com.letspl.oceankepper.di.module.ApiModule
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,7 +15,7 @@ import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 
-class JoinRepositoryImpl @Inject constructor(private val apiService: ApiService): JoinRepository {
+class JoinRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit private val apiService: ApiService): JoinRepository {
     override suspend fun joinAccount(
         deviceToken: String,
         provider: String,
@@ -29,7 +30,7 @@ class JoinRepositoryImpl @Inject constructor(private val apiService: ApiService)
     override suspend fun uploadProfileImage(file: File): Response<UploadProfileImageDto> {
         val requestBody: RequestBody =
             file.asRequestBody("image/*".toMediaTypeOrNull())
-        val imageBody = MultipartBody.Part.createFormData("pictureFile", "profile.jpg", requestBody)
+        val imageBody = MultipartBody.Part.createFormData("profile", "profile.jpg", requestBody)
 
         return withContext(Dispatchers.IO) {
             apiService.uploadImageFile(imageBody)

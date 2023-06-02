@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.view.LoginFragment">
 
+    <data>
+        <variable
+            name="joinViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.JoinViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -137,6 +143,7 @@
             android:fontFamily="@font/pretendard_bold"
             android:text="회원가입 완료"
             android:textColor="@color/white"
+            android:onClick="@{() -> joinViewModel.createProfileImageFile()}"
             android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/nickname_et"

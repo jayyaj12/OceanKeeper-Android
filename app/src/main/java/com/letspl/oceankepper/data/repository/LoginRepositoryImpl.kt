@@ -1,9 +1,10 @@
 package com.letspl.oceankepper.data.repository
 
 import com.letspl.oceankepper.data.network.ApiService
+import com.letspl.oceankepper.di.module.ApiModule
 import javax.inject.Inject
 
-class LoginRepositoryImpl @Inject constructor(private val apiService: ApiService) :
+class LoginRepositoryImpl @Inject constructor(@ApiModule.NaverRetrofit private val apiService: ApiService) :
     LoginRepository {
 
     // 앱 로그인

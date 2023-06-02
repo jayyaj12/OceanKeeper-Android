@@ -23,7 +23,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String","API_BASE_URL",properties['api_base_url']
+        buildConfigField "String","NAVER_BASE_URL",properties['naver_base_url']
         buildConfigField "String","SERVER_BASE_URL",properties['server_base_url']
         buildConfigField "String","NAVER_CLIENT_ID",properties['naver_client_id']
         buildConfigField "String","NAVER_SECRET_CLIEND_ID",properties['naver_serect_client_id']

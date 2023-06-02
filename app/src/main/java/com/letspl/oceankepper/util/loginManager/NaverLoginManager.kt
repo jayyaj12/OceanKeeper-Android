@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import com.letspl.oceankepper.BuildConfig
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
+import com.letspl.oceankepper.util.BaseUrlType
 import com.letspl.oceankepper.util.ContextUtil
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -32,6 +33,8 @@ class NaverLoginManager @Inject constructor(private val loginViewModel: LoginVie
 
     // 로그인
     fun startNaverLogin() {
+        BaseUrlType.setBaseUrlType("naver")
+
         var naverToken: String? = ""
 
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {

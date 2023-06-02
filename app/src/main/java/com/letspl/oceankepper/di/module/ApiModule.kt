@@ -19,15 +19,44 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 object ApiModule {
 
-    @Singleton
-    @Provides
-    fun provideBaseUrl() = BuildConfig.API_BASE_URL
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class NaverRetrofit
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class KaKaoRetrofit
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class GoogleRetrofit
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class OceanRetrofit
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class NaverService
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class KaKaoService
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class GoogleService
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class OceanService
 
     @Singleton
     @Provides
@@ -41,15 +70,74 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient) = run {
+    @NaverRetrofit
+    fun provideNaverRetrofit(okHttpClient: OkHttpClient) = run {
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(provideBaseUrl())
+            .baseUrl(BuildConfig.NAVER_BASE_URL)
             .addConverterFactory(
                 Json {
-                    ignoreUnknownKeys = true
-                    coerceInputValues = true
-                    explicitNulls = false
+                    isLenient = true
+                    ignoreUnknownKeys = true // 지정되지 않은 key 값은 무시
+                    coerceInputValues = true // default 값 설정
+                    explicitNulls = false // 없는 필드는 null로 설정
+                }.asConverterFactory("application/json".toMediaType())
+            )
+            .build()
+    }
+
+
+    @Singleton
+    @Provides
+    @KaKaoRetrofit
+    fun provideKaKaoRetrofit(okHttpClient: OkHttpClient) = run {
+        Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(BuildConfig.NAVER_BASE_URL)
+            .addConverterFactory(
+                Json {
+                    isLenient = true
+                    ignoreUnknownKeys = true // 지정되지 않은 key 값은 무시
+                    coerceInputValues = true // default 값 설정
+                    explicitNulls = false // 없는 필드는 null로 설정
+                }.asConverterFactory("application/json".toMediaType())
+            )
+            .build()
+    }
+
+
+    @Singleton
+    @Provides
+    @GoogleRetrofit
+    fun provideGoogleRetrofit(okHttpClient: OkHttpClient) = run {
+        Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(BuildConfig.NAVER_BASE_URL)
+            .addConverterFactory(
+                Json {
+                    isLenient = true
+                    ignoreUnknownKeys = true // 지정되지 않은 key 값은 무시
+                    coerceInputValues = true // default 값 설정
+                    explicitNulls = false // 없는 필드는 null로 설정
+                }.asConverterFactory("application/json".toMediaType())
+            )
+            .build()
+    }
+
+
+    @Singleton
+    @Provides
+    @OceanRetrofit
+    fun provideOceanRetrofit(okHttpClient: OkHttpClient) = run {
+        Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(BuildConfig.SERVER_BASE_URL)
+            .addConverterFactory(
+                Json {
+                    isLenient = true
+                    ignoreUnknownKeys = true // 지정되지 않은 key 값은 무시
+                    coerceInputValues = true // default 값 설정
+                    explicitNulls = false // 없는 필드는 null로 설정
                 }.asConverterFactory("application/json".toMediaType())
             )
             .build()
@@ -57,19 +145,35 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit) = retrofit.create(ApiService::class.java)
+    @NaverService
+    fun provideNaverApiService(@NaverRetrofit retrofit: Retrofit) = retrofit.create(ApiService::class.java)
 
     @Singleton
     @Provides
-    fun provideLoginRepositoryImpl(apiService: ApiService) = LoginRepositoryImpl(apiService)
+    @KaKaoService
+    fun provideKaKaoApiService(@KaKaoRetrofit retrofit: Retrofit) = retrofit.create(ApiService::class.java)
 
     @Singleton
     @Provides
-    fun provideJoinRepositoryImpl(apiService: ApiService) = JoinRepositoryImpl(apiService)
+    @GoogleService
+    fun provideGoogleApiService(@GoogleRetrofit retrofit: Retrofit) = retrofit.create(ApiService::class.java)
 
     @Singleton
     @Provides
-    fun provideLoginViewModel(apiService: ApiService) = LoginViewModel(LoginRepositoryImpl(apiService))
+    @OceanService
+    fun provideOceanApiService(@OceanRetrofit retrofit: Retrofit) = retrofit.create(ApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideLoginRepositoryImpl(@NaverService apiService: ApiService) = LoginRepositoryImpl(apiService)
+
+    @Singleton
+    @Provides
+    fun provideJoinRepositoryImpl(@OceanService apiService: ApiService) = JoinRepositoryImpl(apiService)
+
+    @Singleton
+    @Provides
+    fun provideLoginViewModel(@NaverService apiService: ApiService) = LoginViewModel(LoginRepositoryImpl(apiService))
 //
 //    @Singleton
 //    @Provides
