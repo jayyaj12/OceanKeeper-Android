@@ -5,14 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.letspl.oceankepper.data.model.JoinModel
 import com.letspl.oceankepper.data.model.LoginModel
+import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.JoinRepositoryImpl
 import com.letspl.oceankepper.di.AppApplication
+import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import timber.log.Timber
 import java.io.*
 import java.net.URL
@@ -25,7 +29,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     // 서버로 받은 프로필 url 을 file 로 생성이 완료 되었는지 구분하는 변수
     private var _profileTempFileCreated = MutableLiveData<File>()
     val profileTempFileCreated: LiveData<File>
-    get() = _profileTempFileCreated
+        get() = _profileTempFileCreated
 
     // 서버로 내려받은 url 을 파일로 생성
     fun createProfileImageFile() {
@@ -59,24 +63,49 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
         }
     }
 
-    private fun deleteProfileImageFile() {
-        JoinModel.profileImageFile?.deleteOnExit()
-    }
-
+    // 프로필 이미지 업로드
     fun uploadImageFile(file: File?) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             file?.let {
                 joinRepositoryImpl.uploadProfileImage(file).let {
                     if (it.isSuccessful) {
                         it.body()?.let { body ->
-                            Timber.e("body url ${body.url}")
-                            // 업로드 성공 시 캐시 저장소에 업로드한 프로필 이미지 삭제
-                            deleteProfileImageFile()
+                            // 회원가입 진행
+                            signUpUser(body.url)
                         }
+                    } else {
+                        // 서버 통신 에러 띄움
                     }
                 }
             }
         }
     }
 
+    // 회원가입
+    private fun signUpUser(profileUrl: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            LoginModel.login.run {
+                joinRepositoryImpl.signUpUser(
+                    this.deviceToken,
+                    this.provider,
+                    this.providerId,
+                    this.nickname,
+                    this.email,
+                    profileUrl
+                ).let {
+                    if (it.isSuccessful) {
+                        it.body()?.let { body ->
+                            // 회원가입 진행
+                            UserModel.userId = body.id
+                            UserModel.nickname = body.nickname
+                        }
+                    } else {
+                        val errorJson = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                        Timber.e("asdad ${errorJson?.get("status")}")
+                        Timber.e("asdad ${errorJson?.get("message")}")
+                    }
+                }
+            }
+        }
+    }
 }

@@ -33,8 +33,6 @@ class NaverLoginManager @Inject constructor(private val loginViewModel: LoginVie
 
     // 로그인
     fun startNaverLogin() {
-        BaseUrlType.setBaseUrlType("naver")
-
         var naverToken: String? = ""
 
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {

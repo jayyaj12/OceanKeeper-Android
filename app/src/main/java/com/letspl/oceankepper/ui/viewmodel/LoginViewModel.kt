@@ -34,13 +34,6 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
     val onNaverLoginResult: LiveData<Boolean>
     get() =  _onNaverLoginResult
 
-    // 로그인
-    fun onLoginAccount(provider: String, providerId: String) {
-        viewModelScope.launch {
-            loginRepositoryImpl.postAppLogin(provider, providerId)
-        }
-    }
-
     // 네이버 계정 정보 조회 요청
     fun getNaverUserInfo(token: String) {
         viewModelScope.launch {

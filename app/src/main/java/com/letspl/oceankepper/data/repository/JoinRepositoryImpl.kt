@@ -1,5 +1,7 @@
 package com.letspl.oceankepper.data.repository
 
+import com.letspl.oceankepper.data.dto.JoinDto
+import com.letspl.oceankepper.data.dto.SignUpBody
 import com.letspl.oceankepper.data.dto.UploadProfileImageDto
 import com.letspl.oceankepper.data.network.ApiService
 import com.letspl.oceankepper.di.module.ApiModule
@@ -16,15 +18,15 @@ import java.io.File
 import javax.inject.Inject
 
 class JoinRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit private val apiService: ApiService): JoinRepository {
-    override suspend fun joinAccount(
+    override suspend fun signUpUser(
         deviceToken: String,
         provider: String,
         providerId: String,
         nickname: String,
         email: String,
         profile: String
-    ) {
-
+    ): Response<JoinDto> {
+        return apiService.signUpUser(SignUpBody(deviceToken, email, nickname, profile, provider, providerId))
     }
 
     override suspend fun uploadProfileImage(file: File): Response<UploadProfileImageDto> {

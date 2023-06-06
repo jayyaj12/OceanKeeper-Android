@@ -21,7 +21,7 @@ data class UploadProfileImageDto(
 
 @kotlinx.serialization.Serializable
 data class LoginInfo(
-    var deviceToken : String = "",
+    var deviceToken: String = "",
     var provider: String = "",
     var providerId: String = "",
     var nickname: String = "",
