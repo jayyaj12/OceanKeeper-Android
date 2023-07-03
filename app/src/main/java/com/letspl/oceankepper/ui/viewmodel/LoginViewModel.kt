@@ -28,11 +28,12 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl): ViewModel() {
+class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl) :
+    ViewModel() {
 
-    private var _onNaverLoginResult = MutableLiveData<Boolean>(false)
-    val onNaverLoginResult: LiveData<Boolean>
-    get() =  _onNaverLoginResult
+    private var _onLoginResult = MutableLiveData<Boolean?>()
+    val onLoginResult: LiveData<Boolean?>
+        get() = _onLoginResult
 
     // 네이버 계정 정보 조회 요청
     fun getNaverUserInfo(token: String) {
@@ -49,7 +50,7 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                             LoginModel.login.profile = it.profileImage.replace("\\", "")
                         }
                     }
-                    _onNaverLoginResult.postValue(true)
+                    loginUser()
                 }
                 else -> Timber.e("data is not Successful")
             }
@@ -60,4 +61,32 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
         return LoginModel.login
     }
 
+    // 로그인 시도 회원가입 유무 확인 후 분기 처리
+    fun loginUser() {
+        viewModelScope.launch {
+            val data = loginRepositoryImpl.loginUser(
+                LoginModel.login.deviceToken,
+                LoginModel.login.provider,
+                LoginModel.login.providerId
+            )
+
+            Timber.e("data.isSuccessful ${data.isSuccessful}")
+
+            when(data.isSuccessful) {
+                true -> {
+                    // 로그인 성공
+                    _onLoginResult.postValue(true)
+                }
+                else -> {
+                    // 로그인 정보 없음
+                    _onLoginResult.postValue(false)
+                }
+            }
+        }
+    }
+
+    // liveData 값 초기화
+    fun clearLiveData() {
+        _onLoginResult.postValue(null)
+    }
 }

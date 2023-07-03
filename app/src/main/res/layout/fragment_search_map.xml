@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="searchMapFragment"
+            type="com.letspl.oceankepper.ui.view.SearchMapFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="위치 검색"
+            android:fontFamily="@font/pretendard_bold"
+            android:textColor="@color/gray_scale_g900"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="16dp"
+            android:id="@+id/search_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="24dp"
+            android:src="@drawable/search_map_x_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/search_tv"
+            android:id="@+id/close_iv"
+            android:onClick="@{() -> searchMapFragment.onClickedCloseBtn()}"
+            app:layout_constraintBottom_toBottomOf="@+id/search_tv"
+            android:layout_marginEnd="21dp"/>
+
+        <RelativeLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_tv"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <WebView
+                android:id="@+id/wv_search_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- 화면이 로딩될 때까지 뜨는 화면 -->
+            <ProgressBar
+                android:id="@+id/web_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

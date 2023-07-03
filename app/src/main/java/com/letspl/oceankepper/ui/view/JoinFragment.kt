@@ -15,13 +15,16 @@ import com.letspl.oceankepper.util.BaseUrlType
 import com.letspl.oceankepper.util.ContextUtil
 import com.letspl.oceankepper.util.loginManager.NaverLoginManager
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class JoinFragment: Fragment() {
+class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentJoinBinding? = null
     private val binding: FragmentJoinBinding get() = _binding!!
-    @Inject lateinit var activity: BaseActivity
+    val activity: BaseActivity by lazy {
+        requireActivity() as BaseActivity
+    }
     @Inject lateinit var naverLoginManager: NaverLoginManager
     private val loginViewModel: LoginViewModel by viewModels()
     private val joinViewModel: JoinViewModel by viewModels()
@@ -29,6 +32,7 @@ class JoinFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = FragmentJoinBinding.inflate(layoutInflater)
+        binding.joinFragment = this
         binding.joinViewModel = joinViewModel
         binding.lifecycleOwner = this
     }
@@ -59,8 +63,17 @@ class JoinFragment: Fragment() {
 
     }
 
+    fun onClickedBackIcon() {
+        activity.onReplaceFragment(LoginFragment())
+    }
+
+    override fun onBackPressed() {
+        activity.onReplaceFragment(LoginFragment())
+    }
+
     override fun onDestroyView() {
         _binding = null
+
         super.onDestroyView()
     }
 }

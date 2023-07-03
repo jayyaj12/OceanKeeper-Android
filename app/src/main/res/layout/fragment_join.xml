@@ -6,6 +6,9 @@
 
     <data>
         <variable
+            name="joinFragment"
+            type="com.letspl.oceankepper.ui.view.JoinFragment" />
+        <variable
             name="joinViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.JoinViewModel" />
     </data>
@@ -20,6 +23,7 @@
             android:layout_height="20dp"
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"
+            android:onClick="@{() -> joinFragment.onClickedBackIcon()}"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

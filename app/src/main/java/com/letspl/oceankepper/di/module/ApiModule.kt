@@ -8,6 +8,7 @@ import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.ui.viewmodel.JoinViewModel
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
+import com.letspl.oceankepper.util.loginManager.KakaoLoginManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -165,7 +166,7 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideLoginRepositoryImpl(@NaverService apiService: ApiService) = LoginRepositoryImpl(apiService)
+    fun provideLoginRepositoryImpl(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = LoginRepositoryImpl(apiService, oceanService)
 
     @Singleton
     @Provides
@@ -173,7 +174,7 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideLoginViewModel(@NaverService apiService: ApiService) = LoginViewModel(LoginRepositoryImpl(apiService))
+    fun provideLoginViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = LoginViewModel(LoginRepositoryImpl(apiService, oceanService))
 //
 //    @Singleton
 //    @Provides
@@ -182,5 +183,9 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideBaseActivity() = BaseActivity()
+
+    @Singleton
+    @Provides
+    fun provideKakaoLoginManager(loginViewModel: LoginViewModel) = KakaoLoginManager(loginViewModel)
 
 }

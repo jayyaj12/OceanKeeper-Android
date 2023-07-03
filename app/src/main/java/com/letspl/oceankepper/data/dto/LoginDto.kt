@@ -28,3 +28,31 @@ data class LoginInfo(
     var email: String = "",
     var profile: String = ""
 )
+
+// 로그인 요청 body
+@kotlinx.serialization.Serializable
+data class LoginBody(
+    val deviceToken: String,
+    val provider: String,
+    val providerId: String
+)
+
+@kotlinx.serialization.Serializable
+data class LoginUserResponseDto(
+    val token: LoginUserResponseTokenDto,
+    val user: LoginUserResponseUserDto
+)
+
+@kotlinx.serialization.Serializable
+data class LoginUserResponseTokenDto(
+    val accessToken: String,
+    val accessTokenExpiresIn: String,
+    val grantType: String,
+    val refreshToken: String
+)
+
+@kotlinx.serialization.Serializable
+data class LoginUserResponseUserDto(
+    val id: String,
+    val nickname: String
+)

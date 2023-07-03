@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/ocean_logo_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="OceanKeeper"
+            android:textColor="#00B6C4"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="18dp"
+            android:src="@drawable/noti_icon"
+            app:layout_constraintBottom_toBottomOf="@id/setting_iv"
+            app:layout_constraintEnd_toStartOf="@+id/setting_iv"
+            app:layout_constraintTop_toTopOf="@id/setting_iv" />
+
+        <ImageView
+            android:id="@+id/setting_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="18dp"
+            android:src="@drawable/setting_icon"
+            app:layout_constraintBottom_toBottomOf="@id/ocean_logo_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ocean_logo_tv" />
+
+        <TextView
+            android:id="@+id/coming_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="33dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="다가오는 일정"
+            android:textColor="@color/gray_scale_g900"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/ocean_logo_tv"
+            app:layout_constraintTop_toBottomOf="@+id/ocean_logo_tv" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/schedule_view_pager"
+            android:layout_width="0dp"
+            android:layout_height="128dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coming_tv" />
+
+        <LinearLayout
+            android:id="@+id/view_pager_circle_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/schedule_view_pager">
+
+            <ImageView
+                android:id="@+id/circle_1_iv"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/gray_circle" />
+
+            <ImageView
+                android:id="@+id/circle_2_iv"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/white_circle" />
+
+            <ImageView
+                android:id="@+id/circle_3_iv"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/white_circle" />
+
+            <ImageView
+                android:id="@+id/circle_4_iv"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/white_circle" />
+
+            <ImageView
+                android:id="@+id/circle_5_iv"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:src="@drawable/white_circle" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/notice_icon_iv"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/notice_icon_btn"
+            app:layout_constraintEnd_toStartOf="@+id/guide_icon_iv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_pager_circle_ll" />
+
+        <ImageView
+            android:id="@+id/guide_icon_iv"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/guide_icon_btn"
+            app:layout_constraintEnd_toStartOf="@+id/setting_icon_iv"
+            app:layout_constraintStart_toEndOf="@id/notice_icon_iv"
+            app:layout_constraintTop_toTopOf="@+id/notice_icon_iv" />
+
+        <ImageView
+            android:id="@+id/setting_icon_iv"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/setting_icon_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guide_icon_iv"
+            app:layout_constraintTop_toTopOf="@+id/notice_icon_iv" />
+
+        <View
+            android:id="@+id/icon_btn_v"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray_scale_g200"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notice_icon_iv" />
+        
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:id="@+id/all_tab_view_ll"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/icon_btn_v">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="전체"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="16dp"
+                android:textColor="@color/gray_700"/>
+            
+            <View
+                android:id="@+id/all_tab_line_v"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray_700"/>
+            
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:id="@+id/continue_tab_view_ll"
+            android:orientation="vertical"
+            android:layout_marginStart="24dp"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@+id/all_tab_view_ll"
+            app:layout_constraintTop_toBottomOf="@id/icon_btn_v">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="진행예정 활동"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="16dp"
+                android:textColor="@color/gray_500"/>
+
+            <View
+                android:id="@+id/continue_tab_line_v"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:visibility="gone"
+                android:background="@color/gray_700"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:id="@+id/end_tab_view_ll"
+            android:orientation="vertical"
+            android:layout_marginStart="24dp"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@+id/continue_tab_view_ll"
+            app:layout_constraintTop_toBottomOf="@id/icon_btn_v">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="종료된 활동"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="16dp"
+                android:textColor="@color/gray_500"/>
+
+            <View
+                android:id="@+id/end_tab_line_v"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="2dp"
+                android:background="@color/gray_700"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#E6E6E6"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/tab_line_v"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/all_tab_view_ll"/>
+
+        <LinearLayout
+            android:layout_width="89dp"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:id="@+id/area_selector_ll"
+            app:layout_constraintStart_toStartOf="@id/all_tab_view_ll"
+            app:layout_constraintTop_toBottomOf="@id/all_tab_view_ll"
+            android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="서해번쩍"
+                android:textColor="@color/primary_color_p600"
+                android:textSize="12dp"
+                android:fontFamily="@font/pretendard_medium"/>
+            
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_marginStart="9dp"
+                android:layout_height="12dp"
+                android:src="@drawable/under_arrow_icon"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="69dp"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:id="@+id/kind_selector_ll"
+            app:layout_constraintStart_toEndOf="@id/area_selector_ll"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toBottomOf="@id/all_tab_view_ll"
+            android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="종류"
+                android:textColor="@color/gray_700"
+                android:textSize="12dp"
+                android:fontFamily="@font/pretendard_medium"/>
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_marginStart="9dp"
+                android:layout_height="12dp"
+                android:src="@drawable/under_arrow_icon"/>
+
+        </LinearLayout>
+
+        
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

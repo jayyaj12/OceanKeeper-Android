@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.view.LoginFragment">
+
+    <data>
+        <variable
+            name="joinViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.JoinViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/back_icon_ll"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_icon_iv"
+                android:layout_width="9dp"
+                android:layout_height="16dp"
+                android:src="@drawable/title_left_icon" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="반갑습니다.\n오션키퍼님 함께 바다를\n깨끗하게 만들어요!"
+            android:fontFamily="@font/pretendard_extrabold"
+            android:textColor="@color/gray_scale_g900"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/back_icon_ll"
+            app:layout_constraintTop_toBottomOf="@+id/back_icon_ll"
+            android:id="@+id/join_txt_tv"
+            android:layout_marginTop="40dp"/>
+        
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="196dp"
+            android:src="@drawable/join_whale"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/join_txt_tv"
+            android:layout_marginTop="24dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/ok_btn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="44dp"
+            android:background="@drawable/custom_radius30_solid_00b6c4"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="확인"
+            android:textColor="@color/white"
+            android:onClick="@{() -> joinViewModel.createProfileImageFile()}"
+            android:textSize="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

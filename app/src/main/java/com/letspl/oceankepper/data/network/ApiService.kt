@@ -27,6 +27,12 @@ interface ApiService {
         @Part profile: MultipartBody.Part
     ): Response<UploadProfileImageDto>
 
+    // 로그인
+    @POST("auth/login")
+    suspend fun loginUser(
+        @Body loginBody: LoginBody
+    ): Response<LoginUserResponseDto>
+
     // 회원가입
     @POST("auth/signup")
     suspend fun signUpUser(
