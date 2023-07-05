@@ -54,8 +54,6 @@ class ActivityRecruitFragment : Fragment() {
         setUpViewModels()
         setUpActivityTimeSpinner()
         setUpEditTextListener()
-        setUpTrafficGuideCheckBox()
-        setUpRecruitCategory()
         setUpClickedListener()
     }
 
@@ -67,65 +65,9 @@ class ActivityRecruitFragment : Fragment() {
 
     private fun setUpViewModels() {
         // 날짜 선택
-        activityRecruitViewModel.choiceDateText.observe(viewLifecycleOwner) {
+        activityRecruitViewModel.choiceRecruitStartDateText.observe(viewLifecycleOwner) {
             calendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray())
             calendarAdapter.notifyDataSetChanged()
-        }
-
-        // 프로젝트 명 길이
-        activityRecruitViewModel.projectNameLength.observe(viewLifecycleOwner) {
-            binding.projectNameLengthTv.text = "글자수 제한 ${it}/30"
-        }
-
-        // 교통 정보 선택
-        activityRecruitViewModel.trafficGuideValue.observe(viewLifecycleOwner) {
-            when (it) {
-                1 -> {
-                    binding.carSharingV.setBackgroundResource(R.drawable.traffic_guide_checked)
-                    binding.groupCarSharingV.setBackgroundResource(R.drawable.radius_6_solid_fff_stroke_g300)
-                    binding.noCarSharingV.setBackgroundResource(R.drawable.radius_6_solid_fff_stroke_g300)
-                }
-                2 -> {
-                    binding.carSharingV.setBackgroundResource(R.drawable.radius_6_solid_fff_stroke_g300)
-                    binding.groupCarSharingV.setBackgroundResource(R.drawable.traffic_guide_checked)
-                    binding.noCarSharingV.setBackgroundResource(R.drawable.radius_6_solid_fff_stroke_g300)
-                }
-                3 -> {
-                    binding.carSharingV.setBackgroundResource(R.drawable.radius_6_solid_fff_stroke_g300)
-                    binding.groupCarSharingV.setBackgroundResource(R.drawable.radius_6_solid_fff_stroke_g300)
-                    binding.noCarSharingV.setBackgroundResource(R.drawable.traffic_guide_checked)
-                }
-            }
-        }
-
-        // 모집 카테고리 선택
-        activityRecruitViewModel.recruitCategory.observe(viewLifecycleOwner) {
-            when (it) {
-                1 -> {
-                    onChangeFontColorAndBackground(binding.category1Tv, true)
-                    onChangeFontColorAndBackground(binding.category2Tv, false)
-                    onChangeFontColorAndBackground(binding.category3Tv, false)
-                    onChangeFontColorAndBackground(binding.category4Tv, false)
-                }
-                2 -> {
-                    onChangeFontColorAndBackground(binding.category1Tv, false)
-                    onChangeFontColorAndBackground(binding.category2Tv, true)
-                    onChangeFontColorAndBackground(binding.category3Tv, false)
-                    onChangeFontColorAndBackground(binding.category4Tv, false)
-                }
-                3 -> {
-                    onChangeFontColorAndBackground(binding.category1Tv, false)
-                    onChangeFontColorAndBackground(binding.category2Tv, false)
-                    onChangeFontColorAndBackground(binding.category3Tv, true)
-                    onChangeFontColorAndBackground(binding.category4Tv, false)
-                }
-                4 -> {
-                    onChangeFontColorAndBackground(binding.category1Tv, false)
-                    onChangeFontColorAndBackground(binding.category2Tv, false)
-                    onChangeFontColorAndBackground(binding.category3Tv, false)
-                    onChangeFontColorAndBackground(binding.category4Tv, true)
-                }
-            }
         }
     }
 
@@ -145,7 +87,7 @@ class ActivityRecruitFragment : Fragment() {
         calendarAdapter = CalendarAdapter(activityRecruitViewModel)
 
         calendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray())
-        binding.calendarRv.run {
+        binding.calendarStartRecruitRv.run {
             layoutManager = GridLayoutManager(requireContext(), 7)
             adapter = calendarAdapter
         }
@@ -157,35 +99,6 @@ class ActivityRecruitFragment : Fragment() {
     private fun setUpEditTextListener() {
         binding.projectNameEt.addTextChangedListener {
             activityRecruitViewModel.onChangedProjectNameEditText(it.toString())
-        }
-    }
-
-    // 교통 안내 체크박스
-    private fun setUpTrafficGuideCheckBox() {
-        binding.carSharingV.setOnClickListener {
-            activityRecruitViewModel.setTrafficGuideValue(1)
-        }
-        binding.groupCarSharingV.setOnClickListener {
-            activityRecruitViewModel.setTrafficGuideValue(2)
-        }
-        binding.noCarSharingV.setOnClickListener {
-            activityRecruitViewModel.setTrafficGuideValue(3)
-        }
-    }
-
-    // 모집 카테고리 선택
-    private fun setUpRecruitCategory() {
-        binding.category1Tv.setOnClickListener {
-            activityRecruitViewModel.setRecruitCategoryValue(1)
-        }
-        binding.category2Tv.setOnClickListener {
-            activityRecruitViewModel.setRecruitCategoryValue(2)
-        }
-        binding.category3Tv.setOnClickListener {
-            activityRecruitViewModel.setRecruitCategoryValue(3)
-        }
-        binding.category4Tv.setOnClickListener {
-            activityRecruitViewModel.setRecruitCategoryValue(4)
         }
     }
 
@@ -229,13 +142,13 @@ class ActivityRecruitFragment : Fragment() {
     }
 
     // 이전 달 버튼 클릭
-    fun onMovePreviousMonth() {
-        activityRecruitViewModel.onPreviousBtnClicked()
+    fun onMovePreviousMonth(type: Int) {
+        activityRecruitViewModel.onPreviousBtnClicked(type)
     }
 
     // 다음 달 버튼 클릭
-    fun onMoveNextMonth() {
-        activityRecruitViewModel.onNextBtnClicked()
+    fun onMoveNextMonth(type: Int) {
+        activityRecruitViewModel.onNextBtnClicked(type)
     }
 
     override fun onDestroyView() {

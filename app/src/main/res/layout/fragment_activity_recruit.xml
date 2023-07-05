@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="activityRecruitViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel" />
@@ -48,14 +51,14 @@
 
         <ScrollView
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="55dp"
-            android:layout_marginBottom="64dp"
-            android:layout_height="match_parent">
+            android:layout_marginBottom="64dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:id="@+id/project_name_tv"
@@ -100,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="글자수 제한 0/30"
+                    android:text="@{`글자수 제한 ` + activityRecruitViewModel.projectNameLength + `/30`}"
                     android:textColor="@color/gray_scale_g500"
                     android:textSize="14dp"
                     app:layout_constraintEnd_toEndOf="@id/project_name_et"
@@ -170,7 +173,8 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/radius_6_solid_fff_stroke_g300"
+                    android:background="@{activityRecruitViewModel.trafficGuideValue == 1 ? @drawable/traffic_guide_checked : @drawable/radius_6_solid_fff_stroke_g300}"
+                    android:onClick="@{() -> activityRecruitViewModel.setTrafficGuideValue(1)}"
                     app:layout_constraintStart_toStartOf="@id/traffic_guide_status_tv"
                     app:layout_constraintTop_toBottomOf="@id/traffic_guide_status_tv" />
 
@@ -191,7 +195,8 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/radius_6_solid_fff_stroke_g300"
+                    android:background="@{activityRecruitViewModel.trafficGuideValue == 2 ? @drawable/traffic_guide_checked : @drawable/radius_6_solid_fff_stroke_g300}"
+                    android:onClick="@{() -> activityRecruitViewModel.setTrafficGuideValue(2)}"
                     app:layout_constraintStart_toStartOf="@id/traffic_guide_status_tv"
                     app:layout_constraintTop_toBottomOf="@id/car_sharing_v" />
 
@@ -212,7 +217,8 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/radius_6_solid_fff_stroke_g300"
+                    android:background="@{activityRecruitViewModel.trafficGuideValue == 3 ? @drawable/traffic_guide_checked : @drawable/radius_6_solid_fff_stroke_g300}"
+                    android:onClick="@{() -> activityRecruitViewModel.setTrafficGuideValue(3)}"
                     app:layout_constraintStart_toStartOf="@id/group_car_sharing_v"
                     app:layout_constraintTop_toBottomOf="@id/group_car_sharing_v" />
 
@@ -254,11 +260,12 @@
                     android:layout_width="97dp"
                     android:layout_height="36dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/radius_20_solid_p50"
+                    android:background="@{activityRecruitViewModel.recruitCategory == 1 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitCategoryValue(1)}"
                     android:text="연안쓰레기"
-                    android:textColor="@color/primary_color_p700"
+                    android:textColor="@{activityRecruitViewModel.recruitCategory == 1 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
                     android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="@id/recruit_category_tv"
                     app:layout_constraintTop_toBottomOf="@id/recruit_category_tv" />
@@ -269,11 +276,12 @@
                     android:layout_height="36dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/radius_20_solid_bg50"
+                    android:background="@{activityRecruitViewModel.recruitCategory == 2 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitCategoryValue(2)}"
                     android:text="부유쓰레기"
-                    android:textColor="@color/blue_grayscale_bg200"
+                    android:textColor="@{activityRecruitViewModel.recruitCategory == 2 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
                     android:textSize="16dp"
                     app:layout_constraintStart_toEndOf="@id/category_1_tv"
                     app:layout_constraintTop_toBottomOf="@id/recruit_category_tv" />
@@ -284,11 +292,12 @@
                     android:layout_height="36dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/radius_20_solid_bg50"
+                    android:background="@{activityRecruitViewModel.recruitCategory == 3 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitCategoryValue(3)}"
                     android:text="침적쓰레기"
-                    android:textColor="@color/blue_grayscale_bg200"
+                    android:textColor="@{activityRecruitViewModel.recruitCategory == 3 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
                     android:textSize="16dp"
                     app:layout_constraintStart_toEndOf="@id/category_2_tv"
                     app:layout_constraintTop_toBottomOf="@id/recruit_category_tv" />
@@ -298,11 +307,12 @@
                     android:layout_width="60dp"
                     android:layout_height="36dp"
                     android:layout_marginTop="24dp"
-                    android:background="@drawable/radius_20_solid_bg50"
+                    android:background="@{activityRecruitViewModel.recruitCategory == 4 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitCategoryValue(4)}"
                     android:text="기타"
-                    android:textColor="@color/blue_grayscale_bg200"
+                    android:textColor="@{activityRecruitViewModel.recruitCategory == 4 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
                     android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="@id/category_1_tv"
                     app:layout_constraintTop_toBottomOf="@id/category_1_tv" />
@@ -333,11 +343,12 @@
                     android:layout_width="97dp"
                     android:layout_height="36dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/radius_20_solid_p50"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 1 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(1)}"
                     android:text="서해번쩍"
-                    android:textColor="@color/primary_color_p700"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 1 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
                     android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="@id/recruit_category_tv"
                     app:layout_constraintTop_toBottomOf="@id/recruit_location_tv" />
@@ -348,11 +359,12 @@
                     android:layout_height="36dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/radius_20_solid_bg50"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 2 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(2)}"
                     android:text="동해번쩍"
-                    android:textColor="@color/blue_grayscale_bg200"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 2 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
                     android:textSize="16dp"
                     app:layout_constraintStart_toEndOf="@id/category_1_tv"
                     app:layout_constraintTop_toBottomOf="@id/recruit_location_tv" />
@@ -363,11 +375,12 @@
                     android:layout_height="36dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/radius_20_solid_bg50"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 3 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(3)}"
                     android:text="남해번쩍"
-                    android:textColor="@color/blue_grayscale_bg200"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 3 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
                     android:textSize="16dp"
                     app:layout_constraintStart_toEndOf="@id/category_2_tv"
                     app:layout_constraintTop_toBottomOf="@id/recruit_location_tv" />
@@ -377,11 +390,12 @@
                     android:layout_width="97dp"
                     android:layout_height="36dp"
                     android:layout_marginTop="24dp"
-                    android:background="@drawable/radius_20_solid_bg50"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 4 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(4)}"
                     android:text="제주번쩍"
-                    android:textColor="@color/blue_grayscale_bg200"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 4 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
                     android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="@id/category_1_tv"
                     app:layout_constraintTop_toBottomOf="@id/location_1_tv" />
@@ -392,11 +406,12 @@
                     android:layout_height="36dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="24dp"
-                    android:background="@drawable/radius_20_solid_bg50"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 5 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(5)}"
                     android:text="기타"
-                    android:textColor="@color/blue_grayscale_bg200"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 5 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
                     android:textSize="16dp"
                     app:layout_constraintStart_toEndOf="@id/location_4_tv"
                     app:layout_constraintTop_toBottomOf="@id/location_1_tv" />
@@ -427,8 +442,9 @@
                     android:layout_width="0dp"
                     android:layout_height="42dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/custom_radius_8_stroke_p500_solid_fff"
+                    android:background="@{activityRecruitViewModel.clickedRecruitComponent == 0 ? @drawable/custom_radius_8_stroke_p500_solid_fff : @drawable/custom_radius_8_stroke_g300_solid_fff}"
                     android:gravity="left|center_vertical"
+                    android:onClick="@{() -> activityRecruitViewModel.setClickedRecruitComponent(0)}"
                     android:orientation="horizontal"
                     android:paddingStart="14dp"
                     app:layout_constraintEnd_toStartOf="@id/recruit_end_date_ll"
@@ -458,8 +474,9 @@
                     android:layout_height="42dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/custom_radius_8_stroke_g300_solid_fff"
+                    android:background="@{activityRecruitViewModel.clickedRecruitComponent == 1 ? @drawable/custom_radius_8_stroke_p500_solid_fff : @drawable/custom_radius_8_stroke_g300_solid_fff}"
                     android:gravity="left|center_vertical"
+                    android:onClick="@{() -> activityRecruitViewModel.setClickedRecruitComponent(1)}"
                     android:orientation="horizontal"
                     android:paddingStart="14dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -484,10 +501,11 @@
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/calendar_V"
+                    android:id="@+id/calendar_recruit_start_V"
                     android:layout_width="0dp"
                     android:layout_height="324dp"
                     android:layout_marginTop="8dp"
+                    android:visibility="@{activityRecruitViewModel.clickedRecruitComponent == 0 ? View.VISIBLE : View.INVISIBLE}"
                     android:background="@drawable/radius_13_solid_fff"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="@id/recruit_end_date_ll"
@@ -495,7 +513,7 @@
                     app:layout_constraintTop_toBottomOf="@id/recruit_start_date_ll">
 
                     <LinearLayout
-                        android:id="@+id/calendar_date_ll"
+                        android:id="@+id/calendar_recruit_start_date_ll"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -505,11 +523,11 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/calendar_date_tv"
+                            android:id="@+id/calendar_recruit_start_date_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/se_pro_bold"
-                            android:text="@{activityRecruitViewModel.choiceDateText}"
+                            android:text="@{activityRecruitViewModel.choiceRecruitStartDateText}"
                             android:textColor="@color/black"
                             android:textSize="17dp" />
 
@@ -523,27 +541,27 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/previous_ib"
+                        android:id="@+id/recruit_start_previous_ib"
                         android:layout_width="20dp"
                         android:layout_height="17dp"
                         android:layout_marginEnd="31dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth()}"
+                        android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(1)}"
                         android:src="@drawable/calendar_previous_icon"
-                        app:layout_constraintEnd_toStartOf="@id/next_ib"
-                        app:layout_constraintTop_toTopOf="@id/calendar_date_ll" />
+                        app:layout_constraintEnd_toStartOf="@id/recruit_start_next_ib"
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" />
 
                     <ImageView
-                        android:id="@+id/next_ib"
+                        android:id="@+id/recruit_start_next_ib"
                         android:layout_width="20dp"
                         android:layout_height="17dp"
                         android:layout_marginEnd="16dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth()}"
+                        android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(1)}"
                         android:src="@drawable/calendar_next_icon"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/calendar_date_ll" />
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" />
 
                     <LinearLayout
-                        android:id="@+id/week_ll"
+                        android:id="@+id/recruit_start_week_ll"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -552,7 +570,7 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/calendar_date_ll">
+                        app:layout_constraintTop_toBottomOf="@id/calendar_recruit_start_date_ll">
 
                         <TextView
                             android:layout_width="0dp"
@@ -620,15 +638,314 @@
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/calendar_rv"
+                        android:id="@+id/calendar_start_recruit_rv"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@id/week_ll"
-                        app:layout_constraintStart_toStartOf="@id/week_ll"
-                        app:layout_constraintTop_toBottomOf="@id/week_ll" />
+                        app:layout_constraintEnd_toEndOf="@id/recruit_start_week_ll"
+                        app:layout_constraintStart_toStartOf="@id/recruit_start_week_ll"
+                        app:layout_constraintTop_toBottomOf="@id/recruit_start_week_ll" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/calendar_recruit_end_V"
+                    android:layout_width="0dp"
+                    android:layout_height="324dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/radius_13_solid_fff"
+                    android:visibility="@{activityRecruitViewModel.clickedRecruitComponent == 1 ? View.VISIBLE : View.INVISIBLE}"
+                    android:elevation="5dp"
+                    app:layout_constraintEnd_toEndOf="@id/recruit_end_date_ll"
+                    app:layout_constraintStart_toStartOf="@id/recruit_start_date_ll"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_end_date_ll">
+
+                    <LinearLayout
+                        android:id="@+id/calendar_recruit_end_date_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="27dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/calendar_recruit_end_date_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:text="@{activityRecruitViewModel.choiceRecruitEndDateText}"
+                            android:textColor="@color/black"
+                            android:textSize="17dp" />
+
+                        <ImageView
+                            android:layout_width="7dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:src="@drawable/calendar_next_icon" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/recruit_end_previous_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="31dp"
+                        android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(2)}"
+                        android:src="@drawable/calendar_previous_icon"
+                        app:layout_constraintEnd_toStartOf="@id/recruit_end_next_ib"
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll" />
+
+                    <ImageView
+                        android:id="@+id/recruit_end_next_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(2)}"
+                        android:src="@drawable/calendar_next_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll" />
+
+                    <LinearLayout
+                        android:id="@+id/recruit_end_week_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/calendar_recruit_end_date_ll">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SUN"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="MON"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="TUE"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="WED"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="THU"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="FRI"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SAT"
+                            android:textColor="#4D3C3C43" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/calendar_end_recruit_rv"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/recruit_end_week_ll"
+                        app:layout_constraintStart_toStartOf="@id/recruit_end_week_ll"
+                        app:layout_constraintTop_toBottomOf="@id/recruit_end_week_ll" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/calendar_activity_V"
+                    android:layout_width="0dp"
+                    android:layout_height="324dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/radius_13_solid_fff"
+                    android:elevation="5dp"
+                    android:visibility="@{activityRecruitViewModel.clickedActivityComponent == 0 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/recruit_end_date_ll"
+                    app:layout_constraintStart_toStartOf="@id/recruit_start_date_ll"
+                    app:layout_constraintTop_toBottomOf="@id/activity_start_date_ll">
+
+                    <LinearLayout
+                        android:id="@+id/calendar_activity_date_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="27dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/calendar_activity_date_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:text="@{activityRecruitViewModel.choiceActivityStartDateText}"
+                            android:textColor="@color/black"
+                            android:textSize="17dp" />
+
+                        <ImageView
+                            android:layout_width="7dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:src="@drawable/calendar_next_icon" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/activity_previous_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="31dp"
+                        android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(3)}"
+                        android:src="@drawable/calendar_previous_icon"
+                        app:layout_constraintEnd_toStartOf="@id/activity_next_ib"
+                        app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll" />
+
+                    <ImageView
+                        android:id="@+id/activity_next_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(3)}"
+                        android:src="@drawable/calendar_next_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll" />
+
+                    <LinearLayout
+                        android:id="@+id/activity_week_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/calendar_activity_date_ll">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SUN"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="MON"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="TUE"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="WED"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="THU"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="FRI"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SAT"
+                            android:textColor="#4D3C3C43" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/calendar_activity_rv"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/activity_week_ll"
+                        app:layout_constraintStart_toStartOf="@id/activity_week_ll"
+                        app:layout_constraintTop_toBottomOf="@id/activity_week_ll" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -642,7 +959,7 @@
                     android:textColor="@color/gray_scale_g900"
                     android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="@id/recruit_date_tv"
-                    app:layout_constraintTop_toBottomOf="@+id/calendar_V" />
+                    app:layout_constraintTop_toBottomOf="@+id/calendar_recruit_start_V" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -658,8 +975,9 @@
                     android:layout_width="0dp"
                     android:layout_height="42dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/custom_radius_8_stroke_p500_solid_fff"
+                    android:background="@{activityRecruitViewModel.clickedActivityComponent == 0 ? @drawable/custom_radius_8_stroke_p500_solid_fff : @drawable/custom_radius_8_stroke_g300_solid_fff}"
                     android:gravity="left|center_vertical"
+                    android:onClick="@{() -> activityRecruitViewModel.setClickedActivityComponent(0)}"
                     android:orientation="horizontal"
                     android:paddingStart="14dp"
                     app:layout_constraintEnd_toStartOf="@id/activity_end_date_ll"
@@ -689,8 +1007,9 @@
                     android:layout_height="42dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/custom_radius_8_stroke_g300_solid_fff"
+                    android:background="@{activityRecruitViewModel.clickedActivityComponent == 1 ? @drawable/custom_radius_8_stroke_p500_solid_fff : @drawable/custom_radius_8_stroke_g300_solid_fff}"
                     android:gravity="left|center_vertical"
+                    android:onClick="@{() -> activityRecruitViewModel.setClickedActivityComponent(1)}"
                     android:orientation="horizontal"
                     android:paddingStart="14dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -721,26 +1040,27 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:orientation="horizontal"
+                    android:visibility="@{activityRecruitViewModel.clickedActivityComponent == 1 ? View.VISIBLE : View.GONE}"
                     android:weightSum="3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/activity_start_date_ll">
 
                     <NumberPicker
+                        android:id="@+id/hour_picker"
                         android:layout_width="0dp"
                         android:layout_height="178dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:id="@+id/hour_picker"
                         android:theme="@style/datePickerCustomSize"
                         app:layout_constraintEnd_toEndOf="@id/activity_end_date_ll"
                         app:layout_constraintStart_toStartOf="@id/activity_start_date_ll"
                         app:layout_constraintTop_toBottomOf="@id/activity_start_date_tv" />
 
                     <NumberPicker
+                        android:id="@+id/minute_picker"
                         android:layout_width="0dp"
                         android:layout_height="178dp"
-                        android:id="@+id/minute_picker"
                         android:layout_weight="1"
                         android:background="@null"
                         android:theme="@style/datePickerCustomSize"
@@ -749,10 +1069,10 @@
                         app:layout_constraintTop_toBottomOf="@id/activity_start_date_ll" />
 
                     <NumberPicker
+                        android:id="@+id/morning_and_afternoon_picker"
                         android:layout_width="0dp"
                         android:layout_height="178dp"
                         android:layout_weight="1"
-                        android:id="@+id/morning_and_afternoon_picker"
                         android:background="@null"
                         android:theme="@style/datePickerCustomSize"
                         app:layout_constraintEnd_toEndOf="@id/activity_end_date_ll"
@@ -765,6 +1085,7 @@
                     android:layout_width="0dp"
                     android:layout_height="34dp"
                     android:background="@drawable/custom_radius8_solid_14747480"
+                    android:visibility="@{activityRecruitViewModel.clickedActivityComponent == 1 ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="@id/date_start_spinner_ll"
                     app:layout_constraintEnd_toEndOf="@id/activity_end_date_ll"
                     app:layout_constraintStart_toStartOf="@id/activity_start_date_ll"
@@ -780,7 +1101,8 @@
                     android:textColor="@color/gray_scale_g900"
                     android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="@id/project_name_tv"
-                    app:layout_constraintTop_toBottomOf="@+id/date_start_spinner_ll" />
+                    app:layout_constraintTop_toBottomOf="@+id/calendar_activity_V"
+                    app:layout_goneMarginTop="192dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -929,46 +1251,46 @@
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/other_guide_et"/>
+                    app:layout_constraintTop_toBottomOf="@id/other_guide_et" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
-        
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/save_bnt_ll"
             android:layout_width="0dp"
             android:layout_height="64dp"
-            android:id="@+id/save_bnt_ll"
-            app:layout_constraintStart_toStartOf="parent"
             android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-            
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="96dp"
-                android:layout_height="44dp"
-                android:text="임시 저장"
-                android:id="@+id/temp_save_btn"
-                android:background="@drawable/custom_radius8_solid_p500"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toStartOf="@+id/next_btn"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintTop_toTopOf="@id/next_btn"
-                android:textSize="16dp"
-                android:fontFamily="@font/pretendard_bold"/>
+            app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/temp_save_btn"
                 android:layout_width="96dp"
                 android:layout_height="44dp"
-                android:text="다음"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/custom_radius8_solid_p500"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="임시 저장"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/next_btn"
+                app:layout_constraintTop_toTopOf="@id/next_btn" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/next_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="96dp"
+                android:layout_height="44dp"
                 android:layout_marginEnd="16dp"
-                 android:background="@drawable/custom_radius_8_stroke_p500_solid_fff"
+                android:background="@drawable/custom_radius_8_stroke_p500_solid_fff"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="다음"
                 android:textColor="@color/primary_color_p500"
                 android:textSize="16dp"
-                android:fontFamily="@font/pretendard_bold"/>
-            
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

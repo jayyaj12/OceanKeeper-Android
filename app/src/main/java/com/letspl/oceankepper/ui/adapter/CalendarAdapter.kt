@@ -15,7 +15,7 @@ class CalendarAdapter(private val activityRecruitViewModel: ActivityRecruitViewM
     inner class CalendarViewHolder(private val binding: ItemCalendarCellBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(item: String) {
-            if(adapterPosition == activityRecruitViewModel.getDateClickPosition()) {
+            if(adapterPosition == activityRecruitViewModel.getRecruitStartDateClickPosition()) {
                 binding.clickDateTv.visibility = View.VISIBLE
             } else {
                 binding.clickDateTv.visibility = View.GONE
@@ -26,7 +26,7 @@ class CalendarAdapter(private val activityRecruitViewModel: ActivityRecruitViewM
 
             itemView.setOnClickListener {
                 if(binding.dateTv.text != "") {
-                    activityRecruitViewModel.setDateClickPosition(adapterPosition)
+                    activityRecruitViewModel.setRecruitStartDateClickPosition(adapterPosition)
                     notifyDataSetChanged()
                 }
             }
