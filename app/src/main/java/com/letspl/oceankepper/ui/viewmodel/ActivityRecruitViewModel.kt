@@ -103,7 +103,7 @@ class ActivityRecruitViewModel: ViewModel() {
                     ActivityRecruitModel.recruitStartNowMonth = ActivityRecruitModel.recruitStartNowMonth + 1
                 }
 
-                _choiceRecruitStartDateText.value = "${getMonthStr(1)} ${ActivityRecruitModel.recruitStartNowYear}"
+                _choiceRecruitStartDateText.value = "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
             }
             2 -> {
                 if (ActivityRecruitModel.recruitEndNowMonth + 1 == 13) {
@@ -113,7 +113,7 @@ class ActivityRecruitViewModel: ViewModel() {
                     ActivityRecruitModel.recruitEndNowMonth = ActivityRecruitModel.recruitEndNowMonth + 1
                 }
 
-                _choiceRecruitEndDateText.value = "${getMonthStr(2)} ${ActivityRecruitModel.recruitEndNowYear}"
+                _choiceRecruitEndDateText.value = "${getMonthStr(ActivityRecruitModel.recruitEndNowMonth)} ${ActivityRecruitModel.recruitEndNowYear}"
             }
             3 -> {
                 if (ActivityRecruitModel.activityStartNowMonth + 1 == 13) {
@@ -123,7 +123,7 @@ class ActivityRecruitViewModel: ViewModel() {
                     ActivityRecruitModel.activityStartNowMonth = ActivityRecruitModel.activityStartNowMonth + 1
                 }
 
-                _choiceActivityStartDateText.value = "${getMonthStr(3)} ${ActivityRecruitModel.activityStartNowYear}"
+                _choiceActivityStartDateText.value = "${getMonthStr(ActivityRecruitModel.activityStartNowMonth)} ${ActivityRecruitModel.activityStartNowYear}"
             }
         }
     }
@@ -140,7 +140,7 @@ class ActivityRecruitViewModel: ViewModel() {
                 }
 
                 _choiceRecruitStartDateText.value =
-                    "${getMonthStr(1)} ${ActivityRecruitModel.recruitStartNowYear}"
+                    "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
             }
             2 -> {
                 if (ActivityRecruitModel.recruitEndNowMonth - 1 == 0) {
@@ -152,7 +152,7 @@ class ActivityRecruitViewModel: ViewModel() {
                 }
 
                 _choiceRecruitEndDateText.value =
-                    "${getMonthStr(2)} ${ActivityRecruitModel.recruitEndNowYear}"
+                    "${getMonthStr(ActivityRecruitModel.recruitEndNowMonth)} ${ActivityRecruitModel.recruitEndNowYear}"
             }
             3 -> {
                 if (ActivityRecruitModel.activityStartNowMonth - 1 == 0) {
@@ -164,7 +164,7 @@ class ActivityRecruitViewModel: ViewModel() {
                 }
 
                 _choiceActivityStartDateText.value =
-                    "${getMonthStr(3)} ${ActivityRecruitModel.activityStartNowYear}"
+                    "${getMonthStr(ActivityRecruitModel.activityStartNowMonth)} ${ActivityRecruitModel.activityStartNowYear}"
             }
         }
     }
@@ -186,66 +186,28 @@ class ActivityRecruitViewModel: ViewModel() {
         ActivityRecruitModel.activityStartNowDate = dateStr.split("-")[2].toInt()
 
         _choiceRecruitStartDateText.value =
-            "${getMonthStr(1)} ${ActivityRecruitModel.recruitStartNowYear}"
+            "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
         _choiceRecruitEndDateText.value =
-            "${getMonthStr(1)} ${ActivityRecruitModel.recruitStartNowYear}"
+            "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
         _choiceActivityStartDateText.value =
-            "${getMonthStr(1)} ${ActivityRecruitModel.recruitStartNowYear}"
+            "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
     }
 
-    private fun getMonthStr(type: Int): String {
-        return when (type) {
-            1 -> {
-                return when (ActivityRecruitModel.recruitStartNowMonth) {
-                    1 -> "January"
-                    2 -> "February"
-                    3 -> "March"
-                    4 -> "April"
-                    5 -> "May"
-                    6 -> "June"
-                    7 -> "July"
-                    8 -> "August"
-                    9 -> "September"
-                    10 -> "October"
-                    11 -> "November"
-                    12 -> "December"
-                    else -> ""
-                }
-            }
-            2 -> {
-                return when (ActivityRecruitModel.recruitEndNowMonth) {
-                    1 -> "January"
-                    2 -> "February"
-                    3 -> "March"
-                    4 -> "April"
-                    5 -> "May"
-                    6 -> "June"
-                    7 -> "July"
-                    8 -> "August"
-                    9 -> "September"
-                    10 -> "October"
-                    11 -> "November"
-                    12 -> "December"
-                    else -> ""
-                }
-            }
-            else -> {
-                return when (ActivityRecruitModel.activityStartNowMonth) {
-                    1 -> "January"
-                    2 -> "February"
-                    3 -> "March"
-                    4 -> "April"
-                    5 -> "May"
-                    6 -> "June"
-                    7 -> "July"
-                    8 -> "August"
-                    9 -> "September"
-                    10 -> "October"
-                    11 -> "November"
-                    12 -> "December"
-                    else -> ""
-                }
-            }
+    private fun getMonthStr(month: Int): String {
+        return when (month) {
+            1 -> "January"
+            2 -> "February"
+            3 -> "March"
+            4 -> "April"
+            5 -> "May"
+            6 -> "June"
+            7 -> "July"
+            8 -> "August"
+            9 -> "September"
+            10 -> "October"
+            11 -> "November"
+            12 -> "December"
+            else -> ""
         }
     }
 
