@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.letspl.oceankepper.data.dto.LoginInfo
 import com.letspl.oceankepper.data.model.LoginModel
+import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.util.ContextUtil
@@ -69,6 +70,15 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                 LoginModel.login.provider,
                 LoginModel.login.providerId
             )
+
+            if(data.body() != null) {
+                UserModel.userInfo.token.accessToken = data.body()?.token?.accessToken.toString()
+                UserModel.userInfo.token.accessTokenExpiresIn = data.body()?.token?.accessTokenExpiresIn.toString()
+                UserModel.userInfo.token.grantType = data.body()?.token?.grantType.toString()
+                UserModel.userInfo.token.refreshToken = data.body()?.token?.refreshToken.toString()
+                UserModel.userInfo.user.id = data.body()?.user?.id.toString()
+                UserModel.userInfo.user.nickname = data.body()?.user?.nickname.toString()
+            }
 
             Timber.e("data.isSuccessful ${data.isSuccessful}")
 

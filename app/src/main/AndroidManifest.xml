@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 인터넷 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 갤러리 권한 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".di.AppApplication"
@@ -15,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OceanKepper"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         tools:replace="android:allowBackup"
         tools:targetApi="31">
         <activity

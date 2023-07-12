@@ -73,8 +73,6 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
                             // 회원가입 진행
                             signUpUser(body.url)
                         }
-                    } else {
-                        // 서버 통신 에러 띄움
                     }
                 }
             }
@@ -96,8 +94,8 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
                     if (it.isSuccessful) {
                         it.body()?.let { body ->
                             // 회원가입 진행
-                            UserModel.userId = body.id
-                            UserModel.nickname = body.nickname
+                            UserModel.userInfo.user.id = body.id
+                            UserModel.userInfo.user.nickname = body.nickname
                         }
                     } else {
                         val errorJson = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")

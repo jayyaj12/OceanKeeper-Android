@@ -4,6 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.view.ActivityRecruit2Fragment">
 
+    <data>
+        <variable
+            name="activityRecruit2Fragment"
+            type="com.letspl.oceankepper.ui.view.ActivityRecruit2Fragment" />
+        <variable
+            name="activityRecruit2ViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -12,6 +21,7 @@
             android:id="@+id/back_icon_ll"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:onClick="@{() -> activityRecruit2Fragment.onClickedBackBtn()}"
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"
             android:gravity="center"
@@ -76,6 +86,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> activityRecruit2Fragment.selectThumbnailGallery()}"
                     android:background="@drawable/custom_radius8_solid_bg100"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -91,6 +102,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/thumbnail_photo_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="37dp"
@@ -103,6 +115,18 @@
                         app:layout_constraintStart_toStartOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/thumbnail_iv"
+                    android:layout_width="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_height="192dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/thumbnail_tv"/>
 
                 <TextView
                     android:id="@+id/introduce_keeper_tv"
@@ -131,6 +155,7 @@
                     android:layout_height="192dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
+                    android:onClick="@{() -> activityRecruit2Fragment.selectKeeperIntroduceGallery()}"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/custom_radius8_solid_bg100"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -147,6 +172,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/introduce_keeper_photo_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="37dp"
@@ -160,6 +186,18 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <ImageView
+                    android:id="@+id/introduce_keeper_iv"
+                    android:layout_width="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_height="192dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/introduce_keeper_tv"/>
+
                 <EditText
                     android:id="@+id/introduce_keeper_et"
                     android:layout_width="0dp"
@@ -171,7 +209,9 @@
                     android:paddingEnd="14dp"
                     android:gravity="top|left"
                     android:paddingBottom="14dp"
+                    android:scrollbars="vertical"
                     android:textSize="16dp"
+                    android:maxLength="500"
                     android:hint="내용 입력"
                     android:textColor="@color/blue_grayscale_bg200"
                     app:layout_constraintEnd_toEndOf="@id/introduce_keeper_photo_cl"
@@ -181,7 +221,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="글자수 제한 0/500"
+                    android:text="@{`글자수 제한 ` + activityRecruit2ViewModel.keeperIntroduceLength + `/500`}"
                     android:fontFamily="@font/pretendard_medium"
                     android:layout_marginTop="8dp"
                     android:textSize="14dp"
@@ -217,6 +257,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> activityRecruit2Fragment.selectActivityStoryGallery()}"
                     android:background="@drawable/custom_radius8_solid_bg100"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -232,6 +273,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/activity_story_photo_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="37dp"
@@ -245,6 +287,18 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <ImageView
+                    android:id="@+id/activity_story_iv"
+                    android:layout_width="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_height="192dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_tv"/>
+
                 <EditText
                     android:id="@+id/activity_story_et"
                     android:layout_width="0dp"
@@ -255,9 +309,11 @@
                     android:paddingTop="10dp"
                     android:paddingEnd="14dp"
                     android:gravity="top|left"
+                    android:maxLength="500"
                     android:paddingBottom="14dp"
                     android:textSize="16dp"
                     android:hint="내용 입력"
+                    android:scrollbars="vertical"
                     android:textColor="@color/blue_grayscale_bg200"
                     app:layout_constraintEnd_toEndOf="@id/activity_story_photo_cl"
                     android:layout_marginTop="8dp"
@@ -266,7 +322,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="글자수 제한 0/500"
+                    android:text="@{`글자수 제한 ` + activityRecruit2ViewModel.activityStoryLength + `/500`}"
                     android:fontFamily="@font/pretendard_medium"
                     android:layout_marginTop="8dp"
                     android:textSize="14dp"
@@ -276,7 +332,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/activity_story_et"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -296,6 +352,7 @@
                 android:layout_height="44dp"
                 android:text="뒤로"
                 android:id="@+id/previous_btn"
+                android:onClick="@{() -> activityRecruit2Fragment.onClickedBackBtn()}"
                 android:background="@drawable/custom_radius8_solid_p500"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
@@ -323,6 +380,7 @@
                 android:text="완료"
                 android:id="@+id/complete_btn"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{() -> activityRecruit2Fragment.onClickedCompleteBtn()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="16dp"

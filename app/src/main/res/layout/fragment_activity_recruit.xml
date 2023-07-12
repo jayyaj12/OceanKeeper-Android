@@ -26,6 +26,7 @@
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"
             android:gravity="center"
+            android:onClick="@{() -> activityRecruitFragment.onClickBackBtn()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -146,6 +147,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/project_name_tv"
                     app:layout_constraintTop_toBottomOf="@id/activity_location_tv" />
+
+                <View
+                    android:id="@+id/activity_location_v"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_location_tv"/>
 
                 <TextView
                     android:id="@+id/traffic_guide_status_tv"
@@ -417,6 +428,45 @@
                     app:layout_constraintTop_toBottomOf="@id/location_1_tv" />
 
                 <TextView
+                    android:id="@+id/quota_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="모집 인원"
+                    android:layout_marginTop="24dp"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/activity_location_tv"
+                    app:layout_constraintTop_toBottomOf="@id/location_5_tv" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/quota_tv"
+                    app:layout_constraintTop_toTopOf="@id/quota_tv" />
+
+                <EditText
+                    android:id="@+id/quota_et"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/blue_grayscale_bg100"
+                    android:inputType="number"
+                    android:hint="모집 인원 입력"
+                    android:maxLength="30"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColorHint="@color/blue_grayscale_bg200"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/quota_tv"
+                    app:layout_constraintTop_toBottomOf="@id/quota_tv" />
+
+                <TextView
                     android:id="@+id/recruit_date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -426,7 +476,7 @@
                     android:textColor="@color/gray_scale_g900"
                     android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="@id/project_name_tv"
-                    app:layout_constraintTop_toBottomOf="@+id/location_5_tv" />
+                    app:layout_constraintTop_toBottomOf="@+id/quota_et" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -530,13 +580,6 @@
                             android:text="@{activityRecruitViewModel.choiceRecruitStartDateText}"
                             android:textColor="@color/black"
                             android:textSize="17dp" />
-
-                        <ImageView
-                            android:layout_width="7dp"
-                            android:layout_height="12dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:src="@drawable/calendar_next_icon" />
 
                     </LinearLayout>
 
@@ -680,13 +723,6 @@
                             android:textColor="@color/black"
                             android:textSize="17dp" />
 
-                        <ImageView
-                            android:layout_width="7dp"
-                            android:layout_height="12dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:src="@drawable/calendar_next_icon" />
-
                     </LinearLayout>
 
                     <ImageView
@@ -829,13 +865,6 @@
                             android:text="@{activityRecruitViewModel.choiceActivityStartDateText}"
                             android:textColor="@color/black"
                             android:textSize="17dp" />
-
-                        <ImageView
-                            android:layout_width="7dp"
-                            android:layout_height="12dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:src="@drawable/calendar_next_icon" />
 
                     </LinearLayout>
 
@@ -994,9 +1023,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
+                        android:textColor="@color/gray_500"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="활동 시작일"
-                        android:textColor="@color/gray_500"
                         android:textSize="16dp" />
 
                 </LinearLayout>
@@ -1182,8 +1211,9 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/reward_ll"
                     android:layout_width="0dp"
-                    android:layout_height="96dp"
+                    android:layout_height="70dp"
                     android:layout_marginTop="16dp"
+                    android:visibility="@{activityRecruitViewModel.giveReward ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="@id/reward_swtich"
                     app:layout_constraintStart_toStartOf="@id/reward_tv"
                     app:layout_constraintTop_toBottomOf="@id/reward_tv">
@@ -1270,6 +1300,7 @@
                 android:layout_height="44dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/custom_radius8_solid_p500"
+                android:onClick="@{() -> activityRecruitFragment.onClickTempSaveBtn()}"
                 android:fontFamily="@font/pretendard_bold"
                 android:text="임시 저장"
                 android:textColor="@color/white"
@@ -1287,6 +1318,7 @@
                 android:text="다음"
                 android:textColor="@color/primary_color_p500"
                 android:textSize="16dp"
+                android:onClick="@{() -> activityRecruitFragment.onClickNextBtn()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

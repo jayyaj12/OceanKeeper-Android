@@ -45,14 +45,14 @@ data class LoginUserResponseDto(
 
 @kotlinx.serialization.Serializable
 data class LoginUserResponseTokenDto(
-    val accessToken: String,
-    val accessTokenExpiresIn: String,
-    val grantType: String,
-    val refreshToken: String
+    var accessToken: String,
+    var accessTokenExpiresIn: String,
+    var grantType: String,
+    var refreshToken: String
 )
 
 @kotlinx.serialization.Serializable
 data class LoginUserResponseUserDto(
-    val id: String,
-    val nickname: String
+    var id: String,
+    var nickname: String
 )

@@ -64,7 +64,7 @@ class LoginFragment: Fragment() {
             if(isExistLoginInfo != null) {
                 if (isExistLoginInfo) {
                     // 있으면 메인 페이지로 이동
-                    activity.onReplaceFragment(ActivityRecruitFragment(), false, true)
+                    activity.onReplaceFragment(ActivityRecruitFragment(), false, false)
                 } else {
                     // 없으면 회원가입 진행
                     activity.onReplaceFragment(JoinFragment())

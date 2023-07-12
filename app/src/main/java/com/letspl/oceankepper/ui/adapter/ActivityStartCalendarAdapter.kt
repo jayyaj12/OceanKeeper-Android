@@ -8,14 +8,21 @@ import com.letspl.oceankepper.databinding.ItemCalendarCellBinding
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
 import timber.log.Timber
 
-class CalendarAdapter(private val activityRecruitViewModel: ActivityRecruitViewModel): RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
+class ActivityStartCalendarAdapter(
+    private val activityRecruitViewModel: ActivityRecruitViewModel,
+    private val onChangeDate: () -> Unit
+) : RecyclerView.Adapter<ActivityStartCalendarAdapter.CalendarViewHolder>() {
 
     private var dateArr = arrayListOf<String>()
 
-    inner class CalendarViewHolder(private val binding: ItemCalendarCellBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class CalendarViewHolder(private val binding: ItemCalendarCellBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(item: String) {
-            if(adapterPosition == activityRecruitViewModel.getRecruitStartDateClickPosition()) {
+            if (activityRecruitViewModel.getActivityStartClickedDate() == activityRecruitViewModel.getActivityStartDate()
+                    .substring(0, 7) &&
+                adapterPosition == activityRecruitViewModel.getActivityStartDateClickPosition()
+            ) {
                 binding.clickDateTv.visibility = View.VISIBLE
             } else {
                 binding.clickDateTv.visibility = View.GONE
@@ -25,9 +32,16 @@ class CalendarAdapter(private val activityRecruitViewModel: ActivityRecruitViewM
             binding.clickDateTv.text = item
 
             itemView.setOnClickListener {
-                if(binding.dateTv.text != "") {
-                    activityRecruitViewModel.setRecruitStartDateClickPosition(adapterPosition)
-                    notifyDataSetChanged()
+                if (binding.dateTv.text != "") {
+                    if (adapterPosition != -1) {
+                        activityRecruitViewModel.setActivityStartDateClickPosition(adapterPosition)
+                        activityRecruitViewModel.setActivityStartDateNowDate(dateArr[adapterPosition].toInt())
+                        activityRecruitViewModel.setActivityStartClickedDate(
+                            activityRecruitViewModel.getActivityStartDate().substring(0, 7)
+                        )
+                        onChangeDate()
+                        notifyDataSetChanged()
+                    }
                 }
             }
         }

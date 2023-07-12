@@ -1,16 +1,10 @@
 package com.letspl.oceankepper.data.network
 
 import com.letspl.oceankepper.data.dto.*
+import com.letspl.oceankepper.data.model.UserModel
 import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -23,8 +17,29 @@ interface ApiService {
     // 프로필 이미지 업로드
     @Multipart
     @POST("image/profile")
-    suspend fun uploadImageFile(
+    suspend fun uploadProfileImageFile(
         @Part profile: MultipartBody.Part
+    ): Response<UploadProfileImageDto>
+
+    //  썸네일 이미지 업로드
+    @Multipart
+    @POST("image/thumbnail")
+    suspend fun uploadThumbnailImageFile(
+        @Part profile: MultipartBody.Part?
+    ): Response<UploadProfileImageDto>
+
+    // 활동 스토리 이미지 업로드
+    @Multipart
+    @POST("image/story")
+    suspend fun uploadStoryImageFile(
+        @Part profile: MultipartBody.Part?
+    ): Response<UploadProfileImageDto>
+
+    // 키퍼 소개 이미지 업로드
+    @Multipart
+    @POST("image/keeper")
+    suspend fun uploadKeeperImageFile(
+        @Part profile: MultipartBody.Part?
     ): Response<UploadProfileImageDto>
 
     // 로그인
@@ -38,4 +53,11 @@ interface ApiService {
     suspend fun signUpUser(
        @Body signUpBody: SignUpBody
     ): Response<JoinDto>
+
+    // 활동 등록
+    @POST("activity/recruitment")
+    suspend fun activityRegister(
+        @Header("Authorization") token: String,
+        @Body activityRegisterDto: ActivityRegisterDto
+    ): Response<ActivityRegisterResultDto>
 }

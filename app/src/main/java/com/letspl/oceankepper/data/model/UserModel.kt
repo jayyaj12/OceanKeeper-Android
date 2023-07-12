@@ -1,7 +1,9 @@
 package com.letspl.oceankepper.data.model
 
-object UserModel {
-    var userId: String = ""
-    var nickname: String = ""
+import com.letspl.oceankepper.data.dto.LoginUserResponseDto
+import com.letspl.oceankepper.data.dto.LoginUserResponseTokenDto
+import com.letspl.oceankepper.data.dto.LoginUserResponseUserDto
 
+object UserModel {
+    var userInfo: LoginUserResponseDto = LoginUserResponseDto(LoginUserResponseTokenDto("", "", "", ""), LoginUserResponseUserDto("", ""))
 }

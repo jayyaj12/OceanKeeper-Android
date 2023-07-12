@@ -51,6 +51,8 @@ class SearchMapFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         // 지도 검색 결과값
         activityRecruitViewModel?.searchMap?.observe(viewLifecycleOwner) {
+            // 위경도 값 가져온 후 저장 
+            activityRecruitViewModel!!.findGeoPoint(it)
             activity.onReplaceFragment(ActivityRecruitFragment())
         }
     }

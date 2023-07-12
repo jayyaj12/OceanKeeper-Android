@@ -3,9 +3,12 @@ package com.letspl.oceankepper.di.module
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.letspl.oceankepper.BuildConfig
 import com.letspl.oceankepper.data.network.ApiService
+import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.data.repository.JoinRepositoryImpl
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.ui.view.BaseActivity
+import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
+import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
 import com.letspl.oceankepper.ui.viewmodel.JoinViewModel
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.util.loginManager.KakaoLoginManager
@@ -175,10 +178,10 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideLoginViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = LoginViewModel(LoginRepositoryImpl(apiService, oceanService))
-//
-//    @Singleton
-//    @Provides
-//    fun provideJoinViewModel(apiService: ApiService) = JoinViewModel(JoinRepositoryImpl(apiService))
+
+    @Singleton
+    @Provides
+    fun provideActivityRecruit2ViewModelViewModel(@OceanService apiService: ApiService) = ActivityRecruit2ViewModel(ActivityRecruitViewModel(), ActivityRepositoryImpl(apiService))
 
     @Singleton
     @Provides

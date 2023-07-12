@@ -35,7 +35,7 @@ class JoinRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit private va
         val imageBody = MultipartBody.Part.createFormData("profile", "profile.jpg", requestBody)
 
         return withContext(Dispatchers.IO) {
-            apiService.uploadImageFile(imageBody)
+            apiService.uploadProfileImageFile(imageBody)
         }
     }
 }
