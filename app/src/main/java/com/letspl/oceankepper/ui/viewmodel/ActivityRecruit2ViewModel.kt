@@ -231,6 +231,9 @@ class ActivityRecruit2ViewModel @Inject constructor(
 
     // 필수 정보가 모두 들어갔는지 여부 체크
     fun isExistNeedData(): Boolean {
+        Timber.e("ActivityRecruit2Model.thumbnailImgFile ${ActivityRecruit2Model.thumbnailImgFile}")
+        Timber.e("activityStoryLength.value ${activityStoryLength.value}")
+        Timber.e("keeperIntroduceLength.value ${keeperIntroduceLength.value}")
         return ActivityRecruit2Model.thumbnailImgFile != null && activityStoryLength.value != 0 && keeperIntroduceLength.value != 0
     }
 }

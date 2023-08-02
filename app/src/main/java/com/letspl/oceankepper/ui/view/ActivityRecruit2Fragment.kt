@@ -14,15 +14,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.FragmentActivityRecruit2Binding
 import com.letspl.oceankepper.ui.dialog.RecruitActivityCompleteDialog
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
+import com.letspl.oceankepper.util.ResizingImage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
@@ -32,12 +33,15 @@ class ActivityRecruit2Fragment : Fragment() {
     private var _binding: FragmentActivityRecruit2Binding? = null
     private val binding: FragmentActivityRecruit2Binding get() = _binding!!
     private val activityRecruitViewModel: ActivityRecruitViewModel by viewModels()
-    @Inject lateinit var activityRecruit2ViewModel: ActivityRecruit2ViewModel
+
+    @Inject
+    lateinit var activityRecruit2ViewModel: ActivityRecruit2ViewModel
     private val REQ_GALLERY = 1000
     private val RESULT_OK = -1
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
+    private val resizingImage = ResizingImage()
 
     // 썸네일 갤러리 선택 시 결과
     private val thumbnailImageResult = registerForActivityResult(
@@ -46,16 +50,18 @@ class ActivityRecruit2Fragment : Fragment() {
         if (result.resultCode == RESULT_OK) {
             val imageUri = result.data?.data
             imageUri?.let {
-                Timber.e("activityRecruit2ViewModel.getRealPathFromURI(it) ${activityRecruit2ViewModel.getRealPathFromURI(it)}")
-                activityRecruit2ViewModel.setThumbnailImageFile(File(activityRecruit2ViewModel.getRealPathFromURI(it)))
+                lifecycleScope.launch {
 
-                Glide.with(requireActivity())
-                    .load(imageUri)
-                    .fitCenter()
-                    .into(binding.thumbnailIv)
+                    activityRecruit2ViewModel.setThumbnailImageFile(
+                        resizingImage.convertResizeImage(requireContext(), it)
+                    )
 
-                binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
-                binding.thumbnailPhotoTv.visibility = View.GONE
+                    Glide.with(requireActivity()).load(imageUri).fitCenter()
+                        .into(binding.thumbnailIv)
+
+                    binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+                    binding.thumbnailPhotoTv.visibility = View.GONE
+                }
             }
         }
     }
@@ -67,16 +73,17 @@ class ActivityRecruit2Fragment : Fragment() {
         if (result.resultCode == RESULT_OK) {
             val imageUri = result.data?.data
             imageUri?.let {
-                Timber.e("activityRecruit2ViewModel.getRealPathFromURI(it) ${activityRecruit2ViewModel.getRealPathFromURI(it)}")
-                activityRecruit2ViewModel.setKeeperIntroduceImageFile(File(activityRecruit2ViewModel.getRealPathFromURI(it)))
+                lifecycleScope.launch {
+                    activityRecruit2ViewModel.setKeeperIntroduceImageFile(
+                        resizingImage.convertResizeImage(requireContext(), it)
+                    )
 
-                Glide.with(requireActivity())
-                    .load(imageUri)
-                    .fitCenter()
-                    .into(binding.introduceKeeperIv)
+                    Glide.with(requireActivity()).load(imageUri).fitCenter()
+                        .into(binding.introduceKeeperIv)
 
-                binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
-                binding.introduceKeeperPhotoTv.visibility = View.GONE
+                    binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+                    binding.introduceKeeperPhotoTv.visibility = View.GONE
+                }
             }
         }
     }
@@ -88,22 +95,24 @@ class ActivityRecruit2Fragment : Fragment() {
         if (result.resultCode == RESULT_OK) {
             val imageUri = result.data?.data
             imageUri?.let {
-                activityRecruit2ViewModel.setActivityStoryImageFile(File(activityRecruit2ViewModel.getRealPathFromURI(it)))
 
-                Glide.with(requireActivity())
-                    .load(imageUri)
-                    .fitCenter()
-                    .into(binding.activityStoryIv)
+                lifecycleScope.launch {
+                    activityRecruit2ViewModel.setActivityStoryImageFile(
+                        resizingImage.convertResizeImage(requireContext(), it)
+                    )
 
-                binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
-                binding.activityStoryPhotoTv.visibility = View.GONE
+                    Glide.with(requireActivity()).load(imageUri).fitCenter()
+                        .into(binding.activityStoryIv)
+
+                    binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+                    binding.activityStoryPhotoTv.visibility = View.GONE
+                }
             }
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentActivityRecruit2Binding.inflate(layoutInflater)
@@ -127,12 +136,15 @@ class ActivityRecruit2Fragment : Fragment() {
     private fun setupViewModelObserver() {
         // 활동 모집 등록 성공 여부
         activityRecruit2ViewModel.recruitActivityIsSuccess.observe(viewLifecycleOwner) {
-            if(it) {
-                val dialog = RecruitActivityCompleteDialog(requireContext(), activityRecruit2ViewModel.getRecruitCompleteText(), {
-                    // 나의 활동 확인하기
-                }, {
-                    // 확인 버튼
-                })
+            if (it) {
+                val dialog = RecruitActivityCompleteDialog(requireContext(),
+                    activityRecruit2ViewModel.getRecruitCompleteText(),
+                    {
+                        // 나의 활동 확인하기
+                    },
+                    {
+                        // 확인 버튼
+                    })
 
                 dialog.show()
             } else {
@@ -152,16 +164,22 @@ class ActivityRecruit2Fragment : Fragment() {
     }
 
     private fun checkGalleryPermission(): Boolean {
-        val writePermission = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val readPermission = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        val writePermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        val readPermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
 
         // 권한 확인
-        return if(writePermission == PackageManager.PERMISSION_DENIED ||
-            readPermission == PackageManager.PERMISSION_DENIED) {
+        return if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
             // 권한 요청
-            ActivityCompat.requestPermissions(requireActivity(),
-                arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE), REQ_GALLERY)
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                ), REQ_GALLERY
+            )
 
             false
         } else {
@@ -170,13 +188,12 @@ class ActivityRecruit2Fragment : Fragment() {
     }
 
     fun selectThumbnailGallery() {
-        if(checkGalleryPermission()) {
+        if (checkGalleryPermission()) {
             // 권한이 있는 경우 갤러리 실행
             val intent = Intent(Intent.ACTION_PICK)
             // intent와 data와 type을 동시에 설정하는 메서드
             intent.setDataAndType(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                "image/*"
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
             )
 
             thumbnailImageResult.launch(intent)
@@ -184,13 +201,12 @@ class ActivityRecruit2Fragment : Fragment() {
     }
 
     fun selectKeeperIntroduceGallery() {
-        if(checkGalleryPermission()) {
+        if (checkGalleryPermission()) {
             // 권한이 있는 경우 갤러리 실행
             val intent = Intent(Intent.ACTION_PICK)
             // intent와 data와 type을 동시에 설정하는 메서드
             intent.setDataAndType(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                "image/*"
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
             )
 
             keeperIntroduceImageResult.launch(intent)
@@ -198,13 +214,12 @@ class ActivityRecruit2Fragment : Fragment() {
     }
 
     fun selectActivityStoryGallery() {
-        if(checkGalleryPermission()) {
+        if (checkGalleryPermission()) {
             // 권한이 있는 경우 갤러리 실행
             val intent = Intent(Intent.ACTION_PICK)
             // intent와 data와 type을 동시에 설정하는 메서드
             intent.setDataAndType(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                "image/*"
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
             )
 
             activityStoryImageResult.launch(intent)
@@ -213,7 +228,7 @@ class ActivityRecruit2Fragment : Fragment() {
 
     // 완료 버튼 클릭
     fun onClickedCompleteBtn() {
-        if(activityRecruit2ViewModel.isExistNeedData()) {
+        if (activityRecruit2ViewModel.isExistNeedData()) {
             activityRecruit2ViewModel.activityRegister(
                 activityStory = binding.activityStoryEt.text.toString(),
                 etc = activityRecruitViewModel.getOtherGuide(),
