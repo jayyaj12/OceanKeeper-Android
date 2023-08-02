@@ -45,6 +45,10 @@ class ActivityRecruit2ViewModel @Inject constructor(
     private var _activityStoryLength = MutableLiveData<Int>(0)
     val activityStoryLength: LiveData<Int> get() = _activityStoryLength
 
+    // 활동 모집 등록 성공 여부
+    private var _recruitActivityIsSuccess = MutableLiveData<Boolean>()
+    val recruitActivityIsSuccess: LiveData<Boolean> get() = _recruitActivityIsSuccess
+
     fun activityRegister(
         activityStory: String,
         etc: String,
@@ -106,7 +110,13 @@ class ActivityRecruit2ViewModel @Inject constructor(
                     title,
                     transportation,
                     UserModel.userInfo.user.id
-                )
+                ).let {
+                    if (it.isSuccessful) {
+                        _recruitActivityIsSuccess.postValue(true)
+                    } else {
+                        _recruitActivityIsSuccess.postValue(false)
+                    }
+                }
             }
         }
     }
@@ -168,6 +178,15 @@ class ActivityRecruit2ViewModel @Inject constructor(
         cursor.close()
 
         return result
+    }
+
+    fun getRecruitCompleteText(): String {
+        2023-23-23
+        val text = activityRecruitViewModel.getActivityStartDate().split("T")[0]
+        val year = text.substring(2, 4)
+        val month = text.substring(5, 7)
+        val date = text.substring(8, 10)
+        return "${year}년 ${month}월 ${date}일 활동에 대한 신청 완료!\n최종 선정 여부는 쪽지로 안내됩니다."
     }
 
     // 썸네일 이미지 파일 저장

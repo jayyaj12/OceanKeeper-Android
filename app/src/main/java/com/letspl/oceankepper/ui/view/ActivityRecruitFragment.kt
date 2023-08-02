@@ -60,13 +60,13 @@ class ActivityRecruitFragment : Fragment() {
             loadTempData()
         }
     }
-    
+
     // 주소 불러오기 
     private fun loadAddress() {
         // 활동 위치
         binding.activityLocationEt.setText(activityRecruitViewModel.getLocationInfo().address)
     }
-    
+
     // 임시저장 데이터 불러오기
     private fun loadTempData() {
         // 프로젝트 명

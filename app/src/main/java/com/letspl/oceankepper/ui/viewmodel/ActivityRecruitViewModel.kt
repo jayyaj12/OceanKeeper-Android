@@ -386,7 +386,7 @@ class ActivityRecruitViewModel: ViewModel() {
             ActivityRecruitModel.activityStartTimeHour = hour + 12
         }
     }
-    
+
     // 활동 시작일 클릭된 분 저장
     fun setActivityStartTimeMinute(minute: Int) {
         ActivityRecruitModel.activityStartTimeMinute = minute
@@ -406,11 +406,11 @@ class ActivityRecruitViewModel: ViewModel() {
     fun getActivityStartDate(): String {
         return "${ActivityRecruitModel.activityStartNowYear}-${isLengthOne(ActivityRecruitModel.activityStartNowMonth)}-${isLengthOne(ActivityRecruitModel.activityStartNowDate)}T${isLengthOne(ActivityRecruitModel.activityStartTimeHour ?: 1)}:${isLengthOne(ActivityRecruitModel.activityStartTimeMinute ?: 0)}:00"
     }
-    
+
     // 한자리 수면 앞에 0 붙여줌
     private fun isLengthOne(text: Int): String {
         return if(text.toString().length == 1) {
-            "0$text" 
+            "0$text"
         } else {
             text.toString()
         }

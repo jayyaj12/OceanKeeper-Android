@@ -1,5 +1,43 @@
 package com.letspl.oceankepper.data.dto
 
+
+data class ActivityInfo(
+    val thumbnailUrl: String,
+    val nickname: String,
+    val title: String,
+    val location: String,
+    val participants: Int,
+    val quota: Int,
+    val period: String,
+    val time: String,
+)
+// 활동 조회
+data class SelectActivity(
+    val activities: List<ActivitiesInfo>,
+    val meta: MetaInfo
+)
+
+// [활동 조회] ActivitiesInfo 내부 data class
+data class ActivitiesInfo(
+    val activityId: String,
+    val activityImageUrl: String,
+    val garbageCategory: String,
+    val hostNickname: String,
+    val locationTag: String,
+    val participants: Int,
+    val quota: Int,
+    val recruitEndAt: String,
+    val recruitStartAt: String,
+    val startAt: String,
+    val title: String
+)
+
+// [활동 조회] meta 내부 data class
+data class MetaInfo(
+    val last: Boolean,
+    val size: Int
+)
+
 // 활동 등록
 @kotlinx.serialization.Serializable
 data class ActivityRegisterDto(
@@ -32,6 +70,7 @@ data class ActivityRegisterLocationDto(
     var longitude: Double = 0.0,
 )
 
+// 활동 등록 API 결과값
 @kotlinx.serialization.Serializable
 data class ActivityRegisterResultDto(
     val activityId: String

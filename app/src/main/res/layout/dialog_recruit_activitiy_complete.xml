@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:background="@drawable/custom_radius8_solid_white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="312dp"
+            android:layout_height="210dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="활동 모집 신청 완료"
+                android:textColor="@color/gray_scale_g900"
+                android:textSize="16dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/complete_tv"/>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/recruit_complete_info_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="16dp"
+                android:id="@+id/info_iv"
+                app:layout_constraintTop_toBottomOf="@+id/complete_tv"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="asdas\ndasd"
+                android:textColor="@color/blue_grayscale_bg700"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="14dp"
+                android:id="@+id/info_text_tv"
+                app:layout_constraintTop_toTopOf="@id/info_iv"
+                app:layout_constraintBottom_toBottomOf="@id/info_iv"
+                app:layout_constraintStart_toEndOf="@id/info_iv"
+                android:layout_marginStart="8dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/info_text_tv"
+                app:layout_constraintStart_toStartOf="@id/info_text_tv"
+                android:gravity="center_vertical"
+                android:id="@+id/check_my_activity_ll"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textColor="@color/accent"
+                    android:textSize="14dp"
+                    android:text="나의 활동 확인하기"/>
+                
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="11dp"
+                    android:src="@drawable/recruit_complete_next_icon"
+                    android:layout_marginStart="4dp"/>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toStartOf="@id/info_iv"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/custom_radius8_solid_000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/check_btn"
+                android:text="확인"
+                android:gravity="center"
+                android:textSize="14dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:textColor="@color/white"
+                android:layout_marginBottom="16dp"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

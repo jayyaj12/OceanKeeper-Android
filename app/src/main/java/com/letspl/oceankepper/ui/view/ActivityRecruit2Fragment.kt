@@ -19,6 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.FragmentActivityRecruit2Binding
+import com.letspl.oceankepper.ui.dialog.RecruitActivityCompleteDialog
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -116,10 +117,28 @@ class ActivityRecruit2Fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupEditTextListener()
+        setupViewModelObserver()
 
         Timber.e("1 ${activityRecruitViewModel.getRecruitStartDate()}")
         Timber.e("2 ${activityRecruitViewModel.getRecruitEndDate()}")
         Timber.e("3 ${activityRecruitViewModel.getActivityStartDate()}")
+    }
+
+    private fun setupViewModelObserver() {
+        // 활동 모집 등록 성공 여부
+        activityRecruit2ViewModel.recruitActivityIsSuccess.observe(viewLifecycleOwner) {
+            if(it) {
+                val dialog = RecruitActivityCompleteDialog(requireContext(), activityRecruit2ViewModel.getRecruitCompleteText(), {
+                    // 나의 활동 확인하기
+                }, {
+                    // 확인 버튼
+                })
+
+                dialog.show()
+            } else {
+
+            }
+        }
     }
 
     // edittext 리스트 셋업

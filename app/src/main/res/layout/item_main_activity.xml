@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/thumbnail_ll"
+        android:layout_width="164dp"
+        android:layout_height="123dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/thumbnail_cv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="8dp">
+
+            <ImageView
+                android:id="@+id/thumbnail_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/primary_color_p600" />
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="61dp"
+        android:layout_height="22dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_radius4_solid_99131313"
+        app:layout_constraintBottom_toBottomOf="@id/thumbnail_ll"
+        app:layout_constraintEnd_toEndOf="@id/thumbnail_ll">
+
+        <ImageView
+            android:id="@+id/human_icon"
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/human_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/recruitment_status_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:fontFamily="@font/pretendard_light"
+            android:text="3/10명"
+            android:textColor="@color/white"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/human_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/human_icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/nickname_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_light"
+        android:gravity="left|center"
+        android:text="디프타 제주"
+        android:textColor="@color/gray_scale_g600"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@id/thumbnail_ll"
+        app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
+        app:layout_constraintTop_toBottomOf="@id/thumbnail_ll" />
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="left|center"
+        android:text="금능해변 플로깅 플젝트\n제목은두줄"
+        android:textColor="@color/gray_scale_g900"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="@id/nickname_tv"
+        app:layout_constraintStart_toStartOf="@id/nickname_tv"
+        app:layout_constraintTop_toBottomOf="@id/nickname_tv" />
+
+    <ImageView
+        android:id="@+id/location_iv"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/location_icon"
+        app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
+        app:layout_constraintTop_toBottomOf="@id/title_tv" />
+
+    <TextView
+        android:id="@+id/location_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_light"
+        android:text="제주도 능금해변"
+        android:textColor="@color/gray_scale_g600"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/location_iv"
+        app:layout_constraintEnd_toEndOf="@id/thumbnail_ll"
+        app:layout_constraintStart_toEndOf="@id/location_iv"
+        app:layout_constraintTop_toTopOf="@id/location_iv" />
+
+    <ImageView
+        android:id="@+id/period_iv"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/calendar_icon"
+        app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
+        app:layout_constraintTop_toBottomOf="@id/location_iv" />
+
+    <TextView
+        android:id="@+id/period_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_light"
+        android:text="2023.02.25~2023.03.15"
+        android:textColor="@color/gray_scale_g600"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/period_iv"
+        app:layout_constraintEnd_toEndOf="@id/thumbnail_ll"
+        app:layout_constraintStart_toEndOf="@id/period_iv"
+        app:layout_constraintTop_toTopOf="@id/period_iv" />
+
+    <ImageView
+        android:id="@+id/time_iv"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/calendar_icon2"
+        app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
+        app:layout_constraintTop_toBottomOf="@id/period_iv" />
+
+    <TextView
+        android:id="@+id/time_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_light"
+        android:text="2023.03.20(월) 13시 시작"
+        android:textColor="@color/gray_scale_g600"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/time_iv"
+        app:layout_constraintEnd_toEndOf="@id/thumbnail_ll"
+        app:layout_constraintStart_toEndOf="@id/time_iv"
+        app:layout_constraintTop_toTopOf="@id/time_iv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
