@@ -46,7 +46,7 @@ interface ApiService {
     @POST("auth/login")
     suspend fun loginUser(
         @Body loginBody: LoginBody
-    ): Response<LoginUserResponseDto>
+    ): Response<LoginResponseDto>
 
     // 회원가입
     @POST("auth/signup")

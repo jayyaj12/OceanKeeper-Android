@@ -1,6 +1,7 @@
 package com.letspl.oceankepper.data.repository
 
 import com.letspl.oceankepper.data.dto.LoginBody
+import com.letspl.oceankepper.data.dto.LoginResponseDto
 import com.letspl.oceankepper.data.dto.LoginUserResponseDto
 import com.letspl.oceankepper.data.dto.NaverLoginDto
 import com.letspl.oceankepper.data.network.ApiService
@@ -18,7 +19,7 @@ class LoginRepositoryImpl @Inject constructor(@ApiModule.NaverRetrofit private v
         deviceToken: String,
         provider: String,
         providerId: String
-    ): Response<LoginUserResponseDto> {
+    ): Response<LoginResponseDto> {
         return oceanApiService.loginUser(LoginBody(
             deviceToken, provider, providerId
         ))

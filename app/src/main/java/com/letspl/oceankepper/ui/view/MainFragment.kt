@@ -1,5 +1,6 @@
 package com.letspl.oceankepper.ui.view
 
+import MarginItemDecoration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.letspl.oceankepper.data.dto.ActivityInfo
+import com.letspl.oceankepper.data.dto.ComingScheduleItem
 import com.letspl.oceankepper.databinding.FragmentMainBinding
 import com.letspl.oceankepper.ui.adapter.MainActivityListAdapter
+import com.letspl.oceankepper.ui.adapter.MainComingScheduleAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -39,14 +43,48 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         super.onViewCreated(view, savedInstanceState)
 
         setUpViewModelObservers()
+        setupViewPager2()
         setupRecyclerview()
     }
 
     // viewModel 옵저버 세팅
     private fun setUpViewModelObservers() {
-
     }
 
+    // 자동 슬라이드 구현(viewpager2)
+    private fun setupViewPager2() {
+        val list = arrayListOf<ComingScheduleItem>()
+        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+
+        binding.scheduleViewPager.apply {
+            clipToPadding = false
+            clipChildren = false
+            adapter = MainComingScheduleAdapter(list)
+            addItemDecoration(
+                // 슬라이드간 마진 간격
+                MarginItemDecoration(17)
+            )
+            registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                    // 몇번째께 선택됐냐에 따라 다름
+                }
+            })
+        }
+    }
+
+    private fun mainViewChangeEvent(){
+        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                content_text.text = textList[position]
+            }
+        })
+    }
 
     fun isRecyclerViewAtBottom(recyclerView: RecyclerView): Boolean {
         val layoutManager = recyclerView.layoutManager as GridLayoutManager ?: return false

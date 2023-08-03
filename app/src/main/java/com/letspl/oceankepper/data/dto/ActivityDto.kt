@@ -1,6 +1,15 @@
 package com.letspl.oceankepper.data.dto
 
 
+// 메인 페이지 자동 슬라이드 다가오는 일정 영역 아이템 dto
+data class ComingScheduleItem(
+    val date: Int,
+    val title: String,
+    val startDate: String,
+    val location: String
+)
+
+// 메인 페이지 활동 아이템 dto
 data class ActivityInfo(
     val thumbnailUrl: String,
     val nickname: String,

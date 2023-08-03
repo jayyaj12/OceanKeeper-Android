@@ -11,6 +11,7 @@
     <color name="color_03c75a">#03c75A</color>
     <color name="color_fae100">#FAE100</color>
     <color name="gray_scale_g900">#212121</color>
+    <color name="gray_scale_g800">#424242</color>
     <color name="gray_scale_g500">#9E9E9E</color>
     <color name="gray_scale_g600">#757575</color>
     <color name="gray_scale_g200">#EEEEEE</color>
@@ -27,4 +28,5 @@
     <color name="blue_grayscale_bg300">#90A4AE</color>
     <color name="blue_grayscale_bg400">#78909C</color>
     <color name="blue_grayscale_bg700">#455a64</color>
+    <color name="blue_grayscale_bg900">#263238</color>
 </resources>

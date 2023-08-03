@@ -72,12 +72,12 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
             )
 
             if(data.body() != null) {
-                UserModel.userInfo.token.accessToken = data.body()?.token?.accessToken.toString()
-                UserModel.userInfo.token.accessTokenExpiresIn = data.body()?.token?.accessTokenExpiresIn.toString()
-                UserModel.userInfo.token.grantType = data.body()?.token?.grantType.toString()
-                UserModel.userInfo.token.refreshToken = data.body()?.token?.refreshToken.toString()
-                UserModel.userInfo.user.id = data.body()?.user?.id.toString()
-                UserModel.userInfo.user.nickname = data.body()?.user?.nickname.toString()
+                UserModel.userInfo.token.accessToken = data.body()?.response?.token?.accessToken.toString()
+                UserModel.userInfo.token.accessTokenExpiresIn = data.body()?.response?.token?.accessTokenExpiresIn.toString()
+                UserModel.userInfo.token.grantType = data.body()?.response?.token?.grantType.toString()
+                UserModel.userInfo.token.refreshToken = data.body()?.response?.token?.refreshToken.toString()
+                UserModel.userInfo.user.id = data.body()?.response?.user?.id.toString()
+                UserModel.userInfo.user.nickname = data.body()?.response?.user?.nickname.toString()
             }
 
             Timber.e("data.isSuccessful ${data.isSuccessful}")

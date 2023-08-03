@@ -37,6 +37,12 @@ data class LoginBody(
     val providerId: String
 )
 
+
+@kotlinx.serialization.Serializable
+data class LoginResponseDto(
+    val response: LoginUserResponseDto
+)
+
 @kotlinx.serialization.Serializable
 data class LoginUserResponseDto(
     val token: LoginUserResponseTokenDto,

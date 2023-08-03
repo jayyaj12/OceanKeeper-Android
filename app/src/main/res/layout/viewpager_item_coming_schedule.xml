@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_radius8_solid_white_stroke_bg100">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="D-11"
+            android:fontFamily="@font/pretendard_bold"
+            android:textColor="@color/primary_color_p500"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="12dp"
+            android:id="@+id/coming_date_tv"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="asdasd\nadasd"
+            android:id="@+id/title_tv"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/blue_grayscale_bg900"
+            android:textSize="16dp"
+            android:fontFamily="@font/pretendard_bold"
+            app:layout_constraintTop_toBottomOf="@id/coming_date_tv"
+            app:layout_constraintStart_toStartOf="@id/coming_date_tv"
+            android:layout_marginTop="6dp"/>
+        
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/calendar_icon3"
+            app:layout_constraintStart_toStartOf="@id/coming_date_tv"
+            app:layout_constraintTop_toBottomOf="@id/title_tv"
+            android:layout_marginTop="6dp"
+            android:id="@+id/calendar_iv"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="03.20(월) 13시 시작"
+            android:textSize="12dp"
+            android:textColor="@color/blue_grayscale_bg200"
+            android:gravity="center"
+            android:fontFamily="@font/pretendard_light"
+            android:id="@+id/start_time_tv"
+            app:layout_constraintTop_toBottomOf="@id/title_tv"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toEndOf="@id/calendar_iv"
+            android:layout_marginStart="4dp"/>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/location_icon3"
+            app:layout_constraintStart_toStartOf="@id/coming_date_tv"
+            app:layout_constraintTop_toBottomOf="@id/calendar_iv"
+            android:layout_marginTop="7dp"
+            android:id="@+id/location_iv"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="제주도 금능해변"
+            android:textSize="12dp"
+            android:textColor="@color/blue_grayscale_bg200"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendard_light"
+            android:id="@+id/location_tv"
+            app:layout_constraintTop_toBottomOf="@id/start_time_tv"
+            android:layout_marginTop="7dp"
+            app:layout_constraintStart_toEndOf="@id/calendar_iv"
+            android:layout_marginStart="4dp"/>
+
+
+
+            
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
