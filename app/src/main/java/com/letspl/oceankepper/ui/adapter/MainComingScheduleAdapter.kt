@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.letspl.oceankepper.data.dto.ComingScheduleItem
 import com.letspl.oceankepper.databinding.ViewpagerItemComingScheduleBinding
 
-class MainComingScheduleAdapter(private val item: ArrayList<ComingScheduleItem>) :
+class MainComingScheduleAdapter(private val item: List<ComingScheduleItem>) :
     RecyclerView.Adapter<MainComingScheduleAdapter.ComingScheduleViewPagerHolder>() {
 
     class ComingScheduleViewPagerHolder(private val binding: ViewpagerItemComingScheduleBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: ComingScheduleItem) {
-            binding.comingDateTv.text = "D-${item.date}" // 다가오는 남은 Dday
+            binding.comingDateTv.text = "D-${item.dday}" // 다가오는 남은 Dday
             binding.titleTv.text = item.title // 제목
-            binding.startTimeTv.text = item.startDate // 시작 시간
+            binding.startTimeTv.text = item.startDay // 시작 시간
             binding.locationTv.text = item.location // 위치
         }
     }

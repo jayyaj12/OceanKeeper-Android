@@ -2,6 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="mainViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.MainViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -77,34 +86,43 @@
                 android:layout_width="6dp"
                 android:layout_height="6dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/gray_circle" />
+                android:src="@{mainViewModel.slidePosition == 0 ? @drawable/gray_circle : @drawable/white_circle}"
+                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 0 ? View.VISIBLE : View.GONE}" />
 
             <ImageView
                 android:id="@+id/circle_2_iv"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/white_circle" />
+                android:src="@{mainViewModel.slidePosition == 1 ? @drawable/gray_circle : @drawable/white_circle}"
+                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 1 ? View.VISIBLE : View.GONE}" />
+            />
 
             <ImageView
                 android:id="@+id/circle_3_iv"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/white_circle" />
+                android:src="@{mainViewModel.slidePosition == 2 ? @drawable/gray_circle : @drawable/white_circle}"
+                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 2 ? View.VISIBLE : View.GONE}" />
+            />
 
             <ImageView
                 android:id="@+id/circle_4_iv"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/white_circle" />
+                android:src="@{mainViewModel.slidePosition == 3 ? @drawable/gray_circle : @drawable/white_circle}"
+                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 3 ? View.VISIBLE : View.GONE}" />
+            />
 
             <ImageView
                 android:id="@+id/circle_5_iv"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
-                android:src="@drawable/white_circle" />
+                android:src="@{mainViewModel.slidePosition == 4 ? @drawable/gray_circle : @drawable/white_circle}"
+                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 4 ? View.VISIBLE : View.GONE}" />
+            />
         </LinearLayout>
 
         <ImageView
@@ -138,9 +156,9 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/notice_icon_iv">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -308,12 +326,12 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/activity_rv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/activity_rv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/kind_selector_ll"/>
+                    app:layout_constraintTop_toBottomOf="@id/kind_selector_ll" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
@@ -321,16 +339,16 @@
         <ImageView
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:background="@drawable/add_activity_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="20dp"
-            android:text="+"
-            android:gravity="top|center"
-            android:textSize="50dp"
-            android:paddingBottom="20dp"
-            android:textColor="#ffffff"
             android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/add_activity_icon"
+            android:gravity="top|center"
+            android:paddingBottom="20dp"
+            android:text="+"
+            android:textColor="#ffffff"
+            android:textSize="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

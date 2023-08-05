@@ -32,6 +32,8 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = FragmentMainBinding.inflate(layoutInflater)
+        binding.mainViewModel = mainViewModel
+        binding.lifecycleOwner = this
     }
 
     override fun onCreateView(
@@ -46,29 +48,30 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         super.onViewCreated(view, savedInstanceState)
 
         setUpViewModelObservers()
-        setupViewPager2()
         setupRecyclerview()
         loadData()
     }
 
     // viewModel 옵저버 세팅
     private fun setUpViewModelObservers() {
+        // 다가오는 일정 조회 완료되면 viewpager 자동 슬라이드 setup
+        mainViewModel.getComingScheduleResult.observe(viewLifecycleOwner) {
+            setupViewPager2(it)
+        }
     }
 
     // 데이터 불러오기
     private fun loadData() {
-        mainViewModel.selectComingSchedule()
+        mainViewModel.getComingSchedule()
+    }
+
+    // 자동슬라이드 하단 점 아이템 세팅
+    private fun setupViewPager2UnderItem(size: Int) {
+
     }
 
     // 자동 슬라이드 구현(viewpager2)
-    private fun setupViewPager2() {
-        val list = arrayListOf<ComingScheduleItem>()
-        list.add(ComingScheduleItem(20, "","금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
-        list.add(ComingScheduleItem(20, "","금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
-        list.add(ComingScheduleItem(20,"", "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
-        list.add(ComingScheduleItem(20,"", "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
-        list.add(ComingScheduleItem(20,"", "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
-
+    private fun setupViewPager2(list: List<ComingScheduleItem>) {
         binding.scheduleViewPager.apply {
             clipToPadding = false
             clipChildren = false
@@ -80,19 +83,13 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
             registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-
                     // 몇번째께 선택됐냐에 따라 다름
+                    Timber.e("position ${position}")
+                    mainViewModel.onChangeSlidePosition(position)
+
                 }
             })
         }
-    }
-
-    private fun mainViewChangeEvent(){
-//        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
-//            override fun onPageSelected(position: Int) {
-//                content_text.text = textList[position]
-//            }
-//        })
     }
 
     fun isRecyclerViewAtBottom(recyclerView: RecyclerView): Boolean {
