@@ -2,8 +2,10 @@ package com.letspl.oceankepper.data.dto
 
 
 // 메인 페이지 자동 슬라이드 다가오는 일정 영역 아이템 dto
+@kotlinx.serialization.Serializable
 data class ComingScheduleItem(
     val date: Int,
+    val id: String,
     val title: String,
     val startDate: String,
     val location: String

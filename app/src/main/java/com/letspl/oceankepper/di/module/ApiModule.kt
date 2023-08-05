@@ -6,6 +6,7 @@ import com.letspl.oceankepper.data.network.ApiService
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.data.repository.JoinRepositoryImpl
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
+import com.letspl.oceankepper.data.repository.MainRepositoryImpl
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
@@ -174,6 +175,10 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideJoinRepositoryImpl(@OceanService apiService: ApiService) = JoinRepositoryImpl(apiService)
+
+    @Singleton
+    @Provides
+    fun provideMainRepositoryImpl(@OceanService apiService: ApiService) = MainRepositoryImpl(apiService)
 
     @Singleton
     @Provides

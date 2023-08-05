@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -14,6 +15,7 @@ import com.letspl.oceankepper.data.dto.ComingScheduleItem
 import com.letspl.oceankepper.databinding.FragmentMainBinding
 import com.letspl.oceankepper.ui.adapter.MainActivityListAdapter
 import com.letspl.oceankepper.ui.adapter.MainComingScheduleAdapter
+import com.letspl.oceankepper.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -22,6 +24,7 @@ import timber.log.Timber
 class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentMainBinding? = null
     private val binding: FragmentMainBinding get() = _binding!!
+    private val mainViewModel: MainViewModel by viewModels()
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
@@ -45,20 +48,26 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         setUpViewModelObservers()
         setupViewPager2()
         setupRecyclerview()
+        loadData()
     }
 
     // viewModel 옵저버 세팅
     private fun setUpViewModelObservers() {
     }
 
+    // 데이터 불러오기
+    private fun loadData() {
+        mainViewModel.selectComingSchedule()
+    }
+
     // 자동 슬라이드 구현(viewpager2)
     private fun setupViewPager2() {
         val list = arrayListOf<ComingScheduleItem>()
-        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
-        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
-        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
-        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
-        list.add(ComingScheduleItem(20, "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+        list.add(ComingScheduleItem(20, "","금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+        list.add(ComingScheduleItem(20, "","금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+        list.add(ComingScheduleItem(20,"", "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+        list.add(ComingScheduleItem(20,"", "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
+        list.add(ComingScheduleItem(20,"", "금능해변 플로깅 프로젝트", "03.20(월) 13시 시작", "제주도 능금해변"))
 
         binding.scheduleViewPager.apply {
             clipToPadding = false
@@ -79,11 +88,11 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     private fun mainViewChangeEvent(){
-        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
-            override fun onPageSelected(position: Int) {
-                content_text.text = textList[position]
-            }
-        })
+//        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+//            override fun onPageSelected(position: Int) {
+//                content_text.text = textList[position]
+//            }
+//        })
     }
 
     fun isRecyclerViewAtBottom(recyclerView: RecyclerView): Boolean {

@@ -51,13 +51,19 @@ interface ApiService {
     // 회원가입
     @POST("auth/signup")
     suspend fun signUpUser(
-       @Body signUpBody: SignUpBody
+        @Body signUpBody: SignUpBody
     ): Response<JoinDto>
 
     // 활동 등록
     @POST("activity/recruitment")
     suspend fun activityRegister(
-        @Header("Authorization") token: String,
-        @Body activityRegisterDto: ActivityRegisterDto
+        @Header("Authorization") token: String, @Body activityRegisterDto: ActivityRegisterDto
     ): Response<ActivityRegisterResultDto>
+
+    // 다가오는 일정 조회
+    @GET("activity/schedule/user/{userId}")
+    suspend fun getComingSchedule(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String
+    ): Response<GetComingScheduleResponse>
 }
