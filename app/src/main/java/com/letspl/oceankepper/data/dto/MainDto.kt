@@ -9,3 +9,20 @@ data class GetComingScheduleResponse(
 data class GetComingScheduleItem(
     val activities: List<ComingScheduleItem>
 )
+
+@kotlinx.serialization.Serializable
+data class GetMyActivityResponse(
+    val response: GetMyActivityItem
+)
+
+@kotlinx.serialization.Serializable
+data class GetMyActivityItem(
+    val activities: List<MyActivityItem>,
+    val meta: GetMyActivityMeta
+)
+
+@kotlinx.serialization.Serializable
+data class GetMyActivityMeta(
+    val last: Boolean,
+    val size: Int
+)

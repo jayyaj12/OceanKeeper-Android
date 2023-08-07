@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.letspl.oceankepper.data.dto.ActivityInfo
+import com.letspl.oceankepper.data.dto.MyActivityItem
 import com.letspl.oceankepper.databinding.ItemMainActivityBinding
 
-class MainActivityListAdapter(private val context: Context) : ListAdapter<ActivityInfo, MainActivityListAdapter.ViewHolder>(diffUtil){
+class MainActivityListAdapter(private val context: Context) : ListAdapter<MyActivityItem, MainActivityListAdapter.ViewHolder>(diffUtil){
 
     companion object {
-        val diffUtil = object: DiffUtil.ItemCallback<ActivityInfo>() {
-            override fun areItemsTheSame(oldItem: ActivityInfo, newItem: ActivityInfo): Boolean {
-                return oldItem.thumbnailUrl == newItem.thumbnailUrl
+        val diffUtil = object: DiffUtil.ItemCallback<MyActivityItem>() {
+            override fun areItemsTheSame(oldItem: MyActivityItem, newItem: MyActivityItem): Boolean {
+                return oldItem.activityImageUrl == newItem.activityImageUrl
             }
 
-            override fun areContentsTheSame(oldItem: ActivityInfo, newItem: ActivityInfo): Boolean {
+            override fun areContentsTheSame(oldItem: MyActivityItem, newItem: MyActivityItem): Boolean {
                 return oldItem == newItem
             }
         }
@@ -26,17 +27,17 @@ class MainActivityListAdapter(private val context: Context) : ListAdapter<Activi
 
     inner class ViewHolder(val binding: ItemMainActivityBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(item: ActivityInfo) {
-//            Glide.with(context)
-//                .load(item.thumbnailUrl)
-//                .fitCenter()
-//                .into(binding.thumbnailIv)
-            binding.recruitmentStatusTv.text = "${item.participants}/${item.period}명"
-            binding.nicknameTv.text = item.nickname
+        fun onBind(item: MyActivityItem) {
+            Glide.with(context)
+                .load(item.activityImageUrl)
+                .fitCenter()
+                .into(binding.thumbnailIv)
+            binding.recruitmentStatusTv.text = "${item.participants}/${item.quota}명"
+            binding.nicknameTv.text = item.hostNickname
             binding.titleTv.text = item.title
             binding.locationTv.text = item.location
-            binding.periodTv.text = item.period
-            binding.timeTv.text = item.time
+            binding.periodTv.text = "${item.recruitStartAt}~${item.recruitEndAt}"
+            binding.timeTv.text = item.startAt
         }
 
     }

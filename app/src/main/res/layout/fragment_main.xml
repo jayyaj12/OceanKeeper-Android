@@ -180,8 +180,9 @@
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="center"
+                    android:onClick="@{() -> mainViewModel.onChangeActivityStatusPosition(0)}"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/icon_btn_v">
@@ -199,7 +200,8 @@
                         android:id="@+id/all_tab_line_v"
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
-                        android:background="@color/gray_700" />
+                        android:background="@color/gray_700"
+                        android:visibility="@{mainViewModel.activityStatusPosition == 0 ? View.VISIBLE : View.GONE}" />
 
                 </LinearLayout>
 
@@ -208,11 +210,11 @@
                     android:layout_width="90dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="18dp"
                     android:gravity="center"
+                    android:onClick="@{() -> mainViewModel.onChangeActivityStatusPosition(1)}"
                     android:orientation="vertical"
                     app:layout_constraintStart_toEndOf="@+id/all_tab_view_ll"
-                    app:layout_constraintTop_toBottomOf="@id/icon_btn_v">
+                    app:layout_constraintTop_toTopOf="@id/all_tab_view_ll">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -228,7 +230,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:background="@color/gray_700"
-                        android:visibility="gone" />
+                        android:visibility="@{mainViewModel.activityStatusPosition == 1 ? View.VISIBLE : View.GONE}" />
 
                 </LinearLayout>
 
@@ -237,11 +239,11 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="18dp"
                     android:gravity="center"
+                    android:onClick="@{() -> mainViewModel.onChangeActivityStatusPosition(2)}"
                     android:orientation="vertical"
                     app:layout_constraintStart_toEndOf="@+id/continue_tab_view_ll"
-                    app:layout_constraintTop_toBottomOf="@id/icon_btn_v">
+                    app:layout_constraintTop_toTopOf="@id/all_tab_view_ll">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -257,7 +259,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:background="@color/gray_700"
-                        android:visibility="gone" />
+                        android:visibility="@{mainViewModel.activityStatusPosition == 2 ? View.VISIBLE : View.GONE}" />
 
                 </LinearLayout>
 
@@ -265,10 +267,11 @@
                     android:id="@+id/tab_line_v"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
+                    android:layout_marginTop="50dp"
                     android:background="#E6E6E6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/all_tab_view_ll" />
+                    app:layout_constraintTop_toBottomOf="@id/icon_btn_v" />
 
                 <LinearLayout
                     android:id="@+id/area_selector_ll"
@@ -279,7 +282,7 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="@id/all_tab_view_ll"
-                    app:layout_constraintTop_toBottomOf="@id/all_tab_view_ll">
+                    app:layout_constraintTop_toBottomOf="@id/tab_line_v">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -302,12 +305,11 @@
                     android:layout_width="69dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="8dp"
                     android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toEndOf="@id/area_selector_ll"
-                    app:layout_constraintTop_toBottomOf="@id/all_tab_view_ll">
+                    app:layout_constraintTop_toTopOf="@id/area_selector_ll">
 
                     <TextView
                         android:layout_width="wrap_content"

@@ -66,4 +66,34 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("userId") userId: String
     ): Response<GetComingScheduleResponse>
+
+    // 활동 조회 첫 조회시에는 activityId 안 보냄
+    @GET("activity")
+    suspend fun getMyActivity(
+        @Header("Authorization") token: String,
+        @Query("garbage-category") garbageCategory: String,
+        @Query("location-tag") locationTag: String,
+        @Query("size") size: Int
+    ): Response<GetMyActivityResponse>
+
+    // 활동 조회
+    @GET("activity")
+    suspend fun getMyActivity(
+        @Header("Authorization") token: String,
+        @Query("activity-id") activityId: String,
+        @Query("garbage-category") garbageCategory: String,
+        @Query("location-tag") locationTag: String,
+        @Query("size") size: Int
+    ): Response<GetMyActivityResponse>
+
+    // 활동 조회 활동 상태 선택했을 경우
+    @GET("activity")
+    suspend fun getMyActivity(
+        @Header("Authorization") token: String,
+        @Query("activity-id") activityId: String,
+        @Query("garbage-category") garbageCategory: String,
+        @Query("location-tag") locationTag: String,
+        @Query("size") size: Int,
+        @Query("status") status: String,
+    ): Response<GetMyActivityResponse>
 }

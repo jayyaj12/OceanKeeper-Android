@@ -28,6 +28,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
+    private lateinit var adapter: MainActivityListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,11 +59,16 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         mainViewModel.getComingScheduleResult.observe(viewLifecycleOwner) {
             setupViewPager2(it)
         }
+
+        mainViewModel.getMyActivityResult.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 
     // 데이터 불러오기
     private fun loadData() {
-        mainViewModel.getComingSchedule()
+        mainViewModel.getComingSchedule() // 다가오는 일정 조회
+        mainViewModel.getMyActivities("FLOATING", "EAST", 1) // 내 활동 조회
     }
 
     // 자동슬라이드 하단 점 아이템 세팅
@@ -86,7 +92,6 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
                     // 몇번째께 선택됐냐에 따라 다름
                     Timber.e("position ${position}")
                     mainViewModel.onChangeSlidePosition(position)
-
                 }
             })
         }
@@ -107,17 +112,8 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         val gridLayoutManager = GridLayoutManager(requireContext(), 2)
         binding.activityRv.layoutManager = gridLayoutManager
 
-        val adapter = MainActivityListAdapter(requireContext())
+        adapter = MainActivityListAdapter(requireContext())
         binding.activityRv.adapter = adapter
-
-        val list = mutableListOf<ActivityInfo>()
-
-        list.add(ActivityInfo("1", "1", "1", "1", 1, 1, "1", "1"))
-        list.add(ActivityInfo("2", "2", "2", "2", 2, 2, "2", "2"))
-        list.add(ActivityInfo("3", "3", "3", "3", 3, 3, "3", "3"))
-        list.add(ActivityInfo("4", "4", "4", "4", 4, 4, "4", "4"))
-
-        adapter.submitList(list)
 
         binding.activityRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

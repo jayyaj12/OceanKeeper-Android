@@ -3,6 +3,23 @@ package com.letspl.oceankepper.data.dto
 import com.google.gson.annotations.SerializedName
 
 
+// 메인 페이지 하단 활동 dto
+@kotlinx.serialization.Serializable
+data class MyActivityItem(
+    val activityId: String,
+    val activityImageUrl: String? = "",
+    val garbageCategory: String,
+    val hostNickname: String,
+    val location: String,
+    val locationTag: String,
+    val participants: Int,
+    val quota: Int,
+    val recruitEndAt: String,
+    val recruitStartAt: String,
+    val startAt: String,
+    val title: String
+)
+
 // 메인 페이지 자동 슬라이드 다가오는 일정 영역 아이템 dto
 @kotlinx.serialization.Serializable
 data class ComingScheduleItem(
