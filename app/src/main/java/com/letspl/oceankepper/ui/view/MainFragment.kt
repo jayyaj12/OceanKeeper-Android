@@ -34,6 +34,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         super.onCreate(savedInstanceState)
         _binding = FragmentMainBinding.inflate(layoutInflater)
         binding.mainViewModel = mainViewModel
+        binding.mainFragment = this
         binding.lifecycleOwner = this
     }
 
@@ -95,6 +96,10 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
                 }
             })
         }
+    }
+
+    fun onMoveRecruitActivity() {
+        activity.onReplaceFragment(ActivityRecruitFragment(), true, false)
     }
 
     fun isRecyclerViewAtBottom(recyclerView: RecyclerView): Boolean {

@@ -20,7 +20,7 @@ import com.letspl.oceankepper.ui.adapter.RecruitStartCalendarAdapter
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
 import timber.log.Timber
 
-class ActivityRecruitFragment : Fragment() {
+class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentActivityRecruitBinding? = null
     private val binding: FragmentActivityRecruitBinding get() = _binding!!
     private lateinit var recruitStartCalendarAdapter: RecruitStartCalendarAdapter
@@ -29,6 +29,10 @@ class ActivityRecruitFragment : Fragment() {
     private val activityRecruitViewModel: ActivityRecruitViewModel by viewModels()
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
+    }
+
+    override fun onBackPressed() {
+        activity.onReplaceFragment(MainFragment())
     }
 
     override fun onCreateView(
@@ -281,7 +285,7 @@ class ActivityRecruitFragment : Fragment() {
     }
 
     // 이전 버튼 클릭
-    fun onClickBackBtn() {
+    fun  onClickBackBtn() {
         // 활동 모집 데이터 초기화
         activityRecruitViewModel.clearTempData()
 

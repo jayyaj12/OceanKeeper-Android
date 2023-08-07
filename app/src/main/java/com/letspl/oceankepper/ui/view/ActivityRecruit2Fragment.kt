@@ -29,7 +29,7 @@ import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ActivityRecruit2Fragment : Fragment() {
+class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentActivityRecruit2Binding? = null
     private val binding: FragmentActivityRecruit2Binding get() = _binding!!
     private val activityRecruitViewModel: ActivityRecruitViewModel by viewModels()
@@ -109,6 +109,10 @@ class ActivityRecruit2Fragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        activity.onReplaceFragment(ActivityRecruitFragment())
     }
 
     override fun onCreateView(

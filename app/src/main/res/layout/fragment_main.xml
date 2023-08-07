@@ -7,6 +7,9 @@
         <import type="android.view.View" />
 
         <variable
+            name="mainFragment"
+            type="com.letspl.oceankepper.ui.view.MainFragment" />
+        <variable
             name="mainViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.MainViewModel" />
     </data>
@@ -193,7 +196,7 @@
                         android:fontFamily="@font/pretendard_medium"
                         android:gravity="center"
                         android:text="전체"
-                        android:textColor="@color/gray_700"
+                        android:textColor="@{mainViewModel.activityStatusPosition == 0 ? @color/gray_700 : @color/gray_500}"
                         android:textSize="16dp" />
 
                     <View
@@ -222,7 +225,7 @@
                         android:fontFamily="@font/pretendard_medium"
                         android:gravity="center"
                         android:text="진행예정 활동"
-                        android:textColor="@color/gray_500"
+                        android:textColor="@{mainViewModel.activityStatusPosition == 1 ? @color/gray_700 : @color/gray_500}"
                         android:textSize="16dp" />
 
                     <View
@@ -251,7 +254,7 @@
                         android:fontFamily="@font/pretendard_medium"
                         android:gravity="center"
                         android:text="종료된 활동"
-                        android:textColor="@color/gray_500"
+                        android:textColor="@{mainViewModel.activityStatusPosition == 2 ? @color/gray_700 : @color/gray_500}"
                         android:textSize="16dp" />
 
                     <View
@@ -347,6 +350,7 @@
             android:gravity="top|center"
             android:paddingBottom="20dp"
             android:text="+"
+            android:onClick="@{() -> mainFragment.onMoveRecruitActivity()}"
             android:textColor="#ffffff"
             android:textSize="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
