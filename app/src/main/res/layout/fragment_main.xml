@@ -99,7 +99,6 @@
                 android:layout_marginEnd="8dp"
                 android:src="@{mainViewModel.slidePosition == 1 ? @drawable/gray_circle : @drawable/white_circle}"
                 android:visibility="@{mainViewModel.getComingScheduleResult.size() > 1 ? View.VISIBLE : View.GONE}" />
-            />
 
             <ImageView
                 android:id="@+id/circle_3_iv"
@@ -108,7 +107,6 @@
                 android:layout_marginEnd="8dp"
                 android:src="@{mainViewModel.slidePosition == 2 ? @drawable/gray_circle : @drawable/white_circle}"
                 android:visibility="@{mainViewModel.getComingScheduleResult.size() > 2 ? View.VISIBLE : View.GONE}" />
-            />
 
             <ImageView
                 android:id="@+id/circle_4_iv"
@@ -117,7 +115,6 @@
                 android:layout_marginEnd="8dp"
                 android:src="@{mainViewModel.slidePosition == 3 ? @drawable/gray_circle : @drawable/white_circle}"
                 android:visibility="@{mainViewModel.getComingScheduleResult.size() > 3 ? View.VISIBLE : View.GONE}" />
-            />
 
             <ImageView
                 android:id="@+id/circle_5_iv"
@@ -125,7 +122,6 @@
                 android:layout_height="6dp"
                 android:src="@{mainViewModel.slidePosition == 4 ? @drawable/gray_circle : @drawable/white_circle}"
                 android:visibility="@{mainViewModel.getComingScheduleResult.size() > 4 ? View.VISIBLE : View.GONE}" />
-            />
         </LinearLayout>
 
         <ImageView
@@ -278,21 +274,23 @@
 
                 <LinearLayout
                     android:id="@+id/area_selector_ll"
-                    android:layout_width="89dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
                     android:gravity="center"
                     android:orientation="horizontal"
+                    android:onClick="@{() -> mainFragment.onClickedAreaChoice()}"
                     app:layout_constraintStart_toStartOf="@id/all_tab_view_ll"
                     app:layout_constraintTop_toBottomOf="@id/tab_line_v">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/area_tv"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/pretendard_medium"
-                        android:text="서해번쩍"
-                        android:textColor="@color/primary_color_p600"
+                        android:textColor="@{mainViewModel.areaModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
                         android:textSize="12dp" />
 
                     <ImageView
@@ -305,8 +303,9 @@
 
                 <LinearLayout
                     android:id="@+id/kind_selector_ll"
-                    android:layout_width="69dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="32dp"
+                    android:onClick="@{() -> mainFragment.onClickedGarbageCategoryChoice()}"
                     android:layout_marginStart="10dp"
                     android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
                     android:gravity="center"
@@ -316,10 +315,11 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:id="@+id/kind_tv"
+                        android:layout_marginStart="12dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/pretendard_medium"
-                        android:text="종류"
-                        android:textColor="@color/gray_700"
+                        android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
                         android:textSize="12dp" />
 
                     <ImageView

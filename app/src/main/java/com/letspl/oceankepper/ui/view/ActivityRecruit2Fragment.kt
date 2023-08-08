@@ -111,10 +111,6 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         }
     }
 
-    override fun onBackPressed() {
-        activity.onReplaceFragment(ActivityRecruitFragment())
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -253,6 +249,10 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     // 뒤로가기 버튼 클릭
     fun onClickedBackBtn() {
+        activity.onReplaceFragment(ActivityRecruitFragment())
+    }
+
+    override fun onBackPressed() {
         activity.onReplaceFragment(ActivityRecruitFragment())
     }
 

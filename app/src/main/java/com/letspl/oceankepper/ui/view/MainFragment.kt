@@ -15,6 +15,8 @@ import com.letspl.oceankepper.data.dto.ComingScheduleItem
 import com.letspl.oceankepper.databinding.FragmentMainBinding
 import com.letspl.oceankepper.ui.adapter.MainActivityListAdapter
 import com.letspl.oceankepper.ui.adapter.MainComingScheduleAdapter
+import com.letspl.oceankepper.ui.dialog.AreaChoiceDialog
+import com.letspl.oceankepper.ui.dialog.GarbageCategoryChoiceDialog
 import com.letspl.oceankepper.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -61,8 +63,21 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
             setupViewPager2(it)
         }
 
+        // 내 활동 조회 결과 표시
         mainViewModel.getMyActivityResult.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+        }
+
+        // 지역 모달 값 변경 시 텍스트를 변경해준다.
+        mainViewModel.areaModalClickPosition.observe(viewLifecycleOwner) {
+            Timber.e("mainViewModel.getAreaModalClickWord() ${mainViewModel.getAreaModalClickWord()}")
+            binding.areaTv.text = mainViewModel.getAreaModalClickWord()
+        }
+
+        // 종류 모달 값 변경 시 텍스트를 변경해준다.
+        mainViewModel.garbageCategoryModalClickPosition.observe(viewLifecycleOwner) {
+            Timber.e("mainViewModel.getGarbageCategoryModalClickWord() ${mainViewModel.getGarbageCategoryModalClickWord()}")
+            binding.kindTv.text = mainViewModel.getGarbageCategoryModalClickWord()
         }
     }
 
@@ -72,9 +87,12 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         mainViewModel.getMyActivities("FLOATING", "EAST", 1) // 내 활동 조회
     }
 
-    // 자동슬라이드 하단 점 아이템 세팅
-    private fun setupViewPager2UnderItem(size: Int) {
+    fun onClickedAreaChoice() {
+        AreaChoiceDialog(requireContext(), mainViewModel, viewLifecycleOwner).show()
+    }
 
+    fun onClickedGarbageCategoryChoice() {
+        GarbageCategoryChoiceDialog(requireContext(), mainViewModel, viewLifecycleOwner).show()
     }
 
     // 자동 슬라이드 구현(viewpager2)

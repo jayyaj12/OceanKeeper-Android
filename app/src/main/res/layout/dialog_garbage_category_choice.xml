@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="mainViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="360dp"
+            android:layout_height="318dp"
+            android:background="@drawable/custom_top_radius12_solid_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/category_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="종류"
+                android:textColor="@color/gray_scale_g900"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/close_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/close_icon"
+                app:layout_constraintBottom_toBottomOf="@id/category_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/category_tv" />
+
+            <View
+                android:id="@+id/category_under_v"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="17dp"
+                android:background="@color/gray_scale_g300"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/category_tv" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/coastal_cl"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:onClick="@{() -> mainViewModel.onChangeGarbageCategoryModalClickPosition(0)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/category_under_v">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="연안쓰레기"
+                    android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == 0 ? @color/primary_color_p500 : @color/gray_scale_g500}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="22dp"
+                    android:src="@{mainViewModel.garbageCategoryModalClickPosition == 0 ? @drawable/modal_checked_icon : @drawable/modal_unchecked_icon}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/floating_cl"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:onClick="@{() -> mainViewModel.onChangeGarbageCategoryModalClickPosition(1)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/coastal_cl">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="동해번쩍"
+                    android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == 1 ? @color/primary_color_p500 : @color/gray_scale_g500}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="22dp"
+                    android:src="@{mainViewModel.garbageCategoryModalClickPosition == 1 ? @drawable/modal_checked_icon : @drawable/modal_unchecked_icon}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/deposited_cl"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:onClick="@{() -> mainViewModel.onChangeGarbageCategoryModalClickPosition(2)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/floating_cl">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="침적쓰레기"
+                    android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == 2 ? @color/primary_color_p500 : @color/gray_scale_g500}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="22dp"
+                    android:src="@{mainViewModel.garbageCategoryModalClickPosition == 2 ? @drawable/modal_checked_icon : @drawable/modal_unchecked_icon}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/etc_cl"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:onClick="@{() -> mainViewModel.onChangeGarbageCategoryModalClickPosition(3)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/deposited_cl">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="기타"
+                    android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == 3 ? @color/primary_color_p500 : @color/gray_scale_g500}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="22dp"
+                    android:src="@{mainViewModel.garbageCategoryModalClickPosition == 3 ? @drawable/modal_checked_icon : @drawable/modal_unchecked_icon}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/etc_under_v"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_scale_g300"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etc_cl" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/save_btn"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/custom_radius30_solid_p500"
+                android:fontFamily="@font/pretendard_extrabold"
+                android:text="저장"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etc_under_v" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
