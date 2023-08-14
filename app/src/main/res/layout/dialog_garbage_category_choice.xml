@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:text="동해번쩍"
+                    android:text="부유쓰레기"
                     android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == 1 ? @color/primary_color_p500 : @color/gray_scale_g500}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

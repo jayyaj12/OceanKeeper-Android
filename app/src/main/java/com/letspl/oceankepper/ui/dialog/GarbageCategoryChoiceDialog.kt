@@ -11,7 +11,7 @@ import com.letspl.oceankepper.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class GarbageCategoryChoiceDialog(context: Context, private val mainViewModel: MainViewModel, private val lifecycleOwner: LifecycleOwner): Dialog(context) {
+class GarbageCategoryChoiceDialog(context: Context, private val mainViewModel: MainViewModel, private val lifecycleOwner: LifecycleOwner, private val onClickedSaveBtn: () -> Unit): Dialog(context) {
     private lateinit var binding: DialogGarbageCategoryChoiceBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class GarbageCategoryChoiceDialog(context: Context, private val mainViewModel: M
         }
 
         binding.saveBtn.setOnClickListener {
-            mainViewModel.saveGarbageCategoryModalClickPosition()
+            onClickedSaveBtn()
             dismiss()
         }
     }

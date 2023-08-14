@@ -59,29 +59,45 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
         }
     }
 
-    // 활동 조회 첫 조회시에는 activityId 안 보냄
-    fun getMyActivities(garbageCategory: String, locationTag: String, size: Int) {
+    // 활동 조회 첫 조회
+    fun getMyActivities(garbageCategory: String?, locationTag: String?, size: Int, status: String?) {
         viewModelScope.launch {
-            mainRepositoryImpl.getMyActivity("Bearer ${UserModel.userInfo.token.accessToken}", garbageCategory, locationTag, size).let {
-                if(it.isSuccessful) {
-                    _getMyActivityResult.postValue(it.body()?.response?.activities)
-                } else {
+            // 활동 조회 첫 조회시에는 activityId 안 보냄
+            viewModelScope.launch {
+                // 마지막 액티비티가 아닌 경우에만 조회
+                if(!MainModel.lastActivity) {
+                    mainRepositoryImpl.getMyActivity(
+                        "Bearer ${UserModel.userInfo.token.accessToken}",
+                        MainModel.lastActivityId,
+                        garbageCategory,
+                        locationTag,
+                        size,
+                        status
+                    ).let {
+                        if (it.isSuccessful) {
+                            val activities = it.body()?.response?.activities!!
+                            _getMyActivityResult.postValue(activities)
+                            if (activities.isNotEmpty()) {
+                                MainModel.lastActivity = it.body()?.response?.meta?.last!!
+                                MainModel.lastActivityId =
+                                    activities[activities.size - 1].activityId
+                            } else {
+                                MainModel.lastActivity = false
+                                MainModel.lastActivityId = null
+                            }
+                        } else {
 
+                        }
+                    }
                 }
             }
         }
     }
-    // 활동 조회 첫 조회
-    fun getMyActivities(activityId: String, garbageCategory: String, locationTag: String, size: Int) {
-        viewModelScope.launch {
-            mainRepositoryImpl.getMyActivity("Bearer ${UserModel.userInfo.token.accessToken}", activityId, garbageCategory, locationTag, size).let {
-                if(it.isSuccessful) {
-                    _getMyActivityResult.postValue(it.body()?.response?.activities)
-                } else {
 
-                }
-            }
-        }
+    // 활동 상태를 변경 하거나, 카테고리 변경 시 마지막 활동 리스트 여부를 초기화
+    fun setLastActivity(flag: Boolean) {
+        MainModel.lastActivityId = null
+        MainModel.lastActivity = flag
     }
 
     // 자동 슬라이드 위치 변경
@@ -128,16 +144,8 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
         _areaModalClickPosition.value = MainModel.tempGarbageCategoryPosition
     }
 
-    fun getActivityStatus(): String {
-        return when (_activityStatusPosition.value) {
-            1 -> "open"
-            2 -> "closed"
-            else -> ""
-        }
-    }
-
     // 지역 모달 선택 결과값
-    fun getAreaModalClickWord(): String {
+    fun getAreaModalClickWordKor(): String {
         return when (MainModel.areaPosition) {
             -1 -> "지역"
             0 -> "서해번쩍"
@@ -149,8 +157,31 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
         }
     }
 
+    // 지역 모달 선택 결과값
+    fun getAreaModalClickWordEng(): String? {
+        return when (MainModel.areaPosition) {
+            -1 -> null
+            0 -> "WEST"
+            1 -> "EAST"
+            2 -> "SOUTH"
+            3 -> "JEJU"
+            4 -> "ETC "
+            else -> null
+        }
+    }
+
+    // 활동 상태 결과값
+    fun getActivityStatus(): String? {
+        return when (activityStatusPosition.value) {
+            0 -> null
+            1 -> "open"
+            2 -> "closed"
+            else -> null
+        }
+    }
+
     // 종류 모달 선택 결과값
-    fun getGarbageCategoryModalClickWord(): String {
+    fun getGarbageCategoryModalClickWordKor(): String {
         return when (MainModel.garbageCategoryPosition) {
             -1 -> "종류"
             0 -> "연안쓰레기"
@@ -159,5 +190,24 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
             3 -> "기타"
             else -> ""
         }
+    }
+
+    // 종류 모달 선택 결과값
+    fun getGarbageCategoryModalClickWordEng(): String? {
+        return when (MainModel.garbageCategoryPosition) {
+            -1 -> null
+            0 -> "COASTAL"
+            1 -> "FLOATING"
+            2 -> "DEPOSITED"
+            3 -> "ETC"
+            else -> ""
+        }
+    }
+
+    fun initGarbageLocationSelected() {
+        onChangeGarbageCategoryModalClickPosition(-1)
+        onChangeAreaModalClickPosition(-1)
+        saveGarbageCategoryModalClickPosition()
+        saveAreaModalClickPosition()
     }
 }

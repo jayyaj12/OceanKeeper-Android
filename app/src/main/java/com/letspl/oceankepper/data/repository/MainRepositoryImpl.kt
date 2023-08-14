@@ -6,6 +6,7 @@ import com.letspl.oceankepper.data.network.ApiService
 import com.letspl.oceankepper.di.module.ApiModule
 import retrofit2.Response
 import retrofit2.Retrofit
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(@ApiModule.OceanService private val service: ApiService): MainRepository {
@@ -15,30 +16,11 @@ class MainRepositoryImpl @Inject constructor(@ApiModule.OceanService private val
 
     override suspend fun getMyActivity(
         token: String,
-        garbageCategory: String,
-        locationTag: String,
-        size: Int
-    ): Response<GetMyActivityResponse> {
-        return service.getMyActivity(token, garbageCategory, locationTag, size)
-    }
-
-    override suspend fun getMyActivity(
-        token: String,
-        activityId: String,
-        garbageCategory: String,
-        locationTag: String,
-        size: Int
-    ): Response<GetMyActivityResponse> {
-        return service.getMyActivity(token, activityId, garbageCategory, locationTag, size)
-    }
-
-    override suspend fun getMyActivity(
-        token: String,
-        activityId: String,
-        garbageCategory: String,
-        locationTag: String,
+        activityId: String?,
+        garbageCategory: String?,
+        locationTag: String?,
         size: Int,
-        status: String
+        status: String?
     ): Response<GetMyActivityResponse> {
         return service.getMyActivity(token, activityId, garbageCategory, locationTag, size, status)
     }

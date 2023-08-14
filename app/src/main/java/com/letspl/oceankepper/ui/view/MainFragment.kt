@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.letspl.oceankepper.data.dto.ActivityInfo
@@ -19,6 +21,10 @@ import com.letspl.oceankepper.ui.dialog.AreaChoiceDialog
 import com.letspl.oceankepper.ui.dialog.GarbageCategoryChoiceDialog
 import com.letspl.oceankepper.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 
@@ -68,31 +74,57 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
             adapter.submitList(it)
         }
 
+        // 활동 진행 상태 변경 시 활동을 재조회 한다.
+        mainViewModel.activityStatusPosition.observe(viewLifecycleOwner) {
+            mainViewModel.setLastActivity(false)
+            mainViewModel.initGarbageLocationSelected()
+            mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회
+        }
+
         // 지역 모달 값 변경 시 텍스트를 변경해준다.
         mainViewModel.areaModalClickPosition.observe(viewLifecycleOwner) {
-            Timber.e("mainViewModel.getAreaModalClickWord() ${mainViewModel.getAreaModalClickWord()}")
-            binding.areaTv.text = mainViewModel.getAreaModalClickWord()
+            binding.areaTv.text = mainViewModel.getAreaModalClickWordKor()
         }
 
         // 종류 모달 값 변경 시 텍스트를 변경해준다.
         mainViewModel.garbageCategoryModalClickPosition.observe(viewLifecycleOwner) {
-            Timber.e("mainViewModel.getGarbageCategoryModalClickWord() ${mainViewModel.getGarbageCategoryModalClickWord()}")
-            binding.kindTv.text = mainViewModel.getGarbageCategoryModalClickWord()
+            binding.kindTv.text = mainViewModel.getGarbageCategoryModalClickWordKor()
         }
     }
 
     // 데이터 불러오기
     private fun loadData() {
         mainViewModel.getComingSchedule() // 다가오는 일정 조회
-        mainViewModel.getMyActivities("FLOATING", "EAST", 1) // 내 활동 조회
+        mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회
     }
 
     fun onClickedAreaChoice() {
-        AreaChoiceDialog(requireContext(), mainViewModel, viewLifecycleOwner).show()
+        AreaChoiceDialog(requireContext(), mainViewModel, viewLifecycleOwner) {
+            CoroutineScope(Dispatchers.IO).launch {
+                withContext(Dispatchers.Main) {
+                    mainViewModel.setLastActivity(false)
+                    mainViewModel.saveAreaModalClickPosition()
+                }
+                mainViewModel.getMyActivities(
+                    mainViewModel.getGarbageCategoryModalClickWordEng(),
+                    mainViewModel.getAreaModalClickWordEng(),
+                    4,
+                    mainViewModel.getActivityStatus()
+                ) // 내 활동 조회
+            }
+        }.show()
     }
 
     fun onClickedGarbageCategoryChoice() {
-        GarbageCategoryChoiceDialog(requireContext(), mainViewModel, viewLifecycleOwner).show()
+        GarbageCategoryChoiceDialog(requireContext(), mainViewModel, viewLifecycleOwner) {
+            CoroutineScope(Dispatchers.IO).launch {
+                withContext(Dispatchers.Main) {
+                    mainViewModel.setLastActivity(false)
+                    mainViewModel.saveGarbageCategoryModalClickPosition()
+                }
+                mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회
+            }
+        }.show()
     }
 
     // 자동 슬라이드 구현(viewpager2)
@@ -117,17 +149,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     fun onMoveRecruitActivity() {
-        activity.onReplaceFragment(ActivityRecruitFragment(), true, false)
-    }
-
-    fun isRecyclerViewAtBottom(recyclerView: RecyclerView): Boolean {
-        val layoutManager = recyclerView.layoutManager as GridLayoutManager ?: return false
-        val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-        val totalItemCount = layoutManager.itemCount
-
-        // 여기에서 원하는 조건을 추가하여 맨 아래로 스크롤되었는지 확인할 수 있습니다.
-        // 예를 들어, 스크롤의 맨 아래로 가려면 다음과 같은 조건을 사용할 수 있습니다.
-        return lastVisibleItemPosition == totalItemCount - 1
+        activity.onReplaceFragment(ActivityRecruitFragment(), false, false)
     }
 
     // recyclerview 세팅
@@ -138,31 +160,26 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         adapter = MainActivityListAdapter(requireContext())
         binding.activityRv.adapter = adapter
 
-        binding.activityRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                Timber.e("asdasd")
-
-                if(binding.activityRv.canScrollVertically(1)) {
-                    Timber.e("하단")
-                } else if(binding.activityRv.canScrollVertically(-1)){
-                    Timber.e("상단")
+        binding.mainScrollview.viewTreeObserver.addOnScrollChangedListener {
+            if(_binding != null) {
+                Timber.e("Scroll Y: ${binding.mainScrollview.scrollY}")
+                if(isScrollViewAtBottom(binding.mainScrollview)){
+                    mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회
                 }
             }
+        }
+    }
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
+    private fun isScrollViewAtBottom(scrollView: ScrollView): Boolean {
+        val child: View = scrollView.getChildAt(0)
+        if (child != null) {
+            val scrollViewHeight: Int = scrollView.height
+            val childHeight: Int = child.height
+            val scrollY: Int = scrollView.scrollY
 
-                Timber.e("asdasd")
-
-                if(recyclerView.canScrollVertically(1)) {
-                    Timber.e("하단")
-                } else if(recyclerView.canScrollVertically(-1)){
-                    Timber.e("상단")
-                }
-            }
-        })
+            return (scrollY + scrollViewHeight) >= childHeight
+        }
+        return false
     }
 
     override fun onDestroyView() {

@@ -153,6 +153,7 @@
             app:layout_constraintTop_toTopOf="@+id/notice_icon_iv" />
 
         <ScrollView
+            android:id="@+id/main_scrollview"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -272,8 +273,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/icon_btn_v" />
 
-                <LinearLayout
-                    android:id="@+id/area_selector_ll"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/area_selector_cl"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:layout_marginTop="8dp"
@@ -285,24 +286,33 @@
                     app:layout_constraintTop_toBottomOf="@id/tab_line_v">
 
                     <TextView
+                        android:layout_width="wrap_content"
                         android:id="@+id/area_tv"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/area_icon"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="9dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="12dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:textColor="@{mainViewModel.areaModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
                         android:textSize="12dp" />
 
                     <ImageView
+                        android:id="@+id/area_icon"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:layout_marginStart="9dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="13dp"
                         android:src="@drawable/under_arrow_icon" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:id="@+id/kind_selector_ll"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/kind_selector_cl"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:onClick="@{() -> mainFragment.onClickedGarbageCategoryChoice()}"
@@ -310,25 +320,34 @@
                     android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    app:layout_constraintStart_toEndOf="@id/area_selector_ll"
-                    app:layout_constraintTop_toTopOf="@id/area_selector_ll">
+                    app:layout_constraintStart_toEndOf="@id/area_selector_cl"
+                    app:layout_constraintTop_toTopOf="@id/area_selector_cl">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:id="@+id/kind_tv"
-                        android:layout_marginStart="12dp"
                         android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@+id/kind_icon"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="9dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="12dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
                         android:textSize="12dp" />
 
                     <ImageView
+                        android:id="@+id/kind_icon"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:layout_marginStart="9dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="13dp"
                         android:src="@drawable/under_arrow_icon" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/activity_rv"
@@ -336,7 +355,14 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/kind_selector_ll" />
+                    app:layout_constraintTop_toBottomOf="@id/kind_selector_cl" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/activity_rv"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

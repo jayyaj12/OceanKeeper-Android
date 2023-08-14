@@ -10,7 +10,7 @@ import com.letspl.oceankepper.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class AreaChoiceDialog(context: Context, private val mainViewModel: MainViewModel, private val lifecycleOwner: LifecycleOwner): Dialog(context) {
+class AreaChoiceDialog(context: Context, private val mainViewModel: MainViewModel, private val lifecycleOwner: LifecycleOwner, private val onClickedSaveBtn: () -> Unit): Dialog(context) {
     private lateinit var binding: DialogAreaChoiceBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +26,7 @@ class AreaChoiceDialog(context: Context, private val mainViewModel: MainViewMode
         }
 
         binding.saveBtn.setOnClickListener {
-            mainViewModel.saveAreaModalClickPosition()
+            onClickedSaveBtn()
             dismiss()
         }
     }
