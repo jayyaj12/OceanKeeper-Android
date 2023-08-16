@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.view.ActivityDetailFragment">
+
+    <ScrollView
+        android:id="@+id/detail_sv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/thumbnail_iv"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/garbage_category_tv"
+                android:layout_width="80dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/radius_20_solid_p50"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:text="연안쓰레기"
+                android:textColor="@color/primary_color_p700"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/thumbnail_iv" />
+
+            <TextView
+                android:id="@+id/location_category_tv"
+                android:layout_width="80dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/radius_20_solid_p50"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:text="제주번쩍"
+                android:textColor="@color/primary_color_p700"
+                android:textSize="14dp"
+                app:layout_constraintStart_toEndOf="@id/garbage_category_tv"
+                app:layout_constraintTop_toTopOf="@id/garbage_category_tv" />
+
+            <TextView
+                android:id="@+id/reward_tv"
+                android:layout_width="80dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/radius_20_solid_p50"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:text="리워드 제공"
+                android:textColor="@color/primary_color_p700"
+                android:textSize="14dp"
+                app:layout_constraintStart_toEndOf="@id/location_category_tv"
+                app:layout_constraintTop_toTopOf="@id/location_category_tv" />
+
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/pretendard_bold"
+                android:maxLines="1"
+                android:text="제주도 금능해변 플로깅 프로젝트 글자수"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/garbage_category_tv"
+                app:layout_constraintTop_toBottomOf="@id/garbage_category_tv" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile_cv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="90dp"
+                app:layout_constraintStart_toStartOf="@id/title_tv"
+                app:layout_constraintTop_toBottomOf="@id/title_tv">
+
+                <ImageView
+                    android:id="@+id/profile_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/primary_color_p600" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/nickname_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="디프다 제주"
+                android:textColor="@color/gray_scale_g500"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@id/profile_cv"
+                app:layout_constraintStart_toEndOf="@id/profile_cv"
+                app:layout_constraintTop_toTopOf="@id/profile_cv" />
+
+            <ImageView
+                android:id="@+id/human_icon_iv"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="17dp"
+                android:src="@drawable/human_icon2"
+                app:layout_constraintStart_toStartOf="@id/profile_cv"
+                app:layout_constraintTop_toBottomOf="@id/profile_cv" />
+
+            <TextView
+                android:id="@+id/apply_status_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="신청현황 | 10/20명"
+                android:textColor="@color/gray_scale_g600"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@id/human_icon_iv"
+                app:layout_constraintStart_toEndOf="@id/human_icon_iv"
+                app:layout_constraintTop_toTopOf="@id/human_icon_iv" />
+
+            <ImageView
+                android:id="@+id/location_icon_iv"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="9dp"
+                android:src="@drawable/location_icon"
+                app:layout_constraintStart_toStartOf="@id/human_icon_iv"
+                app:layout_constraintTop_toBottomOf="@id/human_icon_iv" />
+
+            <TextView
+                android:id="@+id/location_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="지역|제주도 능금해변"
+                android:textColor="@color/gray_scale_g600"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@id/location_icon_iv"
+                app:layout_constraintStart_toEndOf="@id/location_icon_iv"
+                app:layout_constraintTop_toTopOf="@id/location_icon_iv" />
+
+            <ImageView
+                android:id="@+id/period_icon_iv"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="9dp"
+                android:src="@drawable/calendar_icon4"
+                app:layout_constraintStart_toStartOf="@id/location_icon_iv"
+                app:layout_constraintTop_toBottomOf="@id/location_icon_iv" />
+
+            <TextView
+                android:id="@+id/period_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="모집기간 | 2023.02.25~2023.03.15"
+                android:textColor="@color/gray_scale_g600"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@id/period_icon_iv"
+                app:layout_constraintStart_toEndOf="@id/period_icon_iv"
+                app:layout_constraintTop_toTopOf="@id/period_icon_iv" />
+
+            <ImageView
+                android:id="@+id/dday_icon_iv"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="9dp"
+                android:src="@drawable/calendar_icon5"
+                app:layout_constraintStart_toStartOf="@id/period_icon_iv"
+                app:layout_constraintTop_toBottomOf="@id/period_icon_iv" />
+
+            <TextView
+                android:id="@+id/dday_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="활동일 | 2023.03.20(월) 13시 시작"
+                android:textColor="@color/gray_scale_g600"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@id/dday_icon_iv"
+                app:layout_constraintStart_toEndOf="@id/dday_icon_iv"
+                app:layout_constraintTop_toTopOf="@id/dday_icon_iv" />
+
+            <TextView
+                android:id="@+id/keeper_introduce_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="42dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="모집키퍼 소개"
+                android:textColor="@color/gray_scale_g900"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@id/dday_icon_iv"
+                app:layout_constraintTop_toBottomOf="@id/dday_icon_iv" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/keeper_introduce_cv"
+                android:layout_width="0dp"
+                android:layout_height="194dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
+                app:layout_constraintTop_toBottomOf="@id/keeper_introduce_title_tv">
+
+                <ImageView
+                    android:id="@+id/keeper_introduce_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/keeper_introduce_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendard_light"
+                android:text="그들의 그림자는 천고에 "
+                android:textColor="@color/gray_scale_g900"
+                app:layout_constraintEnd_toEndOf="@id/keeper_introduce_cv"
+                app:layout_constraintStart_toStartOf="@id/keeper_introduce_cv"
+                app:layout_constraintTop_toBottomOf="@id/keeper_introduce_cv" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/activity_story_cv"
+                android:layout_width="0dp"
+                android:layout_height="194dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
+                app:layout_constraintTop_toBottomOf="@id/keeper_introduce_tv">
+
+                <ImageView
+                    android:id="@+id/activity_story_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/activity_story_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendard_light"
+                android:text="그들의 그림자는 천고에 "
+                android:textColor="@color/gray_scale_g900"
+                app:layout_constraintEnd_toEndOf="@id/activity_story_cv"
+                app:layout_constraintStart_toStartOf="@id/activity_story_cv"
+                app:layout_constraintTop_toBottomOf="@id/activity_story_cv" />
+
+            <TextView
+                android:id="@+id/activity_location_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="42dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="활동 위치"
+                android:textColor="@color/gray_scale_g900"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@id/dday_icon_iv"
+                app:layout_constraintTop_toBottomOf="@id/activity_story_tv" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/location_map"
+                android:layout_width="0dp"
+                android:layout_height="246dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/custom_radius_8"
+                app:layout_constraintEnd_toEndOf="@+id/activity_story_cv"
+                app:layout_constraintStart_toStartOf="@id/activity_story_cv"
+                app:layout_constraintTop_toBottomOf="@id/activity_location_tv" />
+
+            <TextView
+                android:id="@+id/location_address_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendard_light"
+                android:text="서울특별시 강서구 "
+                android:textColor="@color/gray_scale_g900"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="@id/location_map"
+                app:layout_constraintTop_toBottomOf="@id/location_map" />
+
+            <TextView
+                android:id="@+id/traffic_guide_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="교통 안내"
+                android:textColor="@color/gray_scale_g900"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@id/location_address_tv"
+                app:layout_constraintTop_toBottomOf="@id/location_address_tv" />
+
+            <TextView
+                android:id="@+id/traffic_guide_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendard_light"
+                android:text="단체차량 대절 예정"
+                android:textColor="@color/gray_scale_g900"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="@id/traffic_guide_title_tv"
+                app:layout_constraintTop_toBottomOf="@id/traffic_guide_title_tv" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:background="#F5F5F5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/traffic_guide_tv">
+
+                <TextView
+                    android:id="@+id/activity_program_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="36dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="활동 세부 프로그램"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/activity_program_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_light"
+                    android:text="13시: 집합\n13시 10분: 안내 워크샵\n13시 20분: 플로깅 시작\n15시: 플로깅 종료\n15시 -16시: 마무리"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/activity_program_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_program_title_tv" />
+
+                <TextView
+                    android:id="@+id/material_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="활동 준비물"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="@id/activity_program_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_program_tv" />
+
+                <TextView
+                    android:id="@+id/material_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_light"
+                    android:text="단체차량 대절 예정"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/material_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/material_title_tv" />
+
+                <TextView
+                    android:id="@+id/activity_reward_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="활동 리워드"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="@id/material_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/material_tv" />
+
+                <TextView
+                    android:id="@+id/activity_reward_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_light"
+                    android:text="단체차량 대절 예정"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/activity_reward_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_reward_title_tv" />
+
+                <TextView
+                    android:id="@+id/etc_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="활동 리워드"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="@id/activity_reward_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_reward_tv" />
+
+                <TextView
+                    android:id="@+id/etc_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_light"
+                    android:text="단체차량 대절 예정"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/etc_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/etc_title_tv" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etc_tv" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

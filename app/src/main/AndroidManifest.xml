@@ -8,10 +8,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".di.AppApplication"
         android:allowBackup="false"
+        android:networkSecurityConfig="@xml/network_security_confing"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -73,7 +76,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.letspl.oceankepper.fileprovider"
@@ -83,6 +85,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="22435e09dd60b9b2d7f32c7026057bbe"/>
     </application>
 
 </manifest>
