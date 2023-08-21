@@ -157,7 +157,12 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         val gridLayoutManager = GridLayoutManager(requireContext(), 2)
         binding.activityRv.layoutManager = gridLayoutManager
 
-        adapter = MainActivityListAdapter(requireContext())
+        // 선택될 경우 activityId 값을 저장 후 상세 페이지로 이동
+        adapter = MainActivityListAdapter(requireContext()) {
+            mainViewModel.setClickedActivityId(it)
+            activity.onReplaceFragment(ActivityDetailFragment(), false, false)
+        }
+
         binding.activityRv.adapter = adapter
 
         binding.mainScrollview.viewTreeObserver.addOnScrollChangedListener {

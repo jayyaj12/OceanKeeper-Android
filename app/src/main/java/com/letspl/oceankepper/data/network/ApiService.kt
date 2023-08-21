@@ -67,7 +67,7 @@ interface ApiService {
         @Path("userId") userId: String
     ): Response<GetComingScheduleResponse>
 
-    // 활동 조회 활동 상태 선택했을 경우
+    // 활동 조회
     @GET("activity")
     suspend fun getMyActivity(
         @Header("Authorization") token: String,
@@ -77,4 +77,10 @@ interface ApiService {
         @Query("size") size: Int,
         @Query("status") status: String?,
     ): Response<GetMyActivityResponse>
+    // 특정 활동 상세 보기
+    @GET("activity/detail")
+    suspend fun getMyActivityDetail(
+        @Header("Authorization") token: String,
+        @Query("activity-id") activityId: String?,
+    ): Response<GetMyActivityDetailResponse>
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.letspl.oceankepper.data.dto.ComingScheduleItem
+import com.letspl.oceankepper.data.dto.GetMyActivityDetailResponse
 import com.letspl.oceankepper.data.dto.MyActivityItem
 import com.letspl.oceankepper.data.model.MainModel
 import com.letspl.oceankepper.data.model.UserModel
@@ -40,6 +41,10 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
     // 쓰레기 종류 팝업 선택 값
     private var _garbageCategoryModalClickPosition = MutableLiveData<Int>(-1)
     val garbageCategoryModalClickPosition: LiveData<Int> get() = _garbageCategoryModalClickPosition
+
+    // 쓰레기 종류 팝업 선택 값
+    private var _activityDetailSelectResult = MutableLiveData<GetMyActivityDetailResponse?>(null)
+    val activityDetailSelectResult: LiveData<GetMyActivityDetailResponse?> get() = _activityDetailSelectResult
 
 
     // 다가오는 일정 데이터 조회
@@ -91,6 +96,20 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                     }
                 }
             }
+        }
+    }
+
+    // 활동 조회 첫 조회
+    fun getMyActivityDetail(activityId: String) {
+        viewModelScope.launch {
+            mainRepositoryImpl.getMyActivityDetail("Bearer ${UserModel.userInfo.token.accessToken}", activityId).let {
+                if(it.isSuccessful) {
+                    _activityDetailSelectResult.postValue(it.body())
+                } else{
+                    // error
+                }
+            }
+
         }
     }
 
@@ -202,6 +221,15 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
             3 -> "ETC"
             else -> ""
         }
+    }
+
+    // activityId 값 변경
+    fun setClickedActivityId(value: String) {
+        MainModel.clickedActivityId = value
+    }
+
+    fun getClickedActivityId(): String {
+        return MainModel.clickedActivityId
     }
 
     fun initGarbageLocationSelected() {

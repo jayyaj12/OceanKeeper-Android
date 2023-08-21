@@ -11,7 +11,7 @@ import com.letspl.oceankepper.data.dto.ActivityInfo
 import com.letspl.oceankepper.data.dto.MyActivityItem
 import com.letspl.oceankepper.databinding.ItemMainActivityBinding
 
-class MainActivityListAdapter(private val context: Context) : ListAdapter<MyActivityItem, MainActivityListAdapter.ViewHolder>(diffUtil){
+class MainActivityListAdapter(private val context: Context, private val onClickedItem: (String) -> Unit) : ListAdapter<MyActivityItem, MainActivityListAdapter.ViewHolder>(diffUtil){
 
     companion object {
         val diffUtil = object: DiffUtil.ItemCallback<MyActivityItem>() {
@@ -38,6 +38,10 @@ class MainActivityListAdapter(private val context: Context) : ListAdapter<MyActi
             binding.locationTv.text = item.location
             binding.periodTv.text = "${item.recruitStartAt}~${item.recruitEndAt}"
             binding.timeTv.text = item.startAt
+
+            binding.thumbnailIv.setOnClickListener {
+                onClickedItem(item.activityId)
+            }
         }
 
     }

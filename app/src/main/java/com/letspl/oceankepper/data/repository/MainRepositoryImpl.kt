@@ -1,6 +1,7 @@
 package com.letspl.oceankepper.data.repository
 
 import com.letspl.oceankepper.data.dto.GetComingScheduleResponse
+import com.letspl.oceankepper.data.dto.GetMyActivityDetailResponse
 import com.letspl.oceankepper.data.dto.GetMyActivityResponse
 import com.letspl.oceankepper.data.network.ApiService
 import com.letspl.oceankepper.di.module.ApiModule
@@ -23,5 +24,12 @@ class MainRepositoryImpl @Inject constructor(@ApiModule.OceanService private val
         status: String?
     ): Response<GetMyActivityResponse> {
         return service.getMyActivity(token, activityId, garbageCategory, locationTag, size, status)
+    }
+
+    override suspend fun getMyActivityDetail(
+        token: String,
+        activityId: String
+    ): Response<GetMyActivityDetailResponse> {
+        return service.getMyActivityDetail(token, activityId)
     }
 }

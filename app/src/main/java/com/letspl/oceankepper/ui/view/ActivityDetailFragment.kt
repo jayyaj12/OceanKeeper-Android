@@ -20,7 +20,11 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.letspl.oceankepper.data.dto.GetMyActivityDetailLocation
 import com.letspl.oceankepper.databinding.FragmentActivityDetailBinding
+import com.letspl.oceankepper.ui.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapLayout
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -28,29 +32,55 @@ import net.daum.mf.map.api.MapView
 import timber.log.Timber
 import java.security.MessageDigest
 
+@AndroidEntryPoint
+class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
-class ActivityDetailFragment : Fragment() {
+    override fun onBackPressed() {
+        activity.onReplaceFragment(MainFragment(), false, true)
+    }
+
+    private val activity: BaseActivity by lazy {
+        requireActivity() as BaseActivity
+    }
     private var _binding: FragmentActivityDetailBinding? = null
     private val binding get() = _binding!!
+    private val mainViewModel: MainViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentActivityDetailBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = this
+        binding.mainViewModel = mainViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupKakaoMap()
+        loadData()
+        setupViewModelObserver()
     }
 
-    private fun setupKakaoMap() {
+    // 상세 표시할 활동의 정보를 불러옴
+    private fun loadData() {
+        mainViewModel.getMyActivityDetail(mainViewModel.getClickedActivityId())
+    }
+
+    private fun setupViewModelObserver() {
+        mainViewModel.activityDetailSelectResult.observe(viewLifecycleOwner) {
+            it?.let {
+                setupKakaoMap(it.response.location)
+            }
+        }
+    }
+
+
+    private fun setupKakaoMap(location: GetMyActivityDetailLocation) {
         val mapView = MapView(requireActivity())
         binding.locationMap.addView(mapView)
         //수원 화성의 위도, 경도
-        val mapPoint = MapPoint.mapPointWithGeoCoord(37.28730797086605, 127.01192716921177)
+        val mapPoint = MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude)
+//        val mapPoint = MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude)
 
         //지도의 중심점을 수원 화성으로 설정, 확대 레벨 설정 (값이 작을수록 더 확대됨)
         mapView.setMapCenterPoint(mapPoint, true)
