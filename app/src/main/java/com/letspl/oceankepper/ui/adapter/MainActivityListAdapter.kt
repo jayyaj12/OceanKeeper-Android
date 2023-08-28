@@ -10,17 +10,20 @@ import com.bumptech.glide.Glide
 import com.letspl.oceankepper.data.dto.ActivityInfo
 import com.letspl.oceankepper.data.dto.MyActivityItem
 import com.letspl.oceankepper.databinding.ItemMainActivityBinding
+import timber.log.Timber
 
 class MainActivityListAdapter(private val context: Context, private val onClickedItem: (String) -> Unit) : ListAdapter<MyActivityItem, MainActivityListAdapter.ViewHolder>(diffUtil){
 
     companion object {
         val diffUtil = object: DiffUtil.ItemCallback<MyActivityItem>() {
             override fun areItemsTheSame(oldItem: MyActivityItem, newItem: MyActivityItem): Boolean {
-                return oldItem.activityImageUrl == newItem.activityImageUrl
+                Timber.e("areItemsTheSame ${oldItem == newItem}")
+                return oldItem == newItem
             }
 
             override fun areContentsTheSame(oldItem: MyActivityItem, newItem: MyActivityItem): Boolean {
-                return oldItem == newItem
+                Timber.e("areContentsTheSame ${oldItem.activityId == newItem.activityId}")
+                return oldItem.activityId == newItem.activityId
             }
         }
     }

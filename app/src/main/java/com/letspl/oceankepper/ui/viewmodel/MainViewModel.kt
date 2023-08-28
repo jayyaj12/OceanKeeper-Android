@@ -66,6 +66,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
 
     // 활동 조회 첫 조회
     fun getMyActivities(garbageCategory: String?, locationTag: String?, size: Int, status: String?) {
+        Timber.e("getMyActivities TEST")
         viewModelScope.launch {
             // 활동 조회 첫 조회시에는 activityId 안 보냄
             viewModelScope.launch {
@@ -80,8 +81,9 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                         status
                     ).let {
                         if (it.isSuccessful) {
-                            val activities = it.body()?.response?.activities!!
-                            _getMyActivityResult.postValue(activities)
+                            val activities =it.body()?.response?.activities!!
+                            MainModel.activityList.addAll(it.body()?.response?.activities!!)
+                            _getMyActivityResult.postValue(MainModel.activityList)
                             if (activities.isNotEmpty()) {
                                 MainModel.lastActivity = it.body()?.response?.meta?.last!!
                                 MainModel.lastActivityId =
@@ -237,5 +239,9 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
         onChangeAreaModalClickPosition(-1)
         saveGarbageCategoryModalClickPosition()
         saveAreaModalClickPosition()
+    }
+
+    fun clearActivityList() {
+        MainModel.activityList.clear()
     }
 }

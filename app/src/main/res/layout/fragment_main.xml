@@ -9,161 +9,162 @@
         <variable
             name="mainFragment"
             type="com.letspl.oceankepper.ui.view.MainFragment" />
+
         <variable
             name="mainViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.MainViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.letspl.oceankepper.util.NewScrollView
+        android:id="@+id/main_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/ocean_logo_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="OceanKeeper"
-            android:textColor="#00B6C4"
-            android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="18dp"
-            android:src="@drawable/noti_icon"
-            app:layout_constraintBottom_toBottomOf="@id/setting_iv"
-            app:layout_constraintEnd_toStartOf="@+id/setting_iv"
-            app:layout_constraintTop_toTopOf="@id/setting_iv" />
-
-        <ImageView
-            android:id="@+id/setting_iv"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="18dp"
-            android:src="@drawable/setting_icon"
-            app:layout_constraintBottom_toBottomOf="@id/ocean_logo_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/ocean_logo_tv" />
-
-        <TextView
-            android:id="@+id/coming_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="33dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="다가오는 일정"
-            android:textColor="@color/gray_scale_g900"
-            android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/ocean_logo_tv"
-            app:layout_constraintTop_toBottomOf="@+id/ocean_logo_tv" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/schedule_view_pager"
-            android:layout_width="0dp"
-            android:layout_height="128dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coming_tv" />
-
-        <LinearLayout
-            android:id="@+id/view_pager_circle_ll"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/schedule_view_pager">
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/ocean_logo_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="OceanKeeper"
+                android:textColor="#00B6C4"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/circle_1_iv"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
+                android:layout_width="16dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="18dp"
+                android:src="@drawable/noti_icon"
+                app:layout_constraintBottom_toBottomOf="@id/setting_iv"
+                app:layout_constraintEnd_toStartOf="@+id/setting_iv"
+                app:layout_constraintTop_toTopOf="@id/setting_iv" />
+
+            <ImageView
+                android:id="@+id/setting_iv"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="18dp"
+                android:src="@drawable/setting_icon"
+                app:layout_constraintBottom_toBottomOf="@id/ocean_logo_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ocean_logo_tv" />
+
+            <TextView
+                android:id="@+id/coming_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="33dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="다가오는 일정"
+                android:textColor="@color/gray_scale_g900"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/ocean_logo_tv"
+                app:layout_constraintTop_toBottomOf="@+id/ocean_logo_tv" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/schedule_view_pager"
+                android:layout_width="0dp"
+                android:layout_height="128dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:src="@{mainViewModel.slidePosition == 0 ? @drawable/gray_circle : @drawable/white_circle}"
-                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 0 ? View.VISIBLE : View.GONE}" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/coming_tv" />
+
+            <LinearLayout
+                android:id="@+id/view_pager_circle_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/schedule_view_pager">
+
+                <ImageView
+                    android:id="@+id/circle_1_iv"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@{mainViewModel.slidePosition == 0 ? @drawable/gray_circle : @drawable/white_circle}"
+                    android:visibility="@{mainViewModel.getComingScheduleResult.size() > 0 ? View.VISIBLE : View.GONE}" />
+
+                <ImageView
+                    android:id="@+id/circle_2_iv"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@{mainViewModel.slidePosition == 1 ? @drawable/gray_circle : @drawable/white_circle}"
+                    android:visibility="@{mainViewModel.getComingScheduleResult.size() > 1 ? View.VISIBLE : View.GONE}" />
+
+                <ImageView
+                    android:id="@+id/circle_3_iv"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@{mainViewModel.slidePosition == 2 ? @drawable/gray_circle : @drawable/white_circle}"
+                    android:visibility="@{mainViewModel.getComingScheduleResult.size() > 2 ? View.VISIBLE : View.GONE}" />
+
+                <ImageView
+                    android:id="@+id/circle_4_iv"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@{mainViewModel.slidePosition == 3 ? @drawable/gray_circle : @drawable/white_circle}"
+                    android:visibility="@{mainViewModel.getComingScheduleResult.size() > 3 ? View.VISIBLE : View.GONE}" />
+
+                <ImageView
+                    android:id="@+id/circle_5_iv"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:src="@{mainViewModel.slidePosition == 4 ? @drawable/gray_circle : @drawable/white_circle}"
+                    android:visibility="@{mainViewModel.getComingScheduleResult.size() > 4 ? View.VISIBLE : View.GONE}" />
+            </LinearLayout>
 
             <ImageView
-                android:id="@+id/circle_2_iv"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:layout_marginEnd="8dp"
-                android:src="@{mainViewModel.slidePosition == 1 ? @drawable/gray_circle : @drawable/white_circle}"
-                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 1 ? View.VISIBLE : View.GONE}" />
+                android:id="@+id/notice_icon_iv"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/notice_icon_btn"
+                app:layout_constraintEnd_toStartOf="@+id/guide_icon_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_pager_circle_ll" />
 
             <ImageView
-                android:id="@+id/circle_3_iv"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:layout_marginEnd="8dp"
-                android:src="@{mainViewModel.slidePosition == 2 ? @drawable/gray_circle : @drawable/white_circle}"
-                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 2 ? View.VISIBLE : View.GONE}" />
+                android:id="@+id/guide_icon_iv"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/guide_icon_btn"
+                app:layout_constraintEnd_toStartOf="@+id/setting_icon_iv"
+                app:layout_constraintStart_toEndOf="@id/notice_icon_iv"
+                app:layout_constraintTop_toTopOf="@+id/notice_icon_iv" />
 
             <ImageView
-                android:id="@+id/circle_4_iv"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:layout_marginEnd="8dp"
-                android:src="@{mainViewModel.slidePosition == 3 ? @drawable/gray_circle : @drawable/white_circle}"
-                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 3 ? View.VISIBLE : View.GONE}" />
-
-            <ImageView
-                android:id="@+id/circle_5_iv"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:src="@{mainViewModel.slidePosition == 4 ? @drawable/gray_circle : @drawable/white_circle}"
-                android:visibility="@{mainViewModel.getComingScheduleResult.size() > 4 ? View.VISIBLE : View.GONE}" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/notice_icon_iv"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/notice_icon_btn"
-            app:layout_constraintEnd_toStartOf="@+id/guide_icon_iv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_pager_circle_ll" />
-
-        <ImageView
-            android:id="@+id/guide_icon_iv"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/guide_icon_btn"
-            app:layout_constraintEnd_toStartOf="@+id/setting_icon_iv"
-            app:layout_constraintStart_toEndOf="@id/notice_icon_iv"
-            app:layout_constraintTop_toTopOf="@+id/notice_icon_iv" />
-
-        <ImageView
-            android:id="@+id/setting_icon_iv"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/setting_icon_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guide_icon_iv"
-            app:layout_constraintTop_toTopOf="@+id/notice_icon_iv" />
-
-        <ScrollView
-            android:id="@+id/main_scrollview"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/notice_icon_iv">
+                android:id="@+id/setting_icon_iv"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/setting_icon_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guide_icon_iv"
+                app:layout_constraintTop_toTopOf="@+id/notice_icon_iv" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/notice_icon_iv">
 
                 <View
                     android:id="@+id/icon_btn_v"
@@ -175,139 +176,151 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/all_tab_view_ll"
-                    android:layout_width="60dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/fix_view"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:onClick="@{() -> mainViewModel.onChangeActivityStatusPosition(0)}"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/icon_btn_v">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:gravity="center"
-                        android:text="전체"
-                        android:textColor="@{mainViewModel.activityStatusPosition == 0 ? @color/gray_700 : @color/gray_500}"
-                        android:textSize="16dp" />
-
-                    <View
-                        android:id="@+id/all_tab_line_v"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/gray_700"
-                        android:visibility="@{mainViewModel.activityStatusPosition == 0 ? View.VISIBLE : View.GONE}" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/continue_tab_view_ll"
-                    android:layout_width="90dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:gravity="center"
-                    android:onClick="@{() -> mainViewModel.onChangeActivityStatusPosition(1)}"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toEndOf="@+id/all_tab_view_ll"
-                    app:layout_constraintTop_toTopOf="@id/all_tab_view_ll">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:gravity="center"
-                        android:text="진행예정 활동"
-                        android:textColor="@{mainViewModel.activityStatusPosition == 1 ? @color/gray_700 : @color/gray_500}"
-                        android:textSize="16dp" />
-
-                    <View
-                        android:id="@+id/continue_tab_line_v"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/gray_700"
-                        android:visibility="@{mainViewModel.activityStatusPosition == 1 ? View.VISIBLE : View.GONE}" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/end_tab_view_ll"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:gravity="center"
-                    android:onClick="@{() -> mainViewModel.onChangeActivityStatusPosition(2)}"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toEndOf="@+id/continue_tab_view_ll"
-                    app:layout_constraintTop_toTopOf="@id/all_tab_view_ll">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:gravity="center"
-                        android:text="종료된 활동"
-                        android:textColor="@{mainViewModel.activityStatusPosition == 2 ? @color/gray_700 : @color/gray_500}"
-                        android:textSize="16dp" />
-
-                    <View
-                        android:id="@+id/end_tab_line_v"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/gray_700"
-                        android:visibility="@{mainViewModel.activityStatusPosition == 2 ? View.VISIBLE : View.GONE}" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/tab_line_v"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="50dp"
-                    android:background="#E6E6E6"
+                    android:background="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/icon_btn_v" />
+                    app:layout_constraintTop_toBottomOf="@+id/icon_btn_v">
+
+                    <LinearLayout
+                        android:id="@+id/all_tab_view_ll"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:onClick="@{() -> mainViewModel.onChangeActivityStatusPosition(0)}"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:gravity="center"
+                            android:text="전체"
+                            android:textColor="@{mainViewModel.activityStatusPosition == 0 ? @color/gray_700 : @color/gray_500}"
+                            android:textSize="16dp" />
+
+                        <View
+                            android:id="@+id/all_tab_line_v"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/gray_700"
+                            android:visibility="@{mainViewModel.activityStatusPosition == 0 ? View.VISIBLE : View.GONE}" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/continue_tab_view_ll"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:gravity="center"
+                        android:onClick="@{() -> mainViewModel.onChangeActivityStatusPosition(1)}"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@+id/all_tab_view_ll"
+                        app:layout_constraintTop_toTopOf="@id/all_tab_view_ll">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:gravity="center"
+                            android:text="진행예정 활동"
+                            android:textColor="@{mainViewModel.activityStatusPosition == 1 ? @color/gray_700 : @color/gray_500}"
+                            android:textSize="16dp" />
+
+                        <View
+                            android:id="@+id/continue_tab_line_v"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/gray_700"
+                            android:visibility="@{mainViewModel.activityStatusPosition == 1 ? View.VISIBLE : View.GONE}" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/end_tab_view_ll"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:gravity="center"
+                        android:onClick="@{() -> mainViewModel.onChangeActivityStatusPosition(2)}"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@+id/continue_tab_view_ll"
+                        app:layout_constraintTop_toTopOf="@id/all_tab_view_ll">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:gravity="center"
+                            android:text="종료된 활동"
+                            android:textColor="@{mainViewModel.activityStatusPosition == 2 ? @color/gray_700 : @color/gray_500}"
+                            android:textSize="16dp" />
+
+                        <View
+                            android:id="@+id/end_tab_line_v"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/gray_700"
+                            android:visibility="@{mainViewModel.activityStatusPosition == 2 ? View.VISIBLE : View.GONE}" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/tab_line_v"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="50dp"
+                        android:background="#E6E6E6"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/area_selector_cl"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
                     android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
                     android:gravity="center"
-                    android:orientation="horizontal"
                     android:onClick="@{() -> mainFragment.onClickedAreaChoice()}"
-                    app:layout_constraintStart_toStartOf="@id/all_tab_view_ll"
-                    app:layout_constraintTop_toBottomOf="@id/tab_line_v">
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="@id/fix_view"
+                    app:layout_constraintTop_toBottomOf="@id/fix_view">
 
                     <TextView
-                        android:layout_width="wrap_content"
                         android:id="@+id/area_tv"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toStartOf="@+id/area_icon"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginEnd="9dp"
-                        app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="12dp"
+                        android:layout_marginEnd="9dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:textColor="@{mainViewModel.areaModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/area_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/area_icon"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginEnd="13dp"
-                        android:src="@drawable/under_arrow_icon" />
+                        android:src="@drawable/under_arrow_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -315,37 +328,37 @@
                     android:id="@+id/kind_selector_cl"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    android:onClick="@{() -> mainFragment.onClickedGarbageCategoryChoice()}"
                     android:layout_marginStart="10dp"
                     android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
                     android:gravity="center"
+                    android:onClick="@{() -> mainFragment.onClickedGarbageCategoryChoice()}"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toEndOf="@id/area_selector_cl"
                     app:layout_constraintTop_toTopOf="@id/area_selector_cl">
 
                     <TextView
-                        android:layout_width="wrap_content"
                         android:id="@+id/kind_tv"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toStartOf="@+id/kind_icon"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginEnd="9dp"
-                        app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="12dp"
+                        android:layout_marginEnd="9dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/kind_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/kind_icon"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginEnd="13dp"
-                        android:src="@drawable/under_arrow_icon" />
+                        android:src="@drawable/under_arrow_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -362,25 +375,25 @@
                     android:layout_height="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/activity_rv"/>
+                    app:layout_constraintTop_toBottomOf="@id/activity_rv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
 
-        <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/add_activity_icon"
-            android:gravity="top|center"
-            android:paddingBottom="20dp"
-            android:text="+"
-            android:onClick="@{() -> mainFragment.onMoveRecruitActivity()}"
-            android:textColor="#ffffff"
-            android:textSize="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/add_activity_icon"
+                android:gravity="top|center"
+                android:onClick="@{() -> mainFragment.onMoveRecruitActivity()}"
+                android:paddingBottom="20dp"
+                android:text="+"
+                android:textColor="#ffffff"
+                android:textSize="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.letspl.oceankepper.util.NewScrollView>
 </layout>
