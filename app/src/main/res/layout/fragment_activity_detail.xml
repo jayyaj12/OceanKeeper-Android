@@ -9,473 +9,523 @@
         <import type="android.view.View" />
 
         <variable
+            name="activityDetailFragment"
+            type="com.letspl.oceankepper.ui.view.ActivityDetailFragment" />
+        <variable
             name="mainViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.MainViewModel" />
     </data>
 
-    <ScrollView
-        android:id="@+id/detail_sv"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
+            android:id="@+id/detail_sv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/thumbnail_iv"
-                android:layout_width="match_parent"
-                android:layout_height="270dp"
-                app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.thumbnailUrl}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/garbage_category_tv"
-                android:layout_width="80dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/radius_20_solid_p50"
-                android:fontFamily="@font/pretendard_medium"
-                android:gravity="center"
-                android:text="@{mainViewModel.activityDetailSelectResult.response.garbageCategory}"
-                android:textColor="@color/primary_color_p700"
-                android:textSize="14dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/thumbnail_iv" />
-
-            <TextView
-                android:id="@+id/location_category_tv"
-                android:layout_width="80dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/radius_20_solid_p50"
-                android:fontFamily="@font/pretendard_medium"
-                android:gravity="center"
-                android:text="@{mainViewModel.activityDetailSelectResult.response.locationTag}"
-                android:textColor="@color/primary_color_p700"
-                android:textSize="14dp"
-                app:layout_constraintStart_toEndOf="@id/garbage_category_tv"
-                app:layout_constraintTop_toTopOf="@id/garbage_category_tv" />
-
-            <TextView
-                android:id="@+id/reward_tv"
-                android:layout_width="80dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/radius_20_solid_p50"
-                android:fontFamily="@font/pretendard_medium"
-                android:gravity="center"
-                android:text="@{mainViewModel.activityDetailSelectResult.response.rewards}"
-                android:textColor="@color/primary_color_p700"
-                android:textSize="14dp"
-                app:layout_constraintStart_toEndOf="@id/location_category_tv"
-                app:layout_constraintTop_toTopOf="@id/location_category_tv" />
-
-            <TextView
-                android:id="@+id/title_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/pretendard_bold"
-                android:maxLines="1"
-                android:text="@{mainViewModel.activityDetailSelectResult.response.title}"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/garbage_category_tv"
-                app:layout_constraintTop_toBottomOf="@id/garbage_category_tv" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/profile_cv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="90dp"
-                app:cardElevation="0dp"
-                app:cardUseCompatPadding="false"
-                app:layout_constraintStart_toStartOf="@id/title_tv"
-                app:layout_constraintTop_toBottomOf="@id/title_tv">
-
-                <ImageView
-                    android:id="@+id/profile_iv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.hostImageUrl}" />
-
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/nickname_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@{mainViewModel.activityDetailSelectResult.response.hostNickName}"
-                android:textColor="@color/gray_scale_g500"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="@id/profile_cv"
-                app:layout_constraintStart_toEndOf="@id/profile_cv"
-                app:layout_constraintTop_toTopOf="@id/profile_cv" />
-
-            <ImageView
-                android:id="@+id/human_icon_iv"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="17dp"
-                android:src="@drawable/human_icon2"
-                app:layout_constraintStart_toStartOf="@id/profile_cv"
-                app:layout_constraintTop_toBottomOf="@id/profile_cv" />
-
-            <TextView
-                android:id="@+id/apply_status_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@{`신청현황 | ` + mainViewModel.activityDetailSelectResult.response.participants + `/` + mainViewModel.activityDetailSelectResult.response.quota}"
-                android:textColor="@color/gray_scale_g600"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="@id/human_icon_iv"
-                app:layout_constraintStart_toEndOf="@id/human_icon_iv"
-                app:layout_constraintTop_toTopOf="@id/human_icon_iv" />
-
-            <ImageView
-                android:id="@+id/location_icon_iv"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="9dp"
-                android:src="@drawable/location_icon"
-                app:layout_constraintStart_toStartOf="@id/human_icon_iv"
-                app:layout_constraintTop_toBottomOf="@id/human_icon_iv" />
-
-            <TextView
-                android:id="@+id/location_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@{`지역 | ` + mainViewModel.activityDetailSelectResult.response.location.address}"
-                android:textColor="@color/gray_scale_g600"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="@id/location_icon_iv"
-                app:layout_constraintStart_toEndOf="@id/location_icon_iv"
-                app:layout_constraintTop_toTopOf="@id/location_icon_iv" />
-
-            <ImageView
-                android:id="@+id/period_icon_iv"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="9dp"
-                android:src="@drawable/calendar_icon4"
-                app:layout_constraintStart_toStartOf="@id/location_icon_iv"
-                app:layout_constraintTop_toBottomOf="@id/location_icon_iv" />
-
-            <TextView
-                android:id="@+id/period_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@{`모집기간 | ` + mainViewModel.activityDetailSelectResult.response.recruitStartAt + `~` + mainViewModel.activityDetailSelectResult.response.recruitEndAt}"
-                android:textColor="@color/gray_scale_g600"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="@id/period_icon_iv"
-                app:layout_constraintStart_toEndOf="@id/period_icon_iv"
-                app:layout_constraintTop_toTopOf="@id/period_icon_iv" />
-
-            <ImageView
-                android:id="@+id/dday_icon_iv"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="9dp"
-                android:src="@drawable/calendar_icon5"
-                app:layout_constraintStart_toStartOf="@id/period_icon_iv"
-                app:layout_constraintTop_toBottomOf="@id/period_icon_iv" />
-
-            <TextView
-                android:id="@+id/dday_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@{`활동일 | ` + mainViewModel.activityDetailSelectResult.response.startAt}"
-                android:textColor="@color/gray_scale_g600"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="@id/dday_icon_iv"
-                app:layout_constraintStart_toEndOf="@id/dday_icon_iv"
-                app:layout_constraintTop_toTopOf="@id/dday_icon_iv" />
-
-            <TextView
-                android:id="@+id/keeper_introduce_title_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="42dp"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="모집키퍼 소개"
-                android:textColor="@color/gray_scale_g900"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="@id/dday_icon_iv"
-                app:layout_constraintTop_toBottomOf="@id/dday_icon_iv" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/keeper_introduce_cv"
-                android:layout_width="0dp"
-                android:layout_height="194dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="0dp"
-                app:cardUseCompatPadding="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:isBackgroundGone="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}"
-                app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
-                app:layout_constraintTop_toBottomOf="@id/keeper_introduce_title_tv">
-
-                <ImageView
-                    android:id="@+id/keeper_introduce_iv"
-                    android:layout_width="match_parent"
-                    app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}"
-                    android:layout_height="match_parent"/>
-
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/keeper_introduce_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/pretendard_light"
-                android:text="@{mainViewModel.activityDetailSelectResult.response.keeperIntroduction}"
-                android:textColor="@color/gray_scale_g900"
-                app:layout_constraintEnd_toEndOf="@id/keeper_introduce_cv"
-                app:layout_constraintStart_toStartOf="@id/keeper_introduce_cv"
-                app:layout_constraintTop_toBottomOf="@id/keeper_introduce_cv" />
-
-            <TextView
-                android:id="@+id/activity_story_title_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="42dp"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="활동 STORY"
-                android:textColor="@color/gray_scale_g900"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="@id/dday_icon_iv"
-                app:layout_constraintTop_toBottomOf="@id/keeper_introduce_tv" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/activity_story_cv"
-                android:layout_width="0dp"
-                android:layout_height="194dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="0dp"
-                app:cardUseCompatPadding="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
-                app:isBackgroundGone="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl}"
-                app:layout_constraintTop_toBottomOf="@id/activity_story_title_tv">
-
-                <ImageView
-                    android:id="@+id/activity_story_iv"
-                    app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl}"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/activity_story_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/pretendard_light"
-                android:text="@{mainViewModel.activityDetailSelectResult.response.activityStory}"
-                android:textColor="@color/gray_scale_g900"
-                app:layout_constraintEnd_toEndOf="@id/activity_story_cv"
-                app:layout_constraintStart_toStartOf="@id/activity_story_cv"
-                app:layout_constraintTop_toBottomOf="@id/activity_story_cv" />
-
-            <TextView
-                android:id="@+id/activity_location_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="42dp"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="활동 위치"
-                android:textColor="@color/gray_scale_g900"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="@id/dday_icon_iv"
-                app:layout_constraintTop_toBottomOf="@id/activity_story_tv" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/location_map"
-                android:layout_width="0dp"
-                android:layout_height="246dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/custom_radius_8"
-                app:layout_constraintEnd_toEndOf="@+id/title_tv"
-                app:layout_constraintStart_toStartOf="@id/title_tv"
-                app:layout_constraintTop_toBottomOf="@id/activity_location_tv" />
-
-            <TextView
-                android:id="@+id/location_address_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/pretendard_light"
-                android:text="@{mainViewModel.activityDetailSelectResult.response.location.address}"
-                android:textColor="@color/gray_scale_g900"
-                android:textSize="14dp"
-                app:layout_constraintStart_toStartOf="@id/location_map"
-                app:layout_constraintTop_toBottomOf="@id/location_map" />
-
-            <TextView
-                android:id="@+id/traffic_guide_title_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="교통 안내"
-                android:textColor="@color/gray_scale_g900"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="@id/location_address_tv"
-                app:layout_constraintTop_toBottomOf="@id/location_address_tv" />
-
-            <TextView
-                android:id="@+id/traffic_guide_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/pretendard_light"
-                android:text="@{mainViewModel.activityDetailSelectResult.response.transportation}"
-                android:textColor="@color/gray_scale_g900"
-                android:textSize="14dp"
-                app:layout_constraintStart_toStartOf="@id/traffic_guide_title_tv"
-                app:layout_constraintTop_toBottomOf="@id/traffic_guide_title_tv" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="62dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="56dp"
-                android:background="#F5F5F5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/traffic_guide_tv">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/activity_program_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="36dp"
-                    android:fontFamily="@font/pretendard_bold"
-                    android:text="활동 세부 프로그램"
-                    android:textColor="@color/gray_scale_g900"
-                    android:textSize="20dp"
+                <ImageView
+                    android:id="@+id/thumbnail_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="270dp"
+                    app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.thumbnailUrl}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/previous_white_icon"
+                    android:layout_marginTop="12dp"
+                    android:id="@+id/previous_btn"
+                    android:layout_marginStart="12dp"
+                    android:onClick="@{() -> activityDetailFragment.onClickedPreviousBtn()}"
+                    app:layout_constraintStart_toStartOf="@id/thumbnail_iv"
+                    app:layout_constraintTop_toTopOf="@id/thumbnail_iv"/>
 
                 <TextView
-                    android:id="@+id/activity_program_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/pretendard_light"
-                    android:text="@{mainViewModel.activityDetailSelectResult.response.programDetails}"
-                    android:textColor="@color/gray_scale_g900"
-                    android:textSize="14dp"
-                    app:layout_constraintStart_toStartOf="@id/activity_program_title_tv"
-                    app:layout_constraintTop_toBottomOf="@id/activity_program_title_tv" />
-
-                <TextView
-                    android:id="@+id/material_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/garbage_category_tv"
+                    android:layout_width="80dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
-                    android:fontFamily="@font/pretendard_bold"
-                    android:text="활동 준비물"
-                    android:textColor="@color/gray_scale_g900"
-                    android:textSize="20dp"
-                    app:layout_constraintStart_toStartOf="@id/activity_program_title_tv"
-                    app:layout_constraintTop_toBottomOf="@id/activity_program_tv" />
-
-                <TextView
-                    android:id="@+id/material_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/pretendard_light"
-                    android:text="@{mainViewModel.activityDetailSelectResult.response.preparation}"
-                    android:textColor="@color/gray_scale_g900"
+                    android:background="@drawable/radius_20_solid_p50"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.garbageCategory}"
+                    android:textColor="@color/primary_color_p700"
                     android:textSize="14dp"
-                    app:layout_constraintStart_toStartOf="@id/material_title_tv"
-                    app:layout_constraintTop_toBottomOf="@id/material_title_tv" />
-
-                <TextView
-                    android:id="@+id/activity_reward_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="@font/pretendard_bold"
-                    android:text="활동 리워드"
-                    android:textColor="@color/gray_scale_g900"
-                    android:textSize="20dp"
-                    app:layout_constraintStart_toStartOf="@id/material_title_tv"
-                    app:layout_constraintTop_toBottomOf="@id/material_tv" />
-
-                <TextView
-                    android:id="@+id/activity_reward_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/pretendard_light"
-                    android:text="@{mainViewModel.activityDetailSelectResult.response.rewards}"
-                    android:textColor="@color/gray_scale_g900"
-                    android:textSize="14dp"
-                    app:layout_constraintStart_toStartOf="@id/activity_reward_title_tv"
-                    app:layout_constraintTop_toBottomOf="@id/activity_reward_title_tv" />
-
-                <TextView
-                    android:id="@+id/etc_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="@font/pretendard_bold"
-                    android:text="기타 활동 안내 사항"
-                    android:textColor="@color/gray_scale_g900"
-                    android:textSize="20dp"
-                    app:layout_constraintStart_toStartOf="@id/activity_reward_title_tv"
-                    app:layout_constraintTop_toBottomOf="@id/activity_reward_tv" />
-
-                <TextView
-                    android:id="@+id/etc_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/pretendard_light"
-                    android:text="@{mainViewModel.activityDetailSelectResult.response.etc}"
-                    android:textColor="@color/gray_scale_g900"
-                    android:textSize="14dp"
-                    app:layout_constraintStart_toStartOf="@id/etc_title_tv"
-                    app:layout_constraintTop_toBottomOf="@id/etc_title_tv" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/etc_tv" />
+                    app:layout_constraintTop_toBottomOf="@id/thumbnail_iv" />
 
+                <TextView
+                    android:id="@+id/location_category_tv"
+                    android:layout_width="80dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/radius_20_solid_p50"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.locationTag}"
+                    android:textColor="@color/primary_color_p700"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toEndOf="@id/garbage_category_tv"
+                    app:layout_constraintTop_toTopOf="@id/garbage_category_tv" />
+
+                <TextView
+                    android:id="@+id/reward_tv"
+                    android:layout_width="80dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/radius_20_solid_p50"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.rewards}"
+                    android:textColor="@color/primary_color_p700"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toEndOf="@id/location_category_tv"
+                    app:layout_constraintTop_toTopOf="@id/location_category_tv" />
+
+                <TextView
+                    android:id="@+id/title_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:maxLines="1"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.title}"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/garbage_category_tv"
+                    app:layout_constraintTop_toBottomOf="@id/garbage_category_tv" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/profile_cv"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="90dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="false"
+                    app:layout_constraintStart_toStartOf="@id/title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/title_tv">
+
+                    <ImageView
+                        android:id="@+id/profile_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.hostImageUrl}" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/nickname_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.hostNickName}"
+                    android:textColor="@color/gray_scale_g500"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_cv"
+                    app:layout_constraintStart_toEndOf="@id/profile_cv"
+                    app:layout_constraintTop_toTopOf="@id/profile_cv" />
+
+                <ImageView
+                    android:id="@+id/human_icon_iv"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="17dp"
+                    android:src="@drawable/human_icon2"
+                    app:layout_constraintStart_toStartOf="@id/profile_cv"
+                    app:layout_constraintTop_toBottomOf="@id/profile_cv" />
+
+                <TextView
+                    android:id="@+id/apply_status_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{`신청현황 | ` + mainViewModel.activityDetailSelectResult.response.participants + `/` + mainViewModel.activityDetailSelectResult.response.quota}"
+                    android:textColor="@color/gray_scale_g600"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/human_icon_iv"
+                    app:layout_constraintStart_toEndOf="@id/human_icon_iv"
+                    app:layout_constraintTop_toTopOf="@id/human_icon_iv" />
+
+                <ImageView
+                    android:id="@+id/location_icon_iv"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="9dp"
+                    android:src="@drawable/location_icon"
+                    app:layout_constraintStart_toStartOf="@id/human_icon_iv"
+                    app:layout_constraintTop_toBottomOf="@id/human_icon_iv" />
+
+                <TextView
+                    android:id="@+id/location_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{`지역 | ` + mainViewModel.activityDetailSelectResult.response.location.address}"
+                    android:textColor="@color/gray_scale_g600"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/location_icon_iv"
+                    app:layout_constraintStart_toEndOf="@id/location_icon_iv"
+                    app:layout_constraintTop_toTopOf="@id/location_icon_iv" />
+
+                <ImageView
+                    android:id="@+id/period_icon_iv"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="9dp"
+                    android:src="@drawable/calendar_icon4"
+                    app:layout_constraintStart_toStartOf="@id/location_icon_iv"
+                    app:layout_constraintTop_toBottomOf="@id/location_icon_iv" />
+
+                <TextView
+                    android:id="@+id/period_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{`모집기간 | ` + mainViewModel.activityDetailSelectResult.response.recruitStartAt + `~` + mainViewModel.activityDetailSelectResult.response.recruitEndAt}"
+                    android:textColor="@color/gray_scale_g600"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/period_icon_iv"
+                    app:layout_constraintStart_toEndOf="@id/period_icon_iv"
+                    app:layout_constraintTop_toTopOf="@id/period_icon_iv" />
+
+                <ImageView
+                    android:id="@+id/dday_icon_iv"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="9dp"
+                    android:src="@drawable/calendar_icon5"
+                    app:layout_constraintStart_toStartOf="@id/period_icon_iv"
+                    app:layout_constraintTop_toBottomOf="@id/period_icon_iv" />
+
+                <TextView
+                    android:id="@+id/dday_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{`활동일 | ` + mainViewModel.activityDetailSelectResult.response.startAt}"
+                    android:textColor="@color/gray_scale_g600"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/dday_icon_iv"
+                    app:layout_constraintStart_toEndOf="@id/dday_icon_iv"
+                    app:layout_constraintTop_toTopOf="@id/dday_icon_iv" />
+
+                <TextView
+                    android:id="@+id/keeper_introduce_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="42dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="모집키퍼 소개"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="@id/dday_icon_iv"
+                    app:layout_constraintTop_toBottomOf="@id/dday_icon_iv" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/keeper_introduce_cv"
+                    android:layout_width="0dp"
+                    android:layout_height="194dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="false"
+                    app:isBackgroundGone="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/keeper_introduce_title_tv">
+
+                    <ImageView
+                        android:id="@+id/keeper_introduce_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/keeper_introduce_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_light"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.keeperIntroduction}"
+                    android:textColor="@color/gray_scale_g900"
+                    app:layout_constraintEnd_toEndOf="@id/keeper_introduce_cv"
+                    app:layout_constraintStart_toStartOf="@id/keeper_introduce_cv"
+                    app:layout_constraintTop_toBottomOf="@id/keeper_introduce_cv" />
+
+                <TextView
+                    android:id="@+id/activity_story_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="42dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="활동 STORY"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="@id/dday_icon_iv"
+                    app:layout_constraintTop_toBottomOf="@id/keeper_introduce_tv" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/activity_story_cv"
+                    android:layout_width="0dp"
+                    android:layout_height="194dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="false"
+                    app:isBackgroundGone="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_title_tv">
+
+                    <ImageView
+                        android:id="@+id/activity_story_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl}" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/activity_story_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_light"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.activityStory}"
+                    android:textColor="@color/gray_scale_g900"
+                    app:layout_constraintEnd_toEndOf="@id/activity_story_cv"
+                    app:layout_constraintStart_toStartOf="@id/activity_story_cv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_cv" />
+
+                <TextView
+                    android:id="@+id/activity_location_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="42dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="활동 위치"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="@id/dday_icon_iv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_tv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/location_map"
+                    android:layout_width="0dp"
+                    android:layout_height="246dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_radius_8"
+                    app:layout_constraintEnd_toEndOf="@+id/title_tv"
+                    app:layout_constraintStart_toStartOf="@id/title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_location_tv" />
+
+                <TextView
+                    android:id="@+id/location_address_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_light"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.location.address}"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/location_map"
+                    app:layout_constraintTop_toBottomOf="@id/location_map" />
+
+                <TextView
+                    android:id="@+id/traffic_guide_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="교통 안내"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="20dp"
+                    app:layout_constraintStart_toStartOf="@id/location_address_tv"
+                    app:layout_constraintTop_toBottomOf="@id/location_address_tv" />
+
+                <TextView
+                    android:id="@+id/traffic_guide_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_light"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.transportation}"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/traffic_guide_title_tv"
+                    app:layout_constraintTop_toBottomOf="@id/traffic_guide_title_tv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="56dp"
+                    android:background="#F5F5F5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/traffic_guide_tv">
+
+                    <TextView
+                        android:id="@+id/activity_program_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="36dp"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:text="활동 세부 프로그램"
+                        android:textColor="@color/gray_scale_g900"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/activity_program_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/pretendard_light"
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.programDetails}"
+                        android:textColor="@color/gray_scale_g900"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toStartOf="@id/activity_program_title_tv"
+                        app:layout_constraintTop_toBottomOf="@id/activity_program_title_tv" />
+
+                    <TextView
+                        android:id="@+id/material_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:text="활동 준비물"
+                        android:textColor="@color/gray_scale_g900"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toStartOf="@id/activity_program_title_tv"
+                        app:layout_constraintTop_toBottomOf="@id/activity_program_tv" />
+
+                    <TextView
+                        android:id="@+id/material_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/pretendard_light"
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.preparation}"
+                        android:textColor="@color/gray_scale_g900"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toStartOf="@id/material_title_tv"
+                        app:layout_constraintTop_toBottomOf="@id/material_title_tv" />
+
+                    <TextView
+                        android:id="@+id/activity_reward_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:text="활동 리워드"
+                        android:textColor="@color/gray_scale_g900"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toStartOf="@id/material_title_tv"
+                        app:layout_constraintTop_toBottomOf="@id/material_tv" />
+
+                    <TextView
+                        android:id="@+id/activity_reward_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/pretendard_light"
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.rewards}"
+                        android:textColor="@color/gray_scale_g900"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toStartOf="@id/activity_reward_title_tv"
+                        app:layout_constraintTop_toBottomOf="@id/activity_reward_title_tv" />
+
+                    <TextView
+                        android:id="@+id/etc_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:text="기타 활동 안내 사항"
+                        android:textColor="@color/gray_scale_g900"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toStartOf="@id/activity_reward_title_tv"
+                        app:layout_constraintTop_toBottomOf="@id/activity_reward_tv" />
+
+                    <TextView
+                        android:id="@+id/etc_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/pretendard_light"
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.etc}"
+                        android:textColor="@color/gray_scale_g900"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toStartOf="@id/etc_title_tv"
+                        app:layout_constraintTop_toBottomOf="@id/etc_title_tv" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etc_tv" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/ask_btn"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/custom_radius30_solid_p500"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="문의하기"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/apply_btn"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/apply_btn"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/custom_radius30_solid_p500"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="신청하기"
+            android:onClick="@{() -> activityDetailFragment.onClickedApplyBtn()}"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ask_btn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

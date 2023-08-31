@@ -1,36 +1,19 @@
 package com.letspl.oceankepper.ui.view
 
-import android.Manifest
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.app.AlertDialog
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.LocationManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.data.dto.GetMyActivityDetailLocation
 import com.letspl.oceankepper.databinding.FragmentActivityDetailBinding
 import com.letspl.oceankepper.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import net.daum.mf.map.api.MapLayout
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
-import timber.log.Timber
-import java.security.MessageDigest
 
 @AndroidEntryPoint
 class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
@@ -52,6 +35,7 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
         _binding = FragmentActivityDetailBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
+        binding.activityDetailFragment = this
         return binding.root
     }
 
@@ -74,6 +58,15 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
         }
     }
 
+    // 뒤로가기 버튼 클릭 시
+    fun onClickedPreviousBtn() {
+        activity.onReplaceFragment(MainFragment())
+    }
+
+    // 지원하기 버튼 클릭 시
+    fun onClickedApplyBtn() {
+        activity.onReplaceFragment(ActivityApplyFragment())
+    }
 
     private fun setupKakaoMap(location: GetMyActivityDetailLocation) {
         val mapView = MapView(requireActivity())

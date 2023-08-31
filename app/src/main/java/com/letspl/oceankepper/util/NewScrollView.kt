@@ -54,7 +54,7 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
             MainModel.fixViewYPosition = location[1].toFloat() - (header?.height!! / 2)
             mHeaderInitPosition = MainModel.fixViewYPosition!!
         } else {
-            MainModel.fixViewYPosition!!
+            mHeaderInitPosition = MainModel.fixViewYPosition!!
         }
     }
 
