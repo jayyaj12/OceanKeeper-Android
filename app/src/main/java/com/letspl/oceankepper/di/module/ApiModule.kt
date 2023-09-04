@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.letspl.oceankepper.BuildConfig
 import com.letspl.oceankepper.data.network.ApiService
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
+import com.letspl.oceankepper.data.repository.ApplyActivityRepositoryImpl
 import com.letspl.oceankepper.data.repository.JoinRepositoryImpl
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.data.repository.MainRepositoryImpl
@@ -179,6 +180,10 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideMainRepositoryImpl(@OceanService apiService: ApiService) = MainRepositoryImpl(apiService)
+
+    @Singleton
+    @Provides
+    fun provideApplyActivityRepositoryImpl(@OceanService apiService: ApiService) = ApplyActivityRepositoryImpl(apiService)
 
     @Singleton
     @Provides

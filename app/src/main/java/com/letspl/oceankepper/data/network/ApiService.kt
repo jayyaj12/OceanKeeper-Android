@@ -77,10 +77,18 @@ interface ApiService {
         @Query("size") size: Int,
         @Query("status") status: String?,
     ): Response<GetMyActivityResponse>
+
     // 특정 활동 상세 보기
     @GET("activity/detail")
     suspend fun getMyActivityDetail(
         @Header("Authorization") token: String,
         @Query("activity-id") activityId: String?,
     ): Response<GetMyActivityDetailResponse>
+
+    // 활동 지원
+    @POST("activity/recruitment/application")
+    suspend fun postRecruitmentApplication(
+        @Header("Authorization") token: String,
+        @Body activityBody: PostApplyApplicationBody,
+    ): Response<ApplyApplicationDto>
 }

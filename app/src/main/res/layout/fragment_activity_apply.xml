@@ -4,15 +4,12 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
-            name="activityRecruitViewModel"
-            type="com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel" />
-
+            name="applyActivityFragment"
+            type="com.letspl.oceankepper.ui.view.ActivityApplyFragment" />
         <variable
-            name="activityRecruitFragment"
-            type="com.letspl.oceankepper.ui.view.ActivityRecruitFragment" />
+            name="applyActivityViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.ApplyActivityViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +23,6 @@
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"
             android:gravity="center"
-            android:onClick="@{() -> activityRecruitFragment.onClickBackBtn()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -53,7 +49,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="55dp">
+            android:layout_marginTop="55dp"
+            android:layout_marginBottom="64dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -185,6 +182,7 @@
                     android:layout_marginEnd="16dp"
                     android:backgroundTint="@color/blue_grayscale_bg100"
                     android:hint="19900418"
+                    android:inputType="number"
                     android:maxLength="30"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
@@ -223,6 +221,7 @@
                     android:layout_marginEnd="16dp"
                     android:backgroundTint="@color/blue_grayscale_bg100"
                     android:hint="'@'를 포함하여 입력"
+                    android:inputType="textEmailAddress"
                     android:maxLength="30"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
@@ -286,8 +285,9 @@
                     android:id="@+id/traffic_walk_iv"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
+                    android:onClick="@{() -> applyActivityViewModel.onClickedTransport(1)}"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/radio_btn_default"
+                    android:src="@{applyActivityViewModel.transportPosition == 1 ? @drawable/radio_btn_checked : @drawable/radio_btn_default}"
                     app:layout_constraintStart_toStartOf="@id/traffic_tv"
                     app:layout_constraintTop_toBottomOf="@id/traffic_tv" />
 
@@ -305,7 +305,8 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/radio_btn_default"
+                    android:onClick="@{() -> applyActivityViewModel.onClickedTransport(2)}"
+                    android:src="@{applyActivityViewModel.transportPosition == 2 ? @drawable/radio_btn_checked : @drawable/radio_btn_default}"
                     app:layout_constraintStart_toStartOf="@id/traffic_tv"
                     app:layout_constraintTop_toBottomOf="@id/traffic_walk_iv" />
 
@@ -323,7 +324,8 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/radio_btn_default"
+                    android:onClick="@{() -> applyActivityViewModel.onClickedTransport(3)}"
+                    android:src="@{applyActivityViewModel.transportPosition == 3 ? @drawable/radio_btn_checked : @drawable/radio_btn_default}"
                     app:layout_constraintStart_toStartOf="@id/traffic_tv"
                     app:layout_constraintTop_toBottomOf="@id/traffic_public_iv" />
 
@@ -339,9 +341,10 @@
                 <ImageView
                     android:id="@+id/traffic_can_share_iv"
                     android:layout_width="16dp"
+                    android:onClick="@{() -> applyActivityViewModel.onClickedTransport(4)}"
                     android:layout_height="16dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/radio_btn_default"
+                    android:src="@{applyActivityViewModel.transportPosition == 4 ? @drawable/radio_btn_checked : @drawable/radio_btn_default}"
                     app:layout_constraintStart_toStartOf="@id/traffic_tv"
                     app:layout_constraintTop_toBottomOf="@id/traffic_cant_share_iv" />
 
@@ -382,25 +385,26 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/name_tv"
                     app:layout_constraintTop_toBottomOf="@id/ask_recruit_keeper_tv" />
-                
+
                 <ImageView
+                    android:id="@+id/privacy_checkbox_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="24dp"
-                    android:src="@drawable/checkbox_default"
-                    app:layout_constraintTop_toBottomOf="@id/ask_recruit_keeper_et"
+                    android:onClick="@{() -> applyActivityViewModel.onClickedPrivacyAgreement()}"
+                    android:src="@{applyActivityViewModel.privacyAgreement == true ? @drawable/checkbox_checked : @drawable/checkbox_default}"
                     app:layout_constraintStart_toStartOf="@id/ask_recruit_keeper_et"
-                    android:id="@+id/privacy_checkbox_iv"/>
+                    app:layout_constraintTop_toBottomOf="@id/ask_recruit_keeper_et" />
 
                 <TextView
                     android:id="@+id/privacy_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="개인정보 동의하기"
                     android:layout_marginStart="8dp"
+                    android:text="개인정보 동의하기"
+                    app:layout_constraintBottom_toBottomOf="@id/privacy_checkbox_iv"
                     app:layout_constraintStart_toEndOf="@id/privacy_checkbox_iv"
-                    app:layout_constraintTop_toTopOf="@id/privacy_checkbox_iv"
-                    app:layout_constraintBottom_toBottomOf="@id/privacy_checkbox_iv"/>
+                    app:layout_constraintTop_toTopOf="@id/privacy_checkbox_iv" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -410,27 +414,27 @@
                     android:textColor="@color/primary_color_p500"
                     app:layout_constraintStart_toEndOf="@+id/privacy_tv"
                     app:layout_constraintTop_toTopOf="@id/privacy_tv" />
-                
+
                 <ScrollView
+                    android:id="@+id/privacy_sv"
                     android:layout_width="0dp"
                     android:layout_height="104dp"
                     android:layout_marginTop="12dp"
-                    android:id="@+id/privacy_sv"
                     android:background="@color/gray_scale_g300"
+                    app:layout_constraintEnd_toEndOf="@id/ask_recruit_keeper_et"
                     app:layout_constraintStart_toStartOf="@id/privacy_checkbox_iv"
-                    app:layout_constraintTop_toBottomOf="@id/privacy_checkbox_iv"
-                    app:layout_constraintEnd_toEndOf="@id/ask_recruit_keeper_et">
+                    app:layout_constraintTop_toBottomOf="@id/privacy_checkbox_iv">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:paddingBottom="12dp"
-                            android:paddingStart="11dp"
-                            android:paddingEnd="104dp"
-                            android:fontFamily="@font/pretendard_light"
-                            android:textColor="@color/gray_scale_g500"
-                            android:paddingTop="12dp"
-                            android:layout_height="match_parent"
-                            android:text="테스트"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/pretendard_light"
+                        android:paddingStart="11dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="104dp"
+                        android:paddingBottom="12dp"
+                        android:text="테스트"
+                        android:textColor="@color/gray_scale_g500" />
 
                 </ScrollView>
 
@@ -438,9 +442,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="58dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/privacy_sv"/>
+                    app:layout_constraintTop_toBottomOf="@+id/privacy_sv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="64dp"
+            android:layout_height="44dp"
+            android:background="@drawable/custom_radius_8_stroke_p500_solid_fff"
+            android:fontFamily="@font/pretendard_bold"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="16dp"
+            android:text="확인"
+            android:textColor="@color/primary_color_p500"
+            android:onClick="@{() -> applyActivityFragment.onClickedConfirm()}"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

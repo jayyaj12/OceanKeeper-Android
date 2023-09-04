@@ -17,5 +17,6 @@ object MainModel {
     var areaPosition = -1
     // 지역 선택값
     var garbageCategoryPosition = -1
+    // 선택된 activityId
     var clickedActivityId = ""
 }
