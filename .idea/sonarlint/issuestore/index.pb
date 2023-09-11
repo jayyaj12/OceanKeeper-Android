@@ -19,10 +19,6 @@ b
 2app/src/main/res/layout/fragment_join_complete.xml,6\d\6d50c07dbba5c750892d93addd45815f17cde4e0
 a
 1app/src/main/res/drawable/radius_20_solid_p50.xml,c\8\c8e80ac922b59873b2a0ad0a55f2e047a3736db3
-R
-"app/src/main/res/values/colors.xml,9\6\969faa2a5d9f5e8390e958d2c07f2cfd54676e6b
-p
-@app/src/main/java/com/letspl/oceankepper/ui/view/BaseActivity.kt,0\2\02bda5ce2633adb60baa821d2793207cb77a2886
 {
 Kapp/src/main/java/com/letspl/oceankepper/data/repository/LoginRepository.kt,b\b\bba65427532ed86e2464b391c1a5aee89d4d9015
 z
@@ -61,3 +57,5 @@ Sapp/src/main/java/com/letspl/oceankepper/ui/adapter/ActivityStartCalendarAdapte
 Papp/src/main/java/com/letspl/oceankepper/ui/adapter/RecruitEndCalendarAdapter.kt,3\2\3258883a4e21eca6df106294c32632d83d3ee9a9
 ‚
 Rapp/src/main/java/com/letspl/oceankepper/ui/adapter/RecruitStartCalendarAdapter.kt,d\3\d3beacc406bc13bb6086f2204a60a9fa7865b4f0
+l
+<app/src/main/java/com/letspl/oceankepper/data/dto/MainDto.kt,7\b\7b3e5b128aaf884fd12a6a0562d7afa4b51c00a2

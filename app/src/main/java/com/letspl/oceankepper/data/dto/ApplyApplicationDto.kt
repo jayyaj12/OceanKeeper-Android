@@ -4,10 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ApplyApplicationDto(
-    val status: Int,
+    val statusCode: Int,
     val timestamp: String,
     val response: ApplyApplicationResponse
-
 )
 
 @Serializable

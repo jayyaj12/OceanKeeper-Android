@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/ocean_logo_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="OceanKeeper"
+            android:textColor="#00B6C4"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="18dp"
+            android:src="@drawable/noti_icon"
+            app:layout_constraintBottom_toBottomOf="@id/setting_iv"
+            app:layout_constraintEnd_toStartOf="@+id/setting_iv"
+            app:layout_constraintTop_toTopOf="@id/setting_iv" />
+
+        <ImageView
+            android:id="@+id/setting_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="18dp"
+            android:src="@drawable/setting_icon"
+            app:layout_constraintBottom_toBottomOf="@id/ocean_logo_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ocean_logo_tv" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/item_tab"
+            android:layout_marginTop="30dp"
+            app:tabIndicatorHeight="2dp"
+            app:tabTextColor="#545454"
+            app:tabRippleColor="@null"
+            app:tabIndicatorColor="#545454"
+            app:tabIndicatorFullWidth="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabTextAppearance="@style/material_tabLayout_font"
+            app:layout_constraintTop_toBottomOf="@id/ocean_logo_tv">
+            
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="90dp"
+                android:text="전체 쪽지"
+                android:layout_height="40dp"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="90dp"
+                android:text="활동 쪽지"
+                android:layout_height="40dp"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="90dp"
+                android:text="개인쪽지"
+                android:layout_height="40dp"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="90dp"
+                android:text="보낸쪽지"
+                android:layout_height="40dp"/>
+            
+        </com.google.android.material.tabs.TabLayout>
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
