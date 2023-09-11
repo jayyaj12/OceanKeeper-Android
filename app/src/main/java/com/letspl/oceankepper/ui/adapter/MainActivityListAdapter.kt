@@ -29,7 +29,6 @@ class MainActivityListAdapter(private val context: Context, private val onClicke
     }
 
     inner class ViewHolder(val binding: ItemMainActivityBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun onBind(item: MyActivityItem) {
             Glide.with(context)
                 .load(item.activityImageUrl)

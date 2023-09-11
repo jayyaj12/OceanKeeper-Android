@@ -51,7 +51,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:tabTextAppearance="@style/material_tabLayout_font"
             app:layout_constraintTop_toBottomOf="@id/ocean_logo_tv">
-            
+
             <com.google.android.material.tabs.TabItem
                 android:layout_width="90dp"
                 android:text="전체 쪽지"
@@ -71,9 +71,20 @@
                 android:layout_width="90dp"
                 android:text="보낸쪽지"
                 android:layout_height="40dp"/>
-            
+
         </com.google.android.material.tabs.TabLayout>
-        
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/note_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_tab"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
