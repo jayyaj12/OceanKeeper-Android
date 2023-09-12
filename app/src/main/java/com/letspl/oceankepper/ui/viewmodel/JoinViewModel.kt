@@ -94,8 +94,8 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
                     if (it.isSuccessful) {
                         it.body()?.let { body ->
                             // 회원가입 진행
-                            UserModel.userInfo.user.id = body.id
-                            UserModel.userInfo.user.nickname = body.nickname
+                            UserModel.userInfo.user.id = body.response.id
+                            UserModel.userInfo.user.nickname = body.response.nickname
                         }
                     } else {
                         val errorJson = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")

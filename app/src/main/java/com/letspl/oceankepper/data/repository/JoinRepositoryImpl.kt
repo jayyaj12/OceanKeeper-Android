@@ -1,6 +1,7 @@
 package com.letspl.oceankepper.data.repository
 
 import com.letspl.oceankepper.data.dto.JoinDto
+import com.letspl.oceankepper.data.dto.JoinResponseDto
 import com.letspl.oceankepper.data.dto.SignUpBody
 import com.letspl.oceankepper.data.dto.UploadProfileImageDto
 import com.letspl.oceankepper.data.network.ApiService
@@ -25,7 +26,7 @@ class JoinRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit private va
         nickname: String,
         email: String,
         profile: String
-    ): Response<JoinDto> {
+    ): Response<JoinResponseDto> {
         return apiService.signUpUser(SignUpBody(deviceToken, email, nickname, profile, provider, providerId))
     }
 

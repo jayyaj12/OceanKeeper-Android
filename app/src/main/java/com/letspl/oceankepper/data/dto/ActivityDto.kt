@@ -103,5 +103,11 @@ data class ActivityRegisterLocationDto(
 // 활동 등록 API 결과값
 @kotlinx.serialization.Serializable
 data class ActivityRegisterResultDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: ActivityRegisterResponseDto
+)
+@kotlinx.serialization.Serializable
+data class ActivityRegisterResponseDto(
     val activityId: String
 )

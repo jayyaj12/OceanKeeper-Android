@@ -52,7 +52,7 @@ interface ApiService {
     @POST("auth/signup")
     suspend fun signUpUser(
         @Body signUpBody: SignUpBody
-    ): Response<JoinDto>
+    ): Response<JoinResponseDto>
 
     // 활동 등록
     @POST("activity/recruitment")

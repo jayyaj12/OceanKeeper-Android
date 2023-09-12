@@ -141,9 +141,11 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                     activityRecruit2ViewModel.getRecruitCompleteText(),
                     {
                         // 나의 활동 확인하기
+
                     },
                     {
                         // 확인 버튼
+                        activity.onReplaceFragment(MainFragment(), false, true)
                     })
 
                 dialog.show()
