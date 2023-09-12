@@ -21,6 +21,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="material_tabLayout_font" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">#7A7A7A</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+    </style>
+
     <style name="Theme.OceanKepper.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.OceanKepper.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

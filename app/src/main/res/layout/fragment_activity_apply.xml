@@ -20,6 +20,7 @@
             android:id="@+id/back_icon_ll"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:onClick="@{() -> applyActivityFragment.onBackBtnClicked()}"
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"
             android:gravity="center"
@@ -50,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="55dp"
+            android:overScrollMode="never"
             android:layout_marginBottom="64dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout

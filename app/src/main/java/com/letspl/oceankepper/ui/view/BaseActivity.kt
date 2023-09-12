@@ -47,6 +47,24 @@ class BaseActivity : AppCompatActivity() {
         setupSplashFragment()
 
         getRegisterFcmToken()
+
+        binding.bottomNav.setOnItemSelectedListener {
+            when(it.itemId) {
+                R.id.home_icon -> {
+                    onReplaceFragment(MainFragment(), false, true)
+                    return@setOnItemSelectedListener true
+                }
+                R.id.msg_icon -> {
+                    onReplaceFragment(NoteFragment(), false, true)
+                    return@setOnItemSelectedListener true
+                }
+                R.id.my_activity_icon -> {
+                    onReplaceFragment(MainFragment(), false, true)
+                    return@setOnItemSelectedListener true
+                }
+                else -> return@setOnItemSelectedListener true
+            }
+        }
     }
 
     // firebase fcm token 가져오기 및 저장

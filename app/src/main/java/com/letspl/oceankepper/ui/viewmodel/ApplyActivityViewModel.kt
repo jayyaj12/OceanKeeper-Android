@@ -79,6 +79,20 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
         return privacyAgreement.value!!
     }
 
+    // 연락처에 숫자만 포함되어 있는지 확인
+    fun isPhoneNumberInt(number: String): Boolean {
+        var checkResult = true
+
+        for(i in number.indices) {
+            if(!Character.isDigit(number.toCharArray()[i])) {
+                // 숫자가 아닐경우를 체크함
+                checkResult = false
+            }
+        }
+
+        return checkResult
+    }
+
     // 모든 필수 값이 입력되었는지 확인
     fun isInputNecessaryValue(name: String, phoneNumber: String, email: String): Boolean {
         return name != "" && phoneNumber != "" && email != "" && transportPosition.value != 0
