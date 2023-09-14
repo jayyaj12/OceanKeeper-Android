@@ -48,7 +48,7 @@ class ActivityApplyFragment: Fragment(), BaseActivity.OnBackPressedListener {
         if(applyActivityViewModel.isInputNecessaryValue(binding.nameEt.text.toString(), binding.phonenumberEt.text.toString(), binding.emailEt.text.toString())) {
             // 개인정보 동의시에만 활동 지원 가능
             if(android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.text.toString()).matches()) {
-                if(applyActivityViewModel.isPhoneNumberInt(binding.emailEt.text.toString())) {
+                if(applyActivityViewModel.isPhoneNumberInt(binding.phonenumberEt.text.toString())) {
                     if (applyActivityViewModel.privacyAgreement.value == true) {
                         applyActivityViewModel.postApplyActivity(
                             binding.birthdayEt.text.toString(),

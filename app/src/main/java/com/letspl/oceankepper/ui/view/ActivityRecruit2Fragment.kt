@@ -51,7 +51,6 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
             val imageUri = result.data?.data
             imageUri?.let {
                 lifecycleScope.launch {
-
                     activityRecruit2ViewModel.setThumbnailImageFile(
                         resizingImage.convertResizeImage(requireContext(), it)
                     )

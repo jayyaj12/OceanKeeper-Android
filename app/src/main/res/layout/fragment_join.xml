@@ -80,6 +80,7 @@
                     android:id="@+id/profile_iv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
                     android:background="@color/primary_color_p600" />
 
             </androidx.cardview.widget.CardView>
@@ -89,6 +90,7 @@
             android:id="@+id/add_profile_iv"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:onClick="@{() -> joinFragment.onClickedChoiceProfileImage()}"
             android:background="@drawable/add_profile_icon"
             app:layout_constraintBottom_toBottomOf="@id/profile_ll"
             app:layout_constraintEnd_toEndOf="@id/profile_ll" />

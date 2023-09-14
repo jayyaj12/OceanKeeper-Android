@@ -1,6 +1,7 @@
 package com.letspl.oceankepper.ui.viewmodel
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,6 +31,10 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     private var _profileTempFileCreated = MutableLiveData<File>()
     val profileTempFileCreated: LiveData<File>
         get() = _profileTempFileCreated
+
+    private var _signUpResult = MutableLiveData<Boolean>()
+    val signUpResult: LiveData<Boolean>
+        get() = _signUpResult
 
     // 서버로 내려받은 url 을 파일로 생성
     fun createProfileImageFile() {
@@ -93,11 +98,13 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
                 ).let {
                     if (it.isSuccessful) {
                         it.body()?.let { body ->
+                            _signUpResult.postValue(true)
                             // 회원가입 진행
                             UserModel.userInfo.user.id = body.response.id
                             UserModel.userInfo.user.nickname = body.response.nickname
                         }
                     } else {
+                        _signUpResult.postValue(false)
                         val errorJson = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
                         Timber.e("asdad ${errorJson?.get("status")}")
                         Timber.e("asdad ${errorJson?.get("message")}")
@@ -105,5 +112,13 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
                 }
             }
         }
+    }
+
+    fun setTakePhotoUri(uri: Uri?) {
+        Timber.e("setTakePhotoUri $uri")
+        JoinModel.takePhotoUri = uri
+    }
+    fun getTakePhotoUri(): Uri? {
+        return JoinModel.takePhotoUri
     }
 }
