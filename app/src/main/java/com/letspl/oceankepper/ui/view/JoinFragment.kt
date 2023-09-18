@@ -19,6 +19,7 @@ import com.letspl.oceankepper.ui.dialog.ChoiceProfileImageDialog
 import com.letspl.oceankepper.ui.viewmodel.JoinViewModel
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.util.BaseUrlType
+import com.letspl.oceankepper.util.ResizingImage
 import com.letspl.oceankepper.util.loginManager.NaverLoginManager
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -44,6 +45,7 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
         android.Manifest.permission.READ_EXTERNAL_STORAGE
     )
+    private val resizingImage = ResizingImage()
 
     // 사진 찍기 결과
     private val takePhoto = registerForActivityResult(ActivityResultContracts.TakePicture()) {
@@ -51,10 +53,16 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
             .load(joinViewModel.getTakePhotoUri())
             .fitCenter()
             .into(binding.profileIv)
-
-        joinViewModel.uploadImageFile(getRealPathFromURI(joinViewModel.getTakePhotoUri()!!)?.let { uri ->
-            File(
-                uri
+        Timber.e("joinViewModel.getTakePhotoUri() ${joinViewModel.getTakePhotoUri()}")
+        // 이미지 파일 저장
+//        joinViewModel.setProfileImageFile(getRealPathFromURI(joinViewModel.getTakePhotoUri()!!)?.let { uri ->
+//            File(
+//                uri
+//            )
+//        })
+        joinViewModel.setProfileImageFile(it?.let { uri ->
+            resizingImage.convertResizeImage(requireContext(),
+                joinViewModel.getTakePhotoUri()!!
             )
         })
     }
@@ -65,8 +73,9 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
             .fitCenter()
             .into(binding.profileIv)
 
-        joinViewModel.uploadImageFile(getRealPathFromURI(it!!)?.let {uri ->
-            File(
+        // 이미지 파일 저장
+        joinViewModel.setProfileImageFile(it?.let { uri ->
+            resizingImage.convertResizeImage(requireContext(),
                 uri
             )
         })
@@ -100,6 +109,8 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         binding.nicknameEt.setText(loginViewModel.getLoginInfo().nickname)
         setupViewModelObserver()
+
+        joinViewModel.createProfileImageFile()
     }
 
     private fun setupViewModelObserver() {
@@ -112,7 +123,11 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
         }
 
         joinViewModel.profileTempFileCreated.observe(viewLifecycleOwner) {
-            joinViewModel.uploadImageFile(it)
+            joinViewModel.setProfileImageFile(
+                resizingImage.convertResizeImage(requireContext(),
+                    Uri.fromFile(it)
+                )
+            )
         }
     }
 
@@ -131,7 +146,6 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
     private fun setupChoiceProfileImageDialog() {
         choiceProfileImageDialog = ChoiceProfileImageDialog(requireContext(), {
             joinViewModel.setTakePhotoUri(createImageFile())
-            Timber.e("takePhoto")
             // 사진 촬영
             takePhoto.launch(joinViewModel.getTakePhotoUri())
         }, {

@@ -52,6 +52,14 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
         }
     }
 
+    fun onClickedSignup(){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                uploadImageFile(getProfileImageFile())
+            }
+        }
+    }
+
     // inputStream 을 file로 변환
     private fun inputStreamToFile(inputStream: InputStream, file: File) {
         try {
@@ -96,6 +104,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
                     this.email,
                     profileUrl
                 ).let {
+                    Timber.e("response: $it")
                     if (it.isSuccessful) {
                         it.body()?.let { body ->
                             _signUpResult.postValue(true)
@@ -120,5 +129,11 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     }
     fun getTakePhotoUri(): Uri? {
         return JoinModel.takePhotoUri
+    }
+    fun setProfileImageFile(file: File?) {
+        JoinModel.profileImageFile = file
+    }
+    fun getProfileImageFile(): File? {
+        return JoinModel.profileImageFile
     }
 }

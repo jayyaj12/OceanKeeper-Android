@@ -7,5 +7,6 @@ object JoinModel {
 
     var profileImageFile: File? = null
     var takePhotoUri: Uri? = null
+    var profileImageUriStr: String = ""
 
 }

@@ -181,7 +181,6 @@ class ActivityRecruit2ViewModel @Inject constructor(
     }
 
     fun getRecruitCompleteText(): String {
-        2023-23-23
         val text = activityRecruitViewModel.getActivityStartDate().split("T")[0]
         val year = text.substring(2, 4)
         val month = text.substring(5, 7)

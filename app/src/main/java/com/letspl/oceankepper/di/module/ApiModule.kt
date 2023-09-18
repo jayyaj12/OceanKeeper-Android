@@ -92,7 +92,6 @@ object ApiModule {
             .build()
     }
 
-
     @Singleton
     @Provides
     @KaKaoRetrofit
@@ -110,7 +109,6 @@ object ApiModule {
             )
             .build()
     }
-
 
     @Singleton
     @Provides

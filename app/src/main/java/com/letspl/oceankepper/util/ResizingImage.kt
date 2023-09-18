@@ -23,7 +23,7 @@ class ResizingImage {
         val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 2, bitmap.height / 2, true)
 
         val byteArrayOutputStream = ByteArrayOutputStream()
-        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream)
+        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
 
         val tempFile = File.createTempFile("resized_image", ".jpg", context.cacheDir)
         val fileOutputStream = FileOutputStream(tempFile)
