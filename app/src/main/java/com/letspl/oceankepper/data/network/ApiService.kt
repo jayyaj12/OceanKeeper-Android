@@ -1,7 +1,6 @@
 package com.letspl.oceankepper.data.network
 
 import com.letspl.oceankepper.data.dto.*
-import com.letspl.oceankepper.data.model.UserModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -91,4 +90,20 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body activityBody: PostApplyApplicationBody,
     ): Response<ApplyApplicationDto>
+
+    // 메세지함 확인
+    /*
+        id: 메세지 아이디
+        size: 메세지 개수
+        type: 메세지 타입(REJECT, NOTICE, PRIVATE, ALL) 중 하나 NULL 로 보낼 경우 ALL 로 default
+        user: 메세지 보내는 유저 아이디
+     */
+    @GET("message/inbox")
+    suspend fun getMessage(
+        @Header("Authorization") token: String,
+        @Query("id") id: Long?,
+        @Query("size") size:Int,
+        @Query("type") type: String?,
+        @Query("user") user: String
+    ): Response<MessageDto>
 }

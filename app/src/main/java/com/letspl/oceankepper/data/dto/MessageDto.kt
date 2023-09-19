@@ -1,20 +1,20 @@
 package com.letspl.oceankepper.data.dto
 
 @kotlinx.serialization.Serializable
-data class NoteDto(
+data class MessageDto(
     val statusCode: Int,
     val timestamp: String,
-    val response: NoteResponseDto
+    val response: MessageResponseDto
 )
 
 @kotlinx.serialization.Serializable
-data class NoteResponseDto(
-    val message: List<NoteItemDto>,
-    val meta: NoteMetaDto
+data class MessageResponseDto(
+    val messages: List<MessageItemDto>,
+    val meta: MessageMetaDto
 )
 
 @kotlinx.serialization.Serializable
-data class NoteItemDto(
+data class MessageItemDto(
     val activityId: String,
     val from: String,
     val garbageCategory: String,
@@ -26,7 +26,7 @@ data class NoteItemDto(
 )
 
 @kotlinx.serialization.Serializable
-data class NoteMetaDto(
+data class MessageMetaDto(
     val last: Boolean,
     val size: Int
 )

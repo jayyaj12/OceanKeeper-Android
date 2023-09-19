@@ -8,11 +8,13 @@ import com.letspl.oceankepper.data.repository.ApplyActivityRepositoryImpl
 import com.letspl.oceankepper.data.repository.JoinRepositoryImpl
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.data.repository.MainRepositoryImpl
+import com.letspl.oceankepper.data.repository.MessageRepositoryImpl
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
 import com.letspl.oceankepper.ui.viewmodel.JoinViewModel
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
+import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
 import com.letspl.oceankepper.util.loginManager.KakaoLoginManager
 import dagger.Binds
 import dagger.Module
@@ -185,7 +187,14 @@ object ApiModule {
 
     @Singleton
     @Provides
+    fun provideMessageRepositoryImpl(@OceanService apiService: ApiService) = MessageRepositoryImpl(apiService)
+
+    @Singleton
+    @Provides
     fun provideLoginViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = LoginViewModel(LoginRepositoryImpl(apiService, oceanService))
+    @Singleton
+    @Provides
+    fun provideMessageViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = MessageViewModel(MessageRepositoryImpl(oceanService))
 
     @Singleton
     @Provides

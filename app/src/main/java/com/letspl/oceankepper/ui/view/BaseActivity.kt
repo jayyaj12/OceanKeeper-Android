@@ -1,7 +1,6 @@
 package com.letspl.oceankepper.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -55,7 +54,7 @@ class BaseActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.msg_icon -> {
-                    onReplaceFragment(NoteFragment(), false, true)
+                    onReplaceFragment(MessagFragment(), false, true)
                     return@setOnItemSelectedListener true
                 }
                 R.id.my_activity_icon -> {

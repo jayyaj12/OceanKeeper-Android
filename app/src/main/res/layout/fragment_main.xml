@@ -388,16 +388,15 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.letspl.oceankepper.util.NewScrollView>
-
         <View
             android:id="@+id/nothing_activity_v"
             android:layout_width="match_parent"
-            android:layout_height="270dp"
+            android:layout_height="500dp"
             android:layout_marginTop="18dp"
             android:background="#ECEFF1"
-            android:visibility="@{mainViewModel.getMyActivityResult.size() == 0 ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{mainViewModel.getMyActivityResult.size() == 0 ? View.VISIBLE : View.GONE}"/>
 
         <TextView
             android:id="@+id/not_activity_tv"
