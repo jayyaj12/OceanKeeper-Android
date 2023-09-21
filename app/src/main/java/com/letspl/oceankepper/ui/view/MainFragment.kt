@@ -191,22 +191,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
                 Timber.e("최하단")
                 mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회
             }
-
         }
-        (object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                Timber.e("onScrolled")
-
-
-                val lastVisibleItemPosition =
-                    (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter!!.itemCount - 1
-                if (lastVisibleItemPosition == itemTotalCount) {
-//                    Timber.e("최하단")
-                }
-            }
-        })
 //        binding.mainScrollview.viewTreeObserver.addOnScrollChangedListener {
 //            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
 //            val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()

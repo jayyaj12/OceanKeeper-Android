@@ -36,7 +36,6 @@ class NoteListAdapter(private val messageViewModel: MessageViewModel): ListAdapt
 
         // 쪽지 아이콘 읽음 여부 처리
         private fun isRead(isRead: Boolean) {
-            Timber.e("isRead $isRead")
             if(isRead) {
                 binding.noteIconIv.setBackgroundResource(R.drawable.note_enable_icon)
             } else {

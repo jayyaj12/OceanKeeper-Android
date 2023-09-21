@@ -18,7 +18,7 @@ data class MessageItemDto(
     val activityId: String,
     val from: String,
     val garbageCategory: String,
-    val id: String,
+    val id: Long,
     val read: Boolean,
     val time: String,
     val title: String,
