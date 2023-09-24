@@ -1,5 +1,6 @@
 package com.letspl.oceankepper.di.module
 
+import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.letspl.oceankepper.BuildConfig
 import com.letspl.oceankepper.data.network.ApiService
@@ -9,12 +10,14 @@ import com.letspl.oceankepper.data.repository.JoinRepositoryImpl
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.data.repository.MainRepositoryImpl
 import com.letspl.oceankepper.data.repository.MessageRepositoryImpl
+import com.letspl.oceankepper.ui.dialog.ProgressDialog
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
 import com.letspl.oceankepper.ui.viewmodel.JoinViewModel
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
+import com.letspl.oceankepper.util.ContextUtil
 import com.letspl.oceankepper.util.loginManager.KakaoLoginManager
 import dagger.Binds
 import dagger.Module
@@ -207,5 +210,9 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideKakaoLoginManager(loginViewModel: LoginViewModel) = KakaoLoginManager(loginViewModel)
+
+    @Singleton
+    @Provides
+    fun provideProgressDialog() = ProgressDialog(ContextUtil.context)
 
 }

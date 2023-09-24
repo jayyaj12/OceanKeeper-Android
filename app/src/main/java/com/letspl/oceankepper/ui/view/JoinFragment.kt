@@ -53,13 +53,7 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
             .load(joinViewModel.getTakePhotoUri())
             .fitCenter()
             .into(binding.profileIv)
-        Timber.e("joinViewModel.getTakePhotoUri() ${joinViewModel.getTakePhotoUri()}")
-        // 이미지 파일 저장
-//        joinViewModel.setProfileImageFile(getRealPathFromURI(joinViewModel.getTakePhotoUri()!!)?.let { uri ->
-//            File(
-//                uri
-//            )
-//        })
+
         joinViewModel.setProfileImageFile(it?.let { uri ->
             resizingImage.convertResizeImage(requireContext(),
                 joinViewModel.getTakePhotoUri()!!

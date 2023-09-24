@@ -16,12 +16,14 @@ data class MessageResponseDto(
 @kotlinx.serialization.Serializable
 data class MessageItemDto(
     val activityId: String,
+    val activityStartAt: String,
+    val activityTitle: String,
     val from: String,
     val garbageCategory: String,
     val id: Long,
+    val messageBody: String,
+    val messageSentAt: String,
     val read: Boolean,
-    val time: String,
-    val title: String,
     val type: String
 )
 

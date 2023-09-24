@@ -54,7 +54,7 @@ class BaseActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.msg_icon -> {
-                    onReplaceFragment(MessagFragment(), false, true)
+                    onReplaceFragment(MessageFragment(), false, true)
                     return@setOnItemSelectedListener true
                 }
                 R.id.my_activity_icon -> {

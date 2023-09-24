@@ -77,7 +77,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     }
 
     // 프로필 이미지 업로드
-    fun uploadImageFile(file: File?) {
+    private fun uploadImageFile(file: File?) {
         viewModelScope.launch(Dispatchers.IO) {
             file?.let {
                 joinRepositoryImpl.uploadProfileImage(file).let {
@@ -133,7 +133,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     fun setProfileImageFile(file: File?) {
         JoinModel.profileImageFile = file
     }
-    fun getProfileImageFile(): File? {
+    private fun getProfileImageFile(): File? {
         return JoinModel.profileImageFile
     }
 }

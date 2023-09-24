@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.view.MessageDetailFragment">
+
+    <data>
+        <variable
+            name="messageDetailFragment"
+            type="com.letspl.oceankepper.ui.view.MessageDetailFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/left_black"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{() -> messageDetailFragment.onClickedBackBtn()}"
+            android:id="@+id/back_iv"
+            android:layout_marginStart="12dp"/>
+
+        <TextView
+            android:id="@+id/garbage_category_tv"
+            android:layout_width="80dp"
+            android:layout_height="24dp"
+            android:background="@drawable/radius_20_solid_p50"
+            android:fontFamily="@font/pretendard_medium"
+            app:layout_constraintTop_toBottomOf="@id/back_iv"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
+            android:text="연안쓰레기"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="28dp"
+            android:textColor="@color/primary_color_p700"
+            android:textSize="14dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_scale_g900"
+            android:text="금능해변 플로깅 프로젝트"
+            android:id="@+id/title_tv"
+            android:textSize="20dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@id/garbage_category_tv"
+            app:layout_constraintTop_toBottomOf="@id/garbage_category_tv"/>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/right_icon"
+            app:layout_constraintStart_toEndOf="@+id/title_tv"
+            app:layout_constraintTop_toTopOf="@id/title_tv"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/title_tv"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="활동일:2023.10.23 13:00"
+            android:layout_marginTop="4dp"
+            android:textSize="12dp"
+            android:id="@+id/activity_date_tv"
+            android:textColor="@color/blue_grayscale_bg400"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/title_tv"/>
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#eeeeee"
+            android:layout_marginTop="16dp"
+            android:id="@+id/space_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_date_tv"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내가 보낸 쪽지"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/space_view"
+            android:textSize="12dp"
+            android:textColor="@color/blue_grayscale_bg400"
+            android:fontFamily="@font/pretendard_medium"
+            android:layout_marginTop="16dp"
+            android:id="@+id/from_tv"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="쪽지 내용"
+            android:layout_marginTop="8dp"
+            android:id="@+id/content_tv"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/from_tv"
+            android:textColor="#37474F"
+            android:textSize="16dp"
+            android:fontFamily="@font/pretendard_medium"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/message_at_tv"
+            android:text="2023.04.20 10:56AM 보냄"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            android:layout_marginTop="4dp"
+            android:textColor="#B0BEC5"
+            android:textSize="12dp"
+            android:fontFamily="@font/pretendard_light"
+            app:layout_constraintTop_toBottomOf="@id/content_tv"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/remove_btn"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/reply_btn"
+            android:background="@drawable/custom_radius_30_stroke_p500_solid_fff"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="삭제"
+            android:textColor="#03A7B2"
+            android:textSize="16dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/reply_btn"
+            app:layout_constraintStart_toEndOf="@id/remove_btn"
+            android:layout_width="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="16dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/custom_radius30_solid_00b6c4"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="답장하기"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e0e0e0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/remove_btn"
+            android:layout_marginBottom="10dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

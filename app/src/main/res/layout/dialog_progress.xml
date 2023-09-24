@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/SpinKitView.Large.Circle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:SpinKit_Color="#00B6C4"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/spinkit"
+            android:layout_marginBottom="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="데이터를 불러오는 중입니다..."
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            android:textSize="18dp"
+            android:fontFamily="@font/pretendard_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinkit"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
