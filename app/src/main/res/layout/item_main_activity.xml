@@ -8,7 +8,6 @@
         android:id="@+id/thumbnail_ll"
         android:layout_width="164dp"
         android:layout_height="123dp"
-        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
