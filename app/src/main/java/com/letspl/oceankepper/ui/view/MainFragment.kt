@@ -20,6 +20,8 @@ import com.letspl.oceankepper.ui.adapter.MainComingScheduleAdapter
 import com.letspl.oceankepper.ui.dialog.AreaChoiceDialog
 import com.letspl.oceankepper.ui.dialog.GarbageCategoryChoiceDialog
 import com.letspl.oceankepper.ui.viewmodel.MainViewModel
+import com.letspl.oceankepper.util.Extension.fromDpToPx
+import com.letspl.oceankepper.util.GridSpacingItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -175,7 +177,15 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     // recyclerview 세팅
     private fun setupRecyclerview() {
         val gridLayoutManager = GridLayoutManager(requireContext(), 2)
-        binding.activityRv.layoutManager = gridLayoutManager
+        binding.activityRv.run {
+            layoutManager = gridLayoutManager
+            addItemDecoration(
+                GridSpacingItemDecoration(spanCount = 2, spacing = 16f.fromDpToPx())
+            )
+            itemAnimator = null
+        }
+
+
 
         // 선택될 경우 activityId 값을 저장 후 상세 페이지로 이동
         adapter = MainActivityListAdapter(requireContext()) {
@@ -187,27 +197,13 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         binding.activityRv.adapter = adapter
 
         binding.mainScrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            Timber.e("binding.mainScrollview.canScrollVertically(1) ${!binding.mainScrollview.canScrollVertically(1)}")
+
             if(!binding.mainScrollview.canScrollVertically(1)) {
                 Timber.e("최하단")
                 mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회
             }
         }
-//        binding.mainScrollview.viewTreeObserver.addOnScrollChangedListener {
-//            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-//            val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-//            val totalItemCount = layoutManager.itemCount
-//
-//            if (lastVisibleItemPosition == totalItemCount - 1) {
-//                // 마지막 아이템이 화면에 보이는 경우 처리할 내용
-//                // 예: 추가 데이터를 로드하거나 다른 작업 수행
-//            }
-//            if(_binding != null) {
-//                if(isScrollViewAtBottom(binding.mainScrollview)){
-//                    Timber.e("isScrollViewAtBottom")
-//                    mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회
-//                }
-//            }
-//        }
     }
 
     override fun onDestroyView() {

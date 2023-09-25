@@ -5,10 +5,11 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
+import androidx.core.widget.NestedScrollView
 import com.letspl.oceankepper.data.model.MainModel
 import timber.log.Timber
 
-class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
+class NewScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListener {
 
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attr: AttributeSet?) : this(context, attr, 0)
@@ -48,13 +49,19 @@ class NewScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
 
         Timber.e("header?.getLocationOnScreen(location x) ${location[0]}")
         Timber.e("header?.getLocationOnScreen(location y) ${location[1]}")
-        Timber.e("MainModel.fixViewYPosition ${MainModel.fixViewYPosition}")
         Timber.e("header.height ${header?.height}")
+
          if(MainModel.fixViewYPosition == null) {
-            MainModel.fixViewYPosition = location[1].toFloat() - (header?.height!! / 2) + 30
-            mHeaderInitPosition = MainModel.fixViewYPosition!!
+//            MainModel.fixViewYPosition = location[1].toFloat() - (header?.height!! / 2) + 30
+             if(location[1] > 1000) {
+                 MainModel.fixViewYPosition = location[1].toFloat() - (header?.height!! / 2) - 20
+                 Timber.e("MainModel.fixViewYPosition ${MainModel.fixViewYPosition}")
+                 mHeaderInitPosition = MainModel.fixViewYPosition!!
+             }
         } else {
-            mHeaderInitPosition = MainModel.fixViewYPosition!!
+             if(MainModel.fixViewYPosition!! > 1000) {
+                 mHeaderInitPosition = MainModel.fixViewYPosition!!
+             }
         }
     }
 
