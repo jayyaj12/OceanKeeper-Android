@@ -15,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.apache.commons.lang3.mutable.Mutable
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,6 +26,7 @@ class MessageViewModel @Inject constructor(
     private val messageRepositoryImpl: MessageRepositoryImpl
 ) : ViewModel() {
 
+    // 메세지 조회 결과
     private var _getMessageResult = MutableLiveData<List<MessageItemDto>?>()
     val getMessageResult: LiveData<List<MessageItemDto>?>
         get() = _getMessageResult
@@ -129,6 +131,13 @@ class MessageViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setSpinnerClickedItemPos(value: Int) {
+        MessageModel.typeSpinnerClickPos = value
+    }
+    fun getSpinnerClickedItemPos(): Int {
+        return MessageModel.typeSpinnerClickPos
     }
 
     fun saveClickedMessageItem(item: MessageItemDto) {

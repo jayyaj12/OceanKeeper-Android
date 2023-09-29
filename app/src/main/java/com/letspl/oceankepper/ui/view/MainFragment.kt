@@ -185,8 +185,6 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
             itemAnimator = null
         }
 
-
-
         // 선택될 경우 activityId 값을 저장 후 상세 페이지로 이동
         adapter = MainActivityListAdapter(requireContext()) {
             mainViewModel.setClickedActivityId(it)

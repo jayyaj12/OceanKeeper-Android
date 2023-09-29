@@ -9,4 +9,21 @@
         <item name="android:editTextColor">#993C3C43</item>
         <item name="fontFamily">@font/se_pro_regular</item>
     </style>
+
+    <style name="BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:colorBackground">@color/white</item>
+    </style>
+
+    <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+    <style name="SpinnerTheme" parent="android:Widget.Material.Spinner.Underlined">
+        <item name="android:background">@drawable/spinner_bg
+        </item>
+        <item name="android:popupBackground">@drawable/spinner_bg
+        </item>
+
+        <item name="android:textAlignment">textStart</item>
+    </style>
 </resources>
