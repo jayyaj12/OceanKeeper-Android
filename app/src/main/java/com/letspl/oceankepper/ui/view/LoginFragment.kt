@@ -60,7 +60,7 @@ class LoginFragment: Fragment() {
     // viewModel 옵저버 세팅
     private fun setUpViewModelObservers() {
         loginViewModel.onLoginResult.observe(viewLifecycleOwner){ isExistLoginInfo ->
-            Timber.e("onLoginResult")
+            Timber.e("onLoginResult $isExistLoginInfo")
             if(isExistLoginInfo != null) {
                 if (isExistLoginInfo) {
                     // 있으면 메인 페이지로 이동

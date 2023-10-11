@@ -12,6 +12,7 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -50,6 +51,7 @@ class NaverLoginManager @Inject constructor(private val loginViewModel: LoginVie
             override fun onFailure(httpStatus: Int, message: String) {
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Timber.e("onFailure $message")
                 Toast.makeText(
                     ContextUtil.context, "errorCode: ${errorCode}\n" +
                             "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT

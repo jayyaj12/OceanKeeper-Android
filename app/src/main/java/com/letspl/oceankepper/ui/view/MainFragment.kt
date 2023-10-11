@@ -1,19 +1,17 @@
 package com.letspl.oceankepper.ui.view
 
 import MarginItemDecoration
+import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.letspl.oceankepper.data.dto.ComingScheduleItem
+import com.letspl.oceankepper.data.model.MainModel
 import com.letspl.oceankepper.databinding.FragmentMainBinding
 import com.letspl.oceankepper.ui.adapter.MainActivityListAdapter
 import com.letspl.oceankepper.ui.adapter.MainComingScheduleAdapter
@@ -59,10 +57,20 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setScreenHeightSize()
         setUpViewModelObservers()
         setupFixScrollView()
         setupRecyclerview()
         loadData()
+    }
+
+    fun setScreenHeightSize() {
+        val display = requireActivity().windowManager.defaultDisplay // in case of Activity
+        /* val display = activity!!.windowManaver.defaultDisplay */ // in case of Fragment
+        val size = Point()
+        display.getSize(size) // or getSize(size)
+        Timber.e("size.y ${size.y}")
+        MainModel.screenHeightSize =  size.y
     }
 
     // 스크롤 중 탭 영역은 상단에 고정함

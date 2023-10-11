@@ -24,6 +24,8 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -38,8 +40,10 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
 
     // 네이버 계정 정보 조회 요청
     fun getNaverUserInfo(token: String) {
-        viewModelScope.launch {
+        Timber.e("token $token")
+        CoroutineScope(Dispatchers.IO).launch {
             val data = loginRepositoryImpl.getNaverUserInfo("Bearer $token")
+            Timber.e("data ${data.body()}")
             when (data.isSuccessful) {
                 true -> {
                     data.body()?.response.let { data ->
@@ -64,7 +68,7 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
 
     // 로그인 시도 회원가입 유무 확인 후 분기 처리
     fun loginUser() {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val data = loginRepositoryImpl.loginUser(
                 LoginModel.login.deviceToken,
                 LoginModel.login.provider,

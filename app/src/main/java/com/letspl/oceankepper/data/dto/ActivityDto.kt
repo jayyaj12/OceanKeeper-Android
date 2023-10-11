@@ -111,3 +111,52 @@ data class ActivityRegisterResultDto(
 data class ActivityRegisterResponseDto(
     val activityId: String
 )
+
+// 요청자가 호스트인 활동의 활동명 불러오기
+@kotlinx.serialization.Serializable
+data class GetActivityRecruitmentActivityNameResultDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: GetActivityRecruitmentActivityNameResponseDto
+)
+@kotlinx.serialization.Serializable
+data class GetActivityRecruitmentActivityNameResponseDto(
+    val hostActivities: List<GetActivityRecruitmentActivityNameList>
+)
+@kotlinx.serialization.Serializable
+data class GetActivityRecruitmentActivityNameList(
+    val activityId: String,
+    val title: String
+)
+
+// 요청자가 호스트인 활동의 크루원 닉네임 불러오기
+@kotlinx.serialization.Serializable
+data class GetActivityRecruitmentCrewNameResultDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: GetActivityRecruitmentCrewNameResponseDto
+)
+@kotlinx.serialization.Serializable
+data class GetActivityRecruitmentCrewNameResponseDto(
+    val activityId: String,
+    val activityTitle: String,
+    val crewInformationList: List<GetActivityRecruitmentCrewNameList>
+)
+@kotlinx.serialization.Serializable
+data class GetActivityRecruitmentCrewNameList(
+    val nickname: String
+)
+
+// 요청자가 호스트인 활동의 크루원 닉네임 불러오기
+@kotlinx.serialization.Serializable
+data class PostSendMessageResultDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: PostSendMessageResponseDto
+)
+
+// 요청자가 호스트인 활동의 크루원 닉네임 불러오기
+@kotlinx.serialization.Serializable
+data class PostSendMessageResponseDto(
+    val messageId: List<Int>
+)

@@ -10,7 +10,6 @@ import com.letspl.oceankepper.data.model.MainModel
 import timber.log.Timber
 
 class NewScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListener {
-
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attr: AttributeSet?) : this(context, attr, 0)
     constructor(context: Context, attr: AttributeSet?, defStyleAttr: Int) : super(
@@ -43,26 +42,7 @@ class NewScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListener 
     private var mHeaderInitPosition = 0f
 
     override fun onGlobalLayout() {
-
-        val location = IntArray(2)
-        header?.getLocationOnScreen(location)
-
-        Timber.e("header?.getLocationOnScreen(location x) ${location[0]}")
-        Timber.e("header?.getLocationOnScreen(location y) ${location[1]}")
-        Timber.e("header.height ${header?.height}")
-
-         if(MainModel.fixViewYPosition == null) {
-//            MainModel.fixViewYPosition = location[1].toFloat() - (header?.height!! / 2) + 30
-             if(location[1] > 1000) {
-                 MainModel.fixViewYPosition = location[1].toFloat() - (header?.height!! / 2) - 20
-                 Timber.e("MainModel.fixViewYPosition ${MainModel.fixViewYPosition}")
-                 mHeaderInitPosition = MainModel.fixViewYPosition!!
-             }
-        } else {
-             if(MainModel.fixViewYPosition!! > 1000) {
-                 mHeaderInitPosition = MainModel.fixViewYPosition!!
-             }
-        }
+        mHeaderInitPosition = header?.top?.toFloat() ?: 0f
     }
 
     override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
@@ -105,6 +85,10 @@ class NewScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListener 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         viewTreeObserver.removeOnGlobalLayoutListener(this)
+    }
+
+    fun setFixViewYPosition(value: Float) {
+        MainModel.fixViewYPosition = value
     }
 
 }

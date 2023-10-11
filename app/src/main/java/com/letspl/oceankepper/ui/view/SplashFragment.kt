@@ -37,7 +37,6 @@ class SplashFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.e("asdasd")
 
         // splash alpha animation
         binding.splashTv.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.splash_anim))

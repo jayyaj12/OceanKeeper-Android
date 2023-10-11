@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.letspl.oceankepper.data.dto.GetActivityRecruitmentActivityNameList
 import com.letspl.oceankepper.data.dto.MessageItemDto
 import com.letspl.oceankepper.data.dto.MessageResponseDto
 import com.letspl.oceankepper.data.model.MainModel
 import com.letspl.oceankepper.data.model.MessageModel
 import com.letspl.oceankepper.data.model.UserModel
+import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.data.repository.MessageRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -23,13 +25,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MessageViewModel @Inject constructor(
-    private val messageRepositoryImpl: MessageRepositoryImpl
+    private val messageRepositoryImpl: MessageRepositoryImpl,
+    private val activityRepositoryImpl: ActivityRepositoryImpl
 ) : ViewModel() {
 
     // 메세지 조회 결과
     private var _getMessageResult = MutableLiveData<List<MessageItemDto>?>()
     val getMessageResult: LiveData<List<MessageItemDto>?>
         get() = _getMessageResult
+
+    // 프로젝트 활동명 list 불러오기
+    private var _getProjectNameList = MutableLiveData<List<GetActivityRecruitmentActivityNameList>>()
+    val getProjectNameList: LiveData<List<GetActivityRecruitmentActivityNameList>> get() = _getProjectNameList
 
     fun getGarbageCategory(type: String): String {
         return when (type) {
@@ -47,6 +54,57 @@ class MessageViewModel @Inject constructor(
             "내가 보낸 쪽지"
         } else {
             send
+        }
+    }
+
+    // 활동 프로젝트명 불러오기
+    fun getActivityNameList() {
+        viewModelScope.launch {
+            activityRepositoryImpl.getActivityProject().let {
+                if(it.isSuccessful) {
+                    _getProjectNameList.postValue(it.body()?.response?.hostActivities)
+                    MessageModel.projectNameList = it.body()?.response?.hostActivities ?: listOf()
+                } else {
+
+                }
+            }
+        }
+    }
+
+    // 크루원 닉네임 불러오기
+    fun getCrewNickName(activityId: String) {
+        viewModelScope.launch {
+            activityRepositoryImpl.getCrewNickname(activityId).let {
+                if(it.isSuccessful) {
+                    val list = arrayListOf<String>()
+                    it.body()?.response?.crewInformationList?.forEach {
+                        list.add(it.nickname)
+                    }
+                    MessageModel.crewNicknameList = list
+                } else {
+
+                }
+            }
+        }
+    }
+
+    // 쪽지 보내기
+    fun postMessage(content: String) {
+        viewModelScope.launch {
+            messageRepositoryImpl.postMessage(
+                MessageModel.SendMessageRequestBody(
+                    getActivityNameSpinnerClickActivityId(),
+                    content,
+                    MessageModel.crewNicknameList,
+                    getTypeSpinnerClickedItem()
+                )
+            )?.let {
+                if(it.isSuccessful) {
+                    Timber.e("성공 ")
+                } else {
+                    Timber.e("메세지 전송 실패")
+                }
+            }
         }
     }
 
@@ -133,11 +191,34 @@ class MessageViewModel @Inject constructor(
         }
     }
 
-    fun setSpinnerClickedItemPos(value: Int) {
+    // 쪽지 유형 선택값 설정
+    fun setTypeSpinnerClickedItemPos(value: Int) {
         MessageModel.typeSpinnerClickPos = value
     }
-    fun getSpinnerClickedItemPos(): Int {
+
+    // 쪽지 유형 선택값 인덱스 가져오기
+    fun getTypeSpinnerClickedItemPos(): Int {
         return MessageModel.typeSpinnerClickPos
+    }
+
+    // 쪽지 유형 선택값 가져오기
+    fun getTypeSpinnerClickedItem(): String {
+        return when(MessageModel.typeSpinnerClickPos) {
+            0 -> "NOTICE"
+            1 -> "PRIVATE"
+            2 -> "REJECT"
+            else -> ""
+        }
+    }
+
+    // 활동 프로젝트 선택값 설정
+    fun setActivityNameSpinnerClickPos(value: Int) {
+        MessageModel.activityNameSpinnerClickPos = value
+    }
+
+    // 활동 프로젝트 선택값의 activityId 가져오기
+    fun getActivityNameSpinnerClickActivityId(): String {
+        return MessageModel.projectNameList[MessageModel.activityNameSpinnerClickPos].activityId
     }
 
     fun saveClickedMessageItem(item: MessageItemDto) {

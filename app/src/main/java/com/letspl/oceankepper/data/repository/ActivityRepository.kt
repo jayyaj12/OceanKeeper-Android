@@ -14,4 +14,8 @@ interface ActivityRepository {
     suspend fun uploadThumbnailImage(file: File?): Response<UploadProfileImageDto>
     // 활동 story 이미지 업로드
     suspend fun uploadStoryImage(file: File?): Response<UploadProfileImageDto>
+    // 활동 프로젝트명 불러오기
+    suspend fun getActivityProject(): Response<GetActivityRecruitmentActivityNameResultDto>
+    // 크루원 닉네임 불러오기
+    suspend fun getCrewNickname(activityId: String): Response<GetActivityRecruitmentCrewNameResultDto>
 }

@@ -109,4 +109,14 @@ class ActivityRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit privat
             apiService.uploadStoryImageFile(imageBody)
         }
     }
+
+    // 활동 프로젝트명 불러오기
+    override suspend fun getActivityProject(): Response<GetActivityRecruitmentActivityNameResultDto> {
+        return apiService.getProjectList("Bearer ${UserModel.userInfo.token.accessToken}")
+    }
+
+    // 크루원 불러오기
+    override suspend fun getCrewNickname(activityId: String): Response<GetActivityRecruitmentCrewNameResultDto> {
+        return apiService.getCrewNickName("Bearer ${UserModel.userInfo.token.accessToken}", activityId)
+    }
 }

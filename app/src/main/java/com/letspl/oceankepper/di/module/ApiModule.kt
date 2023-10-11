@@ -197,7 +197,7 @@ object ApiModule {
     fun provideLoginViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = LoginViewModel(LoginRepositoryImpl(apiService, oceanService))
     @Singleton
     @Provides
-    fun provideMessageViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = MessageViewModel(MessageRepositoryImpl(oceanService))
+    fun provideMessageViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = MessageViewModel(MessageRepositoryImpl(oceanService), ActivityRepositoryImpl(oceanService))
 
     @Singleton
     @Provides

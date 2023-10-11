@@ -1,6 +1,7 @@
 package com.letspl.oceankepper.data.network
 
 import com.letspl.oceankepper.data.dto.*
+import com.letspl.oceankepper.data.model.MessageModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -106,4 +107,26 @@ interface ApiService {
         @Query("type") type: String?,
         @Query("user") user: String
     ): Response<MessageDto>
+
+    // 활동 프로젝트 리스트 불러오기
+    @GET("activity/recruitment/host/activity-name")
+    suspend fun getProjectList(
+        @Header("Authorization") token: String
+    ): Response<GetActivityRecruitmentActivityNameResultDto>
+
+    // 활동의 크루원 닉네임 불러오기
+    @GET("activity/recruitment/host/crew-nickname")
+    suspend fun getCrewNickName(
+        @Header("Authorization") token: String,
+        @Query("activity-id") activityId: String
+    ): Response<GetActivityRecruitmentCrewNameResultDto>
+
+    // 쪽지 보내기
+    @POST("/message")
+    suspend fun postMessage(
+        @Header("Authorization") token: String,
+        @Body message: MessageModel.SendMessageRequestBody
+    ): Response<PostSendMessageResultDto>
+
+
 }
