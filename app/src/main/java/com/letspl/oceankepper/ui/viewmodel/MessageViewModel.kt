@@ -1,6 +1,8 @@
 package com.letspl.oceankepper.ui.viewmodel
 
+import android.os.Build
 import android.os.Message
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +24,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @HiltViewModel
 class MessageViewModel @Inject constructor(
@@ -34,9 +37,9 @@ class MessageViewModel @Inject constructor(
     val getMessageResult: LiveData<List<MessageItemDto>?>
         get() = _getMessageResult
 
-    // 프로젝트 활동명 list 불러오기
-    private var _getProjectNameList = MutableLiveData<List<GetActivityRecruitmentActivityNameList>>()
-    val getProjectNameList: LiveData<List<GetActivityRecruitmentActivityNameList>> get() = _getProjectNameList
+    // 프로젝트 크루 닉네임 불러오기
+    private var _getCrewNicknameList = MutableLiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>>()
+    val getCrewNicknameList: LiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>> get() = _getCrewNicknameList
 
     fun getGarbageCategory(type: String): String {
         return when (type) {
@@ -62,8 +65,18 @@ class MessageViewModel @Inject constructor(
         viewModelScope.launch {
             activityRepositoryImpl.getActivityProject().let {
                 if(it.isSuccessful) {
-                    _getProjectNameList.postValue(it.body()?.response?.hostActivities)
-                    MessageModel.projectNameList = it.body()?.response?.hostActivities ?: listOf()
+                    val list = arrayListOf<MessageModel.MessageSpinnerProjectNameItem>()
+                    it.body()?.response?.hostActivities.let { projectList ->
+                        projectList?.forEach {data ->
+                            list.add(MessageModel.MessageSpinnerProjectNameItem(
+                                data.activityId, data.title, false
+                            ))
+                        }
+                    }
+                    MessageModel.projectNameList = list
+                    Timber.e("getActivityNameList")
+
+                    getCrewNickName(getActivityNameSpinnerClickActivityId())
                 } else {
 
                 }
@@ -74,13 +87,16 @@ class MessageViewModel @Inject constructor(
     // 크루원 닉네임 불러오기
     fun getCrewNickName(activityId: String) {
         viewModelScope.launch {
+            Timber.e("getCrewNickName")
             activityRepositoryImpl.getCrewNickname(activityId).let {
                 if(it.isSuccessful) {
-                    val list = arrayListOf<String>()
+                    val list = arrayListOf<MessageModel.MessageSpinnerCrewNicknameItem>()
                     it.body()?.response?.crewInformationList?.forEach {
-                        list.add(it.nickname)
+                        list.add(MessageModel.MessageSpinnerCrewNicknameItem(it.nickname, false))
                     }
+
                     MessageModel.crewNicknameList = list
+                    _getCrewNicknameList.postValue(list)
                 } else {
 
                 }
@@ -89,13 +105,13 @@ class MessageViewModel @Inject constructor(
     }
 
     // 쪽지 보내기
-    fun postMessage(content: String) {
+    fun postMessage(content: String, receiveList: List<String>) {
         viewModelScope.launch {
             messageRepositoryImpl.postMessage(
                 MessageModel.SendMessageRequestBody(
                     getActivityNameSpinnerClickActivityId(),
                     content,
-                    MessageModel.crewNicknameList,
+                    receiveList,
                     getTypeSpinnerClickedItem()
                 )
             )?.let {
@@ -191,6 +207,35 @@ class MessageViewModel @Inject constructor(
         }
     }
 
+    // 받을 사람 초기화
+    fun clearReceiveList() {
+        MessageModel.receiveList.clear()
+    }
+
+    // 받을 사람 세팅
+    fun setReceiveList(list: List<String>) {
+        MessageModel.receiveList = list as ArrayList<String>
+    }
+
+    // 받을 사람 추가
+    fun addReceiveList(nickName: String) {
+        MessageModel.receiveList.add(nickName)
+    }
+
+    // 받을 사람 삭제
+    fun removeReceiveList(nickName: String) {
+        MessageModel.receiveList.remove(nickName)
+    }
+
+    fun getCrewList(): ArrayList<MessageModel.MessageSpinnerCrewNicknameItem> {
+        return MessageModel.crewNicknameList
+    }
+
+    // 읽음 여부 변경
+    fun setCrewNicknameListChecked(index: Int){
+//        MessageModel.crewNicknameList[index].isChecked = flag
+    }
+
     // 쪽지 유형 선택값 설정
     fun setTypeSpinnerClickedItemPos(value: Int) {
         MessageModel.typeSpinnerClickPos = value
@@ -219,6 +264,11 @@ class MessageViewModel @Inject constructor(
     // 활동 프로젝트 선택값의 activityId 가져오기
     fun getActivityNameSpinnerClickActivityId(): String {
         return MessageModel.projectNameList[MessageModel.activityNameSpinnerClickPos].activityId
+    }
+
+    // 활동 프로젝트 선택값의 activityId 가져오기
+    fun getActivityNameSaveList(): List<MessageModel.MessageSpinnerProjectNameItem> {
+        return MessageModel.projectNameList
     }
 
     fun saveClickedMessageItem(item: MessageItemDto) {
