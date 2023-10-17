@@ -43,8 +43,6 @@ Rapp/src/main/java/com/letspl/oceankepper/data/repository/ActivityRepositoryImpl
 Rapp/src/main/java/com/letspl/oceankepper/ui/viewmodel/ActivityRecruit2ViewModel.kt,0\a\0ab7b6b7efaf6f92f174db236bd750a3e3e9fc90
 |
 Lapp/src/main/java/com/letspl/oceankepper/data/model/ActivityRecruit2Model.kt,f\d\fdb1e6db1bee25b5e6888809f16de9b187cd93fc
-p
-@app/src/main/java/com/letspl/oceankepper/data/dto/ActivityDto.kt,1\1\11bf505e711c4f145a4cff0b3c74c8301f6bbcde
 ƒ
 Sapp/src/main/java/com/letspl/oceankepper/ui/adapter/ActivityStartCalendarAdapter.kt,d\3\d3fa1c4a31a89ffd11538421f0eb2a2af8aac18f
 l

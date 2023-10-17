@@ -1,5 +1,6 @@
 package com.letspl.oceankepper.ui.view
 
+import CustomSpinnerCrewNicknameAdapter
 import CustomSpinnerMessageTypeAdapter
 import CustomSpinnerProjectNameAdapter
 import android.graphics.Color
@@ -61,7 +62,6 @@ class MessageFragment: Fragment() {
         setupNoteListAdapter()
         setupViewModelObserver()
         onChangeItemTab()
-        setupDialogSendMessageSpinner()
 
         progressDialog.show()
         messageViewModel.getMessage("ALL") // 메세지 조회
@@ -70,23 +70,17 @@ class MessageFragment: Fragment() {
 
     private fun setupViewModelObserver() {
         messageViewModel.getMessageResult.observe(viewLifecycleOwner) {
-            Timber.e("getMessageResult2")
+            Timber.e("getMessageResult")
             it?.let {
                 messageListAdapter.submitList(it.toMutableList())
                 progressDialog.dismiss()
                 binding.messageRv.smoothScrollToPosition(0)
             }
         }
-        messageViewModel.getProjectNameList.observe(viewLifecycleOwner) {
-            it?.let { projectList ->
-                val list = arrayListOf<MessageModel.MessageSpinnerProjectNameItem>()
-                projectList.forEach {data ->
-                    list.add(MessageModel.MessageSpinnerProjectNameItem(
-                        data.activityId, data.title, false
-                    ))
-                }
-                setupSendMessageBottomSheetDialog(list)
-            }
+
+        messageViewModel.getCrewNicknameList.observe(viewLifecycleOwner) {
+            Timber.e("it $it")
+            setupSendMessageBottomSheetDialog(messageViewModel.getActivityNameSaveList(), it)
         }
     }
 
@@ -148,11 +142,10 @@ class MessageFragment: Fragment() {
 
         val listMessageType: List<MessageModel.MessageSpinnerMessageTypeItem> = listOf(MessageModel.MessageSpinnerMessageTypeItem("활동공지", false),MessageModel.MessageSpinnerMessageTypeItem("개인쪽지", true),MessageModel.MessageSpinnerMessageTypeItem("거절쪽지", false))
         bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).adapter = CustomSpinnerMessageTypeAdapter(requireContext(), R.layout.spinner_outer_layout, listMessageType, messageViewModel)
-        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetDialog.show()
+        bottomSheetView.findViewById<Spinner>(R.id.my_project_spinner).adapter = CustomSpinnerProjectNameAdapter(requireContext(), R.layout.spinner_outer_layout, projectNameList, messageViewModel)
 
-        val listProjectName: List<MessageModel.MessageSpinnerProjectNameItem> = projectNameList
-        bottomSheetView.findViewById<Spinner>(R.id.my_project_spinner).adapter = CustomSpinnerProjectNameAdapter(requireContext(), R.layout.spinner_outer_layout, listProjectName, messageViewModel)
+        val crewNicknameSpinner = CustomSpinnerCrewNicknameAdapter(requireContext(), R.layout.spinner_outer_layout, crewNicknameList, messageViewModel)
+        bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).adapter = crewNicknameSpinner
         bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetDialog.show()
 
@@ -167,6 +160,19 @@ class MessageFragment: Fragment() {
                 id: Long
             ) {
                 messageViewModel.setTypeSpinnerClickedItemPos(position)
+                when(position) {
+                    0 -> {
+                        bottomSheetView.findViewById<TextView>(R.id.receive_tv).visibility = View.GONE
+                        bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).visibility = View.GONE
+
+                        messageViewModel.clearReceiveList()
+//                        messageViewModel.setReceiveList(messageViewModel.getCrewList())
+                    }
+                    1,2 -> {
+                        bottomSheetView.findViewById<TextView>(R.id.receive_tv).visibility = View.VISIBLE
+                        bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).visibility = View.VISIBLE
+                    }
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -184,6 +190,24 @@ class MessageFragment: Fragment() {
             ) {
                 messageViewModel.setActivityNameSpinnerClickPos(position)
                 messageViewModel.getCrewNickName(messageViewModel.getActivityNameSpinnerClickActivityId())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Timber.e("test")
+            }
+        }
+
+        // 받는 사람 선택 시
+        bottomSheetView.findViewById<Spinner>(R.id.my_project_spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                messageViewModel.setActivityNameSpinnerClickPos(position)
+                messageViewModel.setCrewNicknameListChecked(position)
+                crewNicknameSpinner.setMenuList(messageViewModel.getCrewList())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

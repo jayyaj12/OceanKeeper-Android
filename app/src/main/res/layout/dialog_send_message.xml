@@ -4,7 +4,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="494dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/custom_radius_top_right_radius_12_solid_fff">
 
         <TextView
@@ -76,6 +76,38 @@
             android:layout_marginEnd="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/project_tv"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="받는 사람"
+            android:textColor="#212121"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="@id/message_type_spinner"
+            android:layout_marginTop="24dp"
+            android:id="@+id/receive_tv"
+            app:layout_constraintTop_toBottomOf="@id/my_project_spinner"/>
+
+        <Spinner
+            android:id="@+id/receive_spinner"
+            android:layout_width="match_parent"
+            android:background="@drawable/background_spinner_option"
+            android:layout_height="44dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receive_tv"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="172dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/my_project_spinner"
+            app:layout_constraintEnd_toEndOf="@+id/my_project_spinner"
+            app:layout_constraintTop_toBottomOf="@id/receive_spinner"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         
         <EditText
             android:layout_width="0dp"
@@ -95,7 +127,7 @@
             android:background="@drawable/custom_radius8_solid_fff_stroke_b0bec5"
             app:layout_constraintStart_toStartOf="@id/my_project_spinner"
             app:layout_constraintEnd_toEndOf="@id/my_project_spinner"
-            app:layout_constraintTop_toBottomOf="@id/my_project_spinner"/>
+            app:layout_constraintTop_toBottomOf="@id/receive_spinner"/>
         
         <View
             android:layout_width="match_parent"
