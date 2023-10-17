@@ -3,8 +3,11 @@ package com.letspl.oceankepper.ui.view
 import CustomSpinnerCrewNicknameAdapter
 import CustomSpinnerMessageTypeAdapter
 import CustomSpinnerProjectNameAdapter
+import android.app.Activity
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +19,9 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import androidx.recyclerview.widget.RecyclerView.Orientation
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -24,6 +30,7 @@ import com.letspl.oceankepper.R
 import com.letspl.oceankepper.data.model.MessageModel
 import com.letspl.oceankepper.databinding.FragmentMessageBinding
 import com.letspl.oceankepper.ui.adapter.MessageListAdapter
+import com.letspl.oceankepper.ui.adapter.MessageReceiveCrewAdapter
 import com.letspl.oceankepper.ui.dialog.ProgressDialog
 import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
 import com.letspl.oceankepper.util.MessageEnterType
@@ -46,6 +53,7 @@ class MessageFragment: Fragment() {
     private val activity by lazy {
         requireActivity() as BaseActivity
     }
+    private lateinit var messageReceiveCrewAdapter: MessageReceiveCrewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,8 +87,8 @@ class MessageFragment: Fragment() {
         }
 
         messageViewModel.getCrewNicknameList.observe(viewLifecycleOwner) {
-            Timber.e("it $it")
             setupSendMessageBottomSheetDialog(messageViewModel.getActivityNameSaveList(), it)
+            messageReceiveCrewAdapter.setNicknameArr(it as ArrayList<MessageModel.MessageSpinnerCrewNicknameItem>)
         }
     }
 
@@ -98,7 +106,6 @@ class MessageFragment: Fragment() {
 
         binding.messageRv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if(!binding.messageRv.canScrollVertically(1)) {
-                Timber.e("canScrollVertically")
                 if(!messageViewModel.isMessageLast()) {
                     progressDialog.show()
                     messageViewModel.getMessage(messageViewModel.getTypeTabItem()) // 메세지 조회
@@ -135,10 +142,20 @@ class MessageFragment: Fragment() {
         })
     }
 
-    private fun setupSendMessageBottomSheetDialog(projectNameList: List<MessageModel.MessageSpinnerProjectNameItem>) {
+    // 받는 사람 recyclerview 셋업
+    private fun setupMessageReceiveCrewAdapterRecyclerView(bottomSheetDialog: BottomSheetDialog) {
+        Timber.e("setupMessageReceiveCrewAdapterRecyclerView")
+        messageReceiveCrewAdapter = MessageReceiveCrewAdapter(messageViewModel)
+        bottomSheetDialog.findViewById<RecyclerView>(R.id.receive_rv)?.adapter = messageReceiveCrewAdapter
+    }
+
+    private fun setupSendMessageBottomSheetDialog(projectNameList: List<MessageModel.MessageSpinnerProjectNameItem>, crewNicknameList: List<MessageModel.MessageSpinnerCrewNicknameItem>) {
+
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_send_message, null)
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(bottomSheetView)
+
+        setupMessageReceiveCrewAdapterRecyclerView(bottomSheetDialog)
 
         val listMessageType: List<MessageModel.MessageSpinnerMessageTypeItem> = listOf(MessageModel.MessageSpinnerMessageTypeItem("활동공지", false),MessageModel.MessageSpinnerMessageTypeItem("개인쪽지", true),MessageModel.MessageSpinnerMessageTypeItem("거절쪽지", false))
         bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).adapter = CustomSpinnerMessageTypeAdapter(requireContext(), R.layout.spinner_outer_layout, listMessageType, messageViewModel)
@@ -150,6 +167,7 @@ class MessageFragment: Fragment() {
         bottomSheetDialog.show()
 
         getEnterType(bottomSheetDialog)
+        setupRatio(bottomSheetDialog)
 
         // 쪽지 유형 선택 시
         bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -217,10 +235,32 @@ class MessageFragment: Fragment() {
 
         // 전송 버튼 클릭
         bottomSheetView.findViewById<AppCompatButton>(R.id.send_btn).setOnClickListener {
-            messageViewModel.postMessage(
-                bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString()
-            )
+//            messageViewModel.postMessage(
+//                bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString()
+//            )
         }
+    }
+
+    private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
+        val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
+        val behavior = BottomSheetBehavior.from(bottomSheet)
+        val layoutParams = bottomSheet!!.layoutParams
+        layoutParams.height = getBottomSheetDialogDefaultHeight()
+        bottomSheet.layoutParams = layoutParams
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    private fun getBottomSheetDialogDefaultHeight(): Int {
+        return getWindowHeight() * 80 / 100
+        // 기기 높이 대비 비율 설정 부분!!
+        // 위 수치는 기기 높이 대비 80%로 다이얼로그 높이를 설정
+    }
+
+    private fun getWindowHeight(): Int {
+        // Calculate window height for fullscreen use
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        return displayMetrics.heightPixels
     }
 
     // enterType 에 따라 Spinner Block 처리함
