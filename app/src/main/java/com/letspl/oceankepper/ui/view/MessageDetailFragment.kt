@@ -53,6 +53,11 @@ class MessageDetailFragment : Fragment() {
             fromTv.text = messageViewModel.getFromWho(item.from)
             contentTv.text = item.messageBody
         }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 }

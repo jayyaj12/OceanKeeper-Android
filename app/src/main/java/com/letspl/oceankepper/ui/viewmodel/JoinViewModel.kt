@@ -115,12 +115,14 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
                     } else {
                         _signUpResult.postValue(false)
                         val errorJson = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                        Timber.e("asdad ${errorJson?.get("status")}")
-                        Timber.e("asdad ${errorJson?.get("message")}")
                     }
                 }
             }
         }
+    }
+
+    fun setLoginNickname(nickname: String) {
+        LoginModel.login.nickname = nickname
     }
 
     fun setTakePhotoUri(uri: Uri?) {

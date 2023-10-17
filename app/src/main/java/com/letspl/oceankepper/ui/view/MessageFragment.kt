@@ -2,6 +2,7 @@ package com.letspl.oceankepper.ui.view
 
 import CustomSpinnerMessageTypeAdapter
 import CustomSpinnerProjectNameAdapter
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,6 +25,7 @@ import com.letspl.oceankepper.databinding.FragmentMessageBinding
 import com.letspl.oceankepper.ui.adapter.MessageListAdapter
 import com.letspl.oceankepper.ui.dialog.ProgressDialog
 import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
+import com.letspl.oceankepper.util.MessageEnterType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,7 +70,7 @@ class MessageFragment: Fragment() {
 
     private fun setupViewModelObserver() {
         messageViewModel.getMessageResult.observe(viewLifecycleOwner) {
-            Timber.e("getMessageResult")
+            Timber.e("getMessageResult2")
             it?.let {
                 messageListAdapter.submitList(it.toMutableList())
                 progressDialog.dismiss()
@@ -153,6 +156,8 @@ class MessageFragment: Fragment() {
         bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetDialog.show()
 
+        getEnterType(bottomSheetDialog)
+
         // 쪽지 유형 선택 시
         bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
@@ -194,6 +199,41 @@ class MessageFragment: Fragment() {
         }
     }
 
+    // enterType 에 따라 Spinner Block 처리함
+    private fun getEnterType(bottomSheetDialog: BottomSheetDialog) {
+        when(messageViewModel.getMessageEnterType()) {
+            // 일반 활동 공지 쪽지
+            MessageEnterType.ActivityMessage -> {
+            }
+            // 활동 프로젝트만 선택 가능한 쪽지
+            MessageEnterType.ActivityMessageBlockMessageType -> {
+                bottomSheetDialog.findViewById<Spinner>(R.id.message_type_spinner)?.setBackgroundResource(R.drawable.custom_radius8_solid_cfd8dc_stroke_b0bec5)
+                bottomSheetDialog.findViewById<Spinner>(R.id.message_type_spinner)?.isEnabled = false
+            }
+            // 프로젝트에서 바로 공지할 경우 쪽지유형, 활동 프로젝트 선택 풀가
+            MessageEnterType.ActivityMessageDirect -> {
+                bottomSheetDialog.findViewById<Spinner>(R.id.message_type_spinner)?.setBackgroundResource(R.drawable.custom_radius8_solid_cfd8dc_stroke_b0bec5)
+                bottomSheetDialog.findViewById<Spinner>(R.id.message_type_spinner)?.isEnabled = false
+                bottomSheetDialog.findViewById<Spinner>(R.id.my_project_spinner)?.setBackgroundResource(R.drawable.custom_radius8_solid_cfd8dc_stroke_b0bec5)
+                bottomSheetDialog.findViewById<Spinner>(R.id.my_project_spinner)?.isEnabled = false
+            }
+            // 모집한 사람에게 쪽지 보냄
+            MessageEnterType.FromUserToHost -> {
+                bottomSheetDialog.findViewById<Spinner>(R.id.message_type_spinner)?.setBackgroundResource(R.drawable.custom_radius8_solid_cfd8dc_stroke_b0bec5)
+                bottomSheetDialog.findViewById<Spinner>(R.id.message_type_spinner)?.isEnabled = false
+                bottomSheetDialog.findViewById<Spinner>(R.id.my_project_spinner)?.setBackgroundResource(R.drawable.custom_radius8_solid_cfd8dc_stroke_b0bec5)
+                bottomSheetDialog.findViewById<Spinner>(R.id.my_project_spinner)?.isEnabled = false
+            }
+            // 개인쪽지
+            MessageEnterType.UserToUser -> {
+
+            }
+
+            else -> {}
+        }
+
+    }
+
     private fun setupDialogSendMessageSpinner() {
 //        binding.sendMessageSpinner.adapter =
     }
@@ -201,6 +241,7 @@ class MessageFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
+        _binding = null
         messageViewModel.clearMessageList()
     }
 }

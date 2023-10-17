@@ -13,6 +13,7 @@ import com.letspl.oceankepper.data.model.MessageModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.data.repository.MessageRepositoryImpl
+import com.letspl.oceankepper.util.MessageEnterType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -157,8 +158,6 @@ class MessageViewModel @Inject constructor(
     }
 
     fun getMessage(type: String) {
-        Timber.e("getMessageResult")
-
         CoroutineScope(Dispatchers.IO).launch {
             messageRepositoryImpl.getMessage(
                 "Bearer ${UserModel.userInfo.token.accessToken}",
@@ -189,6 +188,14 @@ class MessageViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setMessageEnterType(_enterType: MessageEnterType) {
+        MessageModel.enterType = _enterType
+    }
+
+    fun getMessageEnterType(): MessageEnterType {
+        return MessageModel.enterType
     }
 
     // 쪽지 유형 선택값 설정

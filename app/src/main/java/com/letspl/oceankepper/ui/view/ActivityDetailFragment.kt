@@ -100,4 +100,10 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
 }
