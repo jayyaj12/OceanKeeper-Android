@@ -77,8 +77,11 @@ class MessageFragment: Fragment() {
     }
 
     private fun setupViewModelObserver() {
+        messageViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
+
         messageViewModel.getMessageResult.observe(viewLifecycleOwner) {
-            Timber.e("getMessageResult")
             it?.let {
                 messageListAdapter.submitList(it.toMutableList())
                 progressDialog.dismiss()

@@ -16,6 +16,7 @@ import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.data.repository.MessageRepositoryImpl
 import com.letspl.oceankepper.util.MessageEnterType
+import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +42,10 @@ class MessageViewModel @Inject constructor(
     // 프로젝트 크루 닉네임 불러오기
     private var _getCrewNicknameList = MutableLiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>>()
     val getCrewNicknameList: LiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>> get() = _getCrewNicknameList
+
+    // 에러 토스트 메세지 text
+    private var _errorMsg = MutableLiveData<String>()
+    val errorMsg: LiveData<String> get() = _errorMsg
 
     fun getGarbageCategory(type: String): String {
         return when (type) {
@@ -79,7 +84,11 @@ class MessageViewModel @Inject constructor(
 
                     getCrewNickName(getActivityNameSpinnerClickActivityId())
                 } else {
-
+                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if(errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
                 }
             }
         }
@@ -98,7 +107,11 @@ class MessageViewModel @Inject constructor(
                     MessageModel.crewNicknameList = list
                     _getCrewNicknameList.postValue(list)
                 } else {
-
+                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if(errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
                 }
             }
         }
@@ -118,7 +131,11 @@ class MessageViewModel @Inject constructor(
                 if(it.isSuccessful) {
                     Timber.e("성공 ")
                 } else {
-                    Timber.e("메세지 전송 실패")
+                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if(errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
                 }
             }
         }
@@ -199,7 +216,11 @@ class MessageViewModel @Inject constructor(
                     }
                 } else {
                     // 실패 시 토스트 표시
-                    _getMessageResult.postValue(null)
+                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if(errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
                 }
             }
         }
