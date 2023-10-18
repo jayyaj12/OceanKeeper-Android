@@ -56,6 +56,9 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 setupKakaoMap(it.response.location)
             }
         }
+        mainViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
     }
 
     // 뒤로가기 버튼 클릭 시

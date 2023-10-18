@@ -10,6 +10,7 @@ import com.letspl.oceankepper.data.dto.MyActivityItem
 import com.letspl.oceankepper.data.model.MainModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.MainRepositoryImpl
+import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -46,7 +47,9 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
     private var _activityDetailSelectResult = MutableLiveData<GetMyActivityDetailResponse?>(null)
     val activityDetailSelectResult: LiveData<GetMyActivityDetailResponse?> get() = _activityDetailSelectResult
 
-
+    // 에러 토스트 메세지 text
+    private var _errorMsg = MutableLiveData<String>()
+    val errorMsg: LiveData<String> get() = _errorMsg
     // 다가오는 일정 데이터 조회
     fun getComingSchedule() {
         viewModelScope.launch {
@@ -58,7 +61,11 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                 if (it.isSuccessful) {
                     _getComingScheduleResult.postValue(it.body()?.response?.activities)
                 } else {
-
+                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if(errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
                 }
             }
         }
@@ -93,7 +100,11 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                                 MainModel.lastActivityId = null
                             }
                         } else {
-
+                            val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if(errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
                         }
                     }
                 }
@@ -108,7 +119,11 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                 if(it.isSuccessful) {
                     _activityDetailSelectResult.postValue(it.body())
                 } else{
-                    // error
+                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if(errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
                 }
             }
 

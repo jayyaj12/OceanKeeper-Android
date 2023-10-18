@@ -18,16 +18,19 @@ import javax.inject.Inject
 class ApplyActivityViewModel @Inject constructor(private val applyActivityRepositoryImpl: ApplyActivityRepositoryImpl) :
     ViewModel() {
 
+    // 운동 수단 종류 선택
     private var _transportPosition = MutableLiveData<Int>(0)
     val transportPosition: LiveData<Int>
         get() = _transportPosition
+    // 개인정보 동의 여부
     private var _privacyAgreement = MutableLiveData<Boolean>(false)
     val privacyAgreement: LiveData<Boolean>
         get() = _privacyAgreement
-
+    // 지원 결과
     private var _applyResult = MutableLiveData<String>()
     val applyResult: LiveData<String> get() = _applyResult
 
+    // 에러 토스트 메세지 text
     private var _errorMsg = MutableLiveData<String>()
     val errorMsg: LiveData<String> get() = _errorMsg
 
