@@ -16,6 +16,7 @@ import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.util.ContextUtil
+import com.letspl.oceankepper.util.ParsingErrorMsg
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -38,15 +39,16 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
     val onLoginResult: LiveData<Boolean?>
         get() = _onLoginResult
 
+    // 에러 토스트 메세지 text
+    private var _errorMsg = MutableLiveData<String>()
+    val errorMsg: LiveData<String> get() = _errorMsg
+
     // 네이버 계정 정보 조회 요청
     fun getNaverUserInfo(token: String) {
-        Timber.e("token $token")
         CoroutineScope(Dispatchers.IO).launch {
-            val data = loginRepositoryImpl.getNaverUserInfo("Bearer $token")
-            Timber.e("data ${data.body()}")
-            when (data.isSuccessful) {
-                true -> {
-                    data.body()?.response.let { data ->
+            loginRepositoryImpl.getNaverUserInfo("Bearer $token").let {
+                if (it.isSuccessful) {
+                    it.body()?.response.let { data ->
                         data?.let {
                             LoginModel.login.provider = "naver"
                             LoginModel.login.providerId = it.id
@@ -56,8 +58,14 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                         }
                     }
                     loginUser()
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
                 }
-                else -> Timber.e("data is not Successful")
             }
         }
     }
@@ -69,30 +77,33 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
     // 로그인 시도 회원가입 유무 확인 후 분기 처리
     fun loginUser() {
         CoroutineScope(Dispatchers.IO).launch {
-            val data = loginRepositoryImpl.loginUser(
+            loginRepositoryImpl.loginUser(
                 LoginModel.login.deviceToken,
                 LoginModel.login.provider,
                 LoginModel.login.providerId
-            )
-
-            if(data.body() != null) {
-                UserModel.userInfo.token.accessToken = data.body()?.response?.token?.accessToken.toString()
-                UserModel.userInfo.token.accessTokenExpiresIn = data.body()?.response?.token?.accessTokenExpiresIn.toString()
-                UserModel.userInfo.token.grantType = data.body()?.response?.token?.grantType.toString()
-                UserModel.userInfo.token.refreshToken = data.body()?.response?.token?.refreshToken.toString()
-                UserModel.userInfo.user.id = data.body()?.response?.user?.id.toString()
-                UserModel.userInfo.user.nickname = data.body()?.response?.user?.nickname.toString()
-            }
-
-            Timber.e("data.isSuccessful ${data.isSuccessful}")
-
-            when(data.isSuccessful) {
-                true -> {
-                    // 로그인 성공
+            ).let {
+                if(it.isSuccessful) {
+                    UserModel.userInfo.let { data ->
+                        it.body()?.let {serverData ->
+                            data.token.accessToken =
+                                serverData.response.token.accessToken
+                            data.token.accessTokenExpiresIn =
+                                serverData.response.token.accessTokenExpiresIn
+                            data.token.grantType =
+                                serverData.response.token.grantType
+                            data.token.refreshToken =
+                                serverData.response.token.refreshToken
+                            data.user.id = serverData.response.user.id
+                            data.user.nickname = serverData.response.user.nickname
+                        }
+                    }
                     _onLoginResult.postValue(true)
-                }
-                else -> {
-                    // 로그인 정보 없음
+                } else {
+                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if(errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
                     _onLoginResult.postValue(false)
                 }
             }
