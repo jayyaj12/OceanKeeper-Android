@@ -8,6 +8,7 @@ import com.letspl.oceankepper.data.dto.PostApplyApplicationBody
 import com.letspl.oceankepper.data.model.MainModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.ApplyActivityRepositoryImpl
+import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -23,6 +24,12 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     private var _privacyAgreement = MutableLiveData<Boolean>(false)
     val privacyAgreement: LiveData<Boolean>
         get() = _privacyAgreement
+
+    private var _applyResult = MutableLiveData<String>()
+    val applyResult: LiveData<String> get() = _applyResult
+
+    private var _errorMsg = MutableLiveData<String>()
+    val errorMsg: LiveData<String> get() = _errorMsg
 
     fun postApplyActivity(
         dayOfBirth: String,
@@ -50,7 +57,17 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
                     getClickedTransport(),
                     UserModel.userInfo.user.id
                 )
-            )
+            ).let {
+                if(it.isSuccessful) {
+                    _applyResult.postValue(getRecruitCompleteText(it.body()?.timestamp!!))
+                } else {
+                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if(errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
         }
     }
 
@@ -67,6 +84,15 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
             4 -> "자차 (카셰어링 가능)"
             else -> ""
         }
+    }
+
+    // 활동 모집 모달 띄울 텍스트 생성
+    private fun getRecruitCompleteText(timestamp: String): String {
+        val text = timestamp.split("T")[0]
+        val year = text.substring(2, 4)
+        val month = text.substring(5, 7)
+        val date = text.substring(8, 10)
+        return "${year}년 ${month}월 ${date}일 활동에 대한 신청 완료!\n최종 선정 여부는 쪽지로 안내됩니다."
     }
 
     // 개인정보 동의하기 클릭

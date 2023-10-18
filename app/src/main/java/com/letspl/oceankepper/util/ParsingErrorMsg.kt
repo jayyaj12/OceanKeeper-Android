@@ -8,7 +8,12 @@ object ParsingErrorMsg {
         return if(errorMsg == "") {
             null
         } else {
+            Timber.e("errorMsg $errorMsg")
             JSONObject(errorMsg)
         }
+    }
+
+    fun parsingJsonObjectToErrorMsg(jsonObject: JSONObject): String {
+        return jsonObject.getJSONObject("response").getString("errorDetail")
     }
 }

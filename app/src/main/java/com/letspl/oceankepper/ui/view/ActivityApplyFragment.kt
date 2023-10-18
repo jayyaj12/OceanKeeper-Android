@@ -8,11 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.databinding.FragmentActivityApplyBinding
+import com.letspl.oceankepper.ui.dialog.RecruitActivityCompleteDialog
 import com.letspl.oceankepper.ui.viewmodel.ApplyActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ActivityApplyFragment: Fragment(), BaseActivity.OnBackPressedListener {
+class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private var _binding: FragmentActivityApplyBinding? = null
     private val binding: FragmentActivityApplyBinding get() = _binding!!
@@ -40,15 +41,24 @@ class ActivityApplyFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupViewModelObserver()
     }
 
     // 확인 버튼 클릭
     fun onClickedConfirm() {
         // 필수값이 모두 입력된 경우에만 활동 지원
-        if(applyActivityViewModel.isInputNecessaryValue(binding.nameEt.text.toString(), binding.phonenumberEt.text.toString(), binding.emailEt.text.toString())) {
+        if (applyActivityViewModel.isInputNecessaryValue(
+                binding.nameEt.text.toString(),
+                binding.phonenumberEt.text.toString(),
+                binding.emailEt.text.toString()
+            )
+        ) {
             // 개인정보 동의시에만 활동 지원 가능
-            if(android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.text.toString()).matches()) {
-                if(applyActivityViewModel.isPhoneNumberInt(binding.phonenumberEt.text.toString())) {
+            if (android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.text.toString())
+                    .matches()
+            ) {
+                if (applyActivityViewModel.isPhoneNumberInt(binding.phonenumberEt.text.toString())) {
                     if (applyActivityViewModel.privacyAgreement.value == true) {
                         applyActivityViewModel.postApplyActivity(
                             binding.birthdayEt.text.toString(),
@@ -63,13 +73,35 @@ class ActivityApplyFragment: Fragment(), BaseActivity.OnBackPressedListener {
                         )
                     }
                 } else {
-                    Toast.makeText(requireActivity(), "연락처 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), "연락처 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
             } else {
                 Toast.makeText(requireActivity(), "이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
             }
         } else {
             Toast.makeText(requireActivity(), "필수 값을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setupViewModelObserver() {
+        applyActivityViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
+
+        applyActivityViewModel.applyResult.observe(viewLifecycleOwner) {
+            val dialog = RecruitActivityCompleteDialog(requireContext(),
+                it,
+                {
+                    // 나의 활동 확인하기
+
+                },
+                {
+                    // 확인 버튼
+                    activity.onReplaceFragment(MainFragment(), false, true)
+                })
+
+            dialog.show()
         }
     }
 

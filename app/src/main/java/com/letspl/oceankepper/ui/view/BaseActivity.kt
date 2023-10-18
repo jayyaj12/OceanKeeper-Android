@@ -1,6 +1,8 @@
 package com.letspl.oceankepper.ui.view
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -104,5 +106,14 @@ class BaseActivity : AppCompatActivity() {
             }
             it.commitAllowingStateLoss()
         }
+    }
+
+    // 에러 메세지 표시
+    fun showErrorMsg(msg: String) {
+        binding.errorCl.visibility = View.VISIBLE
+        binding.errorMsgTv.text = msg
+        Handler(Looper.myLooper()!!).postDelayed({
+            binding.errorCl.visibility = View.GONE
+        }, 2000)
     }
 }
