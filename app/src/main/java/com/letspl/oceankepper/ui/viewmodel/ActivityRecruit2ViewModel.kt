@@ -15,6 +15,7 @@ import com.letspl.oceankepper.data.model.ActivityRecruitModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.util.ContextUtil
+import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +50,10 @@ class ActivityRecruit2ViewModel @Inject constructor(
     private var _recruitActivityIsSuccess = MutableLiveData<Boolean>()
     val recruitActivityIsSuccess: LiveData<Boolean> get() = _recruitActivityIsSuccess
 
+    // 에러 토스트 메세지 text
+    private var _errorMsg = MutableLiveData<String>()
+    val errorMsg: LiveData<String> get() = _errorMsg
+
     fun activityRegister(
         activityStory: String,
         etc: String,
@@ -73,22 +78,6 @@ class ActivityRecruit2ViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 uploadStoryImage()
             }
-
-            Timber.e("activityStory $activityStory")
-            Timber.e("etc $etc")
-            Timber.e("garbageCategory $garbageCategory")
-            Timber.e("keeperIntroduction $keeperIntroduction")
-            Timber.e("locationTag $locationTag")
-            Timber.e("preparation $preparation")
-            Timber.e("programDetails $programDetails")
-            Timber.e("quota $quota")
-            Timber.e("rewards $rewards")
-            Timber.e("title $title")
-            Timber.e("transportation $transportation")
-
-            Timber.e("activityRecruitViewModel.getRecruitEndDate() ${activityRecruitViewModel.getRecruitEndDate()}")
-            Timber.e("activityRecruitViewModel.getRecruitStartDate() ${activityRecruitViewModel.getRecruitStartDate()}")
-            Timber.e("activityRecruitViewModel.getActivityStartDate() ${activityRecruitViewModel.getActivityStartDate()}")
             withContext(Dispatchers.IO) {
                 activityRepositoryImpl.activityRegister(
                     activityStory,
@@ -114,7 +103,11 @@ class ActivityRecruit2ViewModel @Inject constructor(
                     if (it.isSuccessful) {
                         _recruitActivityIsSuccess.postValue(true)
                     } else {
-                        _recruitActivityIsSuccess.postValue(false)
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                        if(errorJsonObject != null) {
+                            val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
                 }
             }
@@ -128,6 +121,12 @@ class ActivityRecruit2ViewModel @Inject constructor(
                     .let {
                         if (it.isSuccessful) {
                             ActivityRecruit2Model.thumbnailImgStr = it.body()?.url.toString()
+                        } else {
+                            val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if(errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
                         }
                     }
             }
@@ -141,6 +140,12 @@ class ActivityRecruit2ViewModel @Inject constructor(
                     .let {
                         if (it.isSuccessful) {
                             ActivityRecruit2Model.keeperIntroduceImgStr = it.body()?.url.toString()
+                        } else {
+                            val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if(errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
                         }
                     }
             }
@@ -154,6 +159,12 @@ class ActivityRecruit2ViewModel @Inject constructor(
                     .let {
                         if (it.isSuccessful) {
                             ActivityRecruit2Model.activityStoryImgStr = it.body()?.url.toString()
+                        } else {
+                            val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if(errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
                         }
                     }
             }

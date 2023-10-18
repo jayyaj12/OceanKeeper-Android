@@ -133,24 +133,24 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
     }
 
     private fun setupViewModelObserver() {
+        activityRecruit2ViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
+
         // 활동 모집 등록 성공 여부
         activityRecruit2ViewModel.recruitActivityIsSuccess.observe(viewLifecycleOwner) {
-            if (it) {
-                val dialog = RecruitActivityCompleteDialog(requireContext(),
-                    activityRecruit2ViewModel.getRecruitCompleteText(),
-                    {
-                        // 나의 활동 확인하기
+            val dialog = RecruitActivityCompleteDialog(requireContext(),
+                activityRecruit2ViewModel.getRecruitCompleteText(),
+                {
+                    // 나의 활동 확인하기
 
-                    },
-                    {
-                        // 확인 버튼
-                        activity.onReplaceFragment(MainFragment(), false, true)
-                    })
+                },
+                {
+                    // 확인 버튼
+                    activity.onReplaceFragment(MainFragment(), false, true)
+                })
 
-                dialog.show()
-            } else {
-
-            }
+            dialog.show()
         }
     }
 
