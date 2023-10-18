@@ -29,12 +29,19 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
 
     // 서버로 받은 프로필 url 을 file 로 생성이 완료 되었는지 구분하는 변수
     private var _profileTempFileCreated = MutableLiveData<File>()
+
+    // 프로필 임시 이미지 생성 완료 여부
     val profileTempFileCreated: LiveData<File>
         get() = _profileTempFileCreated
 
+    // 회원가입 결과
     private var _signUpResult = MutableLiveData<Boolean>()
     val signUpResult: LiveData<Boolean>
         get() = _signUpResult
+
+    // 에러 토스트 메세지 text
+    private var _errorMsg = MutableLiveData<String>()
+    val errorMsg: LiveData<String> get() = _errorMsg
 
     // 서버로 내려받은 url 을 파일로 생성
     fun createProfileImageFile() {
@@ -86,6 +93,12 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
                             // 회원가입 진행
                             signUpUser(body.url)
                         }
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                        if(errorJsonObject != null) {
+                            val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
                 }
             }
@@ -113,8 +126,11 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
                             UserModel.userInfo.user.nickname = body.response.nickname
                         }
                     } else {
-                        _signUpResult.postValue(false)
-                        val errorJson = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                        if(errorJsonObject != null) {
+                            val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
                 }
             }
@@ -126,7 +142,6 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     }
 
     fun setTakePhotoUri(uri: Uri?) {
-        Timber.e("setTakePhotoUri $uri")
         JoinModel.takePhotoUri = uri
     }
     fun getTakePhotoUri(): Uri? {

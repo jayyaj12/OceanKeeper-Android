@@ -113,12 +113,12 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     private fun setupViewModelObserver() {
+        joinViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
+
         joinViewModel.signUpResult.observe(viewLifecycleOwner) {
-            if(it) {
-                activity.onReplaceFragment(JoinCompleteFragment())
-            } else {
-                Toast.makeText(requireContext(), "회원가입 실패", Toast.LENGTH_SHORT).show()
-            }
+            activity.onReplaceFragment(JoinCompleteFragment())
         }
 
         joinViewModel.profileTempFileCreated.observe(viewLifecycleOwner) {
