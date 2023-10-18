@@ -88,6 +88,10 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     // viewModel 옵저버 세팅
     private fun setUpViewModelObservers() {
+        mainViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
+
         // 다가오는 일정 조회 완료되면 viewpager 자동 슬라이드 setup
         mainViewModel.getComingScheduleResult.observe(viewLifecycleOwner) {
             setupViewPager2(it)
@@ -121,8 +125,6 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     // 데이터 불러오기
     private fun loadData() {
         mainViewModel.getComingSchedule() // 다가오는 일정 조회
-//        mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회
-//        Timber.e("loadData")
     }
 
     fun onClickedAreaChoice() {
