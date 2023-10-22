@@ -3,9 +3,6 @@ package com.letspl.oceankepper.ui.view
 import CustomSpinnerCrewNicknameAdapter
 import CustomSpinnerMessageTypeAdapter
 import CustomSpinnerProjectNameAdapter
-import android.app.Activity
-import android.graphics.Color
-import android.graphics.Rect
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -20,8 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import androidx.recyclerview.widget.RecyclerView.Orientation
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -35,9 +30,6 @@ import com.letspl.oceankepper.ui.dialog.ProgressDialog
 import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
 import com.letspl.oceankepper.util.MessageEnterType
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -170,7 +162,6 @@ class MessageFragment: Fragment() {
         bottomSheetDialog.show()
 
         getEnterType(bottomSheetDialog)
-        setupRatio(bottomSheetDialog)
 
         // 쪽지 유형 선택 시
         bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -187,9 +178,16 @@ class MessageFragment: Fragment() {
                         bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).visibility = View.GONE
 
                         messageViewModel.clearReceiveList()
+                        messageViewModel.setMessageEnterType(MessageEnterType.ActivityMessage)
 //                        messageViewModel.setReceiveList(messageViewModel.getCrewList())
                     }
-                    1,2 -> {
+                    1 -> {
+                            messageViewModel.setMessageEnterType(MessageEnterType.UserToUser)
+                        bottomSheetView.findViewById<TextView>(R.id.receive_tv).visibility = View.VISIBLE
+                        bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).visibility = View.VISIBLE
+                         }
+                    2 -> {
+                        messageViewModel.setMessageEnterType(MessageEnterType.FromUserToHost)
                         bottomSheetView.findViewById<TextView>(R.id.receive_tv).visibility = View.VISIBLE
                         bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).visibility = View.VISIBLE
                     }
@@ -238,9 +236,10 @@ class MessageFragment: Fragment() {
 
         // 전송 버튼 클릭
         bottomSheetView.findViewById<AppCompatButton>(R.id.send_btn).setOnClickListener {
-//            messageViewModel.postMessage(
-//                bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString()
-//            )
+            messageViewModel.postMessage(
+                bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
+                 messageViewModel.getConvertFromMessageCrewItemToStringForNickname()
+            )
         }
     }
 
@@ -293,7 +292,8 @@ class MessageFragment: Fragment() {
             }
             // 개인쪽지
             MessageEnterType.UserToUser -> {
-
+                setupRatio(bottomSheetDialog)
+                bottomSheetDialog.show()
             }
 
             else -> {}

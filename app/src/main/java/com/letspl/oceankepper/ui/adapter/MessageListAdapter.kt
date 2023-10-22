@@ -30,7 +30,7 @@ class MessageListAdapter(private val messageViewModel: MessageViewModel, private
                 titleTv.text = item.activityTitle
                 contentTv.text = item.messageBody
                 garbageCategoryTv.text = messageViewModel.getGarbageCategory(item.garbageCategory)
-                timeTv.text = messageViewModel.convertIso8601YYToCustomFormat(item.activityStartAt)
+                timeTv.text = messageViewModel.convertIso8601YYToCustomFormat(item.messageSentAt)
             }
 
             binding.moveDetailPageIv.setOnClickListener {

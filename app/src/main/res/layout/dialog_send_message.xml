@@ -106,6 +106,7 @@
             android:layout_height="172dp"
             android:orientation="vertical"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             android:background="@drawable/custom_radius8_solid_fff_stroke_f2f4f7"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="@+id/my_project_spinner"

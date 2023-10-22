@@ -1,16 +1,12 @@
 package com.letspl.oceankepper.ui.viewmodel
 
 import android.os.Build
-import android.os.Message
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.letspl.oceankepper.data.dto.GetActivityRecruitmentActivityNameList
 import com.letspl.oceankepper.data.dto.MessageItemDto
-import com.letspl.oceankepper.data.dto.MessageResponseDto
-import com.letspl.oceankepper.data.model.MainModel
 import com.letspl.oceankepper.data.model.MessageModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
@@ -24,6 +20,8 @@ import kotlinx.coroutines.launch
 import org.apache.commons.lang3.mutable.Mutable
 import timber.log.Timber
 import java.text.SimpleDateFormat
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -119,7 +117,7 @@ class MessageViewModel @Inject constructor(
 
     // 쪽지 보내기
     fun postMessage(content: String, receiveList: List<String>) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             messageRepositoryImpl.postMessage(
                 MessageModel.SendMessageRequestBody(
                     getActivityNameSpinnerClickActivityId(),
@@ -127,7 +125,7 @@ class MessageViewModel @Inject constructor(
                     receiveList,
                     getTypeSpinnerClickedItem()
                 )
-            )?.let {
+            ).let {
                 if(it.isSuccessful) {
                     Timber.e("성공 ")
                 } else {
@@ -141,52 +139,25 @@ class MessageViewModel @Inject constructor(
         }
     }
 
-    fun convertIso8601YYToCustomFormat(iso8601String: String): String {
-        try {
-            val isoFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-            isoFormatter.timeZone = TimeZone.getTimeZone("UTC")
-            val date = isoFormatter.parse(iso8601String)
-
-            val customFormatter = SimpleDateFormat("YY-MM-dd hh:mm:ss", Locale.US)
-            customFormatter.timeZone = TimeZone.getDefault()
-
-            return customFormatter.format(date)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return ""
+    fun convertIso8601YYToCustomFormat(date: String): String {
+        var dateStr = date.replace("-", ".")
+        return "${dateStr.substring(2, 10)} ${dateStr.substring(11 ,19)}"
     }
 
-    fun convertIso8601YYYYToCustomFormat(iso8601String: String): String {
-        try {
-            val isoFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-            isoFormatter.timeZone = TimeZone.getTimeZone("UTC")
-            val date = isoFormatter.parse(iso8601String)
-
-            val customFormatter = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US)
-            customFormatter.timeZone = TimeZone.getDefault()
-
-            return customFormatter.format(date)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return ""
+    fun convertIso8601YYYYToCustomFormat(date: String): String {
+        var dateStr = date.replace("-", ".")
+        return "${dateStr.substring(0, 10)} ${dateStr.substring(11 ,19)}"
     }
 
-    fun convertAMPMToCustomFormat(iso8601String: String): String {
-        try {
-            val isoFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-            isoFormatter.timeZone = TimeZone.getTimeZone("UTC")
-            val date = isoFormatter.parse(iso8601String)
-
-            val customFormatter = SimpleDateFormat("yyyy.MM.dd hh:mma", Locale.US)
-            customFormatter.timeZone = TimeZone.getDefault()
-
-            return customFormatter.format(date)
-        } catch (e: Exception) {
-            e.printStackTrace()
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun convertAMPMToCustomFormat(date: String): String {
+        var dateStr = date.replace("-", ".")
+        val ampm = if(date.substring(11, 13).toInt() >= 12) {
+            "PM"
+        } else {
+            "AM"
         }
-        return ""
+        return "${dateStr.substring(0, 10)} ${dateStr.substring(11 ,16)}$ampm"
     }
 
     fun getMessage(type: String) {
@@ -224,6 +195,16 @@ class MessageViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    // MessageSpinnerCrewNicknameItem의 nickname만 필터링 하여 list로 반환함
+    fun getConvertFromMessageCrewItemToStringForNickname(): List<String> {
+        val crewList: ArrayList<String> = arrayListOf()
+        getCrewList().forEach{ item ->
+            crewList.add(item.nickname)
+        }
+
+        return crewList
     }
 
     fun setMessageEnterType(_enterType: MessageEnterType) {
