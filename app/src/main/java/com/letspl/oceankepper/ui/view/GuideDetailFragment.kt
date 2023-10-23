@@ -49,8 +49,6 @@ class GuideDetailFragment(private val videoId: String) : Fragment(), BaseActivit
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 super.onReady(youTubePlayer)
 
-                Timber.e("videoId $videoId")
-
                 youTubePlayer.loadVideo(videoId, 0f)
             }
         })
