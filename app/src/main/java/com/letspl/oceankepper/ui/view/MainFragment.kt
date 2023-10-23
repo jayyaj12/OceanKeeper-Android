@@ -184,6 +184,10 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         activity.onReplaceFragment(ActivityRecruitFragment(), false, false)
     }
 
+    fun onMoveGuide() {
+        activity.onReplaceFragment(GuideFragment(), false, false)
+    }
+
     // recyclerview 세팅
     private fun setupRecyclerview() {
         val gridLayoutManager = GridLayoutManager(requireContext(), 2)

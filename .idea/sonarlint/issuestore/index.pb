@@ -47,3 +47,9 @@ Lapp/src/main/java/com/letspl/oceankepper/data/model/ActivityRecruit2Model.kt,f
 Sapp/src/main/java/com/letspl/oceankepper/ui/adapter/ActivityStartCalendarAdapter.kt,d\3\d3fa1c4a31a89ffd11538421f0eb2a2af8aac18f
 l
 <app/src/main/java/com/letspl/oceankepper/data/dto/MainDto.kt,7\b\7b3e5b128aaf884fd12a6a0562d7afa4b51c00a2
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+n
+>app/src/main/java/com/letspl/oceankepper/util/NewScrollView.kt,e\b\ebb9a2f4a05ee7b2e336a38db891fdc321c558d2
+p
+@app/src/main/java/com/letspl/oceankepper/ui/view/BaseActivity.kt,0\2\02bda5ce2633adb60baa821d2793207cb77a2886
