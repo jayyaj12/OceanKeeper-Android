@@ -21,16 +21,21 @@ import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragment: Fragment() {
+class LoginFragment: Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding get() = _binding!!
     private val loginViewModel: LoginViewModel by viewModels()
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
+
     @Inject lateinit var naverLoginManager: NaverLoginManager
     @Inject lateinit var kakaoLoginManager: KakaoLoginManager
     lateinit var appleLoginManager: AppleLoginManager
+
+    override fun onBackPressed() {
+        activity.finish()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

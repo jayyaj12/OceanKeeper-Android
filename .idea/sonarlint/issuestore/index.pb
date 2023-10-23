@@ -31,8 +31,6 @@ Oapp/src/main/java/com/letspl/oceankepper/util/loginManager/NaverLoginManager.kt
 Napp/src/main/java/com/letspl/oceankepper/data/repository/ActivityRepository.kt,8\1\81d1a77ca0f3938f9c5fbf610bf0f2e9157f0ef6
 
 Oapp/src/main/java/com/letspl/oceankepper/data/repository/LoginRepositoryImpl.kt,d\6\d6d71d5efed4304e8bfcf3452fe315bbfeded0b9
-q
-Aapp/src/main/java/com/letspl/oceankepper/ui/view/LoginFragment.kt,0\7\07eda0a6d3ea23d84389a8e006aaaede800d1855
 s
 Capp/src/main/java/com/letspl/oceankepper/data/network/ApiService.kt,c\9\c93429ee48800b13f89f9d8e693e72872052b0a9
 ‚
