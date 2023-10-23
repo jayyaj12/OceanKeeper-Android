@@ -31,8 +31,6 @@ Oapp/src/main/java/com/letspl/oceankepper/util/loginManager/NaverLoginManager.kt
 Napp/src/main/java/com/letspl/oceankepper/data/repository/ActivityRepository.kt,8\1\81d1a77ca0f3938f9c5fbf610bf0f2e9157f0ef6
 
 Oapp/src/main/java/com/letspl/oceankepper/data/repository/LoginRepositoryImpl.kt,d\6\d6d71d5efed4304e8bfcf3452fe315bbfeded0b9
-P
- app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 q
 Aapp/src/main/java/com/letspl/oceankepper/ui/view/LoginFragment.kt,0\7\07eda0a6d3ea23d84389a8e006aaaede800d1855
 s
@@ -47,7 +45,5 @@ Lapp/src/main/java/com/letspl/oceankepper/data/model/ActivityRecruit2Model.kt,f
 Sapp/src/main/java/com/letspl/oceankepper/ui/adapter/ActivityStartCalendarAdapter.kt,d\3\d3fa1c4a31a89ffd11538421f0eb2a2af8aac18f
 l
 <app/src/main/java/com/letspl/oceankepper/data/dto/MainDto.kt,7\b\7b3e5b128aaf884fd12a6a0562d7afa4b51c00a2
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 n
 >app/src/main/java/com/letspl/oceankepper/util/NewScrollView.kt,e\b\ebb9a2f4a05ee7b2e336a38db891fdc321c558d2
