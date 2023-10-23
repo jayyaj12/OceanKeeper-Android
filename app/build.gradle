@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    // 유투브 플레이어
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation "org.threeten:threetenbp:1.5.1"
     // 탭 레이아웃
