@@ -25,7 +25,7 @@ class GuideDetailFragment(private val videoId: String) : Fragment(), BaseActivit
     }
 
     override fun onBackPressed() {
-        activity.onReplaceFragment(GuideFragment(), false, true)
+        onClickBackBtn()
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +33,7 @@ class GuideDetailFragment(private val videoId: String) : Fragment(), BaseActivit
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGuideDetailBinding.inflate(layoutInflater)
+        binding.guideDetailFragment = this
         return binding.root
     }
 
@@ -52,6 +53,10 @@ class GuideDetailFragment(private val videoId: String) : Fragment(), BaseActivit
                 youTubePlayer.loadVideo(videoId, 0f)
             }
         })
+    }
+
+    fun onClickBackBtn() {
+        activity.onReplaceFragment(GuideFragment(), false, false)
     }
 
     override fun onDestroyView() {

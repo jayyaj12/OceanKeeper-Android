@@ -22,7 +22,7 @@ class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     override fun onBackPressed() {
-        activity.onReplaceFragment(MainFragment(), false, true)
+        onClickBackBtn()
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +30,7 @@ class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGuideBinding.inflate(layoutInflater)
+        binding.guideFragment = this
         return binding.root
     }
 
@@ -51,6 +52,10 @@ class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
             GuideItemDto(3, "바다살리기 네트워크와 해양정화활동 시작하기", "컨텐트3", "2023-10-23T07:33:07.135Z","B9EsAERudp8")
         )
         guideListAdapter.submitList(arr)
+    }
+
+    fun onClickBackBtn() {
+        activity.onReplaceFragment(MainFragment(), false, true)
     }
 
     override fun onDestroyView() {
