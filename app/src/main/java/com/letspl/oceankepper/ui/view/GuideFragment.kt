@@ -40,13 +40,15 @@ class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     private fun setupGuideListAdapter() {
-        guideListAdapter = GuideListAdapter()
+        guideListAdapter = GuideListAdapter() {
+            activity.onReplaceFragment(GuideDetailFragment(it))
+        }
         binding.guideRv.adapter = guideListAdapter
 
         val arr = arrayListOf<GuideItemDto>(
-            GuideItemDto(1, "바다살리기 네트워크와 해양정화활동 시작하기", "컨텐트1", "2023-10-23T07:33:07.135Z"),
-            GuideItemDto(2, "잠깐! 해양쓰레기 그냥 주우면 안된다고?", "컨텐트2", "2023-10-23T07:33:07.135Z"),
-            GuideItemDto(3, "바다살리기 네트워크와 해양정화활동 시작하기", "컨텐트3", "2023-10-23T07:33:07.135Z")
+            GuideItemDto(1, "바다살리기 네트워크와 해양정화활동 시작하기", "컨텐트1", "2023-10-23T07:33:07.135Z", "B9EsAERudp8"),
+            GuideItemDto(2, "잠깐! 해양쓰레기 그냥 주우면 안된다고?", "컨텐트2", "2023-10-23T07:33:07.135Z","B9EsAERudp8"),
+            GuideItemDto(3, "바다살리기 네트워크와 해양정화활동 시작하기", "컨텐트3", "2023-10-23T07:33:07.135Z","B9EsAERudp8")
         )
         guideListAdapter.submitList(arr)
     }

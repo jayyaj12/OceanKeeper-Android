@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.letspl.oceankepper.data.dto.GuideItemDto
 import com.letspl.oceankepper.databinding.ItemGuideBinding
 
-class GuideListAdapter: ListAdapter<GuideItemDto, GuideListAdapter.GuideViewHolder>(diffUtil) {
+class GuideListAdapter(private val onClicked: (String) -> Unit): ListAdapter<GuideItemDto, GuideListAdapter.GuideViewHolder>(diffUtil) {
     companion object {
         val diffUtil = object: DiffUtil.ItemCallback<GuideItemDto>() {
             override fun areItemsTheSame(oldItem: GuideItemDto, newItem: GuideItemDto): Boolean {
@@ -22,10 +22,14 @@ class GuideListAdapter: ListAdapter<GuideItemDto, GuideListAdapter.GuideViewHold
         }
     }
 
-    class GuideViewHolder(val binding: ItemGuideBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class GuideViewHolder(val binding: ItemGuideBinding): RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: GuideItemDto) {
             binding.titleTv.text = item.title
             binding.dateTv.text = item.date.substring(0, 10).replace("-", ".")
+
+            binding.clickIv.setOnClickListener {
+                onClicked(item.videoId)
+            }
         }
 
         fun disableLastLine() {

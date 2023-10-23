@@ -51,5 +51,3 @@ l
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 n
 >app/src/main/java/com/letspl/oceankepper/util/NewScrollView.kt,e\b\ebb9a2f4a05ee7b2e336a38db891fdc321c558d2
-p
-@app/src/main/java/com/letspl/oceankepper/ui/view/BaseActivity.kt,0\2\02bda5ce2633adb60baa821d2793207cb77a2886
