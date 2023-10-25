@@ -1,25 +1,29 @@
 package com.letspl.oceankepper.ui.adapter
 
+import android.os.Build
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.letspl.oceankepper.R
-import com.letspl.oceankepper.data.NoticeItemDto
+import com.letspl.oceankepper.data.dto.GetNoticeListDto
 import com.letspl.oceankepper.databinding.ItemNoticeBinding
 
-class NoticeListAdapter : ListAdapter<NoticeItemDto, NoticeListAdapter.NoticeViewHolder>(diffUtil) {
+class NoticeListAdapter : ListAdapter<GetNoticeListDto, NoticeListAdapter.NoticeViewHolder>(diffUtil) {
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<NoticeItemDto>() {
-            override fun areItemsTheSame(oldItem: NoticeItemDto, newItem: NoticeItemDto): Boolean {
+        private val diffUtil = object : DiffUtil.ItemCallback<GetNoticeListDto>() {
+            override fun areItemsTheSame(oldItem: GetNoticeListDto, newItem: GetNoticeListDto): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: NoticeItemDto, newItem: NoticeItemDto
+                oldItem: GetNoticeListDto, newItem: GetNoticeListDto
             ): Boolean {
                 return oldItem.id == newItem.id
             }
@@ -28,10 +32,11 @@ class NoticeListAdapter : ListAdapter<NoticeItemDto, NoticeListAdapter.NoticeVie
 
     inner class NoticeViewHolder(private val binding: ItemNoticeBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(item: NoticeItemDto) {
-            binding.titleTv.text = item.title
-            binding.dateTv.text = item.date.substring(0, 10).replace("-", ".")
-            binding.contentTv.text = item.content
+        @RequiresApi(Build.VERSION_CODES.N)
+        fun onBind(item: GetNoticeListDto) {
+            binding.dateTv.text = item.modifiedAt.substring(0, 10).replace("-", ".")
+            binding.titleTv.text = Html.fromHtml(item.title, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            binding.contentTv.text = Html.fromHtml(item.contents, HtmlCompat.FROM_HTML_MODE_LEGACY)
             binding.noticeClickIv.setBackgroundResource(R.drawable.notice_normal_icon)
 
             binding.noticeClickIv.setOnClickListener {

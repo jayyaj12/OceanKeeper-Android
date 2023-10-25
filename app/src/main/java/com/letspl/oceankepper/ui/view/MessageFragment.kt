@@ -34,7 +34,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MessageFragment: Fragment() {
+class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
+
+    override fun onBackPressed() {
+        activity.finish()
+    }
 
     @Inject
     lateinit var progressDialog: ProgressDialog
@@ -46,6 +50,7 @@ class MessageFragment: Fragment() {
         requireActivity() as BaseActivity
     }
     private lateinit var messageReceiveCrewAdapter: MessageReceiveCrewAdapter
+    private lateinit var bottomSheetDialog : BottomSheetDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +58,7 @@ class MessageFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMessageBinding.inflate(layoutInflater)
+        binding.messageFragment = this
         return binding.root
     }
 
@@ -69,6 +75,11 @@ class MessageFragment: Fragment() {
     }
 
     private fun setupViewModelObserver() {
+        messageViewModel.sendMessageResult.observe(viewLifecycleOwner) {
+            bottomSheetDialog.dismiss()
+            activity.showSuccessMsg("메세지 전송이 정상 처리 되었습니다.")
+        }
+
         messageViewModel.errorMsg.observe(viewLifecycleOwner) {
             activity.showErrorMsg(it)
         }
@@ -144,10 +155,16 @@ class MessageFragment: Fragment() {
         bottomSheetDialog.findViewById<RecyclerView>(R.id.receive_rv)?.adapter = messageReceiveCrewAdapter
     }
 
+    // 메세지 전송 bottomSheetDialog 표시
+    fun showSendMessageDialog() {
+        bottomSheetDialog.show()
+    }
+
+    // 메세지 전송 bottomDialogSheet 세팅
     private fun setupSendMessageBottomSheetDialog(projectNameList: List<MessageModel.MessageSpinnerProjectNameItem>, crewNicknameList: List<MessageModel.MessageSpinnerCrewNicknameItem>) {
 
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_send_message, null)
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(bottomSheetView)
 
         setupMessageReceiveCrewAdapterRecyclerView(bottomSheetDialog)
@@ -159,7 +176,6 @@ class MessageFragment: Fragment() {
         val crewNicknameSpinner = CustomSpinnerCrewNicknameAdapter(requireContext(), R.layout.spinner_outer_layout, crewNicknameList, messageViewModel)
         bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).adapter = crewNicknameSpinner
         bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetDialog.show()
 
         getEnterType(bottomSheetDialog)
 

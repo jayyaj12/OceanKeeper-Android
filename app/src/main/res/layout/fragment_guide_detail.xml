@@ -39,6 +39,7 @@
             android:fontFamily="@font/pretendard_bold"
             android:textColor="@color/gray_scale_g900"
             android:textSize="16dp"
+            android:id="@+id/title_tv"
             app:layout_constraintBottom_toBottomOf="@id/back_icon_ll"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

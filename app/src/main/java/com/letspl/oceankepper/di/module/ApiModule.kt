@@ -6,10 +6,12 @@ import com.letspl.oceankepper.BuildConfig
 import com.letspl.oceankepper.data.network.ApiService
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.data.repository.ApplyActivityRepositoryImpl
+import com.letspl.oceankepper.data.repository.GuideRepositoryImpl
 import com.letspl.oceankepper.data.repository.JoinRepositoryImpl
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.data.repository.MainRepositoryImpl
 import com.letspl.oceankepper.data.repository.MessageRepositoryImpl
+import com.letspl.oceankepper.data.repository.NoticeRepositoryImpl
 import com.letspl.oceankepper.ui.dialog.ProgressDialog
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
@@ -191,6 +193,14 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideMessageRepositoryImpl(@OceanService apiService: ApiService) = MessageRepositoryImpl(apiService)
+
+    @Singleton
+    @Provides
+    fun provideNoticeRepositoryImpl(@OceanService apiService: ApiService) = NoticeRepositoryImpl(apiService)
+
+    @Singleton
+    @Provides
+    fun provideGuideRepositoryImpl(@OceanService apiService: ApiService) = GuideRepositoryImpl(apiService)
 
     @Singleton
     @Provides

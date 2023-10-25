@@ -128,5 +128,19 @@ interface ApiService {
         @Body message: MessageModel.SendMessageRequestBody
     ): Response<PostSendMessageResultDto>
 
+    @GET("/notice")
+    suspend fun getNotice(
+        @Header("Authorization") token: String,
+        @Query("notice-id") noticeId: Int?,
+        @Query("size") size: Int
+    ): Response<GetNoticeDto>
+
+
+    @GET("/guide")
+    suspend fun getGuide(
+        @Header("Authorization") token: String,
+        @Query("notice-id") noticeId: Int?,
+        @Query("size") size: Int
+    ): Response<GetGuideDto>
 
 }

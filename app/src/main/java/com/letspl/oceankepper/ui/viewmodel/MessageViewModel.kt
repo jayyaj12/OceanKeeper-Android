@@ -37,6 +37,11 @@ class MessageViewModel @Inject constructor(
     val getMessageResult: LiveData<List<MessageItemDto>?>
         get() = _getMessageResult
 
+    // 메세지 전송 결과
+    private var _sendMessageResult = MutableLiveData<Boolean>()
+    val sendMessageResult: LiveData<Boolean>
+        get() = _sendMessageResult
+
     // 프로젝트 크루 닉네임 불러오기
     private var _getCrewNicknameList = MutableLiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>>()
     val getCrewNicknameList: LiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>> get() = _getCrewNicknameList
@@ -127,7 +132,7 @@ class MessageViewModel @Inject constructor(
                 )
             ).let {
                 if(it.isSuccessful) {
-                    Timber.e("성공 ")
+                    _sendMessageResult.postValue(true)
                 } else {
                     val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
                     if(errorJsonObject != null) {

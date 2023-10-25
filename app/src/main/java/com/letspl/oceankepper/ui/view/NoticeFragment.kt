@@ -5,15 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.R
-import com.letspl.oceankepper.data.NoticeItemDto
 import com.letspl.oceankepper.databinding.FragmentNoticeBinding
 import com.letspl.oceankepper.ui.adapter.NoticeListAdapter
+import com.letspl.oceankepper.ui.viewmodel.NoticeViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
+@AndroidEntryPoint
 class NoticeFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentNoticeBinding? = null
     private val binding: FragmentNoticeBinding get() = _binding!!
     private lateinit var noticeListAdapter: NoticeListAdapter
+    private val noticeViewModel: NoticeViewModel by viewModels()
     private val activity by lazy{
         requireActivity() as BaseActivity
     }
@@ -36,21 +41,37 @@ class NoticeFragment : Fragment(), BaseActivity.OnBackPressedListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupNoticeListAdapter()
+        setupViewModelObserver()
+        getNotice()
+    }
+
+    // 공지사항 조회
+    private fun getNotice() {
+        noticeViewModel.getNotice(null, 10)
+    }
+
+    private fun setupViewModelObserver() {
+        // 공지사항 조회 결과를 listAdapter 에 반영함
+        noticeViewModel.getNoticeResult.observe(viewLifecycleOwner) {
+            noticeListAdapter.submitList(it.toMutableList())
+        }
+
+        // 에러 시 토스트 표시
+        noticeViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
     }
 
     private fun setupNoticeListAdapter() {
         noticeListAdapter = NoticeListAdapter()
         binding.noticeRv.adapter = noticeListAdapter
 
-        val arr = arrayListOf<NoticeItemDto>(
-            NoticeItemDto(0, "제목1", "컨텐츠1", "2023.03.21"),
-            NoticeItemDto(1, "제목2", "컨텐츠2", "2023.03.21"),
-            NoticeItemDto(2, "제목3", "컨텐츠3", "2023.03.21"),
-            NoticeItemDto(3, "제목4", "컨텐츠4", "2023.03.21"),
-            NoticeItemDto(4, "제목5", "컨텐츠5", "2023.03.21"),
-        )
-
-        noticeListAdapter.submitList(arr)
+        // 공지사항 list 의 최하단에 오면 새로운 데이터를 추가로 조회한다.
+        binding.noticeRv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if(!binding.noticeRv.canScrollVertically(1)) {
+                noticeViewModel.getNotice(noticeViewModel.getLastNoticeId(), 10)
+            }
+        }
     }
 
     fun onClickBackBtn() {

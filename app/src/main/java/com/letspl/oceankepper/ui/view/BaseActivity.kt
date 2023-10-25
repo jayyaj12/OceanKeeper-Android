@@ -60,7 +60,7 @@ class BaseActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.my_activity_icon -> {
-                    onReplaceFragment(MainFragment(), false, true)
+                    onReplaceFragment(MyActivityFragment(), false, true)
                     return@setOnItemSelectedListener true
                 }
                 else -> return@setOnItemSelectedListener true
@@ -114,6 +114,15 @@ class BaseActivity : AppCompatActivity() {
         binding.errorMsgTv.text = msg
         Handler(Looper.myLooper()!!).postDelayed({
             binding.errorCl.visibility = View.GONE
-        }, 2000)
+        }, 3000)
+    }
+
+    // 에러 메세지 표시
+    fun showSuccessMsg(msg: String) {
+        binding.sucessCl.visibility = View.VISIBLE
+        binding.successMsgTv.text = msg
+        Handler(Looper.myLooper()!!).postDelayed({
+            binding.sucessCl.visibility = View.GONE
+        }, 3000)
     }
 }

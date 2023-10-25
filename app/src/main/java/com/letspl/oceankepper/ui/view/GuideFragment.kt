@@ -5,12 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.R
-import com.letspl.oceankepper.data.dto.GuideItemDto
 import com.letspl.oceankepper.databinding.FragmentGuideBinding
 import com.letspl.oceankepper.ui.adapter.GuideListAdapter
+import com.letspl.oceankepper.ui.viewmodel.GuideViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private var _binding: FragmentGuideBinding? = null
@@ -20,6 +22,7 @@ class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
+    private val guideViewModel: GuideViewModel by viewModels()
 
     override fun onBackPressed() {
         onClickBackBtn()
@@ -38,20 +41,38 @@ class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupGuideListAdapter()
+        setupViewModelObserver()
+        getGuide()
+    }
+
+    private fun setupViewModelObserver() {
+        // 공지사항 조회 결과를 listAdapter 에 반영함
+        guideViewModel.getGuideResult.observe(viewLifecycleOwner) {
+            guideListAdapter.submitList(it.toMutableList())
+        }
+
+        // 에러 시 토스트 표시
+        guideViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
+    }
+
+    private fun getGuide() {
+        guideViewModel.getGuide(null, 10)
     }
 
     private fun setupGuideListAdapter() {
-        guideListAdapter = GuideListAdapter() {
-            activity.onReplaceFragment(GuideDetailFragment(it))
+        guideListAdapter = GuideListAdapter { videoId, videoName ->
+            activity.onReplaceFragment(GuideDetailFragment(videoId, videoName))
         }
         binding.guideRv.adapter = guideListAdapter
 
-        val arr = arrayListOf<GuideItemDto>(
-            GuideItemDto(1, "바다살리기 네트워크와 해양정화활동 시작하기", "컨텐트1", "2023-10-23T07:33:07.135Z", "B9EsAERudp8"),
-            GuideItemDto(2, "잠깐! 해양쓰레기 그냥 주우면 안된다고?", "컨텐트2", "2023-10-23T07:33:07.135Z","B9EsAERudp8"),
-            GuideItemDto(3, "바다살리기 네트워크와 해양정화활동 시작하기", "컨텐트3", "2023-10-23T07:33:07.135Z","B9EsAERudp8")
-        )
-        guideListAdapter.submitList(arr)
+        // 이용가이드 list 의 최하단에 오면 새로운 데이터를 추가로 조회한다.
+        binding.guideRv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if(!binding.guideRv.canScrollVertically(1)) {
+                guideViewModel.getGuide(guideViewModel.getLastGuideId(), 10)
+            }
+        }
     }
 
     fun onClickBackBtn() {

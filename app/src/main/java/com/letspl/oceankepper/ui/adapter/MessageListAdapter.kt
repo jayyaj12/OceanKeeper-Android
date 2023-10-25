@@ -29,7 +29,7 @@ class MessageListAdapter(private val messageViewModel: MessageViewModel, private
             binding.apply {
                 titleTv.text = item.activityTitle
                 contentTv.text = item.messageBody
-                garbageCategoryTv.text = messageViewModel.getGarbageCategory(item.garbageCategory)
+                fromTv.text = item.from
                 timeTv.text = messageViewModel.convertIso8601YYToCustomFormat(item.messageSentAt)
             }
 

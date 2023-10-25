@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.letspl.oceankepper.R
-import com.letspl.oceankepper.data.dto.GuideItemDto
 import com.letspl.oceankepper.databinding.FragmentGuideBinding
 import com.letspl.oceankepper.databinding.FragmentGuideDetailBinding
 import com.letspl.oceankepper.ui.adapter.GuideListAdapter
@@ -14,7 +13,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import timber.log.Timber
 
-class GuideDetailFragment(private val videoId: String) : Fragment(), BaseActivity.OnBackPressedListener {
+class GuideDetailFragment(private val videoId: String, private val videoName: String) : Fragment(), BaseActivity.OnBackPressedListener {
 
     private var _binding: FragmentGuideDetailBinding? = null
     val binding: FragmentGuideDetailBinding get() = _binding!!
@@ -41,6 +40,12 @@ class GuideDetailFragment(private val videoId: String) : Fragment(), BaseActivit
         super.onViewCreated(view, savedInstanceState)
 
         setupPlayYoutubeVideo()
+        setupVideoName()
+    }
+
+    // 비디오 명 설정
+    private fun setupVideoName() {
+        binding.titleTv.text = videoName
     }
 
     private fun setupPlayYoutubeVideo() {
