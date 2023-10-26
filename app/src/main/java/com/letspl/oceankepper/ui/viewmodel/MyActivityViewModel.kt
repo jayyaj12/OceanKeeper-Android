@@ -1,6 +1,12 @@
 package com.letspl.oceankepper.ui.viewmodel
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,8 +19,10 @@ import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -54,7 +62,8 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     }
 
     fun uploadEditProfileImage() {
-        viewModelScope.launch(Dispatchers.IO) {
+        Timber.e("uploadEditProfileImage2")
+        CoroutineScope(Dispatchers.IO).launch {
             activityViRepositoryImpl.uploadEditProfileImage(getProfileImageFile()!!).let {
                 if(it.isSuccessful) {
                     UserModel.userInfo.user.profile = it.body()?.url!!
@@ -70,14 +79,31 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
         }
     }
 
+    fun getUserProfile(): String {
+        return UserModel.userInfo.user.profile
+    }
+
+    //유저 닉네임 불러오기
+    fun getUserNickname(): String {
+        return UserModel.userInfo.user.nickname
+    }
+
+    // 프로필 이미지 파일 불러오기
     private fun getProfileImageFile(): File? {
         return MyActivityModel.profileImageFile
     }
+
+    // 프로필 이미지 파일 세팅하기
     fun setProfileImageFile(file: File?) {
         MyActivityModel.profileImageFile = file
-    } fun setTakePhotoUri(uri: Uri?) {
+    }
+
+    // 사진 촬영 이미지 세팅하기
+    fun setTakePhotoUri(uri: Uri?) {
         MyActivityModel.takePhotoUri = uri
     }
+
+    // 사진 촬영 이미지 불러오기
     fun getTakePhotoUri(): Uri? {
         return MyActivityModel.takePhotoUri
     }

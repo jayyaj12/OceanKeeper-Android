@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.FragmentMessageBinding
 import com.letspl.oceankepper.databinding.FragmentMyActivityBinding
@@ -24,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
@@ -60,6 +62,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                     )
                 })
             }
+            Timber.e("uploadEditProfileImage1")
 
             withContext(Dispatchers.IO) {
                 myActivityViewModel.uploadEditProfileImage()
@@ -75,6 +78,8 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 Glide.with(requireContext())
                     .load(it)
                     .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(binding.userProfileIv)
 
                 // 이미지 파일 저장
@@ -119,8 +124,12 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 유저 프로필 표시
     private fun setupUserProfile() {
+        Timber.e("profile ${myActivityViewModel.getUserProfile()}")
+
         Glide.with(requireContext())
-            .load(loginViewModel.getLoginInfo().profile)
+            .load(myActivityViewModel.getUserProfile())
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(binding.userProfileIv)
     }
 
