@@ -19,6 +19,7 @@ import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
 import com.letspl.oceankepper.ui.viewmodel.JoinViewModel
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
+import com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel
 import com.letspl.oceankepper.util.ContextUtil
 import com.letspl.oceankepper.util.loginManager.KakaoLoginManager
 import dagger.Binds
@@ -208,6 +209,10 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideMessageViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = MessageViewModel(MessageRepositoryImpl(oceanService), ActivityRepositoryImpl(oceanService))
+
+    @Singleton
+    @Provides
+    fun provideMyActivityViewModel(@OceanService oceanService: ApiService) = MyActivityViewModel(ActivityRepositoryImpl(oceanService))
 
     @Singleton
     @Provides

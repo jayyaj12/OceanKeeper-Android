@@ -160,3 +160,18 @@ data class PostSendMessageResultDto(
 data class PostSendMessageResponseDto(
     val messageId: List<Int>
 )
+
+
+// 요청자가 호스트인 활동의 크루원 닉네임 불러오기
+@kotlinx.serialization.Serializable
+data class GetActivityInfoDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: GetActivityInfoResponseDto
+)
+@kotlinx.serialization.Serializable
+data class GetActivityInfoResponseDto(
+    val activity: Int,
+    val hosting: Int,
+    val noShow: Int
+)

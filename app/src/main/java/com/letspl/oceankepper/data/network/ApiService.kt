@@ -135,12 +135,18 @@ interface ApiService {
         @Query("size") size: Int
     ): Response<GetNoticeDto>
 
-
     @GET("/guide")
     suspend fun getGuide(
         @Header("Authorization") token: String,
         @Query("notice-id") noticeId: Int?,
         @Query("size") size: Int
     ): Response<GetGuideDto>
+
+    // 활동정보 불러오기
+    @GET("/activity/activity-info/user/{userId}")
+    suspend fun getActivityInfo(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String,
+    ): Response<GetActivityInfoDto>
 
 }

@@ -18,4 +18,6 @@ interface ActivityRepository {
     suspend fun getActivityProject(): Response<GetActivityRecruitmentActivityNameResultDto>
     // 크루원 닉네임 불러오기
     suspend fun getCrewNickname(activityId: String): Response<GetActivityRecruitmentCrewNameResultDto>
+    // 활동정보 불러오기
+    suspend fun getActivityInfo(userId: String): Response<GetActivityInfoDto>
 }
