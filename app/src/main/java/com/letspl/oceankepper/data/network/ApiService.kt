@@ -21,6 +21,14 @@ interface ApiService {
         @Part profile: MultipartBody.Part
     ): Response<UploadProfileImageDto>
 
+    // 프로필 이미지 수정
+    @Multipart
+    @POST("image/edit/profile")
+    suspend fun uploadEditProfileImageFile(
+        @Header("Authorization") token: String,
+        @Part profile: MultipartBody.Part
+    ): Response<UploadProfileImageDto>
+
     //  썸네일 이미지 업로드
     @Multipart
     @POST("image/thumbnail")

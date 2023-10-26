@@ -19,7 +19,6 @@ import javax.inject.Inject
 class ActivityRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit private val apiService: ApiService) :
     ActivityRepository {
 
-
     // 활동 등록하기
     override suspend fun activityRegister(
         activityStory: String,
@@ -122,5 +121,16 @@ class ActivityRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit privat
 
     override suspend fun getActivityInfo(userId: String): Response<GetActivityInfoDto> {
         return apiService.getActivityInfo("Bearer ${UserModel.userInfo.token.accessToken}", userId)
+    }
+
+    override suspend fun uploadEditProfileImage(imageFile: File): Response<UploadProfileImageDto> {
+        var imageBody: MultipartBody.Part? = null
+        val requestBody: RequestBody =
+            imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+        imageBody = MultipartBody.Part.createFormData("profile", "profile.jpg", requestBody)
+
+        return withContext(Dispatchers.IO) {
+            apiService.uploadEditProfileImageFile("Bearer ${UserModel.userInfo.token.accessToken}", imageBody)
+        }
     }
 }

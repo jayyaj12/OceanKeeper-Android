@@ -20,4 +20,6 @@ interface ActivityRepository {
     suspend fun getCrewNickname(activityId: String): Response<GetActivityRecruitmentCrewNameResultDto>
     // 활동정보 불러오기
     suspend fun getActivityInfo(userId: String): Response<GetActivityInfoDto>
+    // 프로필 수정
+    suspend fun uploadEditProfileImage(imageFile: File): Response<UploadProfileImageDto>
 }

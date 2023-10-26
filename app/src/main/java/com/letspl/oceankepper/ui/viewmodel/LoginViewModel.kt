@@ -95,6 +95,7 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                                 serverData.response.token.refreshToken
                             data.user.id = serverData.response.user.id
                             data.user.nickname = serverData.response.user.nickname
+                            data.user.profile = serverData.response.user.profile
                         }
                     }
                     _onLoginResult.postValue(true)

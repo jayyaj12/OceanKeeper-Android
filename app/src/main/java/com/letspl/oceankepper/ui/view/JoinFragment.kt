@@ -61,6 +61,7 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
             )
         })
     }
+
     // 사진 가져오기 결과
     private val choicePhoto = registerForActivityResult(ActivityResultContracts.GetContent()) {
         Glide.with(requireContext())

@@ -5,5 +5,5 @@ import com.letspl.oceankepper.data.dto.LoginUserResponseTokenDto
 import com.letspl.oceankepper.data.dto.LoginUserResponseUserDto
 
 object UserModel {
-    var userInfo: LoginUserResponseDto = LoginUserResponseDto(LoginUserResponseTokenDto("", "", "", ""), LoginUserResponseUserDto("", ""))
+    var userInfo: LoginUserResponseDto = LoginUserResponseDto(LoginUserResponseTokenDto("", "", "", ""), LoginUserResponseUserDto("", "", ""))
 }

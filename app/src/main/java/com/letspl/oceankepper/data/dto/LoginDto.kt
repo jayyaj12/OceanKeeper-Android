@@ -60,5 +60,6 @@ data class LoginUserResponseTokenDto(
 @kotlinx.serialization.Serializable
 data class LoginUserResponseUserDto(
     var id: String,
-    var nickname: String
+    var nickname: String,
+    var profile: String
 )

@@ -8,6 +8,9 @@
         <variable
             name="myActivityViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel" />
+        <variable
+            name="myActivityFragment"
+            type="com.letspl.oceankepper.ui.view.MyActivityFragment" />
 
         <import type="android.view.View" />
     </data>
@@ -113,6 +116,15 @@
                     android:background="#000000" />
 
             </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/add_profile_iv"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:onClick="@{() -> myActivityFragment.onClickedChoiceProfileImage()}"
+                android:background="@drawable/add_profile_icon"
+                app:layout_constraintBottom_toBottomOf="@id/user_profile_cv"
+                app:layout_constraintEnd_toEndOf="@id/user_profile_cv" />
 
             <TextView
                 android:id="@+id/nickname_tv"
