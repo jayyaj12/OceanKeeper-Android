@@ -44,18 +44,11 @@ class NaverLoginManager @Inject constructor(private val loginViewModel: LoginVie
                     // 로그인 토큰을 가지고 실제 데이터 조회
                     loginViewModel.getNaverUserInfo(it)
                 }
-                Toast.makeText(ContextUtil.context, "id: ${userId} \ntoken: ${naverToken}", Toast.LENGTH_SHORT)
-                    .show()
             }
 
             override fun onFailure(httpStatus: Int, message: String) {
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Timber.e("onFailure $message")
-                Toast.makeText(
-                    ContextUtil.context, "errorCode: ${errorCode}\n" +
-                            "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT
-                ).show()
             }
 
             override fun onError(errorCode: Int, message: String) {

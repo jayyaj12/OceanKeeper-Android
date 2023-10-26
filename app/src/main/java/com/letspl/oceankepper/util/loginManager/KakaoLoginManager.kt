@@ -30,9 +30,6 @@ class KakaoLoginManager @Inject constructor(private val loginViewModel: LoginVie
                         Timber.e("로그인 실패")
                         Timber.e("error ${error.message}")
 
-                        CoroutineScope(Dispatchers.Main).launch {
-                            Toast.makeText(ContextUtil.context, error.message, Toast.LENGTH_SHORT).show()
-                        }
                     } else if (token != null) {
                         Timber.e("로그인 성공")
                         Timber.e("token $token")

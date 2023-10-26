@@ -99,12 +99,7 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                     }
                     _onLoginResult.postValue(true)
                 } else {
-                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if(errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
-                    }
-                    _onLoginResult.postValue(false)
+                     _onLoginResult.postValue(false)
                 }
             }
         }

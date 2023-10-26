@@ -57,8 +57,6 @@ class LoginFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.e("loginFragment onViewCreated")
-
         setUpViewModelObservers()
     }
 
