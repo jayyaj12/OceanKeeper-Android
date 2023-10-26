@@ -52,6 +52,8 @@ android {
 }
 
 dependencies {
+    // ViewPager2
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
     // 유투브 플레이어
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
