@@ -216,7 +216,7 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
         minutePicker.setOnValueChangedListener { numberPicker, oldValue, newValue ->
             activityRecruitViewModel.setActivityStartTimeHour(hourValues[hourPicker.value].toInt(), morningAndAfternoonValue[morningAndAfternoonPicker.value])
-            activityRecruitViewModel.setActivityStartTimeMinute(newValue + 1)
+            activityRecruitViewModel.setActivityStartTimeMinute(newValue)
             binding.endDateTv.text = activityRecruitViewModel.getActivityStartDate().substring(11, 16)
             binding.endDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
         }
