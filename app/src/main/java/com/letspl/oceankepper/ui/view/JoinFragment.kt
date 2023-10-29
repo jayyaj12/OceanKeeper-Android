@@ -2,6 +2,7 @@ package com.letspl.oceankepper.ui.view
 
 import android.content.ContentValues
 import android.database.Cursor
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
@@ -20,26 +21,32 @@ import com.letspl.oceankepper.ui.dialog.ChoiceProfileImageDialog
 import com.letspl.oceankepper.ui.viewmodel.JoinViewModel
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.util.BaseUrlType
+import com.letspl.oceankepper.util.ImgFileMaker
 import com.letspl.oceankepper.util.ResizingImage
+import com.letspl.oceankepper.util.RotateTransform
 import com.letspl.oceankepper.util.loginManager.NaverLoginManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
+class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentJoinBinding? = null
     private val binding: FragmentJoinBinding get() = _binding!!
     val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
-    @Inject lateinit var naverLoginManager: NaverLoginManager
+    @Inject
+    lateinit var naverLoginManager: NaverLoginManager
     private val loginViewModel: LoginViewModel by viewModels()
-    private lateinit var choiceProfileImageDialog:  ChoiceProfileImageDialog
+    private lateinit var choiceProfileImageDialog: ChoiceProfileImageDialog
     private val joinViewModel: JoinViewModel by viewModels()
     private val permissionList = arrayOf(
         android.Manifest.permission.CAMERA,
@@ -50,31 +57,48 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     // 사진 찍기 결과
     private val takePhoto = registerForActivityResult(ActivityResultContracts.TakePicture()) {
-        Glide.with(requireContext())
-            .load(joinViewModel.getTakePhotoUri())
-            .fitCenter()
-            .into(binding.profileIv)
+        try {
+            val path =
+                ImgFileMaker.getFullPathFromUri(requireContext(), joinViewModel.getTakePhotoUri())!!
+            val angle = RotateTransform.getRotationAngle(path)
+            val rotateBitmap =
+                RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
 
-        joinViewModel.setProfileImageFile(it?.let { uri ->
-            resizingImage.convertResizeImage(requireContext(),
-                joinViewModel.getTakePhotoUri()!!
-            )
-        })
+            joinViewModel.setProfileImageFile(it?.let { uri ->
+                ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
+            })
+
+            Glide.with(requireContext())
+                .load(joinViewModel.getTakePhotoUri())
+                .fitCenter()
+                .centerCrop()
+                .into(binding.profileIv)
+        } catch (e: Exception) {
+            activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+        }
     }
 
     // 사진 가져오기 결과
     private val choicePhoto = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        Glide.with(requireContext())
-            .load(it)
-            .fitCenter()
-            .into(binding.profileIv)
+        try {
+            val path =
+                ImgFileMaker.getFullPathFromUri(requireContext(), joinViewModel.getTakePhotoUri())!!
+            val angle = RotateTransform.getRotationAngle(path)
+            val rotateBitmap =
+                RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
 
-        // 이미지 파일 저장
-        joinViewModel.setProfileImageFile(it?.let { uri ->
-            resizingImage.convertResizeImage(requireContext(),
-                uri
-            )
-        })
+            joinViewModel.setProfileImageFile(it?.let { uri ->
+                ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
+            })
+
+            Glide.with(requireContext())
+                .load(joinViewModel.getTakePhotoUri())
+                .fitCenter()
+                .centerCrop()
+                .into(binding.profileIv)
+        } catch (e: Exception) {
+            activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,7 +148,8 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         joinViewModel.profileTempFileCreated.observe(viewLifecycleOwner) {
             joinViewModel.setProfileImageFile(
-                resizingImage.convertResizeImage(requireContext(),
+                resizingImage.convertResizeImage(
+                    requireContext(),
                     Uri.fromFile(it)
                 )
             )
@@ -135,7 +160,7 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
     private fun requestPermission() {
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             result.forEach {
-                if(it.value) {
+                if (it.value) {
                     Toast.makeText(requireContext(), "권한 허용 필요", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -153,6 +178,7 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
             choicePhoto.launch("image/*")
         })
     }
+
     private fun getRealPathFromURI(contentUri: Uri): String? {
         if (contentUri.path!!.startsWith("/storage")) {
             return contentUri.path
@@ -179,13 +205,17 @@ class JoinFragment: Fragment(), BaseActivity.OnBackPressedListener {
         }
         return null
     }
+
     private fun createImageFile(): Uri? {
         val now = SimpleDateFormat("yyMMdd_HHmmss").format(Date())
         val content = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, "img_$now.jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
         }
-        return requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, content)
+        return requireActivity().contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            content
+        )
     }
 
     fun onClickedChoiceProfileImage() {

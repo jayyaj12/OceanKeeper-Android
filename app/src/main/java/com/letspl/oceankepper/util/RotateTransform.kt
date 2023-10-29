@@ -2,6 +2,8 @@ package com.letspl.oceankepper.util
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.net.Uri
+import android.provider.MediaStore
 import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import timber.log.Timber
@@ -32,9 +34,10 @@ object RotateTransform {
     }
 
     // 이미지 회전
-    fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
+    fun rotateImage(source: Bitmap, angle: Float, imageUri: Uri? = null): Bitmap? {
         val matrix = Matrix()
         matrix.postRotate(angle)
-        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+        val bitmap = MediaStore.Images.Media.getBitmap(ContextUtil.context.contentResolver, imageUri)
+        return Bitmap.createScaledBitmap(bitmap, bitmap.width / 2, bitmap.height / 2, true)
     }
 }

@@ -59,46 +59,12 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
         setupRewardSwitchListener()
         loadAddress()
 
-        // 임시저장 활성화 시 data 를 load 한다.
-        if(activityRecruitViewModel.isLoadTempData()) {
-            loadTempData()
-        }
     }
 
     // 주소 불러오기 
     private fun loadAddress() {
         // 활동 위치
         binding.activityLocationEt.setText(activityRecruitViewModel.getLocationInfo().address)
-    }
-
-    // 임시저장 데이터 불러오기
-    private fun loadTempData() {
-        // 프로젝트 명
-        binding.projectNameEt.setText(activityRecruitViewModel.getProjectName())
-        // 교통 안내 여부
-        activityRecruitViewModel.setTrafficGuideValue(activityRecruitViewModel.getGuideTrafficValue())
-        // 모집 카테고리 선택
-        activityRecruitViewModel.setRecruitCategoryValue(activityRecruitViewModel.getRecruitCategoryValue())
-        // 모집 지역 선택
-        activityRecruitViewModel.setRecruitLocationValue(activityRecruitViewModel.getRecruitLocationValue())
-        // 활동 프로그램 안내
-        binding.guideActivityEt.setText(activityRecruitViewModel.getGuideActivity())
-        // 모집 정원
-        binding.quotaEt.setText(activityRecruitViewModel.getQuota().toString())
-        // 준비물
-        binding.materialEt.setText(activityRecruitViewModel.getMaterial())
-        // 제공 리워드
-        binding.giveRewardEt.setText(activityRecruitViewModel.getGiveRewardStr())
-        // 기타 안내 사항
-        binding.otherGuideEt.setText(activityRecruitViewModel.getOtherGuide())
-        // 참여 키퍼 리워드 제공 여부
-        activityRecruitViewModel.setIsGiveReward(activityRecruitViewModel.isGiveReward())
-        Timber.e("// 참여 키퍼 리워드 제공 여부 스위치 ${activityRecruitViewModel.isGiveReward()}")
-        binding.rewardSwtich.isChecked = activityRecruitViewModel.isGiveReward()
-
-        recruitStartCalendarAdapter.notifyDataSetChanged()
-        recruitEndCalendarAdapter.notifyDataSetChanged()
-        activityStartCalendarAdapter.notifyDataSetChanged()
     }
 
     // 캘린더 date 셋업

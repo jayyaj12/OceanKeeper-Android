@@ -73,7 +73,6 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
 
     // 활동 조회 첫 조회
     fun getMyActivities(garbageCategory: String?, locationTag: String?, size: Int, status: String?) {
-        Timber.e("getMyActivities TEST")
         viewModelScope.launch {
             // 활동 조회 첫 조회시에는 activityId 안 보냄
             viewModelScope.launch {

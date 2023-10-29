@@ -60,7 +60,8 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                         val angle = RotateTransform.getRotationAngle(path)
                         val rotateBitmap = RotateTransform.rotateImage(
                             BitmapFactory.decodeFile(path),
-                            angle.toFloat()
+                            angle.toFloat(),
+                            it
                         )
 
                         activityRecruit2ViewModel.setThumbnailImageFile(
@@ -93,7 +94,8 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                         val angle = RotateTransform.getRotationAngle(path)
                         val rotateBitmap = RotateTransform.rotateImage(
                             BitmapFactory.decodeFile(path),
-                            angle.toFloat()
+                            angle.toFloat(),
+                            it
                         )
 
                         activityRecruit2ViewModel.setKeeperIntroduceImageFile(
@@ -126,7 +128,8 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                         val angle = RotateTransform.getRotationAngle(path)
                         val rotateBitmap = RotateTransform.rotateImage(
                             BitmapFactory.decodeFile(path),
-                            angle.toFloat()
+                            angle.toFloat(),
+                            it
                         )
 
                         activityRecruit2ViewModel.setActivityStoryImageFile(
