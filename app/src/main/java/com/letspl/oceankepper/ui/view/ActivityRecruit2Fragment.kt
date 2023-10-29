@@ -2,6 +2,7 @@ package com.letspl.oceankepper.ui.view
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -21,11 +22,14 @@ import com.letspl.oceankepper.databinding.FragmentActivityRecruit2Binding
 import com.letspl.oceankepper.ui.dialog.RecruitActivityCompleteDialog
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
+import com.letspl.oceankepper.util.ImgFileMaker
 import com.letspl.oceankepper.util.ResizingImage
+import com.letspl.oceankepper.util.RotateTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+import java.lang.Exception
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,15 +55,26 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
             val imageUri = result.data?.data
             imageUri?.let {
                 lifecycleScope.launch {
-                    activityRecruit2ViewModel.setThumbnailImageFile(
-                        resizingImage.convertResizeImage(requireContext(), it)
-                    )
+                    try {
+                        val path = ImgFileMaker.getFullPathFromUri(requireContext(), it)!!
+                        val angle = RotateTransform.getRotationAngle(path)
+                        val rotateBitmap = RotateTransform.rotateImage(
+                            BitmapFactory.decodeFile(path),
+                            angle.toFloat()
+                        )
 
-                    Glide.with(requireActivity()).load(imageUri).fitCenter()
-                        .into(binding.thumbnailIv)
+                        activityRecruit2ViewModel.setThumbnailImageFile(
+                            ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
+                        )
 
-                    binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
-                    binding.thumbnailPhotoTv.visibility = View.GONE
+                        Glide.with(requireActivity()).load(imageUri).fitCenter()
+                            .into(binding.thumbnailIv)
+
+                        binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+                        binding.thumbnailPhotoTv.visibility = View.GONE
+                    } catch (e: Exception) {
+                        activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+                    }
                 }
             }
         }
@@ -73,15 +88,26 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
             val imageUri = result.data?.data
             imageUri?.let {
                 lifecycleScope.launch {
-                    activityRecruit2ViewModel.setKeeperIntroduceImageFile(
-                        resizingImage.convertResizeImage(requireContext(), it)
-                    )
+                    try {
+                        val path = ImgFileMaker.getFullPathFromUri(requireContext(), it)!!
+                        val angle = RotateTransform.getRotationAngle(path)
+                        val rotateBitmap = RotateTransform.rotateImage(
+                            BitmapFactory.decodeFile(path),
+                            angle.toFloat()
+                        )
 
-                    Glide.with(requireActivity()).load(imageUri).fitCenter()
-                        .into(binding.introduceKeeperIv)
+                        activityRecruit2ViewModel.setKeeperIntroduceImageFile(
+                            ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
+                        )
 
-                    binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
-                    binding.introduceKeeperPhotoTv.visibility = View.GONE
+                        Glide.with(requireActivity()).load(imageUri).fitCenter()
+                            .into(binding.introduceKeeperIv)
+
+                        binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+                        binding.introduceKeeperPhotoTv.visibility = View.GONE
+                    } catch (e: Exception) {
+                        activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+                    }
                 }
             }
         }
@@ -94,17 +120,27 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         if (result.resultCode == RESULT_OK) {
             val imageUri = result.data?.data
             imageUri?.let {
-
                 lifecycleScope.launch {
-                    activityRecruit2ViewModel.setActivityStoryImageFile(
-                        resizingImage.convertResizeImage(requireContext(), it)
-                    )
+                    try {
+                        val path = ImgFileMaker.getFullPathFromUri(requireContext(), it)!!
+                        val angle = RotateTransform.getRotationAngle(path)
+                        val rotateBitmap = RotateTransform.rotateImage(
+                            BitmapFactory.decodeFile(path),
+                            angle.toFloat()
+                        )
 
-                    Glide.with(requireActivity()).load(imageUri).fitCenter()
-                        .into(binding.activityStoryIv)
+                        activityRecruit2ViewModel.setActivityStoryImageFile(
+                            ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
+                        )
 
-                    binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
-                    binding.activityStoryPhotoTv.visibility = View.GONE
+                        Glide.with(requireActivity()).load(imageUri).fitCenter()
+                            .into(binding.activityStoryIv)
+
+                        binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+                        binding.activityStoryPhotoTv.visibility = View.GONE
+                    } catch (e: Exception) {
+                        activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+                    }
                 }
             }
         }

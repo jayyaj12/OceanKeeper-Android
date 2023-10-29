@@ -8,6 +8,7 @@
         <variable
             name="myActivityViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel" />
+
         <variable
             name="myActivityFragment"
             type="com.letspl.oceankepper.ui.view.MyActivityFragment" />
@@ -112,7 +113,8 @@
                 <ImageView
                     android:id="@+id/user_profile_iv"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
 
             </androidx.cardview.widget.CardView>
 
@@ -120,8 +122,8 @@
                 android:id="@+id/add_profile_iv"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:onClick="@{() -> myActivityFragment.onClickedChoiceProfileImage()}"
                 android:background="@drawable/add_profile_icon"
+                android:onClick="@{() -> myActivityFragment.onClickedChoiceProfileImage()}"
                 app:layout_constraintBottom_toBottomOf="@id/user_profile_cv"
                 app:layout_constraintEnd_toEndOf="@id/user_profile_cv" />
 
@@ -193,7 +195,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/join_activity_cl"
                 android:layout_width="0dp"
-                android:layout_height="62dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
@@ -241,7 +243,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/activity_recruit_cl"
                 android:layout_width="0dp"
-                android:layout_height="62dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
                 android:visibility="@{myActivityViewModel.getActivityInfoResult.hosting > 0 ? View.VISIBLE : View.INVISIBLE}"
@@ -289,7 +291,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/activity_no_show_cl"
                 android:layout_width="0dp"
-                android:layout_height="62dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
                 android:visibility="@{myActivityViewModel.getActivityInfoResult.noShow > 0 ? View.VISIBLE : View.INVISIBLE}"
@@ -336,7 +338,7 @@
             <LinearLayout
                 android:id="@+id/not_join_activity_ll"
                 android:layout_width="0dp"
-                android:layout_height="62dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
@@ -379,7 +381,7 @@
             <LinearLayout
                 android:id="@+id/not_activity_recruit_ll"
                 android:layout_width="0dp"
-                android:layout_height="62dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
                 android:gravity="center"
@@ -411,7 +413,7 @@
             <LinearLayout
                 android:id="@+id/not_no_show_ll"
                 android:layout_width="0dp"
-                android:layout_height="62dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
                 android:gravity="center"

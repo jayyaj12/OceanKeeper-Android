@@ -32,7 +32,7 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     override fun onBackPressed() {
-        activity.onReplaceFragment(MainFragment())
+        activity.onReplaceFragment(MainFragment(), false, true)
     }
 
     override fun onCreateView(

@@ -34,6 +34,7 @@
                     android:id="@+id/thumbnail_iv"
                     android:layout_width="match_parent"
                     android:layout_height="270dp"
+                    android:scaleType="centerCrop"
                     app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.thumbnailUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -124,6 +125,7 @@
                     <ImageView
                         android:id="@+id/profile_iv"
                         android:layout_width="match_parent"
+                        android:scaleType="centerCrop"
                         android:layout_height="match_parent"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.hostImageUrl}" />
 
@@ -259,6 +261,7 @@
                     <ImageView
                         android:id="@+id/keeper_introduce_iv"
                         android:layout_width="match_parent"
+                        android:scaleType="centerCrop"
                         android:layout_height="match_parent"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}" />
 
@@ -305,6 +308,7 @@
                     <ImageView
                         android:id="@+id/activity_story_iv"
                         android:layout_width="match_parent"
+                        android:scaleType="centerCrop"
                         android:layout_height="match_parent"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl}" />
 

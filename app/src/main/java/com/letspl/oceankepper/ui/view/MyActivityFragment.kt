@@ -35,6 +35,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -59,23 +60,21 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private val takePhoto = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
-                Glide.with(requireContext())
-                    .load(myActivityViewModel.getTakePhotoUri())
-                    .fitCenter()
-                    .into(binding.userProfileIv)
+                try {
+                    val path = ImgFileMaker.getFullPathFromUri(requireContext(), myActivityViewModel.getTakePhotoUri())!!
+                    val angle = RotateTransform.getRotationAngle(path)
+                    val rotateBitmap = RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
 
-                myActivityViewModel.setProfileImageFile(it?.let { uri ->
-                    resizingImage.convertResizeImage(
-                        requireContext(),
-                        myActivityViewModel.getTakePhotoUri()!!
-                    )
-                })
-            }
-            Timber.e("uploadEditProfileImage1")
+                    myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
 
-            withContext(Dispatchers.IO) {
-//                myActivityViewModel.uploadEditProfileImage()
-
+                    Glide.with(requireContext())
+                        .load(myActivityViewModel.getTakePhotoUri())
+                        .fitCenter()
+                        .centerCrop()
+                        .into(binding.userProfileIv)
+                } catch (e: Exception) {
+                    activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+                }
             }
         }
     }
@@ -85,18 +84,26 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private val choicePhoto = registerForActivityResult(ActivityResultContracts.GetContent()) {
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
-                Glide.with(requireContext())
-                    .load(it)
-                    .fitCenter()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(binding.userProfileIv)
+                try {
+                    val path = ImgFileMaker.getFullPathFromUri(requireContext(), it)!!
+                    val angle = RotateTransform.getRotationAngle(path)
+                    val rotateBitmap = RotateTransform.rotateImage(
+                        BitmapFactory.decodeFile(path),
+                        angle.toFloat()
+                    )
 
-                val path = ImgFileMaker.getFullPathFromUri(requireContext(), it)!!
-                val angle = RotateTransform.getRotationAngle(path)
-                val rotateBitmap = RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
+                    myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
 
-                myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
+                    Glide.with(requireContext())
+                        .load(it)
+                        .fitCenter()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(binding.userProfileIv)
+
+                } catch (e: Exception) {
+                    activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+                }
             }
         }
     }

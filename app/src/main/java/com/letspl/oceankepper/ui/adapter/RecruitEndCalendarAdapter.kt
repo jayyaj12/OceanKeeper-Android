@@ -15,10 +15,6 @@ class RecruitEndCalendarAdapter(private val activityRecruitViewModel: ActivityRe
     inner class CalendarViewHolder(private val binding: ItemCalendarCellBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(item: String) {
-            Timber.e("activityRecruitViewModel.getRecruitEndClickedDate() ${activityRecruitViewModel.getRecruitEndClickedDate()}")
-            Timber.e("activityRecruitViewModel.getRecruitEndDate() ${activityRecruitViewModel.getRecruitEndDate().substring(0, 7)}")
-            Timber.e("adapterPosition $adapterPosition")
-            Timber.e("activityRecruitViewModel.getRecruitEndDateClickPosition() ${activityRecruitViewModel.getRecruitEndDateClickPosition()}")
             if(activityRecruitViewModel.getRecruitEndClickedDate() == activityRecruitViewModel.getRecruitEndDate().substring(0, 7) &&
                 adapterPosition == activityRecruitViewModel.getRecruitEndDateClickPosition()) {
                 binding.clickDateTv.visibility = View.VISIBLE
