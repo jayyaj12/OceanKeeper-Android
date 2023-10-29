@@ -6,6 +6,7 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +25,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,10 +64,9 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
         }
     }
 
-    fun uploadEditProfileImage() {
-        Timber.e("uploadEditProfileImage2")
+    fun uploadEditProfileImage(file: File) {
         CoroutineScope(Dispatchers.IO).launch {
-            activityViRepositoryImpl.uploadEditProfileImage(getProfileImageFile()!!).let {
+            activityViRepositoryImpl.uploadEditProfileImage(file).let {
                 if(it.isSuccessful) {
                     UserModel.userInfo.user.profile = it.body()?.url!!
                 } else {

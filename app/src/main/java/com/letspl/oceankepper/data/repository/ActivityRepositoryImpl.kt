@@ -13,6 +13,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Response
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 

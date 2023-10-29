@@ -1,34 +1,43 @@
 package com.letspl.oceankepper.ui.view
 
 import android.content.ContentValues
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.net.toFile
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.letspl.oceankepper.R
-import com.letspl.oceankepper.databinding.FragmentMessageBinding
 import com.letspl.oceankepper.databinding.FragmentMyActivityBinding
 import com.letspl.oceankepper.ui.dialog.ChoiceProfileImageDialog
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel
+import com.letspl.oceankepper.util.ImgFileMaker
 import com.letspl.oceankepper.util.ResizingImage
+import com.letspl.oceankepper.util.RotateTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
-import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
@@ -65,13 +74,14 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
             Timber.e("uploadEditProfileImage1")
 
             withContext(Dispatchers.IO) {
-                myActivityViewModel.uploadEditProfileImage()
+//                myActivityViewModel.uploadEditProfileImage()
 
             }
         }
     }
 
     // 사진 가져오기 결과
+    @RequiresApi(Build.VERSION_CODES.O)
     private val choicePhoto = registerForActivityResult(ActivityResultContracts.GetContent()) {
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
@@ -82,16 +92,11 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                     .skipMemoryCache(true)
                     .into(binding.userProfileIv)
 
-                // 이미지 파일 저장
-                myActivityViewModel.setProfileImageFile(it?.let { uri ->
-                    resizingImage.convertResizeImage(requireContext(),
-                        uri
-                    )
-                })
-            }
+                val path = ImgFileMaker.getFullPathFromUri(requireContext(), it)!!
+                val angle = RotateTransform.getRotationAngle(path)
+                val rotateBitmap = RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
 
-            withContext(Dispatchers.IO) {
-                myActivityViewModel.uploadEditProfileImage()
+                myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
             }
         }
     }
@@ -130,6 +135,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
             .load(myActivityViewModel.getUserProfile())
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
+            .dontTransform()
             .into(binding.userProfileIv)
     }
 

@@ -2,23 +2,39 @@ package com.letspl.oceankepper.util
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
+import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
-import java.security.MessageDigest
+import timber.log.Timber
+import java.io.IOException
 
-class RotateTransform(rotateRotationAngle: Float) : BitmapTransformation() {
-    private var rotateRotationAngle = 0f
-    init {
-        this.rotateRotationAngle = rotateRotationAngle
+
+object RotateTransform {
+    // 이미지 파일로부터 Exif 정보를 읽어서 회전 각도를 얻는 함수
+    fun getRotationAngle(imagePath: String): Int {
+        var rotationAngle = 0
+        try {
+            Timber.e("imagePath $imagePath")
+            val exif = ExifInterface(imagePath)
+            val orientation: Int = exif.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            )
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotationAngle = 90
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotationAngle = 180
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotationAngle = 270
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        Timber.e("rotationAngle $rotationAngle")
+        return rotationAngle
     }
 
-    override fun updateDiskCacheKey(messageDigest: MessageDigest) {
-        messageDigest.update(("rotate$rotateRotationAngle").toByte());
-    }
-
-    override fun transform(pool: BitmapPool, toTransform: Bitmap, outWidth: Int, outHeight: Int): Bitmap {
+    // 이미지 회전
+    fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
         val matrix = Matrix()
-        matrix.postRotate(rotateRotationAngle)
-        return Bitmap.createBitmap(toTransform, 0, 0, toTransform.width, toTransform.height, matrix, true)
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
 }
