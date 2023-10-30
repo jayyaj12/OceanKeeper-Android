@@ -134,4 +134,13 @@ class ActivityRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit privat
             apiService.uploadEditProfileImageFile("Bearer ${UserModel.userInfo.token.accessToken}", imageBody)
         }
     }
+
+    override suspend fun getUserActivity(
+        activityId: String?,
+        size: Int,
+        status: String,
+        userId: String
+    ): Response<GetUserActivityDto> {
+        return apiService.getUserActivity("Bearer ${UserModel.userInfo.token.accessToken}", userId, activityId, size, status, userId)
+    }
 }

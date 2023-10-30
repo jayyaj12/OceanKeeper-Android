@@ -157,4 +157,14 @@ interface ApiService {
         @Path("userId") userId: String,
     ): Response<GetActivityInfoDto>
 
+    @GET("/activity/user/{userId}")
+    suspend fun getUserActivity(
+        @Header("Authorization") token: String,
+        @Path("userId") userPathId: String,
+        @Query("activity-id") activityId: String?,
+        @Query("size") size: Int,
+        @Query("status") status: String,
+        @Query("userId") userId: String
+    ): Response<GetUserActivityDto>
+
 }

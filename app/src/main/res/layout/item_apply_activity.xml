@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:id="@+id/thumbnail_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="170dp"
+                android:layout_height="128dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/thumbnail_iv"
+                    android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_height="match_parent" />
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/custom_radius4_solid_99131313"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/thumbnail_ll"
+            app:layout_constraintEnd_toEndOf="@id/thumbnail_ll">
+
+            <ImageView
+                android:layout_width="9dp"
+                android:layout_height="9dp"
+                android:src="@drawable/human_icon" />
+
+            <TextView
+                android:id="@+id/apply_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:fontFamily="@font/pretendard_light"
+                android:src="@drawable/human_icon"
+                android:text="3/10명"
+                android:textColor="#ffffff"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendard_semibold"
+            android:maxLines="2"
+            android:textColor="#212121"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/thumbnail_ll"
+            app:layout_constraintTop_toTopOf="@id/thumbnail_ll" />
+
+        <TextView
+            android:id="@+id/host_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/pretendard_light"
+            android:textColor="#757575"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/title_tv" />
+
+        <TextView
+            android:id="@+id/now_apply_count_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/pretendard_light"
+            android:textColor="#757575"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/host_tv" />
+
+        <TextView
+            android:id="@+id/place_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/pretendard_light"
+            android:textColor="#757575"
+            android:textSize="12dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/now_apply_count_tv" />
+
+        <TextView
+            android:id="@+id/date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/pretendard_light"
+            android:textColor="#757575"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/place_tv" />
+
+        <TextView
+            android:id="@+id/time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/pretendard_light"
+            android:textColor="#757575"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/date_tv" />
+
+        <TextView
+            android:id="@+id/edit_apply_tv"
+            android:layout_width="87dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/custom_radius8_solid_00b6c4"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="신청서 수정"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail_ll" />
+
+        <TextView
+            android:id="@+id/cancel_apply_tv"
+            android:layout_width="75dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/custom_radius8_solid_00b6c4"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="신청 취소"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/edit_apply_tv"
+            app:layout_constraintTop_toTopOf="@id/edit_apply_tv" />
+
+        <TextView
+            android:id="@+id/reject_apply_tv"
+            android:layout_width="101dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/custom_radius8_solid_00b6c4"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="거절 사유 확인"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail_ll" />
+
+        <TextView
+            android:id="@+id/confirm_apply_tv"
+            android:layout_width="75dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/custom_radius8_solid_00b6c4"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="참가 확정"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail_ll" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/edit_apply_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/last_v"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

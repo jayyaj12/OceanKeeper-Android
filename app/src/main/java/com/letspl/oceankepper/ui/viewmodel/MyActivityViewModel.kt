@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.user.model.User
 import com.letspl.oceankepper.data.dto.GetActivityInfoResponseDto
+import com.letspl.oceankepper.data.dto.GetUserActivityListDto
 import com.letspl.oceankepper.data.model.JoinModel
 import com.letspl.oceankepper.data.model.MyActivityModel
 import com.letspl.oceankepper.data.model.UserModel
@@ -40,6 +41,10 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     private var _getActivityInfoResult = MutableLiveData<GetActivityInfoResponseDto>()
     val getActivityInfoResult: LiveData<GetActivityInfoResponseDto> get() = _getActivityInfoResult
 
+    // 내활동보기 결과
+    private var _getUserActivity = MutableLiveData<List<GetUserActivityListDto>?>()
+    val getUserActivity: LiveData<List<GetUserActivityListDto>?> get() = _getUserActivity
+
     // 나의 오션키퍼 활동정보 조회
     fun getMyActivityInfo() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -64,11 +69,30 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
         }
     }
 
+    // 수정 프로필 이미지 업로드
     fun uploadEditProfileImage(file: File) {
         CoroutineScope(Dispatchers.IO).launch {
             activityViRepositoryImpl.uploadEditProfileImage(file).let {
                 if(it.isSuccessful) {
                     UserModel.userInfo.user.profile = it.body()?.url!!
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    // 내활동 보기
+    fun getUserActivity() {
+        CoroutineScope(Dispatchers.IO).launch() {
+            activityViRepositoryImpl.getUserActivity(null, 10, "apply", UserModel.userInfo.user.id).let {
+                if(it.isSuccessful) {
+                    _getUserActivity.postValue(it.body()?.response?.activities)
                 } else {
                     val errorJsonObject =
                         ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
@@ -110,4 +134,7 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
         return MyActivityModel.takePhotoUri
     }
 
+    fun clearLivedata() {
+        _getUserActivity.postValue(null)
+    }
 }

@@ -22,4 +22,6 @@ interface ActivityRepository {
     suspend fun getActivityInfo(userId: String): Response<GetActivityInfoDto>
     // 프로필 수정
     suspend fun uploadEditProfileImage(imageFile: File): Response<UploadProfileImageDto>
+    // 내활동보기
+    suspend fun getUserActivity(activityId: String?, size:Int, status: String, userId: String): Response<GetUserActivityDto>
 }

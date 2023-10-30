@@ -175,3 +175,36 @@ data class GetActivityInfoResponseDto(
     val hosting: Int,
     val noShow: Int
 )
+
+// 내 활동 조회
+@kotlinx.serialization.Serializable
+data class GetUserActivityDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: GetUserActivityResponseDto
+)
+
+// 내 활동 조회
+@kotlinx.serialization.Serializable
+data class GetUserActivityResponseDto(
+    val activities: List<GetUserActivityListDto>
+)
+
+// 내 활동 조회
+@kotlinx.serialization.Serializable
+data class GetUserActivityListDto(
+    val activityId: String,
+    val activityImageUrl: String? = "",
+    val address: String,
+    val applicationId: String,
+    val crewStatus: String,
+    val hostNickname: String,
+    val participants: Int,
+    val quota: Int,
+    val recruitEndAt: String,
+    val recruitStartAt: String,
+    val role: String,
+    val startAt: String,
+    val status: String,
+    val title: String
+)

@@ -20,7 +20,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.tabs.TabLayout
 import com.letspl.oceankepper.databinding.FragmentMyActivityBinding
+import com.letspl.oceankepper.ui.adapter.ApplyActivityListAdapter
 import com.letspl.oceankepper.ui.dialog.ChoiceProfileImageDialog
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel
@@ -55,6 +57,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private val myActivityViewModel: MyActivityViewModel by viewModels()
     private lateinit var choiceProfileImageDialog: ChoiceProfileImageDialog
     private val resizingImage = ResizingImage()
+    private lateinit var applyActivityListAdapter: ApplyActivityListAdapter
 
     // 사진 찍기 결과
     private val takePhoto = registerForActivityResult(ActivityResultContracts.TakePicture()) {
@@ -121,6 +124,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -128,11 +132,36 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         getActivityInfo()
         setupUserProfile()
         setupChoiceProfileImageDialog()
+        setupApplyActivityListAdapter()
+        setupViewModelObserver()
     }
 
     // 나의 오션키퍼 활동 정보 불러오기
     private fun getActivityInfo() {
         myActivityViewModel.getMyActivityInfo()
+    }
+
+    // 내 활동 불러오기
+    private fun getUserActivity() {
+        myActivityViewModel.getUserActivity()
+    }
+
+    private fun setupViewModelObserver() {
+        // 내활동보기 결과 등록
+        myActivityViewModel.getUserActivity.observe(viewLifecycleOwner) {
+            if (it != null) {
+                if(it.isNotEmpty()) {
+                    binding.applyActivityRv.visibility = View.VISIBLE
+                    applyActivityListAdapter.submitList(it)
+                }
+            }
+        }
+    }
+
+    private fun setupApplyActivityListAdapter() {
+        applyActivityListAdapter = ApplyActivityListAdapter(requireContext())
+        binding.applyActivityRv.adapter = applyActivityListAdapter
+
     }
 
     // 유저 프로필 표시
@@ -148,6 +177,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     // 촬영, 앨범에서 선택 팝업 세팅
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupChoiceProfileImageDialog() {
         choiceProfileImageDialog = ChoiceProfileImageDialog(requireContext(), {
             // 사진 촬영
@@ -177,11 +207,40 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     // tablayout 세팅
     private fun setupTabLayout() {
         binding.itemTab.setTabTextColors(Color.parseColor("#7a7a7a"), Color.parseColor("#545454"))
+        binding.itemTab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab?.position) {
+                    0 -> {
+                        binding.applyActivityRv.visibility = View.GONE
+                    }
+                    1 -> {
+                        getUserActivity()
+                    }
+                    2 -> {
+                        binding.applyActivityRv.visibility = View.GONE
+
+                    }
+                    3 -> {
+                        binding.applyActivityRv.visibility = View.GONE
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+    }
+
+    override fun onDetach() {
+        super.onDetach()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
+        myActivityViewModel.clearLivedata()
         _binding = null
     }
 }
