@@ -193,9 +193,13 @@ class ActivityRecruit2ViewModel @Inject constructor(
 
     fun getRecruitCompleteText(): String {
         val text = activityRecruitViewModel.getActivityStartDate().split("T")[0]
+        Timber.e("text $text")
         val year = text.substring(2, 4)
         val month = text.substring(5, 7)
         val date = text.substring(8, 10)
+        Timber.e("year $year")
+        Timber.e("month $month")
+        Timber.e("date $date")
         return "${year}년 ${month}월 ${date}일 활동에 대한 신청 완료!\n최종 선정 여부는 쪽지로 안내됩니다."
     }
 
@@ -245,5 +249,15 @@ class ActivityRecruit2ViewModel @Inject constructor(
         Timber.e("activityStoryLength.value ${activityStoryLength.value}")
         Timber.e("keeperIntroduceLength.value ${keeperIntroduceLength.value}")
         return ActivityRecruit2Model.thumbnailImgFile != null && activityStoryLength.value != 0 && keeperIntroduceLength.value != 0
+    }
+
+    fun clearData() {
+        ActivityRecruit2Model.thumbnailImgFile = null
+        ActivityRecruit2Model.keeperIntroduceImgFile = null
+        ActivityRecruit2Model.activityStoryImgFile = null
+        ActivityRecruit2Model.thumbnailImgStr = null
+        ActivityRecruit2Model.keeperIntroduceImgStr = null
+        ActivityRecruit2Model.activityStoryImgStr = null
+        _recruitActivityIsSuccess.postValue(false)
     }
 }

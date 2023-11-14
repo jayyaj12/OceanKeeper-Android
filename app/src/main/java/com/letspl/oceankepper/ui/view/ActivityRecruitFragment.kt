@@ -32,6 +32,7 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     override fun onBackPressed() {
+        activityRecruitViewModel.clearTempData()
         activity.onReplaceFragment(MainFragment(), false, true)
     }
 
@@ -59,6 +60,11 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
         setupRewardSwitchListener()
         loadAddress()
 
+
+        // 임시저장 활성화 시 data 를 load 한다.
+        if(activityRecruitViewModel.isLoadTempData()) {
+            loadTempData()
+        }
     }
 
     // 주소 불러오기 
@@ -227,6 +233,34 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
             binding.endDateTv.text = activityRecruitViewModel.getActivityStartDate().substring(11, 16)
             binding.endDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
         }
+    }
+    // 임시저장 데이터 불러오기
+    private fun loadTempData() {
+        // 프로젝트 명
+        binding.projectNameEt.setText(activityRecruitViewModel.getProjectName())
+        // 교통 안내 여부
+        activityRecruitViewModel.setTrafficGuideValue(activityRecruitViewModel.getGuideTrafficValue())
+        // 모집 카테고리 선택
+        activityRecruitViewModel.setRecruitCategoryValue(activityRecruitViewModel.getRecruitCategoryValue())
+        // 모집 지역 선택
+        activityRecruitViewModel.setRecruitLocationValue(activityRecruitViewModel.getRecruitLocationValue())
+        // 활동 프로그램 안내
+        binding.guideActivityEt.setText(activityRecruitViewModel.getGuideActivity())
+        // 모집 정원
+        binding.quotaEt.setText(activityRecruitViewModel.getQuota().toString())
+        // 준비물
+        binding.materialEt.setText(activityRecruitViewModel.getMaterial())
+        // 제공 리워드
+        binding.giveRewardEt.setText(activityRecruitViewModel.getGiveRewardStr())
+        // 기타 안내 사항
+        binding.otherGuideEt.setText(activityRecruitViewModel.getOtherGuide())
+        // 참여 키퍼 리워드 제공 여부
+        activityRecruitViewModel.setIsGiveReward(activityRecruitViewModel.isGiveReward())
+        binding.rewardSwtich.isChecked = activityRecruitViewModel.isGiveReward()
+
+        recruitStartCalendarAdapter.notifyDataSetChanged()
+        recruitEndCalendarAdapter.notifyDataSetChanged()
+        activityStartCalendarAdapter.notifyDataSetChanged()
     }
 
     // 이전 달 버튼 클릭

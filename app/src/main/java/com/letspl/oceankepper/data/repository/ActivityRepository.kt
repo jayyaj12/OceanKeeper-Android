@@ -24,4 +24,8 @@ interface ActivityRepository {
     suspend fun uploadEditProfileImage(imageFile: File): Response<UploadProfileImageDto>
     // 내활동보기
     suspend fun getUserActivity(activityId: String?, size:Int, status: String, userId: String): Response<GetUserActivityDto>
+    // 활동 지원 취소
+    suspend fun deleteApplyCancel(applicationId: String): Response<DeleteApplyDto>
+    // 모집 취소
+    suspend fun deleteRecruitmentCancel(activityId: String): Response<DeleteRecruitmentDto>
 }

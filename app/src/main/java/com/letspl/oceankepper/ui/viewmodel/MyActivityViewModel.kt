@@ -41,9 +41,23 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     private var _getActivityInfoResult = MutableLiveData<GetActivityInfoResponseDto>()
     val getActivityInfoResult: LiveData<GetActivityInfoResponseDto> get() = _getActivityInfoResult
 
-    // 내활동보기 결과
-    private var _getUserActivity = MutableLiveData<List<GetUserActivityListDto>?>()
-    val getUserActivity: LiveData<List<GetUserActivityListDto>?> get() = _getUserActivity
+    // 내활동보기 결과 (크루)
+    private var _getUserActivityCrew = MutableLiveData<List<GetUserActivityListDto>?>()
+    val getUserActivityCrew: LiveData<List<GetUserActivityListDto>?> get() = _getUserActivityCrew
+
+    // 내활동보기 결과 (호스트)
+    private var _getUserActivityHost = MutableLiveData<List<GetUserActivityListDto>?>()
+    val getUserActivityHost: LiveData<List<GetUserActivityListDto>?> get() = _getUserActivityHost
+
+    // 활동 지원 취소
+    private var _deleteApplyCancel = MutableLiveData<Boolean>()
+    val deleteApplyCancel: LiveData<Boolean> get() = _deleteApplyCancel
+
+    // 모집 취소
+    private var _deleteRecruitCancel = MutableLiveData<Boolean>()
+    val deleteRecruitCancel: LiveData<Boolean> get() = _deleteRecruitCancel
+
+
 
     // 나의 오션키퍼 활동정보 조회
     fun getMyActivityInfo() {
@@ -88,12 +102,54 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     }
 
     // 내활동 보기
-    fun getUserActivity() {
+    fun getUserActivity(role: String) {
         CoroutineScope(Dispatchers.IO).launch() {
-            activityViRepositoryImpl.getUserActivity(null, 10, "apply", UserModel.userInfo.user.id).let {
+            activityViRepositoryImpl.getUserActivity(null, 10, role, UserModel.userInfo.user.id).let {
                 if(it.isSuccessful) {
-                    _getUserActivity.postValue(it.body()?.response?.activities)
+                    if(role == "crew") {
+                        _getUserActivityCrew.postValue(it.body()?.response?.activities)
+                    } else {
+                        _getUserActivityHost.postValue(it.body()?.response?.activities)
+                    }
                 } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    // 활동 지원 취소
+    fun deleteApplyCancel(applicationId: String) {
+        viewModelScope.launch {
+            activityViRepositoryImpl.deleteApplyCancel(applicationId).let {
+                if(it.isSuccessful) {
+                    _deleteApplyCancel.postValue(true)
+                } else {
+                    _deleteApplyCancel.postValue(false)
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    // 모집 취소
+    fun deleteRecruitmentCancel(activityId: String) {
+        viewModelScope.launch {
+            activityViRepositoryImpl.deleteRecruitmentCancel(activityId).let {
+                if(it.isSuccessful) {
+                    _deleteRecruitCancel.postValue(true)
+                } else {
+                    _deleteRecruitCancel.postValue(false)
                     val errorJsonObject =
                         ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
                     if (errorJsonObject != null) {
@@ -135,6 +191,7 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     }
 
     fun clearLivedata() {
-        _getUserActivity.postValue(null)
+        _getUserActivityCrew.postValue(null)
+        _getUserActivityHost.postValue(null)
     }
 }

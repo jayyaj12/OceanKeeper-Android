@@ -588,20 +588,20 @@ class ActivityRecruitViewModel: ViewModel() {
 
     // 모집 시작일 캘린더 날짜 선택 시 초기화
     private fun clearRecruitStartDateInfo() {
-//        setRecruitStartDateClickPosition(-1)
-//        setRecruitStartDateNowDate(-1)
+        setRecruitStartDateClickPosition(-1)
+        setRecruitStartDateNowDate(-1)
     }
 
     // 모집 종료일 캘린더 날짜 선택 시 초기화
     private fun clearRecruitEndDateInfo() {
-//        setRecruitEndDateClickPosition(-1)
-//        setRecruitEndDateNowDate(-1)
+        setRecruitEndDateClickPosition(-1)
+        setRecruitEndDateNowDate(-1)
     }
 
     // 활동 시작일 캘린더 날짜 선택 시 초기화
     private fun clearActivityStartDateInfo() {
-//        setActivityStartDateClickPosition(-1)
-//        setActivityStartDateNowDate(-1)
+        setActivityStartDateClickPosition(-1)
+        setActivityStartDateNowDate(-1)
     }
 
     // 필수 정보가 모두 들어갔는지 여부 체크
@@ -616,6 +616,16 @@ class ActivityRecruitViewModel: ViewModel() {
         clearRecruitStartDateInfo()
         clearRecruitEndDateInfo()
         clearActivityStartDateInfo()
+        ActivityRecruitModel.isGiveReward = false
+        ActivityRecruitModel.projectName = ""
+        ActivityRecruitModel.quota = null
+        ActivityRecruitModel.trafficGuide = 0
+        ActivityRecruitModel.recruitCategory = 1
+        ActivityRecruitModel.recruitLocation = 1
         ActivityRecruitModel.location = ActivityRegisterLocationDto()
+        ActivityRecruitModel.guideActivity = ""
+        ActivityRecruitModel.material = ""
+        ActivityRecruitModel.giveReward = ""
+        ActivityRecruitModel.otherGuide = ""
     }
 }

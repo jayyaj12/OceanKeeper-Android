@@ -178,18 +178,23 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
         // 활동 모집 등록 성공 여부
         activityRecruit2ViewModel.recruitActivityIsSuccess.observe(viewLifecycleOwner) {
-            val dialog = RecruitActivityCompleteDialog(requireContext(),
-                activityRecruit2ViewModel.getRecruitCompleteText(),
-                {
-                    // 나의 활동 확인하기
+            if(it) {
+                activityRecruitViewModel.clearTempData()
+                activityRecruit2ViewModel.clearData()
 
-                },
-                {
-                    // 확인 버튼
-                    activity.onReplaceFragment(MainFragment(), false, true)
-                })
+                val dialog = RecruitActivityCompleteDialog(requireContext(),
+                    activityRecruit2ViewModel.getRecruitCompleteText(),
+                    {
+                        // 나의 활동 확인하기
 
-            dialog.show()
+                    },
+                    {
+                        // 확인 버튼
+                        activity.onReplaceFragment(MainFragment(), false, true)
+                    })
+
+                dialog.show()
+            }
         }
     }
 
@@ -289,10 +294,12 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     // 뒤로가기 버튼 클릭
     fun onClickedBackBtn() {
+        activityRecruit2ViewModel.clearData()
         activity.onReplaceFragment(ActivityRecruitFragment())
     }
 
     override fun onBackPressed() {
+        activityRecruit2ViewModel.clearData()
         activity.onReplaceFragment(ActivityRecruitFragment())
     }
 

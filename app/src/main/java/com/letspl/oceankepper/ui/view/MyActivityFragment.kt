@@ -21,9 +21,14 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.tabs.TabLayout
+import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.databinding.FragmentMyActivityBinding
 import com.letspl.oceankepper.ui.adapter.ApplyActivityListAdapter
+import com.letspl.oceankepper.ui.adapter.OpenActivityListAdapter
+import com.letspl.oceankepper.ui.dialog.ApplyCancelDialog
 import com.letspl.oceankepper.ui.dialog.ChoiceProfileImageDialog
+import com.letspl.oceankepper.ui.dialog.RecruitCancelDialog
+import com.letspl.oceankepper.ui.dialog.RejectReasonDialog
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel
 import com.letspl.oceankepper.util.ImgFileMaker
@@ -58,6 +63,11 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private lateinit var choiceProfileImageDialog: ChoiceProfileImageDialog
     private val resizingImage = ResizingImage()
     private lateinit var applyActivityListAdapter: ApplyActivityListAdapter
+    private lateinit var openActivityListAdapter: OpenActivityListAdapter
+    private lateinit var applyCancelDialog: ApplyCancelDialog
+    private lateinit var recruitCancelDialog: RecruitCancelDialog
+    private lateinit var rejectReasonDialog: RejectReasonDialog
+    private lateinit var activityRepositoryImpl: ActivityRepositoryImpl
 
     // 사진 찍기 결과
     private val takePhoto = registerForActivityResult(ActivityResultContracts.TakePicture()) {
@@ -133,6 +143,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         setupUserProfile()
         setupChoiceProfileImageDialog()
         setupApplyActivityListAdapter()
+        setupOpenActivityListAdapter()
         setupViewModelObserver()
     }
 
@@ -142,32 +153,84 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     // 내 활동 불러오기
-    private fun getUserActivity() {
-        myActivityViewModel.getUserActivity()
+    private fun getUserActivity(role: String) {
+        myActivityViewModel.getUserActivity(role)
     }
 
     private fun setupViewModelObserver() {
-        // 내활동보기 결과 등록
-        myActivityViewModel.getUserActivity.observe(viewLifecycleOwner) {
+        myActivityViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
+        // 내활동보기 결과 등록(크루)
+        myActivityViewModel.getUserActivityCrew.observe(viewLifecycleOwner) {
             if (it != null) {
                 if(it.isNotEmpty()) {
+                    binding.openActivityRv.visibility = View.GONE
                     binding.applyActivityRv.visibility = View.VISIBLE
                     applyActivityListAdapter.submitList(it)
                 }
             }
         }
+        // 내활동보기 결과 등록(호스트)
+        myActivityViewModel.getUserActivityHost.observe(viewLifecycleOwner) {
+            if (it != null) {
+                if(it.isNotEmpty()) {
+                    binding.applyActivityRv.visibility = View.GONE
+                    binding.openActivityRv.visibility = View.VISIBLE
+                    openActivityListAdapter.submitList(it)
+                }
+            }
+        }
+        // 활동 지원 취소
+        myActivityViewModel.deleteApplyCancel.observe(viewLifecycleOwner) {
+            if(it) {
+                myActivityViewModel.getUserActivity("crew")
+            }
+        }
+        // 모집 취소
+        myActivityViewModel.deleteRecruitCancel.observe(viewLifecycleOwner) {
+            if(it) {
+                myActivityViewModel.getUserActivity("host")
+            }
+        }
     }
 
     private fun setupApplyActivityListAdapter() {
-        applyActivityListAdapter = ApplyActivityListAdapter(requireContext())
+        applyActivityListAdapter = ApplyActivityListAdapter(requireContext(), {
+            // 활동 신청서 수정 페이지로 이동
+        }, {
+            // 신청 취소 모달 표시
+            applyCancelDialog = ApplyCancelDialog(requireContext()) {
+                // 활동 취소 api 호출
+                myActivityViewModel.deleteApplyCancel(it)
+            }
+            applyCancelDialog.show()
+        }, { reason ->
+            // 거절 사유 모달 표시
+            rejectReasonDialog = RejectReasonDialog(requireContext(), reason)
+            rejectReasonDialog.show()
+        })
         binding.applyActivityRv.adapter = applyActivityListAdapter
+    }
 
+    private fun setupOpenActivityListAdapter() {
+        openActivityListAdapter = OpenActivityListAdapter(requireContext(), {
+            // 신청서 관리 페이지로 이동
+        }, {
+            // 모집 수정하기 페이지로 이동
+        }, {
+            // 모집 취소 모달 표시
+            recruitCancelDialog = RecruitCancelDialog(requireContext()) {
+                // 활동 모집 취소 api 호출
+                myActivityViewModel.deleteRecruitmentCancel(it)
+            }
+            recruitCancelDialog.show()
+        })
+        binding.openActivityRv.adapter = openActivityListAdapter
     }
 
     // 유저 프로필 표시
     private fun setupUserProfile() {
-        Timber.e("profile ${myActivityViewModel.getUserProfile()}")
-
         Glide.with(requireContext())
             .load(myActivityViewModel.getUserProfile())
             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -212,16 +275,13 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 when(tab?.position) {
                     0 -> {
                         binding.applyActivityRv.visibility = View.GONE
+                        binding.openActivityRv.visibility = View.GONE
                     }
                     1 -> {
-                        getUserActivity()
+                        getUserActivity("crew")
                     }
                     2 -> {
-                        binding.applyActivityRv.visibility = View.GONE
-
-                    }
-                    3 -> {
-                        binding.applyActivityRv.visibility = View.GONE
+                        getUserActivity("host")
                     }
                 }
             }

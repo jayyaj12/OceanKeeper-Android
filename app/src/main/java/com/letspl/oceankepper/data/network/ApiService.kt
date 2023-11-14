@@ -162,9 +162,19 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("userId") userPathId: String,
         @Query("activity-id") activityId: String?,
+        @Query("role") role: String,
         @Query("size") size: Int,
-        @Query("status") status: String,
-        @Query("userId") userId: String
     ): Response<GetUserActivityDto>
 
+    @DELETE("/activity/recruitment/application/cancel")
+    suspend fun deleteApplyCancel(
+        @Header("Authorization") token: String,
+        @Query("application-id") applicationId: String
+    ): Response<DeleteApplyDto>
+
+    @DELETE("/activity/recruitment")
+    suspend fun deleteRecruitmentCancel(
+        @Header("Authorization") token: String,
+        @Query("activity-id") activityId: String
+    ): Response<DeleteRecruitmentDto>
 }

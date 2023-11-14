@@ -203,8 +203,25 @@ data class GetUserActivityListDto(
     val quota: Int,
     val recruitEndAt: String,
     val recruitStartAt: String,
+    val rejectReason: String,
     val role: String,
     val startAt: String,
     val status: String,
     val title: String
+)
+
+// 활동 지원 취소
+@kotlinx.serialization.Serializable
+data class DeleteApplyDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: String
+)
+
+// 모집 취소
+@kotlinx.serialization.Serializable
+data class DeleteRecruitmentDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: String
 )

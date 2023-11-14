@@ -138,9 +138,17 @@ class ActivityRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit privat
     override suspend fun getUserActivity(
         activityId: String?,
         size: Int,
-        status: String,
+        role: String,
         userId: String
     ): Response<GetUserActivityDto> {
-        return apiService.getUserActivity("Bearer ${UserModel.userInfo.token.accessToken}", userId, activityId, size, status, userId)
+        return apiService.getUserActivity("Bearer ${UserModel.userInfo.token.accessToken}", userId, activityId, role, size)
+    }
+
+    override suspend fun deleteApplyCancel(applicationId: String): Response<DeleteApplyDto> {
+        return apiService.deleteApplyCancel("Bearer ${UserModel.userInfo.token.accessToken}", applicationId)
+    }
+
+    override suspend fun deleteRecruitmentCancel(activityId: String): Response<DeleteRecruitmentDto> {
+        return apiService.deleteRecruitmentCancel("Bearer ${UserModel.userInfo.token.accessToken}", activityId)
     }
 }

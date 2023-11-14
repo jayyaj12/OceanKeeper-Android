@@ -18,10 +18,11 @@ import com.letspl.oceankepper.data.dto.GetNoticeListDto
 import com.letspl.oceankepper.data.dto.GetUserActivityListDto
 import com.letspl.oceankepper.databinding.ItemApplyActivityBinding
 import com.letspl.oceankepper.databinding.ItemNoticeBinding
+import com.letspl.oceankepper.databinding.ItemOpenActivityBinding
 import timber.log.Timber
 
-class ApplyActivityListAdapter(private val context: Context, private val onClickEditApply: (String) -> Unit, private val onClickCancelApply: (String) -> Unit, private val onClickCheckRejectReason: (String) -> Unit) :
-    ListAdapter<GetUserActivityListDto, ApplyActivityListAdapter.ApplyActivityViewHolder>(diffUtil) {
+class OpenActivityListAdapter(private val context: Context, private val onClickManage: () -> Unit, private val onClickEditRecruit: (String) -> Unit, private val onClickCancelRecruit: (String) -> Unit) :
+    ListAdapter<GetUserActivityListDto, OpenActivityListAdapter.OpenActivityViewHolder>(diffUtil) {
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<GetUserActivityListDto>() {
             override fun areItemsTheSame(
@@ -38,7 +39,7 @@ class ApplyActivityListAdapter(private val context: Context, private val onClick
         }
     }
 
-    inner class ApplyActivityViewHolder(private val binding: ItemApplyActivityBinding) :
+    inner class OpenActivityViewHolder(private val binding: ItemOpenActivityBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: GetUserActivityListDto) {
             Glide.with(context).load(item.activityImageUrl).into(binding.thumbnailIv)
@@ -56,61 +57,50 @@ class ApplyActivityListAdapter(private val context: Context, private val onClick
             binding.dateTv.text = "모집기간: ${item.recruitStartAt.substring(2, item.recruitStartAt.length).replace("-", ".")}~${item.recruitEndAt.substring(2, item.recruitEndAt.length).replace("-", ".")}"
             binding.timeTv.text = "활동시작: ${item.startAt.substring(2, 10).replace("-", ".")} ${item.startAt.substring(11, 13)}시"
 
-            showBtn(item.status, item.crewStatus)
+            showBtn(item.status)
             onClickBtn(item)
         }
 
         // 클릭 이벤트
         private fun onClickBtn(item: GetUserActivityListDto) {
-            // 신청서 수정
-            binding.editApplyTv.setOnClickListener {
-                onClickEditApply(item.applicationId)
+            // 신청서 관리
+            binding.manageApplyTv.setOnClickListener {
+                onClickManage()
             }
-            // 신청 취소
-            binding.cancelApplyTv.setOnClickListener {
-                onClickCancelApply(item.applicationId)
+            // 모집 수정하기
+            binding.editRecruitActivityTv.setOnClickListener {
+                onClickEditRecruit(item.activityId)
             }
-            // 거절 사유 확인
-            binding.rejectApplyTv.setOnClickListener {
-                onClickCheckRejectReason(item.rejectReason)
+            // 모집 취소
+            binding.cancelRecruitTv.setOnClickListener {
+                onClickCancelRecruit(item.activityId)
             }
         }
 
         // 활동별에 맞는 버튼을 표시함
-        private fun showBtn(status: String, crewStatus: String) {
+        private fun showBtn(status: String) {
             Timber.e("status $status")
-            Timber.e("crewStatus $crewStatus")
             when(status) {
                 "OPEN" -> {
-                    when(crewStatus) {
-                        "IN_PROGRESS" -> {
-                            binding.countIv.visibility = View.VISIBLE
-                            binding.editApplyTv.visibility = View.VISIBLE
-                            binding.cancelApplyTv.visibility = View.VISIBLE
-                            Timber.e("IN_PROGRESS close")
-
-                        }
-                        "CLOSED" -> {
-                            binding.countIv.visibility = View.GONE
-                            binding.applyCountTv.text = "활동 종료"
-                        }
-                        "REJECT" -> {
-                            binding.rejectApplyTv.visibility = View.VISIBLE
-                        }
-                    }
+                    binding.manageApplyTv.visibility = View.VISIBLE
+                    binding.editRecruitActivityTv.visibility = View.VISIBLE
+                    binding.cancelRecruitTv.visibility = View.VISIBLE
                 }
                 // 활동 종료
                 "CLOSED" -> {
                     binding.countIv.visibility = View.GONE
                     binding.applyCountTv.text = "활동 종료"
                 }
+                // 모집 취소
+                "CANCEL" -> {
+                    binding.countIv.visibility = View.GONE
+                    binding.applyCountTv.text = "모집 취소"
+                }
                 // 모집 종료
                 "RECRUITMENT_CLOSE" -> {
-                    Timber.e("recruitment close")
                     binding.countIv.visibility = View.GONE
-                    binding.editApplyTv.visibility = View.GONE
-                    binding.cancelApplyTv.visibility = View.GONE
                     binding.applyCountTv.text = "모집 종료"
+                    binding.manageApplyTv.visibility = View.VISIBLE
                 }
             }
 
@@ -122,15 +112,15 @@ class ApplyActivityListAdapter(private val context: Context, private val onClick
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApplyActivityViewHolder {
-        return ApplyActivityViewHolder(
-            ItemApplyActivityBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OpenActivityViewHolder {
+        return OpenActivityViewHolder(
+            ItemOpenActivityBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
-    override fun onBindViewHolder(holder: ApplyActivityViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: OpenActivityViewHolder, position: Int) {
         holder.onBind(currentList[position])
 
         if(position == currentList.size - 1) {
