@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.letspl.oceankepper.data.dto.GetApplicationDetailResponse
 import com.letspl.oceankepper.data.dto.PostApplyApplicationBody
 import com.letspl.oceankepper.data.model.MainModel
 import com.letspl.oceankepper.data.model.UserModel
@@ -22,10 +23,12 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     private var _transportPosition = MutableLiveData<Int>(0)
     val transportPosition: LiveData<Int>
         get() = _transportPosition
+
     // 개인정보 동의 여부
     private var _privacyAgreement = MutableLiveData<Boolean>(false)
     val privacyAgreement: LiveData<Boolean>
         get() = _privacyAgreement
+
     // 지원 결과
     private var _applyResult = MutableLiveData<String>()
     val applyResult: LiveData<String> get() = _applyResult
@@ -34,16 +37,19 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     private var _errorMsg = MutableLiveData<String>()
     val errorMsg: LiveData<String> get() = _errorMsg
 
+    // 에러 토스트 메세지 text
+    private var _getDetailApplication = MutableLiveData<GetApplicationDetailResponse>()
+    val getDetailApplication: LiveData<GetApplicationDetailResponse> get() = _getDetailApplication
+
+    // 활동 지원서 등록
     fun postApplyActivity(
         dayOfBirth: String,
         email: String,
         id1365: String,
         name: String,
         phoneNumber: String,
-        privacyAgreement: Boolean,
         question: String,
-        startPoint: String,
-        transportation: String
+        startPoint: String
     ) {
         viewModelScope.launch {
             applyActivityRepositoryImpl.postRecruitmentApplication(
@@ -61,16 +67,62 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
                     UserModel.userInfo.user.id
                 )
             ).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     _applyResult.postValue(getRecruitCompleteText(it.body()?.timestamp!!))
                 } else {
-                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if(errorJsonObject != null) {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
                         val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                         _errorMsg.postValue(errorMsg)
                     }
                 }
             }
+        }
+    }
+
+    // 특정 활동 지원서 불러오기
+    fun getDetailApplication(applicationId: String) {
+        viewModelScope.launch {
+            applyActivityRepositoryImpl.getDetailApplication(applicationId).let {
+                if (it.isSuccessful) {
+                    _getDetailApplication.postValue(it.body()?.response)
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    // 활동 지원 수정하기
+    fun patchApplication(
+        applicationId: String,
+        dayOfBirth: String,
+        email: String,
+        id1365: String,
+        name: String,
+        phoneNumber: String,
+        question: String,
+        startPoint: String,
+    ) {
+        viewModelScope.launch {
+            applyActivityRepositoryImpl.patchApplication(
+                applicationId, GetApplicationDetailResponse(
+                    dayOfBirth.toLong(),
+                    email,
+                    id1365,
+                    name,
+                    phoneNumber,
+                    question,
+                    startPoint,
+                    getClickedTransport(),
+                )
+            )
         }
     }
 
@@ -80,12 +132,22 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     }
 
     private fun getClickedTransport(): String {
-        return when(transportPosition.value) {
+        return when (transportPosition.value) {
             1 -> "도보"
             2 -> "대중교통"
             3 -> "자차 (카셰어링 불가능)"
             4 -> "자차 (카셰어링 가능)"
             else -> ""
+        }
+    }
+
+    fun getClickedTransportStringToInt(transportation: String): Int {
+        return when (transportation) {
+            "도보" -> 1
+            "대중교통" -> 2
+            "자차 (카셰어링 불가능)" -> 3
+            "자차 (카셰어링 가능)" -> 4
+            else -> 0
         }
     }
 
@@ -100,7 +162,6 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
 
     // 개인정보 동의하기 클릭
     fun onClickedPrivacyAgreement() {
-        Timber.e("privacyAgreement.value ${privacyAgreement.value}")
         _privacyAgreement.postValue(!privacyAgreement.value!!)
     }
 
@@ -112,8 +173,8 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     fun isPhoneNumberInt(number: String): Boolean {
         var checkResult = true
 
-        for(i in number.indices) {
-            if(!Character.isDigit(number.toCharArray()[i])) {
+        for (i in number.indices) {
+            if (!Character.isDigit(number.toCharArray()[i])) {
                 // 숫자가 아닐경우를 체크함
                 checkResult = false
             }

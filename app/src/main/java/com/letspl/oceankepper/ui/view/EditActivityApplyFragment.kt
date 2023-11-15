@@ -8,15 +8,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.databinding.FragmentActivityApplyBinding
+import com.letspl.oceankepper.databinding.FragmentEditActivityApplyBinding
 import com.letspl.oceankepper.ui.dialog.RecruitActivityCompleteDialog
 import com.letspl.oceankepper.ui.viewmodel.ApplyActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
+class EditActivityApplyFragment(private val applicationId: String) : Fragment(), BaseActivity.OnBackPressedListener {
 
-    private var _binding: FragmentActivityApplyBinding? = null
-    private val binding: FragmentActivityApplyBinding get() = _binding!!
+    private var _binding: FragmentEditActivityApplyBinding? = null
+    private val binding: FragmentEditActivityApplyBinding get() = _binding!!
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
@@ -25,9 +26,9 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        _binding = FragmentActivityApplyBinding.inflate(layoutInflater)
+        _binding = FragmentEditActivityApplyBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
-        binding.applyActivityFragment = this
+        binding.editApplyActivityFragment = this
         binding.applyActivityViewModel = applyActivityViewModel
     }
 
@@ -43,10 +44,16 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupViewModelObserver()
+        loadData()
+    }
+
+    // 기존 활동 지원서 데이터 불러오기
+    private fun loadData() {
+        applyActivityViewModel.getDetailApplication(applicationId)
     }
 
     // 확인 버튼 클릭
-    fun onClickedConfirm() {
+    fun onClickedEdit() {
         // 필수값이 모두 입력된 경우에만 활동 지원
         if (applyActivityViewModel.isInputNecessaryValue(
                 binding.nameEt.text.toString(),
@@ -60,7 +67,8 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
             ) {
                 if (applyActivityViewModel.isPhoneNumberInt(binding.phonenumberEt.text.toString())) {
                     if (applyActivityViewModel.privacyAgreement.value == true) {
-                        applyActivityViewModel.postApplyActivity(
+                        applyActivityViewModel.patchApplication(
+                            applicationId,
                             binding.birthdayEt.text.toString(),
                             binding.emailEt.text.toString(),
                             binding.id1365Et.text.toString(),
@@ -86,19 +94,18 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
             activity.showErrorMsg(it)
         }
 
-        applyActivityViewModel.applyResult.observe(viewLifecycleOwner) {
-            val dialog = RecruitActivityCompleteDialog(requireContext(),
-                it,
-                {
-                    // 나의 활동 확인하기
-
-                },
-                {
-                    // 확인 버튼
-                    activity.onReplaceFragment(MainFragment(), false, true)
-                })
-
-            dialog.show()
+        applyActivityViewModel.getDetailApplication.observe(viewLifecycleOwner) {
+            it.run {
+                binding.nameEt.setText(this.name)
+                binding.phonenumberEt.setText(this.phoneNumber)
+                binding.id1365Et.setText(this.id1365)
+                binding.birthdayEt.setText(this.dayOfBirth.toString())
+                binding.emailEt.setText(this.email)
+                binding.startLocationEt.setText(this.startPoint)
+                applyActivityViewModel.onClickedTransport(applyActivityViewModel.getClickedTransportStringToInt(this.transportation))
+                binding.askRecruitKeeperEt.setText(this.question)
+                applyActivityViewModel.onClickedPrivacyAgreement()
+            }
         }
     }
 

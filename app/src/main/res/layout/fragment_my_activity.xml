@@ -158,24 +158,6 @@
                 app:layout_constraintTop_toTopOf="@+id/edit_nickname_tv" />
 
             <TextView
-                android:id="@+id/keeper_introduce_edit_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="모집키퍼 소개 수정"
-                app:layout_constraintStart_toStartOf="@id/nickname_tv"
-                app:layout_constraintTop_toBottomOf="@id/edit_nickname_tv" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="8dp"
-                android:src="@drawable/kepper_edit_icon"
-                app:layout_constraintBottom_toBottomOf="@id/keeper_introduce_edit_tv"
-                app:layout_constraintStart_toEndOf="@+id/keeper_introduce_edit_tv"
-                app:layout_constraintTop_toTopOf="@id/keeper_introduce_edit_tv" />
-
-            <TextView
                 android:id="@+id/my_activity_keeper_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -150,13 +150,14 @@ interface ApiService {
         @Query("size") size: Int
     ): Response<GetGuideDto>
 
-    // 활동정보 불러오기
+    // 나의 오션키퍼 활동정보 조회
     @GET("/activity/activity-info/user/{userId}")
     suspend fun getActivityInfo(
         @Header("Authorization") token: String,
         @Path("userId") userId: String,
     ): Response<GetActivityInfoDto>
 
+    // 활동 정보 불러오기
     @GET("/activity/user/{userId}")
     suspend fun getUserActivity(
         @Header("Authorization") token: String,
@@ -166,15 +167,32 @@ interface ApiService {
         @Query("size") size: Int,
     ): Response<GetUserActivityDto>
 
+    // 활동 지원 취소
     @DELETE("/activity/recruitment/application/cancel")
     suspend fun deleteApplyCancel(
         @Header("Authorization") token: String,
         @Query("application-id") applicationId: String
     ): Response<DeleteApplyDto>
 
+    // 활동 모집 취소
     @DELETE("/activity/recruitment")
     suspend fun deleteRecruitmentCancel(
         @Header("Authorization") token: String,
         @Query("activity-id") activityId: String
     ): Response<DeleteRecruitmentDto>
+
+    // 특정 활동 지원서 보기
+    @GET("/activity/detail/application")
+    suspend fun getDetailApplication(
+        @Header("Authorization") token: String,
+        @Query("application-id") applicationId: String
+    ): Response<GetApplicationDetailDto>
+
+    // 활동 지원서 수정
+    @PATCH("/activity/recruitment/application/{applicationId}")
+    suspend fun patchApplication(
+        @Header("Authorization") token: String,
+        @Path("applicationId") applicationId: String,
+        @Body patchApplicationBody: GetApplicationDetailResponse
+    ): Response<PatchApplicationDto>
 }

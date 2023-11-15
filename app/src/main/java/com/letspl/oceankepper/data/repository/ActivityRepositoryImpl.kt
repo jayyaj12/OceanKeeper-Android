@@ -119,7 +119,7 @@ class ActivityRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit privat
     override suspend fun getCrewNickname(activityId: String): Response<GetActivityRecruitmentCrewNameResultDto> {
         return apiService.getCrewNickName("Bearer ${UserModel.userInfo.token.accessToken}", activityId)
     }
-
+    // 나의 오션키퍼 활동정보 조회
     override suspend fun getActivityInfo(userId: String): Response<GetActivityInfoDto> {
         return apiService.getActivityInfo("Bearer ${UserModel.userInfo.token.accessToken}", userId)
     }

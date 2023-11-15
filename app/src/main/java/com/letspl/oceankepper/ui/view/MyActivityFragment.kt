@@ -198,6 +198,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private fun setupApplyActivityListAdapter() {
         applyActivityListAdapter = ApplyActivityListAdapter(requireContext(), {
             // 활동 신청서 수정 페이지로 이동
+            activity.onReplaceFragment(EditActivityApplyFragment(it))
         }, {
             // 신청 취소 모달 표시
             applyCancelDialog = ApplyCancelDialog(requireContext()) {
