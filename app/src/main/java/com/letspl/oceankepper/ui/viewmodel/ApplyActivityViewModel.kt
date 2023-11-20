@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.letspl.oceankepper.data.dto.GetApplicationDetailResponse
+import com.letspl.oceankepper.data.dto.PatchApplyApplicationBody
 import com.letspl.oceankepper.data.dto.PostApplyApplicationBody
 import com.letspl.oceankepper.data.model.MainModel
 import com.letspl.oceankepper.data.model.UserModel
@@ -112,11 +113,12 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     ) {
         viewModelScope.launch {
             applyActivityRepositoryImpl.patchApplication(
-                applicationId, GetApplicationDetailResponse(
+                applicationId, PatchApplyApplicationBody(
                     dayOfBirth.toLong(),
                     email,
                     id1365,
                     name,
+                    privacyAgreement.value!!,
                     phoneNumber,
                     question,
                     startPoint,

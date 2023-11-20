@@ -193,6 +193,6 @@ interface ApiService {
     suspend fun patchApplication(
         @Header("Authorization") token: String,
         @Path("applicationId") applicationId: String,
-        @Body patchApplicationBody: GetApplicationDetailResponse
+        @Body patchApplicationBody: PatchApplyApplicationBody
     ): Response<PatchApplicationDto>
 }

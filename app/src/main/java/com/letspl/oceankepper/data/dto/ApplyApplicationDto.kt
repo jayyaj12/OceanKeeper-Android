@@ -51,6 +51,20 @@ data class GetApplicationDetailResponse(
     val transportation: String
 )
 
+
+@Serializable
+data class PatchApplyApplicationBody(
+    val dayOfBirth: Long,
+    val email: String,
+    val id1365: String,
+    val name: String,
+    val privacyAgreement: Boolean,
+    val phoneNumber: String,
+    val question: String,
+    val startPoint: String,
+    val transportation: String
+)
+
 // 활동 지원서 수정
 @Serializable
 data class PatchApplicationDto(
