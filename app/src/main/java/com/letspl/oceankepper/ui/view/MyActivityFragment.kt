@@ -25,10 +25,7 @@ import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankepper.databinding.FragmentMyActivityBinding
 import com.letspl.oceankepper.ui.adapter.ApplyActivityListAdapter
 import com.letspl.oceankepper.ui.adapter.OpenActivityListAdapter
-import com.letspl.oceankepper.ui.dialog.ApplyCancelDialog
-import com.letspl.oceankepper.ui.dialog.ChoiceProfileImageDialog
-import com.letspl.oceankepper.ui.dialog.RecruitCancelDialog
-import com.letspl.oceankepper.ui.dialog.RejectReasonDialog
+import com.letspl.oceankepper.ui.dialog.*
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel
 import com.letspl.oceankepper.util.ImgFileMaker
@@ -67,6 +64,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private lateinit var applyCancelDialog: ApplyCancelDialog
     private lateinit var recruitCancelDialog: RecruitCancelDialog
     private lateinit var rejectReasonDialog: RejectReasonDialog
+    private lateinit var editNicknameDialog: EditNicknameDialog
     private lateinit var activityRepositoryImpl: ActivityRepositoryImpl
 
     // 사진 찍기 결과
@@ -193,6 +191,22 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 myActivityViewModel.getUserActivity("host")
             }
         }
+
+        // 닉네임 수정
+        myActivityViewModel.changeNicknameResult.observe(viewLifecycleOwner) {
+            binding.nicknameTv.text = it
+        }
+    }
+
+    // 닉네임 변경 버튼 클릭
+    fun onClickChangeNickname() {
+        Timber.e("onClickChangeNickname")
+        editNicknameDialog = EditNicknameDialog(requireContext()) {
+            Timber.e("onClickChangeNickname click")
+
+            myActivityViewModel.getDuplicateNickname(it)
+        }
+        editNicknameDialog.show()
     }
 
     private fun setupApplyActivityListAdapter() {

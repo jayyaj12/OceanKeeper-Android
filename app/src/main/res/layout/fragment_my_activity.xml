@@ -143,6 +143,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="닉네임 수정"
+                android:onClick="@{() -> myActivityFragment.onClickChangeNickname()}"
                 android:textColor="#757575"
                 android:textSize="14dp"
                 app:layout_constraintStart_toStartOf="@id/nickname_tv"
@@ -151,6 +152,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
+                android:onClick="@{() -> myActivityFragment.onClickChangeNickname()}"
                 android:layout_marginStart="8dp"
                 android:src="@drawable/change_nickname_icon"
                 app:layout_constraintBottom_toBottomOf="@id/edit_nickname_tv"

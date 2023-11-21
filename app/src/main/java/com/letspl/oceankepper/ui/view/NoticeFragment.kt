@@ -80,7 +80,7 @@ class NoticeFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
+        noticeViewModel.setIsLast(false)
         _binding = null
     }
 }

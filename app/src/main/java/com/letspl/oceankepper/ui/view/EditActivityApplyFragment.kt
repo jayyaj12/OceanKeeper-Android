@@ -107,6 +107,23 @@ class EditActivityApplyFragment(private val applicationId: String) : Fragment(),
                 applyActivityViewModel.onClickedPrivacyAgreement()
             }
         }
+
+        applyActivityViewModel.editApplyResult.observe(viewLifecycleOwner) {
+            val dialog = RecruitActivityCompleteDialog(requireContext(),
+                "활동 신청 수정 완료",
+                it,
+                {
+                    // 나의 활동 확인하기
+                    activity.onReplaceFragment(MyActivityFragment(), false, true)
+                },
+                {
+                    // 확인 버튼
+                    activity.onReplaceFragment(MainFragment(), false, true, 1)
+                })
+
+            dialog.setCancelable(false)
+            dialog.show()
+        }
     }
 
     fun onBackBtnClicked() {

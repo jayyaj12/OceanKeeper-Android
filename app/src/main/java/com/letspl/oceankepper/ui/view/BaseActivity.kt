@@ -88,7 +88,7 @@ class BaseActivity : AppCompatActivity() {
     }
 
     // fragment 변경
-    fun onReplaceFragment(fragment: Fragment, addToBackStack: Boolean = true, isVisibleBottomNav: Boolean = false) {
+    fun onReplaceFragment(fragment: Fragment, addToBackStack: Boolean = true, isVisibleBottomNav: Boolean = false, navItem: Int = -1) {
         if(!::binding.isInitialized) {
             binding = ActivityBaseBinding.inflate(layoutInflater)
         }
@@ -97,6 +97,12 @@ class BaseActivity : AppCompatActivity() {
             binding.bottomNav.visibility = View.VISIBLE
         } else {
             binding.bottomNav.visibility = View.GONE
+        }
+
+        when(navItem) {
+            1 -> binding.bottomNav.selectedItemId = R.id.home_icon
+            2 -> binding.bottomNav.selectedItemId = R.id.msg_icon
+            3 -> binding.bottomNav.selectedItemId = R.id.my_activity_icon
         }
 
         supportFragmentManager.beginTransaction().let {

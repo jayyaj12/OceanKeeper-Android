@@ -195,4 +195,17 @@ interface ApiService {
         @Path("applicationId") applicationId: String,
         @Body patchApplicationBody: PatchApplyApplicationBody
     ): Response<PatchApplicationDto>
+
+    // 닉네임 중복 체크
+    @GET("/auth")
+    suspend fun getDuplicateNickname(
+        @Query("nickname") nickname: String
+    ): Response<GetCheckDuplicateNicknameResponse>
+
+    // 닉네임 변경
+    @PUT("/auth/nickname")
+    suspend fun putNickname(
+        @Header("Authorization") token: String,
+        @Body nicknameBody: PutNicknameBody
+    ): Response<PutNicknameResponse>
 }

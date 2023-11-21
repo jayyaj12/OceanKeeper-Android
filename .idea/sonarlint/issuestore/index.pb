@@ -19,8 +19,6 @@ a
 Kapp/src/main/java/com/letspl/oceankepper/data/repository/LoginRepository.kt,b\b\bba65427532ed86e2464b391c1a5aee89d4d9015
 z
 Japp/src/main/java/com/letspl/oceankepper/data/repository/JoinRepository.kt,9\8\98a9eaa7899fe4e5ff75f47c20911c6eee8eb41a
-l
-<app/src/main/java/com/letspl/oceankepper/data/dto/JoinDto.kt,a\6\a64383b3dba31379412158b4df6cdf3d9d09ccbd
 ~
 Napp/src/main/java/com/letspl/oceankepper/data/repository/JoinRepositoryImpl.kt,0\a\0afae8e973cdca7330e76eea7acdab9deaedaf39
 q
@@ -43,3 +41,15 @@ l
 <app/src/main/java/com/letspl/oceankepper/data/dto/MainDto.kt,7\b\7b3e5b128aaf884fd12a6a0562d7afa4b51c00a2
 n
 >app/src/main/java/com/letspl/oceankepper/util/NewScrollView.kt,e\b\ebb9a2f4a05ee7b2e336a38db891fdc321c558d2
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+?
+settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
+x
+Happ/src/main/java/com/letspl/oceankepper/ui/view/JoinCompleteFragment.kt,d\5\d52356ea6e4a449405b93668161385183ee1e2e4
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+w
+Gapp/src/main/java/com/letspl/oceankepper/ui/view/GuideDetailFragment.kt,3\b\3bae4dfd63418518139d72a08832c0f3b5797e77
+q
+Aapp/src/main/java/com/letspl/oceankepper/ui/view/LoginFragment.kt,0\7\07eda0a6d3ea23d84389a8e006aaaede800d1855

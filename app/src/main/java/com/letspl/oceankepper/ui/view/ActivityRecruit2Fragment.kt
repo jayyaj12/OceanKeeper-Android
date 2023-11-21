@@ -183,6 +183,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                 activityRecruit2ViewModel.clearData()
 
                 val dialog = RecruitActivityCompleteDialog(requireContext(),
+                    "활동 모집 등록 완료",
                     activityRecruit2ViewModel.getRecruitCompleteText(),
                     {
                         // 나의 활동 확인하기
@@ -190,9 +191,10 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                     },
                     {
                         // 확인 버튼
-                        activity.onReplaceFragment(MainFragment(), false, true)
+                        activity.onReplaceFragment(MainFragment(), false, true, 1)
                     })
 
+                dialog.setCancelable(false)
                 dialog.show()
             }
         }

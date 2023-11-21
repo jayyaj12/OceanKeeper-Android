@@ -14,8 +14,10 @@ import com.letspl.oceankepper.data.repository.NoticeRepositoryImpl
 import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,16 +33,22 @@ class GuideViewModel @Inject constructor(private val guideRepositoryImpl: GuideR
 
     // 이용 가이드 조회
     fun getGuide(noticeId: Int?, size: Int) {
+        Timber.e("getGuide 1")
+        Timber.e("viewModelScope $viewModelScope")
         viewModelScope.launch(Dispatchers.IO) {
-            if(!NoticeModel.isLast) {
+            Timber.e("getGuide 2")
+            if(!GuideModel.isLast) {
+                Timber.e("getGuide 3")
                 guideRepositoryImpl.getGuide("Bearer ${UserModel.userInfo.token.accessToken}", noticeId, size).let {
                     if(it.isSuccessful) {
+                        Timber.e("getGuide 4")
                         val guides = it.body()?.response?.guides!!
                         _getGuideResult.postValue(guides)
 
                         GuideModel.isLast = it.body()?.response?.meta?.last!!
                         GuideModel.lastNoticeId = guides[guides.size - 1].id
                     } else {
+                        Timber.e("getGuide 5")
                         val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
                         if(errorJsonObject != null) {
                             val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
@@ -48,6 +56,9 @@ class GuideViewModel @Inject constructor(private val guideRepositoryImpl: GuideR
                         }
                     }
                 }
+            } else {
+
+                Timber.e("getGuide 6")
             }
         }
     }
@@ -55,6 +66,10 @@ class GuideViewModel @Inject constructor(private val guideRepositoryImpl: GuideR
     // 마지막 guideId 불러오기
     fun getLastGuideId(): Int {
         return GuideModel.lastNoticeId
+    }
+
+    fun setIsLast(flag: Boolean) {
+        GuideModel.isLast = flag
     }
 
 }

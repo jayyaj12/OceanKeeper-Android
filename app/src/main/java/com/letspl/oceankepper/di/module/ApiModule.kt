@@ -4,14 +4,7 @@ import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.letspl.oceankepper.BuildConfig
 import com.letspl.oceankepper.data.network.ApiService
-import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
-import com.letspl.oceankepper.data.repository.ApplyActivityRepositoryImpl
-import com.letspl.oceankepper.data.repository.GuideRepositoryImpl
-import com.letspl.oceankepper.data.repository.JoinRepositoryImpl
-import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
-import com.letspl.oceankepper.data.repository.MainRepositoryImpl
-import com.letspl.oceankepper.data.repository.MessageRepositoryImpl
-import com.letspl.oceankepper.data.repository.NoticeRepositoryImpl
+import com.letspl.oceankepper.data.repository.*
 import com.letspl.oceankepper.ui.dialog.ProgressDialog
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
@@ -185,6 +178,10 @@ object ApiModule {
 
     @Singleton
     @Provides
+    fun provideUserRepositoryImpl(@OceanService apiService: ApiService) = UserRepositoryImpl(apiService)
+
+    @Singleton
+    @Provides
     fun provideMainRepositoryImpl(@OceanService apiService: ApiService) = MainRepositoryImpl(apiService)
 
     @Singleton
@@ -212,7 +209,7 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideMyActivityViewModel(@OceanService oceanService: ApiService) = MyActivityViewModel(ActivityRepositoryImpl(oceanService))
+    fun provideMyActivityViewModel(@OceanService oceanService: ApiService) = MyActivityViewModel(ActivityRepositoryImpl(oceanService), UserRepositoryImpl(oceanService))
 
     @Singleton
     @Provides

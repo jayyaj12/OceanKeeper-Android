@@ -34,6 +34,10 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     private var _applyResult = MutableLiveData<String>()
     val applyResult: LiveData<String> get() = _applyResult
 
+    // 지원 수정 결과
+    private var _editApplyResult = MutableLiveData<String>()
+    val editApplyResult: LiveData<String> get() = _editApplyResult
+
     // 에러 토스트 메세지 text
     private var _errorMsg = MutableLiveData<String>()
     val errorMsg: LiveData<String> get() = _errorMsg
@@ -124,7 +128,18 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
                     startPoint,
                     getClickedTransport(),
                 )
-            )
+            ).let {
+                if(it.isSuccessful) {
+                    _editApplyResult.postValue("활동 지원 수정이 완료되었습니다.")
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
         }
     }
 

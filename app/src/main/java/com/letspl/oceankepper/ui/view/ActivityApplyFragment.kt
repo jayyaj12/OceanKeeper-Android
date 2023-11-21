@@ -88,6 +88,7 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
         applyActivityViewModel.applyResult.observe(viewLifecycleOwner) {
             val dialog = RecruitActivityCompleteDialog(requireContext(),
+                "활동 지원 신청 완료",
                 it,
                 {
                     // 나의 활동 확인하기
@@ -95,9 +96,10 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 },
                 {
                     // 확인 버튼
-                    activity.onReplaceFragment(MainFragment(), false, true)
+                    activity.onReplaceFragment(MainFragment(), false, true, 1)
                 })
 
+            dialog.setCancelable(false)
             dialog.show()
         }
     }

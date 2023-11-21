@@ -15,10 +15,12 @@ import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.user.model.User
 import com.letspl.oceankepper.data.dto.GetActivityInfoResponseDto
 import com.letspl.oceankepper.data.dto.GetUserActivityListDto
+import com.letspl.oceankepper.data.dto.PutNicknameBody
 import com.letspl.oceankepper.data.model.JoinModel
 import com.letspl.oceankepper.data.model.MyActivityModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
+import com.letspl.oceankepper.data.repository.UserRepositoryImpl
 import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +33,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class MyActivityViewModel @Inject constructor(private val activityViRepositoryImpl: ActivityRepositoryImpl): ViewModel() {
+class MyActivityViewModel @Inject constructor(private val activityViRepositoryImpl: ActivityRepositoryImpl, private val userRepositoryImpl: UserRepositoryImpl): ViewModel() {
 
     // 에러 토스트 메세지 text
     private var _errorMsg = MutableLiveData<String>()
@@ -53,11 +55,51 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     private var _deleteApplyCancel = MutableLiveData<Boolean>()
     val deleteApplyCancel: LiveData<Boolean> get() = _deleteApplyCancel
 
+    // 활동 지원 취소
+    private var _changeNicknameResult = MutableLiveData<String>()
+    val changeNicknameResult: LiveData<String> get() = _changeNicknameResult
+
     // 모집 취소
     private var _deleteRecruitCancel = MutableLiveData<Boolean>()
     val deleteRecruitCancel: LiveData<Boolean> get() = _deleteRecruitCancel
 
+    // 닉네임 중복 확인
+    fun getDuplicateNickname(nickname: String) {
+        viewModelScope.launch {
+            userRepositoryImpl.getDuplicateNickname(nickname).let {
+                if(it.isSuccessful) {
+                    putNickname(nickname)
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
 
+    // 닉네임 수정
+    private fun putNickname(nickname: String) {
+        viewModelScope.launch {
+            userRepositoryImpl.putNickname(
+                PutNicknameBody(nickname, UserModel.userInfo.user.id)
+            ).let {
+                if(it.isSuccessful) {
+                    _changeNicknameResult.postValue(nickname)
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
 
     // 나의 오션키퍼 활동정보 조회
     fun getMyActivityInfo() {

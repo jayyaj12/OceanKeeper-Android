@@ -53,4 +53,7 @@ class NoticeViewModel @Inject constructor(private val noticeRepositoryImpl: Noti
         return NoticeModel.lastNoticeId
     }
 
+    fun setIsLast(flag: Boolean) {
+        NoticeModel.isLast = flag
+    }
 }

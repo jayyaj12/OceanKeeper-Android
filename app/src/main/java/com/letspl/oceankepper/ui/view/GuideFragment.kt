@@ -81,7 +81,7 @@ class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
+        guideViewModel.setIsLast(false)
         _binding = null
     }
 
