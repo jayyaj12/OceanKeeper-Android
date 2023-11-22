@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:id="@+id/thumbnail_ll"
-        android:layout_width="164dp"
+        android:layout_width="0dp"
         android:layout_height="123dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,8 +29,10 @@
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="61dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
         android:layout_height="22dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
@@ -51,6 +53,7 @@
         <TextView
             android:id="@+id/recruitment_status_tv"
             android:layout_width="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
             android:fontFamily="@font/pretendard_light"
@@ -61,7 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/human_icon" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/nickname_tv"

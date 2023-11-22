@@ -127,7 +127,7 @@ class EditActivityApplyFragment(private val applicationId: String) : Fragment(),
     }
 
     fun onBackBtnClicked() {
-        activity.onReplaceFragment(MainFragment(), false, true)
+        activity.onReplaceFragment(MainFragment(), false, true, 1)
     }
 
     override fun onDestroyView() {
@@ -136,6 +136,6 @@ class EditActivityApplyFragment(private val applicationId: String) : Fragment(),
     }
 
     override fun onBackPressed() {
-        activity.onReplaceFragment(MainFragment(), false, true)
+        activity.onReplaceFragment(MainFragment(), false, true, 1)
     }
 }
