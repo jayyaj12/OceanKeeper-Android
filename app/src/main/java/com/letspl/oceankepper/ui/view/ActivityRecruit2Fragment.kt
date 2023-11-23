@@ -1,15 +1,20 @@
 package com.letspl.oceankepper.ui.view
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -37,7 +42,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
     private var _binding: FragmentActivityRecruit2Binding? = null
     private val binding: FragmentActivityRecruit2Binding get() = _binding!!
     private val activityRecruitViewModel: ActivityRecruitViewModel by viewModels()
-
+    private lateinit var mActivityResultLauncher: ActivityResultLauncher<Intent>
     @Inject
     lateinit var activityRecruit2ViewModel: ActivityRecruit2ViewModel
     private val REQ_GALLERY = 1000
@@ -149,6 +154,15 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+            //기존의 startActivityForResult(intent)에 해당
+        }
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -217,25 +231,95 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         val readPermission = ContextCompat.checkSelfPermission(
             requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
         )
+        val READ_MEDIA_IMAGES = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
+        )
+
 
         // 권한 확인
-        return if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+        return if (READ_MEDIA_IMAGES == PackageManager.PERMISSION_DENIED ||writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+
+            Timber.e("writePermission == PackageManager.PERMISSION_DENIED ${writePermission == PackageManager.PERMISSION_DENIED}")
+            Timber.e("readPermission == PackageManager.PERMISSION_DENIED ${readPermission == PackageManager.PERMISSION_DENIED}")
             // 권한 요청
             ActivityCompat.requestPermissions(
                 requireActivity(), arrayOf(
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_MEDIA_IMAGES
                 ), REQ_GALLERY
             )
-
+//            val intent =
+//                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+//            intent.data = Uri.parse("package:${requireActivity().packageName}")
+//
+//
+//            mActivityResultLauncher.launch(intent)
             false
         } else {
             true
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        Timber.e("requestCode $requestCode")
+
+        when(requestCode) {
+            REQ_GALLERY -> {// 권한이 비어있는 경우 에러
+                if (grantResults.isEmpty()) {
+                    throw RuntimeException("Empty Permission Result")
+                }
+                // 거부된 권한이 있는지 확인한다
+                var isPermitted = true
+                val deniedPermission = ArrayList<String>()
+                for ((id, result) in grantResults.withIndex()) {
+                    if (result == PackageManager.PERMISSION_DENIED) {
+                        isPermitted = false
+                        deniedPermission.add(permissions[id])
+                    }
+                }
+                // 권한이 모두 충족된 경우 다이얼로그를 보여준다
+                if (isPermitted) {
+//                    showRecordDialog()
+                } else {
+                    // 거부만 선택한 경우
+                    if (
+                        ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                        ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    ) {
+                        // 권한이 필요하다는 토스트 메시지를 띄운다
+
+                        // 권한을 다시 요청한다
+                        requestPermissions(deniedPermission.toArray(arrayOfNulls<String>
+                            (deniedPermission.size)), 0)
+                    }
+// 거부 및 다시보지 않기를 선택한 경우
+                    else {
+                        Timber.e("// 거부 및 다시보지 않기를 선택한 경우")
+                        // 권한 설정으로 이동할 수 있도록 알림창을 띄운다
+//                        super.showDialogToGetPermission(this)
+                    }
+                }
+
+            }
+        }
+
+
+    }
+
     fun selectThumbnailGallery() {
+        Timber.e("checkGalleryPermission ${checkGalleryPermission()}")
         if (checkGalleryPermission()) {
+            Timber.e("checkGalleryPermission2 ${checkGalleryPermission()}")
+
             // 권한이 있는 경우 갤러리 실행
             val intent = Intent(Intent.ACTION_PICK)
             // intent와 data와 type을 동시에 설정하는 메서드

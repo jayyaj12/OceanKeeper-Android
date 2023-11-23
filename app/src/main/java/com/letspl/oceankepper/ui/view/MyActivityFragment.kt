@@ -231,13 +231,14 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private fun setupOpenActivityListAdapter() {
         openActivityListAdapter = OpenActivityListAdapter(requireContext(), {
             // 신청서 관리 페이지로 이동
-        }, {
+        }, { activityId ->
             // 모집 수정하기 페이지로 이동
-        }, {
+           activity.onReplaceFragment(EditActivityRecruitFragment(activityId), false, false)
+        }, { activityId ->
             // 모집 취소 모달 표시
             recruitCancelDialog = RecruitCancelDialog(requireContext()) {
                 // 활동 모집 취소 api 호출
-                myActivityViewModel.deleteRecruitmentCancel(it)
+                myActivityViewModel.deleteRecruitmentCancel(activityId)
             }
             recruitCancelDialog.show()
         })

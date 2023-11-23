@@ -69,6 +69,8 @@ class NaverLoginManager @Inject constructor(private val loginViewModel: LoginVie
             override fun onFailure(httpStatus: Int, message: String) {
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Timber.e("errorCode: ${errorCode}")
+                Timber.e("errorDescription: ${errorDescription}")
                 Toast.makeText(
                     ContextUtil.context, "errorCode: ${errorCode}\n" +
                             "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT

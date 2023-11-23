@@ -14,18 +14,21 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.FragmentActivityRecruitBinding
+import com.letspl.oceankepper.databinding.FragmentEditActivityRecruitBinding
 import com.letspl.oceankepper.ui.adapter.ActivityStartCalendarAdapter
 import com.letspl.oceankepper.ui.adapter.RecruitEndCalendarAdapter
 import com.letspl.oceankepper.ui.adapter.RecruitStartCalendarAdapter
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
+import com.letspl.oceankepper.ui.viewmodel.MainViewModel
 import timber.log.Timber
 
-class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
-    private var _binding: FragmentActivityRecruitBinding? = null
-    private val binding: FragmentActivityRecruitBinding get() = _binding!!
+class EditActivityRecruitFragment(private val activityId: String) : Fragment(), BaseActivity.OnBackPressedListener {
+    private var _binding: FragmentEditActivityRecruitBinding? = null
+    private val binding: FragmentEditActivityRecruitBinding get() = _binding!!
     private lateinit var recruitStartCalendarAdapter: RecruitStartCalendarAdapter
     private lateinit var recruitEndCalendarAdapter: RecruitEndCalendarAdapter
     private lateinit var activityStartCalendarAdapter: ActivityStartCalendarAdapter
+    private val mainViewModel: MainViewModel by viewModels()
     private val activityRecruitViewModel: ActivityRecruitViewModel by viewModels()
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
@@ -41,7 +44,7 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentActivityRecruitBinding.inflate(layoutInflater)
+        _binding = FragmentEditActivityRecruitBinding.inflate(layoutInflater)
         binding.activityRecruitViewModel = activityRecruitViewModel
         binding.activityRecruitFragment = this
         binding.lifecycleOwner = this
@@ -71,6 +74,10 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private fun loadAddress() {
         // 활동 위치
         binding.activityLocationEt.setText(activityRecruitViewModel.getLocationInfo().address)
+    }
+
+    private fun getActivityData() {
+        mainViewModel.getMyActivityDetail(activityId)
     }
 
     // 캘린더 date 셋업

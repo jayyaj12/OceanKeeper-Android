@@ -93,12 +93,6 @@ class BaseActivity : AppCompatActivity() {
             binding = ActivityBaseBinding.inflate(layoutInflater)
         }
 
-        if(isVisibleBottomNav) {
-            binding.bottomNav.visibility = View.VISIBLE
-        } else {
-            binding.bottomNav.visibility = View.GONE
-        }
-
         when(navItem) {
             1 -> binding.bottomNav.selectedItemId = R.id.home_icon
             2 -> binding.bottomNav.selectedItemId = R.id.msg_icon
@@ -111,6 +105,12 @@ class BaseActivity : AppCompatActivity() {
                 it.addToBackStack(null)
             }
             it.commitAllowingStateLoss()
+        }
+
+        if(isVisibleBottomNav) {
+            binding.bottomNav.visibility = View.VISIBLE
+        } else {
+            binding.bottomNav.visibility = View.GONE
         }
     }
 
