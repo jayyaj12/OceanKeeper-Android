@@ -93,8 +93,6 @@ Bapp/src/main/java/com/letspl/oceankepper/ui/view/NoticeFragment.kt,7\8\78ecafb
 Napp/src/main/java/com/letspl/oceankepper/ui/adapter/OpenActivityListAdapter.kt,c\1\c15715f61b3c5ae49736a2dade3b635ec694fc1a
 s
 Capp/src/main/java/com/letspl/oceankepper/data/network/ApiService.kt,c\9\c93429ee48800b13f89f9d8e693e72872052b0a9
-l
-<app/src/main/java/com/letspl/oceankepper/data/dto/MainDto.kt,7\b\7b3e5b128aaf884fd12a6a0562d7afa4b51c00a2
 ~
 Napp/src/main/java/com/letspl/oceankepper/data/repository/MainRepositoryImpl.kt,4\0\401064a7fa6d6d28c0a4fb665a5497821468f2ce
 z

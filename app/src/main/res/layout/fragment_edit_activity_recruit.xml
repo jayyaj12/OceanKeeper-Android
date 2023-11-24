@@ -1031,7 +1031,8 @@
                         android:layout_marginStart="8dp"
                         android:textColor="#263238"
                         android:fontFamily="@font/pretendard_medium"
-                        android:text="활동 시작일"
+
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.startAt.substring(0 , 10).replace('-', '.')}"
                         android:textSize="16dp" />
 
                 </LinearLayout>
@@ -1062,7 +1063,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:fontFamily="@font/pretendard_medium"
-                        android:text="시작 시간"
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.startAt.substring(11 , 16)}"
                         android:textColor="#263238"
                         android:textSize="16dp" />
 

@@ -57,13 +57,13 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        setUpCalendarRecyclerView()
+        setUpCalendarRecyclerView()
         setUpViewModelObserver()
 //        setupCalendarDate()
 //        setUpActivityTimeSpinner()
 //        setUpEditTextListener()
 //        setUpClickedListener()
-//        setupRewardSwitchListener()
+        setupRewardSwitchListener()
 //        loadAddress()
 //
 //
@@ -106,16 +106,50 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     }
 
     private fun setUpViewModelObserver() {
+        // 모집 시작일 날짜 선택
+        activityRecruitViewModel.choiceRecruitStartDateText.observe(viewLifecycleOwner) {
+            recruitStartCalendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray(1))
+            recruitStartCalendarAdapter.notifyDataSetChanged()
+        }
+        // 모집 종료일 날짜 선택
+        activityRecruitViewModel.choiceRecruitEndDateText.observe(viewLifecycleOwner) {
+            recruitEndCalendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray(2))
+            recruitEndCalendarAdapter.notifyDataSetChanged()
+        }
+        // 활동 시작일 날짜 선택
+        activityRecruitViewModel.choiceActivityStartDateText.observe(viewLifecycleOwner) {
+            activityStartCalendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray(3))
+            activityStartCalendarAdapter.notifyDataSetChanged()
+        }
+
         // 활동 모집 조회 결과
         mainViewModel.activityDetailSelectResult.observe(viewLifecycleOwner) {
             it?.let {
+                activityRecruitViewModel.getNowDate(it.response.recruitStartAt, it.response.recruitEndAt, it.response.startAt.substring(0, 10))
                 binding.quotaEt.setText(it.response.quota.toString())
+                activityRecruitViewModel.getGuideTrafficValue(it.response.transportation)
+                activityRecruitViewModel.getGarbageCategory(it.response.garbageCategory)
+                activityRecruitViewModel.getLocationTag(it.response.locationTag)
+                binding.rewardSwtich.isChecked = it.response.rewards != ""
+
+                activityRecruitViewModel.setRecruitStartClickedDate(it.response.recruitStartAt.substring(0, 7))
+                activityRecruitViewModel.setRecruitEndClickedDate(it.response.recruitEndAt.substring(0, 7))
+                activityRecruitViewModel.setActivityStartClickedDate(it.response.startAt.substring(0, 7))
+
+                activityRecruitViewModel.setRecruitStartDateClickPosition(activityRecruitViewModel.getDayInMonthArray(1).indexOf(it.response.recruitStartAt.substring(8, 10).toInt().toString()))
+                activityRecruitViewModel.setRecruitEndDateClickPosition(activityRecruitViewModel.getDayInMonthArray(2).indexOf(it.response.recruitEndAt.substring(8, 10).toInt().toString()))
+                activityRecruitViewModel.setActivityStartDateClickPosition(activityRecruitViewModel.getDayInMonthArray(3).indexOf(it.response.startAt.substring(8, 10).toInt().toString()))
+
+                recruitStartCalendarAdapter.notifyDataSetChanged()
+                recruitEndCalendarAdapter.notifyDataSetChanged()
+                activityStartCalendarAdapter.notifyDataSetChanged()
             }
         }
     }
 
     // calendarRecyclerview 셋업
     private fun setUpCalendarRecyclerView() {
+
         recruitStartCalendarAdapter = RecruitStartCalendarAdapter(activityRecruitViewModel){
             binding.recruitStartDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
             binding.recruitStartDateTv.text = activityRecruitViewModel.getRecruitStartDate().substring(0, 10).replace("-", ".")
@@ -130,6 +164,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
         }
 
         recruitStartCalendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray(1))
+
         binding.calendarStartRecruitRv.run {
             layoutManager = GridLayoutManager(requireContext(), 7)
             adapter = recruitStartCalendarAdapter
