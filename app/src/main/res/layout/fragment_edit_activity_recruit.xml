@@ -15,7 +15,7 @@
             type="com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel" />
 
         <variable
-            name="activityRecruitFragment"
+            name="editActivityRecruitFragment"
             type="com.letspl.oceankepper.ui.view.EditActivityRecruitFragment" />
     </data>
 
@@ -30,7 +30,7 @@
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"
             android:gravity="center"
-            android:onClick="@{() -> activityRecruitFragment.onClickBackBtn()}"
+            android:onClick="@{() -> editActivityRecruitFragment.onClickBackBtn()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -466,7 +466,6 @@
                     android:maxLength="30"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:text="@{mainViewModel.activityDetailSelectResult.response.quota}"
                     android:textColorHint="@color/blue_grayscale_bg200"
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -520,7 +519,7 @@
                         android:layout_marginStart="8dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="@{mainViewModel.activityDetailSelectResult.response.recruitStartAt.replace('-', '.')}"
-                        android:textColor="@color/gray_500"
+                        android:textColor="#263238"
                         android:textSize="16dp" />
 
                 </LinearLayout>
@@ -552,7 +551,7 @@
                         android:layout_marginStart="8dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="@{mainViewModel.activityDetailSelectResult.response.recruitEndAt.replace('-', '.')}"
-                        android:textColor="@color/gray_500"
+                        android:textColor="#263238"
                         android:textSize="16dp" />
 
                 </LinearLayout>
@@ -595,7 +594,7 @@
                         android:layout_width="20dp"
                         android:layout_height="17dp"
                         android:layout_marginEnd="31dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(1)}"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMovePreviousMonth(1)}"
                         android:src="@drawable/calendar_previous_icon"
                         app:layout_constraintEnd_toStartOf="@id/recruit_start_next_ib"
                         app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" />
@@ -605,7 +604,7 @@
                         android:layout_width="20dp"
                         android:layout_height="17dp"
                         android:layout_marginEnd="16dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(1)}"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMoveNextMonth(1)}"
                         android:src="@drawable/calendar_next_icon"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" />
@@ -737,7 +736,7 @@
                         android:layout_width="20dp"
                         android:layout_height="17dp"
                         android:layout_marginEnd="31dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(2)}"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMovePreviousMonth(2)}"
                         android:src="@drawable/calendar_previous_icon"
                         app:layout_constraintEnd_toStartOf="@id/recruit_end_next_ib"
                         app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll" />
@@ -747,7 +746,7 @@
                         android:layout_width="20dp"
                         android:layout_height="17dp"
                         android:layout_marginEnd="16dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(2)}"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMoveNextMonth(2)}"
                         android:src="@drawable/calendar_next_icon"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll" />
@@ -880,7 +879,7 @@
                         android:layout_width="20dp"
                         android:layout_height="17dp"
                         android:layout_marginEnd="31dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(3)}"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMovePreviousMonth(3)}"
                         android:src="@drawable/calendar_previous_icon"
                         app:layout_constraintEnd_toStartOf="@id/activity_next_ib"
                         app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll" />
@@ -890,7 +889,7 @@
                         android:layout_width="20dp"
                         android:layout_height="17dp"
                         android:layout_marginEnd="16dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(3)}"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMoveNextMonth(3)}"
                         android:src="@drawable/calendar_next_icon"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll" />
@@ -1030,7 +1029,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:textColor="@color/gray_500"
+                        android:textColor="#263238"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="활동 시작일"
                         android:textSize="16dp" />
@@ -1064,7 +1063,7 @@
                         android:layout_marginStart="8dp"
                         android:fontFamily="@font/pretendard_medium"
                         android:text="시작 시간"
-                        android:textColor="@color/gray_500"
+                        android:textColor="#263238"
                         android:textSize="16dp" />
 
                 </LinearLayout>
@@ -1311,7 +1310,7 @@
                 android:layout_height="44dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/custom_radius8_solid_p500"
-                android:onClick="@{() -> activityRecruitFragment.onClickTempSaveBtn()}"
+                android:onClick="@{() -> editActivityRecruitFragment.onClickTempSaveBtn()}"
                 android:fontFamily="@font/pretendard_bold"
                 android:text="임시 저장"
                 android:textColor="@color/white"
@@ -1329,7 +1328,7 @@
                 android:text="다음"
                 android:textColor="@color/primary_color_p500"
                 android:textSize="16dp"
-                android:onClick="@{() -> activityRecruitFragment.onClickNextBtn()}"
+                android:onClick="@{() -> editActivityRecruitFragment.onClickNextBtn()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

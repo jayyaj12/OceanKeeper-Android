@@ -20,8 +20,10 @@ import com.letspl.oceankepper.ui.adapter.RecruitEndCalendarAdapter
 import com.letspl.oceankepper.ui.adapter.RecruitStartCalendarAdapter
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
 import com.letspl.oceankepper.ui.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class EditActivityRecruitFragment(private val activityId: String) : Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentEditActivityRecruitBinding? = null
     private val binding: FragmentEditActivityRecruitBinding get() = _binding!!
@@ -46,7 +48,8 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     ): View? {
         _binding = FragmentEditActivityRecruitBinding.inflate(layoutInflater)
         binding.activityRecruitViewModel = activityRecruitViewModel
-        binding.activityRecruitFragment = this
+        binding.editActivityRecruitFragment = this
+        binding.mainViewModel = mainViewModel
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -54,20 +57,22 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpCalendarRecyclerView()
+//        setUpCalendarRecyclerView()
         setUpViewModelObserver()
-        setupCalendarDate()
-        setUpActivityTimeSpinner()
-        setUpEditTextListener()
-        setUpClickedListener()
-        setupRewardSwitchListener()
-        loadAddress()
+//        setupCalendarDate()
+//        setUpActivityTimeSpinner()
+//        setUpEditTextListener()
+//        setUpClickedListener()
+//        setupRewardSwitchListener()
+//        loadAddress()
+//
+//
+////        // 임시저장 활성화 시 data 를 load 한다.
+//        if(activityRecruitViewModel.isLoadTempData()) {
+//            loadTempData()
+//        }
 
-
-//        // 임시저장 활성화 시 data 를 load 한다.
-        if(activityRecruitViewModel.isLoadTempData()) {
-            loadTempData()
-        }
+        getActivityData()
     }
 
     // 주소 불러오기 
@@ -101,20 +106,11 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     }
 
     private fun setUpViewModelObserver() {
-        // 모집 시작일 날짜 선택
-        activityRecruitViewModel.choiceRecruitStartDateText.observe(viewLifecycleOwner) {
-            recruitStartCalendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray(1))
-            recruitStartCalendarAdapter.notifyDataSetChanged()
-        }
-        // 모집 종료일 날짜 선택
-        activityRecruitViewModel.choiceRecruitEndDateText.observe(viewLifecycleOwner) {
-            recruitEndCalendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray(2))
-            recruitEndCalendarAdapter.notifyDataSetChanged()
-        }
-        // 활동 시작일 날짜 선택
-        activityRecruitViewModel.choiceActivityStartDateText.observe(viewLifecycleOwner) {
-            activityStartCalendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray(3))
-            activityStartCalendarAdapter.notifyDataSetChanged()
+        // 활동 모집 조회 결과
+        mainViewModel.activityDetailSelectResult.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.quotaEt.setText(it.response.quota.toString())
+            }
         }
     }
 

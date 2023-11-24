@@ -363,6 +363,7 @@ class ActivityRecruitViewModel: ViewModel() {
 
     // 활동 시작일 클릭된 날짜 저장
     fun setActivityStartDateNowDate(date: Int) {
+        Timber.e("setActivityStartDateNowDate $date")
         ActivityRecruitModel.activityStartNowDate = date
     }
 
