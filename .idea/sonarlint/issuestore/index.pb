@@ -99,3 +99,21 @@ z
 Japp/src/main/java/com/letspl/oceankepper/ui/view/ActivityDetailFragment.kt,6\9\69e8ae9c6fce2c3492c8a8d18afd4feed4646fd4
 |
 Lapp/src/main/java/com/letspl/oceankepper/ui/viewmodel/MyActivityViewModel.kt,a\e\ae2fb5136e155854d6ef2265c03d49aa38d4496a
+
+Oapp/src/main/java/com/letspl/oceankepper/util/loginManager/NaverLoginManager.kt,d\b\dbf69fb2d3343b8715b27110c234fc2445141f68
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+ƒ
+Sapp/src/main/java/com/letspl/oceankepper/ui/dialog/RecruitActivityCompleteDialog.kt,b\f\bf0e70290f2455bb2ed5904904e05bbe45834385
+v
+Fapp/src/main/java/com/letspl/oceankepper/ui/view/MyActivityFragment.kt,6\a\6ae0ab08e29a3a8a2887f58a72ff1699219960b0
+@
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
+p
+@app/src/main/java/com/letspl/oceankepper/ui/view/BaseActivity.kt,0\2\02bda5ce2633adb60baa821d2793207cb77a2886
+|
+Lapp/src/main/java/com/letspl/oceankepper/ui/view/ActivityRecruit2Fragment.kt,8\d\8deb09bee33700c0116c058d7f048a73713a628b
+l
+<app/src/main/java/com/letspl/oceankepper/data/dto/MainDto.kt,7\b\7b3e5b128aaf884fd12a6a0562d7afa4b51c00a2
+y
+Iapp/src/main/java/com/letspl/oceankepper/ui/viewmodel/MessageViewModel.kt,4\7\47f845a3e95f2704d3100106424da56d16f98d0e
