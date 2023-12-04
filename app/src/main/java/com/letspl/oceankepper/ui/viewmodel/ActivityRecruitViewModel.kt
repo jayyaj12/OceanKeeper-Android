@@ -8,6 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.letspl.oceankepper.data.dto.ActivityRegisterLocationDto
+import com.letspl.oceankepper.data.dto.GetMyActivityDetailItem
+import com.letspl.oceankepper.data.dto.GetMyActivityDetailResponse
+import com.letspl.oceankepper.data.model.ActivityRecruit2Model
 import com.letspl.oceankepper.data.model.ActivityRecruitModel
 import com.letspl.oceankepper.util.ContextUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -282,8 +285,6 @@ class ActivityRecruitViewModel : ViewModel() {
             }
         }
 
-        Timber.e("dayList $dayList")
-
         return dayList
     }
 
@@ -311,6 +312,67 @@ class ActivityRecruitViewModel : ViewModel() {
         setLocationInfo(address ?: "", loc)
     }
 
+    // 활동 모집 수정 페이지 불러온 데이터 model 에 저장
+    fun setupEditRecruitValue(response: GetMyActivityDetailItem) {
+        onChangedProjectNameEditText(response.title)
+        setGuideActivity(response.programDetails)
+        setQuota(response.quota)
+        setProjectName(response.title)
+        setMaterial(response.preparation)
+        setGiveReward(response.rewards)
+        setOtherGuide(response.etc)
+        setTrafficGuideValue(getGuideTrafficValue(response.transportation))
+
+        val loc = Location("")
+        loc.latitude = response.location.latitude
+        loc.longitude = response.location.longitude
+        setLocationInfo(response.location.address, loc)
+
+        setRecruitStartClickedDate(response.recruitStartAt.substring(0, 7))
+        setRecruitEndClickedDate(response.recruitEndAt.substring(0, 7))
+        setActivityStartClickedDate(response.startAt.substring(0, 7))
+
+        setRecruitStartDateClickPosition(getDayInMonthArray(1).indexOf(response.recruitStartAt.substring(8, 10).toInt().toString()), response.recruitStartAt.substring(8, 10).toInt())
+        setRecruitEndDateClickPosition(getDayInMonthArray(2).indexOf(response.recruitEndAt.substring(8, 10).toInt().toString()))
+        setActivityStartDateClickPosition(getDayInMonthArray(3).indexOf(response.startAt.substring(8, 10).toInt().toString()))
+
+        setEditRecruitValue(response.thumbnailUrl ?: "", response.keeperImageUrl ?: "", response.storyImageUrl ?: "", response.keeperIntroduction, response.activityStory)
+    }
+
+    // 활동 모집 수정 페이지 2 에서 불러올 값 저장
+    private fun setEditRecruitValue(thumbnail: String, keeperIntroduce: String, activityStory: String, keeperIntroduceContent: String, activityStoryContent: String) {
+        ActivityRecruit2Model.thumbnailImgStr = thumbnail
+        ActivityRecruit2Model.keeperIntroduceImgStr = keeperIntroduce
+        ActivityRecruit2Model.activityStoryImgStr = activityStory
+        ActivityRecruit2Model.keeperIntroduceContent = keeperIntroduceContent
+        ActivityRecruit2Model.activityStoryContent = activityStoryContent
+    }
+
+    // 썸네일 이미지 url 불러오기
+    fun getThumbnailImgStr(): String {
+        return ActivityRecruit2Model.thumbnailImgStr ?: ""
+    }
+
+    // 키퍼 소개 이미지 url 불러오기
+    fun getKeeperIntroduceStr(): String {
+        return ActivityRecruit2Model.keeperIntroduceImgStr ?: ""
+    }
+
+    // 활동 스토리 이미지 url 불러오기
+    fun getActivityStoryImgStr(): String {
+        return ActivityRecruit2Model.activityStoryImgStr ?: ""
+    }
+
+    // 활동 스토리 내용 불러오기
+    fun getKeeperIntroduceContent(): String {
+        return ActivityRecruit2Model.keeperIntroduceContent
+    }
+
+    // 활동 스토리 내용 불러오기
+    fun getActivityStoryContent(): String {
+        return ActivityRecruit2Model.activityStoryContent
+    }
+
     // 지도 검색 결과값
     fun setSearchMapResult(value: String) {
         _searchMap.postValue(value)
@@ -332,6 +394,12 @@ class ActivityRecruitViewModel : ViewModel() {
     fun setRecruitStartDateClickPosition(pos: Int) {
         ActivityRecruitModel.recruitStartClickedPosition = pos
         ActivityRecruitModel.recruitStartNowDate = pos
+    }
+
+    // 클릭된 날짜 저장
+    fun setRecruitStartDateClickPosition(pos: Int, date: Int) {
+        ActivityRecruitModel.recruitStartClickedPosition = pos
+        ActivityRecruitModel.recruitStartNowDate = date
     }
 
     // 모집 시작일 클릭된 날짜 불러오기
@@ -469,6 +537,11 @@ class ActivityRecruitViewModel : ViewModel() {
         ActivityRecruitModel.isLoadTempData = flag
     }
 
+    // 프로젝트 명 세팅
+    fun setProjectName(name: String) {
+        ActivityRecruitModel.projectName = name
+    }
+
     // 참여 키퍼 리워드 여부 확인
     fun isGiveReward(): Boolean {
         return ActivityRecruitModel.isGiveReward
@@ -525,13 +598,17 @@ class ActivityRecruitViewModel : ViewModel() {
     }
 
     // 교통 안내 여부 값 가져오기
-    fun getGuideTrafficValue(str: String) {
-        _trafficGuideValue.postValue(when (str) {
-            "카셰어링 연결 예정" -> 1
-            "단체차량 대절 예정" -> 2
-            "교통편 제공 없음" -> 3
-            else -> 0
-        })
+    fun getGuideTrafficValue(str: String): Int {
+        var trafficGuide = 0
+        when (str.trim()) {
+            "카셰어링 연결 예정" -> trafficGuide = 1
+            "단체차량 대절 예정" -> trafficGuide = 2
+            "교통편 제공 없음" -> trafficGuide = 3
+        }
+
+        _trafficGuideValue.postValue(trafficGuide)
+
+        return trafficGuide
     }
 
     // 교통 안내 여부 값 가져오기
@@ -682,9 +759,7 @@ class ActivityRecruitViewModel : ViewModel() {
 
     // 필수 정보가 모두 들어갔는지 여부 체크
     fun isExistNeedData(): Boolean {
-        Timber.e("activityStartTimeHour ${ActivityRecruitModel.activityStartTimeHour}")
-        Timber.e("activityStartTimeMinute ${ActivityRecruitModel.activityStartTimeMinute}")
-        return ActivityRecruitModel.projectName != "" && ActivityRecruitModel.location.address != "" && ActivityRecruitModel.quota != null && ActivityRecruitModel.recruitStartClickedDate != "" && ActivityRecruitModel.recruitEndClickedDate != "" && ActivityRecruitModel.activityStartClickedDate != "" && ActivityRecruitModel.activityStartTimeHour != null && ActivityRecruitModel.activityStartTimeMinute != null && ActivityRecruitModel.guideActivity != ""
+        return ActivityRecruitModel.projectName != "" && ActivityRecruitModel.location.address != "" && ActivityRecruitModel.quota != null && ActivityRecruitModel.recruitStartClickedDate != "" && ActivityRecruitModel.recruitEndClickedDate != "" && ActivityRecruitModel.activityStartClickedDate != "" && ActivityRecruitModel.activityStartTimeHour != null && ActivityRecruitModel.activityStartTimeMinute != null && ActivityRecruitModel.guideActivity != "" && ActivityRecruitModel.trafficGuide != 0
     }
 
     // 활동 모집 데이터 초기화 (필수로 지워줘야 하는거만 포함, 알아서 초기화 되는건 안함)

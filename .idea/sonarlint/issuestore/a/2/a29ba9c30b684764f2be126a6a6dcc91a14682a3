@@ -1,14 +1,0 @@
-
-7kotlin:S1128"Remove this unused import.(óïÅ™úÿÿÿÿ
-7kotlin:S1128
-"Remove this unused import.(ƒ”²úşÿÿÿÿ
-7kotlin:S1128"Remove this unused import.(±Åºùÿÿÿÿ
-`kotlin:S1192L"HDefine a constant instead of duplicating this literal "image/*" 4 times.(ºÑÖä
-4kotlin:S6310P"Avoid hardcoded dispatchers.(ÏÃâ
-4kotlin:S6310^"Avoid hardcoded dispatchers.(ÏÃâ
-4kotlin:S6310l"Avoid hardcoded dispatchers.(ÏÃâ
-5kotlin:S6310…"Avoid hardcoded dispatchers.(ÏÃâ
-pkotlin:S6311P"QRemove this dispatcher. It is pointless when used with only suspending functions.(ÏÃâ8»‘ÜÒ¿1
-pkotlin:S6311^"QRemove this dispatcher. It is pointless when used with only suspending functions.(ÏÃâ8»‘ÜÒ¿1
-pkotlin:S6311l"QRemove this dispatcher. It is pointless when used with only suspending functions.(ÏÃâ8»‘ÜÒ¿1
-qkotlin:S6311…"QRemove this dispatcher. It is pointless when used with only suspending functions.(ÏÃâ8»‘ÜÒ¿1

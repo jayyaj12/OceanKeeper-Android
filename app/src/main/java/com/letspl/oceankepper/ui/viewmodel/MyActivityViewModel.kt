@@ -33,7 +33,10 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class MyActivityViewModel @Inject constructor(private val activityViRepositoryImpl: ActivityRepositoryImpl, private val userRepositoryImpl: UserRepositoryImpl): ViewModel() {
+class MyActivityViewModel @Inject constructor(
+    private val activityViRepositoryImpl: ActivityRepositoryImpl,
+    private val userRepositoryImpl: UserRepositoryImpl,
+) : ViewModel() {
 
     // 에러 토스트 메세지 text
     private var _errorMsg = MutableLiveData<String>()
@@ -67,7 +70,7 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     fun getDuplicateNickname(nickname: String) {
         viewModelScope.launch {
             userRepositoryImpl.getDuplicateNickname(nickname).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     putNickname(nickname)
                 } else {
                     val errorJsonObject =
@@ -87,7 +90,7 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
             userRepositoryImpl.putNickname(
                 PutNicknameBody(nickname, UserModel.userInfo.user.id)
             ).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     _changeNicknameResult.postValue(nickname)
                 } else {
                     val errorJsonObject =
@@ -105,7 +108,7 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     fun getMyActivityInfo() {
         viewModelScope.launch(Dispatchers.IO) {
             activityViRepositoryImpl.getActivityInfo(UserModel.userInfo.user.id).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     _getActivityInfoResult.postValue(
                         GetActivityInfoResponseDto(
                             it.body()?.response?.activity ?: 0,
@@ -129,7 +132,7 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     fun uploadEditProfileImage(file: File) {
         CoroutineScope(Dispatchers.IO).launch {
             activityViRepositoryImpl.uploadEditProfileImage(file).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     UserModel.userInfo.user.profile = it.body()?.url!!
                 } else {
                     val errorJsonObject =
@@ -144,24 +147,50 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     }
 
     // 내활동 보기
-    fun getUserActivity(role: String) {
+    fun getUserActivity(role: String, activityId: String?) {
         CoroutineScope(Dispatchers.IO).launch() {
-            activityViRepositoryImpl.getUserActivity(null, 10, role, UserModel.userInfo.user.id).let {
-                if(it.isSuccessful) {
-                    if(role == "crew") {
-                        _getUserActivityCrew.postValue(it.body()?.response?.activities)
-                    } else {
-                        _getUserActivityHost.postValue(it.body()?.response?.activities)
+            Timber.e("checkIsLast(role) ${checkIsLast(role)}")
+            if (!checkIsLast(role))
+                activityViRepositoryImpl.getUserActivity(activityId, 10, role, UserModel.userInfo.user.id)
+                    .let {
+                        if (it.isSuccessful) {
+                            val activities = it.body()?.response?.activities!!
+
+                            if (role == "crew") {
+                                MyActivityModel.crewActivities.addAll(activities)
+
+                                Timber.e("MyActivityModel.crewActivities ${MyActivityModel.crewActivities}")
+
+                                _getUserActivityCrew.postValue(MyActivityModel.crewActivities)
+
+                                if (activities.isNotEmpty()) {
+                                    MyActivityModel.crewLast = it.body()?.response?.meta?.last!!
+                                    MyActivityModel.lastCrewActivityId =
+                                        activities[activities.size - 1].activityId
+                                }
+                            } else {
+                                MyActivityModel.hostActivities.addAll(activities)
+
+                                Timber.e("MyActivityModel.hostActivities ${MyActivityModel.hostActivities}")
+                                _getUserActivityHost.postValue(MyActivityModel.hostActivities)
+
+                                if (activities.isNotEmpty()) {
+                                    MyActivityModel.hostLast = it.body()?.response?.meta?.last!!
+                                    MyActivityModel.lastHostActivityId =
+                                        activities[activities.size - 1].activityId
+                                }
+                            }
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string()
+                                    ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
                     }
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
-                    }
-                }
-            }
         }
     }
 
@@ -169,7 +198,7 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     fun deleteApplyCancel(applicationId: String) {
         viewModelScope.launch {
             activityViRepositoryImpl.deleteApplyCancel(applicationId).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     _deleteApplyCancel.postValue(true)
                 } else {
                     _deleteApplyCancel.postValue(false)
@@ -188,7 +217,7 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     fun deleteRecruitmentCancel(activityId: String) {
         viewModelScope.launch {
             activityViRepositoryImpl.deleteRecruitmentCancel(activityId).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     _deleteRecruitCancel.postValue(true)
                 } else {
                     _deleteRecruitCancel.postValue(false)
@@ -201,6 +230,37 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
                 }
             }
         }
+    }
+
+    // 각 역활 별 last 가 true 인지 체크
+    private fun checkIsLast(role: String): Boolean {
+        return when (role) {
+            "crew" -> {
+                MyActivityModel.crewLast
+            }
+            "host" -> {
+                MyActivityModel.hostLast
+            }
+            else -> false
+        }
+    }
+
+    fun getLastCrewActivityId(): String? {
+        return MyActivityModel.lastCrewActivityId
+    }
+
+    fun getLastHostActivityId(): String? {
+        return MyActivityModel.lastHostActivityId
+    }
+
+    fun setCrewLast(flag: Boolean) {
+        MyActivityModel.crewLast = flag
+        MyActivityModel.crewActivities.clear()
+    }
+
+    fun setHostLast(flag: Boolean) {
+        MyActivityModel.hostLast = flag
+        MyActivityModel.hostActivities.clear()
     }
 
     fun getUserProfile(): String {
@@ -233,6 +293,8 @@ class MyActivityViewModel @Inject constructor(private val activityViRepositoryIm
     }
 
     fun clearLivedata() {
+        setCrewLast(false)
+        setHostLast(false)
         _getUserActivityCrew.postValue(null)
         _getUserActivityHost.postValue(null)
     }

@@ -152,7 +152,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 내 활동 불러오기
     private fun getUserActivity(role: String) {
-        myActivityViewModel.getUserActivity(role)
+        myActivityViewModel.getUserActivity(role, null)
     }
 
     private fun setupViewModelObserver() {
@@ -165,7 +165,8 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 if(it.isNotEmpty()) {
                     binding.openActivityRv.visibility = View.GONE
                     binding.applyActivityRv.visibility = View.VISIBLE
-                    applyActivityListAdapter.submitList(it)
+                    Timber.e("getUserActivityCrew ${it.size}")
+                    applyActivityListAdapter.submitList(it.toMutableList())
                 }
             }
         }
@@ -175,20 +176,21 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 if(it.isNotEmpty()) {
                     binding.applyActivityRv.visibility = View.GONE
                     binding.openActivityRv.visibility = View.VISIBLE
-                    openActivityListAdapter.submitList(it)
+                    Timber.e("getUserActivityHost ${it.size}")
+                    openActivityListAdapter.submitList(it.toMutableList())
                 }
             }
         }
         // 활동 지원 취소
         myActivityViewModel.deleteApplyCancel.observe(viewLifecycleOwner) {
             if(it) {
-                myActivityViewModel.getUserActivity("crew")
+                myActivityViewModel.getUserActivity("crew", null)
             }
         }
         // 모집 취소
         myActivityViewModel.deleteRecruitCancel.observe(viewLifecycleOwner) {
             if(it) {
-                myActivityViewModel.getUserActivity("host")
+                myActivityViewModel.getUserActivity("host", null)
             }
         }
 
@@ -226,6 +228,12 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
             rejectReasonDialog.show()
         })
         binding.applyActivityRv.adapter = applyActivityListAdapter
+
+        binding.applyActivityRv.setOnScrollChangeListener { view, i, i2, i3, i4 ->
+            if(!binding.applyActivityRv.canScrollVertically(1)) {
+                myActivityViewModel.getUserActivity("crew", myActivityViewModel.getLastCrewActivityId())
+            }
+        }
     }
 
     private fun setupOpenActivityListAdapter() {
@@ -243,6 +251,12 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
             recruitCancelDialog.show()
         })
         binding.openActivityRv.adapter = openActivityListAdapter
+
+        binding.openActivityRv.setOnScrollChangeListener { view, i, i2, i3, i4 ->
+            if(!binding.openActivityRv.canScrollVertically(1)) {
+                myActivityViewModel.getUserActivity("host", myActivityViewModel.getLastHostActivityId())
+            }
+        }
     }
 
     // 유저 프로필 표시
@@ -292,12 +306,16 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                     0 -> {
                         binding.applyActivityRv.visibility = View.GONE
                         binding.openActivityRv.visibility = View.GONE
+                        myActivityViewModel.setCrewLast(false)
+                        myActivityViewModel.setHostLast(false)
                     }
                     1 -> {
                         getUserActivity("crew")
+                        myActivityViewModel.setHostLast(false)
                     }
                     2 -> {
                         getUserActivity("host")
+                        myActivityViewModel.setCrewLast(false)
                     }
                 }
             }

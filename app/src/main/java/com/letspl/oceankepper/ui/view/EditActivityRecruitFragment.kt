@@ -1,6 +1,7 @@
 package com.letspl.oceankepper.ui.view
 
 import android.graphics.Color
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,13 +19,18 @@ import com.letspl.oceankepper.databinding.FragmentEditActivityRecruitBinding
 import com.letspl.oceankepper.ui.adapter.ActivityStartCalendarAdapter
 import com.letspl.oceankepper.ui.adapter.RecruitEndCalendarAdapter
 import com.letspl.oceankepper.ui.adapter.RecruitStartCalendarAdapter
+import com.letspl.oceankepper.ui.dialog.ProgressDialog
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
 import com.letspl.oceankepper.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditActivityRecruitFragment(private val activityId: String) : Fragment(), BaseActivity.OnBackPressedListener {
+
+    @Inject
+    lateinit var progressDialog: ProgressDialog
     private var _binding: FragmentEditActivityRecruitBinding? = null
     private val binding: FragmentEditActivityRecruitBinding get() = _binding!!
     private lateinit var recruitStartCalendarAdapter: RecruitStartCalendarAdapter
@@ -38,7 +44,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
     override fun onBackPressed() {
         activityRecruitViewModel.clearTempData()
-        activity.onReplaceFragment(MainFragment(), false, true)
+        activity.onReplaceFragment(MainFragment(), false, true, 1)
     }
 
     override fun onCreateView(
@@ -59,19 +65,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
         setUpCalendarRecyclerView()
         setUpViewModelObserver()
-//        setupCalendarDate()
-//        setUpActivityTimeSpinner()
-//        setUpEditTextListener()
-//        setUpClickedListener()
         setupRewardSwitchListener()
-//        loadAddress()
-//
-//
-////        // 임시저장 활성화 시 data 를 load 한다.
-//        if(activityRecruitViewModel.isLoadTempData()) {
-//            loadTempData()
-//        }
-
         getActivityData()
     }
 
@@ -127,18 +121,18 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
             it?.let {
                 activityRecruitViewModel.getNowDate(it.response.recruitStartAt, it.response.recruitEndAt, it.response.startAt.substring(0, 10))
                 binding.quotaEt.setText(it.response.quota.toString())
-                activityRecruitViewModel.getGuideTrafficValue(it.response.transportation)
                 activityRecruitViewModel.getGarbageCategory(it.response.garbageCategory)
                 activityRecruitViewModel.getLocationTag(it.response.locationTag)
                 binding.rewardSwtich.isChecked = it.response.rewards != ""
 
-                activityRecruitViewModel.setRecruitStartClickedDate(it.response.recruitStartAt.substring(0, 7))
-                activityRecruitViewModel.setRecruitEndClickedDate(it.response.recruitEndAt.substring(0, 7))
-                activityRecruitViewModel.setActivityStartClickedDate(it.response.startAt.substring(0, 7))
+                activityRecruitViewModel.setupEditRecruitValue(it.response)
 
-                activityRecruitViewModel.setRecruitStartDateClickPosition(activityRecruitViewModel.getDayInMonthArray(1).indexOf(it.response.recruitStartAt.substring(8, 10).toInt().toString()))
-                activityRecruitViewModel.setRecruitEndDateClickPosition(activityRecruitViewModel.getDayInMonthArray(2).indexOf(it.response.recruitEndAt.substring(8, 10).toInt().toString()))
-                activityRecruitViewModel.setActivityStartDateClickPosition(activityRecruitViewModel.getDayInMonthArray(3).indexOf(it.response.startAt.substring(8, 10).toInt().toString()))
+                val time = it.response.startAt.split("T")[1].split(":")
+                if(time[0].toInt() - 1 > 12) {
+                    setUpActivityTimeSpinner((time[0].toInt() - 13), time[1].toInt(), 1)
+                } else {
+                    setUpActivityTimeSpinner(time[0].toInt() - 1, time[1].toInt(), 0)
+                }
 
                 recruitStartCalendarAdapter.notifyDataSetChanged()
                 recruitEndCalendarAdapter.notifyDataSetChanged()
@@ -214,7 +208,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     }
 
     // 날짜 선택 팝업 설정
-    private fun setUpActivityTimeSpinner() {
+    private fun setUpActivityTimeSpinner(hour: Int, minute: Int, ampm: Int) {
         val hourPicker = binding.hourPicker
         val minutePicker = binding.minutePicker
         val morningAndAfternoonPicker = binding.morningAndAfternoonPicker
@@ -250,6 +244,18 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
         morningAndAfternoonValue.add("PM")
 
         morningAndAfternoonPicker.displayedValues = morningAndAfternoonValue.toTypedArray()
+
+        hourPicker.value = hour
+        minutePicker.value = minute
+        // am: 0 pm: 1
+        morningAndAfternoonPicker.value = if(ampm == 0) {
+            0
+        } else {
+            1
+        }
+
+        activityRecruitViewModel.setActivityStartTimeHour(hour + 1, morningAndAfternoonValue[morningAndAfternoonPicker.value])
+        activityRecruitViewModel.setActivityStartTimeMinute(minuteValues[minutePicker.value].toInt())
 
         hourPicker.setOnValueChangedListener { numberPicker, oldValue, newValue ->
             activityRecruitViewModel.setActivityStartTimeHour(newValue + 1, morningAndAfternoonValue[morningAndAfternoonPicker.value])
@@ -314,9 +320,16 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     // 다음 버튼 클릭
     fun onClickNextBtn() {
         if(activityRecruitViewModel.isExistNeedData()) {
+            activityRecruitViewModel.setGuideActivity(binding.guideActivityEt.text.toString())
+            activityRecruitViewModel.setQuota(binding.quotaEt.text.toString().toInt())
+            activityRecruitViewModel.setProjectName(binding.projectNameEt.text.toString())
+            activityRecruitViewModel.setMaterial(binding.materialEt.text.toString())
+            activityRecruitViewModel.setGiveReward(binding.giveRewardEt.text.toString())
+            activityRecruitViewModel.setOtherGuide(binding.otherGuideEt.text.toString())
+
             // 임시저장 활성화
             activityRecruitViewModel.setIsLoadTempData(true)
-            activity.onReplaceFragment(ActivityRecruit2Fragment())
+            activity.onReplaceFragment(EditActivityRecruit2Fragment(activityId))
         } else {
             Toast.makeText(requireContext(), "모든 값을 입력해주세요.", Toast.LENGTH_SHORT).show()
         }
@@ -329,7 +342,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
         // 임시저장 활성화
         activityRecruitViewModel.setIsLoadTempData(false)
-        activity.onReplaceFragment(MainFragment(), false, true)
+        activity.onReplaceFragment(MainFragment(), false, true, 1)
     }
 
     // 임시저장 버튼 클릭

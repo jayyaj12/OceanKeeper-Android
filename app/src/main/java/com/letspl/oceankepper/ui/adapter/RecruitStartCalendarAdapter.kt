@@ -14,10 +14,6 @@ class  RecruitStartCalendarAdapter(private val activityRecruitViewModel: Activit
 
     inner class CalendarViewHolder(private val binding: ItemCalendarCellBinding): RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: String) {
-            Timber.e("activityRecruitViewModel.getRecruitStartClickedDate() ${activityRecruitViewModel.getRecruitStartClickedDate()}")
-            Timber.e("activityRecruitViewModel.getRecruitStartDate().substring(0, 7) ${activityRecruitViewModel.getRecruitStartDate().substring(0, 7)}")
-            Timber.e("activityRecruitViewModel.getRecruitStartDateClickPosition() ${activityRecruitViewModel.getRecruitStartDateClickPosition()}")
-
             if(activityRecruitViewModel.getRecruitStartClickedDate() == activityRecruitViewModel.getRecruitStartDate().substring(0, 7) &&
                 adapterPosition == activityRecruitViewModel.getRecruitStartDateClickPosition()) {
                 binding.clickDateTv.visibility = View.VISIBLE

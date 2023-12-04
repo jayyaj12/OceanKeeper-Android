@@ -24,6 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.FragmentActivityRecruit2Binding
+import com.letspl.oceankepper.databinding.FragmentEditActivityRecruit2Binding
 import com.letspl.oceankepper.ui.dialog.RecruitActivityCompleteDialog
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
@@ -39,9 +40,9 @@ import java.security.AccessController.checkPermission
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener {
-    private var _binding: FragmentActivityRecruit2Binding? = null
-    private val binding: FragmentActivityRecruit2Binding get() = _binding!!
+class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(), BaseActivity.OnBackPressedListener {
+    private var _binding: FragmentEditActivityRecruit2Binding? = null
+    private val binding: FragmentEditActivityRecruit2Binding get() = _binding!!
     private val activityRecruitViewModel: ActivityRecruitViewModel by viewModels()
     private lateinit var mActivityResultLauncher: ActivityResultLauncher<Intent>
     @Inject
@@ -168,8 +169,8 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentActivityRecruit2Binding.inflate(layoutInflater)
-        binding.activityRecruit2Fragment = this
+        _binding = FragmentEditActivityRecruit2Binding.inflate(layoutInflater)
+        binding.editActivityRecruit2Fragment = this
         binding.activityRecruit2ViewModel = activityRecruit2ViewModel
         binding.lifecycleOwner = this
         return binding.root
@@ -178,12 +179,40 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupLoadData()
         setupEditTextListener()
         setupViewModelObserver()
+    }
 
-        Timber.e("1 ${activityRecruitViewModel.getRecruitStartDate()}")
-        Timber.e("2 ${activityRecruitViewModel.getRecruitEndDate()}")
-        Timber.e("3 ${activityRecruitViewModel.getActivityStartDate()}")
+    // 데이터 불러오기
+    private fun setupLoadData() {
+        Glide.with(requireActivity()).load(activityRecruitViewModel.getThumbnailImgStr()).fitCenter()
+            .into(binding.thumbnailIv)
+        Glide.with(requireActivity()).load(activityRecruitViewModel.getKeeperIntroduceStr()).fitCenter()
+            .into(binding.introduceKeeperIv)
+        Glide.with(requireActivity()).load(activityRecruitViewModel.getActivityStoryImgStr()).fitCenter()
+            .into(binding.activityStoryIv)
+
+        binding.introduceKeeperEt.setText(activityRecruitViewModel.getKeeperIntroduceContent())
+        binding.activityStoryEt.setText(activityRecruitViewModel.getActivityStoryContent())
+
+        activityRecruit2ViewModel.onChangedKeeperIntroduceEditText(activityRecruitViewModel.getKeeperIntroduceContent())
+        activityRecruit2ViewModel.onChangedActivityStoryEditText(activityRecruitViewModel.getActivityStoryContent())
+
+        if(activityRecruitViewModel.getThumbnailImgStr() != "") {
+            binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+            binding.thumbnailPhotoTv.visibility = View.GONE
+        }
+
+        if(activityRecruitViewModel.getKeeperIntroduceStr() != "") {
+            binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+            binding.introduceKeeperPhotoTv.visibility = View.GONE
+        }
+
+        if(activityRecruitViewModel.getActivityStoryImgStr() != "") {
+            binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+            binding.activityStoryPhotoTv.visibility = View.GONE
+        }
     }
 
     private fun setupViewModelObserver() {
@@ -191,12 +220,12 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
             activity.showErrorMsg(it)
         }
 
-        // 활동 모집 등록 성공 여부
-        activityRecruit2ViewModel.recruitActivityIsSuccess.observe(viewLifecycleOwner) {
+        // 활동 모집 수정 성공 여부
+        activityRecruit2ViewModel.editRecruitActivityIsSuccess.observe(viewLifecycleOwner) {
             if(it) {
                 val dialog = RecruitActivityCompleteDialog(requireContext(),
-                    "활동 모집 등록 완료",
-                    activityRecruit2ViewModel.getRecruitCompleteText(),
+                    "활동 모집 수정 완료",
+                    activityRecruit2ViewModel.getRecruitEditCompleteText(),
                     {
                         // 나의 활동 확인하기
                         activity.onReplaceFragment(MyActivityFragment(), false, true)
@@ -306,8 +335,9 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     // 완료 버튼 클릭
     fun onClickedCompleteBtn() {
-        if (activityRecruit2ViewModel.isExistNeedData()) {
-            activityRecruit2ViewModel.activityRegister(
+        if (activityRecruit2ViewModel.isEditExistNeedData()) {
+            activityRecruit2ViewModel.patchActivityRegister(
+                activityId = activityId,
                 activityStory = binding.activityStoryEt.text.toString(),
                 etc = activityRecruitViewModel.getOtherGuide(),
                 garbageCategory = activityRecruitViewModel.getRecruitCategoryStringValue(),
@@ -328,12 +358,12 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
     // 뒤로가기 버튼 클릭
     fun onClickedBackBtn() {
         activityRecruit2ViewModel.clearData()
-        activity.onReplaceFragment(ActivityRecruitFragment())
+        activity.onReplaceFragment(EditActivityRecruitFragment(activityId))
     }
 
     override fun onBackPressed() {
         activityRecruit2ViewModel.clearData()
-        activity.onReplaceFragment(ActivityRecruitFragment())
+        activity.onReplaceFragment(EditActivityRecruitFragment(activityId))
     }
 
     override fun onDestroyView() {

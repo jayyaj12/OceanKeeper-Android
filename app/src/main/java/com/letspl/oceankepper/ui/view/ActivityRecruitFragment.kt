@@ -60,7 +60,6 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
         setupRewardSwitchListener()
         loadAddress()
 
-
 //        // 임시저장 활성화 시 data 를 load 한다.
         if(activityRecruitViewModel.isLoadTempData()) {
             loadTempData()

@@ -208,4 +208,12 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body nicknameBody: PutNicknameBody
     ): Response<PutNicknameResponse>
+
+    // 활동 수정
+    @PATCH("/activity/recruitment/{activityId}")
+    suspend fun patchActivity(
+        @Header("Authorization") token: String,
+        @Path("activityId") activityId: String,
+        @Body activityRegisterDto: EditActivityRegisterDto
+    ): Response<DeleteApplyDto>
 }

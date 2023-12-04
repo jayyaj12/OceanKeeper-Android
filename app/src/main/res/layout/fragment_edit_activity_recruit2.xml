@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="activityRecruit2Fragment"
-            type="com.letspl.oceankepper.ui.view.ActivityRecruit2Fragment" />
+            name="editActivityRecruit2Fragment"
+            type="com.letspl.oceankepper.ui.view.EditActivityRecruit2Fragment" />
 
         <variable
             name="activityRecruit2ViewModel"
@@ -26,7 +26,7 @@
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"
             android:gravity="center"
-            android:onClick="@{() -> activityRecruit2Fragment.onClickedBackBtn()}"
+            android:onClick="@{() -> editActivityRecruit2Fragment.onClickedBackBtn()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_bold"
-            android:text="신규 활동 모집"
+            android:text="활동 모집 수정"
             android:textColor="@color/gray_scale_g900"
             android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="@id/back_icon_ll"
@@ -89,7 +89,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/custom_radius8_solid_bg100"
-                    android:onClick="@{() -> activityRecruit2Fragment.selectThumbnailGallery()}"
+                    android:onClick="@{() -> editActivityRecruit2Fragment.selectThumbnailGallery()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/thumbnail_tv">
@@ -160,7 +160,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/custom_radius8_solid_bg100"
-                    android:onClick="@{() -> activityRecruit2Fragment.selectKeeperIntroduceGallery()}"
+                    android:onClick="@{() -> editActivityRecruit2Fragment.selectKeeperIntroduceGallery()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/introduce_keeper_tv">
@@ -227,6 +227,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/pretendard_medium"
+                    android:id="@+id/keeper_introduce_length_tv"
                     android:text="@{`글자수 제한 ` + activityRecruit2ViewModel.keeperIntroduceLength + `/500`}"
                     android:textColor="@color/gray_scale_g500"
                     android:textSize="14dp"
@@ -262,7 +263,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/custom_radius8_solid_bg100"
-                    android:onClick="@{() -> activityRecruit2Fragment.selectActivityStoryGallery()}"
+                    android:onClick="@{() -> editActivityRecruit2Fragment.selectActivityStoryGallery()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/activity_story_tv">
@@ -327,6 +328,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/activity_story_length_tv"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/pretendard_medium"
                     android:text="@{`글자수 제한 ` + activityRecruit2ViewModel.activityStoryLength + `/500`}"
@@ -359,7 +361,7 @@
                 android:layout_marginStart="16dp"
                 android:background="@drawable/custom_radius8_solid_p500"
                 android:fontFamily="@font/pretendard_bold"
-                android:onClick="@{() -> activityRecruit2Fragment.onClickedBackBtn()}"
+                android:onClick="@{() -> editActivityRecruit2Fragment.onClickedBackBtn()}"
                 android:text="뒤로"
                 android:textColor="@color/white"
                 android:textSize="16dp"
@@ -387,7 +389,7 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/custom_radius_8_stroke_p500_solid_fff"
                 android:fontFamily="@font/pretendard_bold"
-                android:onClick="@{() -> activityRecruit2Fragment.onClickedCompleteBtn()}"
+                android:onClick="@{() -> editActivityRecruit2Fragment.onClickedCompleteBtn()}"
                 android:text="완료"
                 android:textColor="@color/primary_color_p500"
                 android:textSize="16dp"
