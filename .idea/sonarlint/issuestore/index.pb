@@ -37,8 +37,6 @@ w
 Gapp/src/main/java/com/letspl/oceankepper/ui/view/GuideDetailFragment.kt,3\b\3bae4dfd63418518139d72a08832c0f3b5797e77
 q
 Aapp/src/main/java/com/letspl/oceankepper/ui/view/LoginFragment.kt,0\7\07eda0a6d3ea23d84389a8e006aaaede800d1855
-
-Oapp/src/main/java/com/letspl/oceankepper/ui/adapter/ApplyActivityListAdapter.kt,1\5\15d9216960fc6f27c1a0d0870fdad2644c3e0c8e
 ƒ
 Sapp/src/main/java/com/letspl/oceankepper/data/repository/ApplyActivityRepository.kt,d\b\dba19b67e7742859740dd5bb43ae8fb4066fa2ae
 ‡
