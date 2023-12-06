@@ -1,0 +1,1340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="mainViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.MainViewModel" />
+
+        <variable
+            name="activityRecruitViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel" />
+
+        <variable
+            name="editActivityRecruitFragment"
+            type="com.letspl.oceankepper.ui.view.EditActivityRecruitFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/back_icon_ll"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            android:onClick="@{() -> editActivityRecruitFragment.onClickBackBtn()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_icon_iv"
+                android:layout_width="9dp"
+                android:layout_height="16dp"
+                android:src="@drawable/title_left_icon" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="활동 모집 수정"
+            android:textColor="@color/gray_scale_g900"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/back_icon_ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/back_icon_ll" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="55dp"
+            android:layout_marginBottom="64dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/project_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="프로젝트 이름"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/project_name_tv"
+                    app:layout_constraintTop_toTopOf="@id/project_name_tv" />
+
+                <EditText
+                    android:id="@+id/project_name_et"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/blue_grayscale_bg100"
+                    android:hint="활동 프로젝트명 입력"
+                    android:maxLength="30"
+                    android:paddingStart="14dp"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.title}"
+                    android:paddingEnd="14dp"
+                    android:textColorHint="@color/blue_grayscale_bg200"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/project_name_tv" />
+
+                <TextView
+                    android:id="@+id/project_name_length_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{`글자수 제한 ` + activityRecruitViewModel.projectNameLength + `/30`}"
+                    android:textColor="@color/gray_scale_g500"
+                    android:textSize="14dp"
+                    app:layout_constraintEnd_toEndOf="@id/project_name_et"
+                    app:layout_constraintTop_toBottomOf="@id/project_name_et" />
+
+                <TextView
+                    android:id="@+id/activity_location_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="활동 위치"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/project_name_length_tv" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/activity_location_tv"
+                    app:layout_constraintTop_toTopOf="@id/activity_location_tv" />
+
+                <EditText
+                    android:id="@+id/activity_location_et"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/blue_grayscale_bg100"
+                    android:hint="위치 검색"
+                    android:maxLength="30"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.location.address}"
+                    android:textColorHint="@color/blue_grayscale_bg200"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_location_tv" />
+
+                <View
+                    android:id="@+id/activity_location_v"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_location_tv"/>
+
+                <TextView
+                    android:id="@+id/traffic_guide_status_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="교통 안내 여부"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_location_et" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/traffic_guide_status_tv"
+                    app:layout_constraintTop_toTopOf="@id/traffic_guide_status_tv" />
+
+                <View
+                    android:id="@+id/car_sharing_v"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.trafficGuideValue == 1 ? @drawable/traffic_guide_checked : @drawable/radius_6_solid_fff_stroke_g300}"
+                    android:onClick="@{() -> activityRecruitViewModel.setTrafficGuideValue(1)}"
+                    app:layout_constraintStart_toStartOf="@id/traffic_guide_status_tv"
+                    app:layout_constraintTop_toBottomOf="@id/traffic_guide_status_tv" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="카셰어링 연결 예정"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/car_sharing_v"
+                    app:layout_constraintStart_toEndOf="@id/car_sharing_v"
+                    app:layout_constraintTop_toTopOf="@id/car_sharing_v" />
+
+                <View
+                    android:id="@+id/group_car_sharing_v"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.trafficGuideValue == 2 ? @drawable/traffic_guide_checked : @drawable/radius_6_solid_fff_stroke_g300}"
+                    android:onClick="@{() -> activityRecruitViewModel.setTrafficGuideValue(2)}"
+                    app:layout_constraintStart_toStartOf="@id/traffic_guide_status_tv"
+                    app:layout_constraintTop_toBottomOf="@id/car_sharing_v" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="단체차량 대절 예정"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/group_car_sharing_v"
+                    app:layout_constraintStart_toEndOf="@id/group_car_sharing_v"
+                    app:layout_constraintTop_toTopOf="@id/group_car_sharing_v" />
+
+                <View
+                    android:id="@+id/no_car_sharing_v"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.trafficGuideValue == 3 ? @drawable/traffic_guide_checked : @drawable/radius_6_solid_fff_stroke_g300}"
+                    android:onClick="@{() -> activityRecruitViewModel.setTrafficGuideValue(3)}"
+                    app:layout_constraintStart_toStartOf="@id/group_car_sharing_v"
+                    app:layout_constraintTop_toBottomOf="@id/group_car_sharing_v" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="교통편 제공 없음"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/no_car_sharing_v"
+                    app:layout_constraintStart_toEndOf="@id/no_car_sharing_v"
+                    app:layout_constraintTop_toTopOf="@id/no_car_sharing_v" />
+
+                <TextView
+                    android:id="@+id/recruit_category_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="모집 카테고리 선택"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/no_car_sharing_v" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/recruit_category_tv"
+                    app:layout_constraintTop_toTopOf="@id/recruit_category_tv" />
+
+                <TextView
+                    android:id="@+id/category_1_tv"
+                    android:layout_width="97dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.recruitCategory == 1 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitCategoryValue(1)}"
+                    android:text="연안쓰레기"
+                    android:textColor="@{activityRecruitViewModel.recruitCategory == 1 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@id/recruit_category_tv"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_category_tv" />
+
+                <TextView
+                    android:id="@+id/category_2_tv"
+                    android:layout_width="97dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.recruitCategory == 2 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitCategoryValue(2)}"
+                    android:text="부유쓰레기"
+                    android:textColor="@{activityRecruitViewModel.recruitCategory == 2 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/category_1_tv"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_category_tv" />
+
+                <TextView
+                    android:id="@+id/category_3_tv"
+                    android:layout_width="97dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.recruitCategory == 3 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitCategoryValue(3)}"
+                    android:text="침적쓰레기"
+                    android:textColor="@{activityRecruitViewModel.recruitCategory == 3 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/category_2_tv"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_category_tv" />
+
+                <TextView
+                    android:id="@+id/category_4_tv"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@{activityRecruitViewModel.recruitCategory == 4 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitCategoryValue(4)}"
+                    android:text="기타"
+                    android:textColor="@{activityRecruitViewModel.recruitCategory == 4 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@id/category_1_tv"
+                    app:layout_constraintTop_toBottomOf="@id/category_1_tv" />
+
+                <TextView
+                    android:id="@+id/recruit_location_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="모집 지역 선택"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/category_4_tv" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/recruit_location_tv"
+                    app:layout_constraintTop_toTopOf="@id/recruit_location_tv" />
+
+                <TextView
+                    android:id="@+id/location_1_tv"
+                    android:layout_width="97dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 1 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(1)}"
+                    android:text="서해번쩍"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 1 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@id/recruit_category_tv"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_location_tv" />
+
+                <TextView
+                    android:id="@+id/location_2_tv"
+                    android:layout_width="97dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 2 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(2)}"
+                    android:text="동해번쩍"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 2 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/category_1_tv"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_location_tv" />
+
+                <TextView
+                    android:id="@+id/location_3_tv"
+                    android:layout_width="97dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 3 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(3)}"
+                    android:text="남해번쩍"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 3 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/category_2_tv"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_location_tv" />
+
+                <TextView
+                    android:id="@+id/location_4_tv"
+                    android:layout_width="97dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 4 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(4)}"
+                    android:text="제주번쩍"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 4 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@id/category_1_tv"
+                    app:layout_constraintTop_toBottomOf="@id/location_1_tv" />
+
+                <TextView
+                    android:id="@+id/location_5_tv"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@{activityRecruitViewModel.recruitLocation == 5 ? @drawable/radius_20_solid_p50 : @drawable/radius_20_solid_bg50}"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> activityRecruitViewModel.setRecruitLocationValue(5)}"
+                    android:text="기타"
+                    android:textColor="@{activityRecruitViewModel.recruitLocation == 5 ? @color/primary_color_p700 : @color/blue_grayscale_bg200}"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/location_4_tv"
+                    app:layout_constraintTop_toBottomOf="@id/location_1_tv" />
+
+                <TextView
+                    android:id="@+id/quota_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="모집 인원"
+                    android:layout_marginTop="24dp"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/activity_location_tv"
+                    app:layout_constraintTop_toBottomOf="@id/location_5_tv" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/quota_tv"
+                    app:layout_constraintTop_toTopOf="@id/quota_tv" />
+
+                <EditText
+                    android:id="@+id/quota_et"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/blue_grayscale_bg100"
+                    android:inputType="number"
+                    android:hint="모집 인원 입력"
+                    android:maxLength="30"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColorHint="@color/blue_grayscale_bg200"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/quota_tv"
+                    app:layout_constraintTop_toBottomOf="@id/quota_tv" />
+
+                <TextView
+                    android:id="@+id/recruit_date_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="모집 기간"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/quota_et" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/recruit_date_tv"
+                    app:layout_constraintTop_toTopOf="@id/recruit_date_tv" />
+
+                <LinearLayout
+                    android:id="@+id/recruit_start_date_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.clickedRecruitComponent == 0 ? @drawable/custom_radius_8_stroke_p500_solid_fff : @drawable/custom_radius_8_stroke_g300_solid_fff}"
+                    android:gravity="left|center_vertical"
+                    android:onClick="@{() -> activityRecruitViewModel.setClickedRecruitComponent(0)}"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    app:layout_constraintEnd_toStartOf="@id/recruit_end_date_ll"
+                    app:layout_constraintStart_toStartOf="@id/recruit_date_tv"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_date_tv">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/calendar_icon" />
+
+                    <TextView
+                        android:id="@+id/recruit_start_date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.recruitStartAt.replace('-', '.')}"
+                        android:textColor="#263238"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/recruit_end_date_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@{activityRecruitViewModel.clickedRecruitComponent == 1 ? @drawable/custom_radius_8_stroke_p500_solid_fff : @drawable/custom_radius_8_stroke_g300_solid_fff}"
+                    android:gravity="left|center_vertical"
+                    android:onClick="@{() -> activityRecruitViewModel.setClickedRecruitComponent(1)}"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/recruit_start_date_ll"
+                    app:layout_constraintTop_toTopOf="@id/recruit_start_date_ll">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/calendar_icon" />
+
+                    <TextView
+                        android:id="@+id/recruit_end_date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.recruitEndAt.replace('-', '.')}"
+                        android:textColor="#263238"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/calendar_recruit_start_V"
+                    android:layout_width="0dp"
+                    android:layout_height="324dp"
+                    android:layout_marginTop="8dp"
+                    android:visibility="@{activityRecruitViewModel.clickedRecruitComponent == 0 ? View.VISIBLE : View.INVISIBLE}"
+                    android:background="@drawable/radius_13_solid_fff"
+                    android:elevation="5dp"
+                    app:layout_constraintEnd_toEndOf="@id/recruit_end_date_ll"
+                    app:layout_constraintStart_toStartOf="@id/recruit_start_date_ll"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_start_date_ll">
+
+                    <LinearLayout
+                        android:id="@+id/calendar_recruit_start_date_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="27dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/calendar_recruit_start_date_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:text="@{activityRecruitViewModel.choiceRecruitStartDateText}"
+                            android:textColor="@color/black"
+                            android:textSize="17dp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/recruit_start_previous_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="31dp"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMovePreviousMonth(1)}"
+                        android:src="@drawable/calendar_previous_icon"
+                        app:layout_constraintEnd_toStartOf="@id/recruit_start_next_ib"
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" />
+
+                    <ImageView
+                        android:id="@+id/recruit_start_next_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMoveNextMonth(1)}"
+                        android:src="@drawable/calendar_next_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" />
+
+                    <LinearLayout
+                        android:id="@+id/recruit_start_week_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/calendar_recruit_start_date_ll">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SUN"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="MON"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="TUE"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="WED"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="THU"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="FRI"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SAT"
+                            android:textColor="#4D3C3C43" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/calendar_start_recruit_rv"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/recruit_start_week_ll"
+                        app:layout_constraintStart_toStartOf="@id/recruit_start_week_ll"
+                        app:layout_constraintTop_toBottomOf="@id/recruit_start_week_ll" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/calendar_recruit_end_V"
+                    android:layout_width="0dp"
+                    android:layout_height="324dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/radius_13_solid_fff"
+                    android:visibility="@{activityRecruitViewModel.clickedRecruitComponent == 1 ? View.VISIBLE : View.INVISIBLE}"
+                    android:elevation="5dp"
+                    app:layout_constraintEnd_toEndOf="@id/recruit_end_date_ll"
+                    app:layout_constraintStart_toStartOf="@id/recruit_start_date_ll"
+                    app:layout_constraintTop_toBottomOf="@id/recruit_end_date_ll">
+
+                    <LinearLayout
+                        android:id="@+id/calendar_recruit_end_date_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="27dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/calendar_recruit_end_date_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:text="@{activityRecruitViewModel.choiceRecruitEndDateText}"
+                            android:textColor="@color/black"
+                            android:textSize="17dp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/recruit_end_previous_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="31dp"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMovePreviousMonth(2)}"
+                        android:src="@drawable/calendar_previous_icon"
+                        app:layout_constraintEnd_toStartOf="@id/recruit_end_next_ib"
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll" />
+
+                    <ImageView
+                        android:id="@+id/recruit_end_next_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMoveNextMonth(2)}"
+                        android:src="@drawable/calendar_next_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll" />
+
+                    <LinearLayout
+                        android:id="@+id/recruit_end_week_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/calendar_recruit_end_date_ll">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SUN"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="MON"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="TUE"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="WED"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="THU"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="FRI"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SAT"
+                            android:textColor="#4D3C3C43" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/calendar_end_recruit_rv"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/recruit_end_week_ll"
+                        app:layout_constraintStart_toStartOf="@id/recruit_end_week_ll"
+                        app:layout_constraintTop_toBottomOf="@id/recruit_end_week_ll" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/calendar_activity_V"
+                    android:layout_width="0dp"
+                    android:layout_height="324dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/radius_13_solid_fff"
+                    android:elevation="5dp"
+                    android:visibility="@{activityRecruitViewModel.clickedActivityComponent == 0 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/recruit_end_date_ll"
+                    app:layout_constraintStart_toStartOf="@id/recruit_start_date_ll"
+                    app:layout_constraintTop_toBottomOf="@id/activity_start_date_ll">
+
+                    <LinearLayout
+                        android:id="@+id/calendar_activity_date_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="27dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/calendar_activity_date_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:text="@{activityRecruitViewModel.choiceActivityStartDateText}"
+                            android:textColor="@color/black"
+                            android:textSize="17dp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/activity_previous_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="31dp"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMovePreviousMonth(3)}"
+                        android:src="@drawable/calendar_previous_icon"
+                        app:layout_constraintEnd_toStartOf="@id/activity_next_ib"
+                        app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll" />
+
+                    <ImageView
+                        android:id="@+id/activity_next_ib"
+                        android:layout_width="20dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="@{() -> editActivityRecruitFragment.onMoveNextMonth(3)}"
+                        android:src="@drawable/calendar_next_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll" />
+
+                    <LinearLayout
+                        android:id="@+id/activity_week_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/calendar_activity_date_ll">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SUN"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="MON"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="TUE"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="WED"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="THU"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="FRI"
+                            android:textColor="#4D3C3C43" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/se_pro_bold"
+                            android:gravity="center"
+                            android:text="SAT"
+                            android:textColor="#4D3C3C43" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/calendar_activity_rv"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/activity_week_ll"
+                        app:layout_constraintStart_toStartOf="@id/activity_week_ll"
+                        app:layout_constraintTop_toBottomOf="@id/activity_week_ll" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/activity_start_date_text_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="활동 시작일"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/recruit_date_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/calendar_recruit_start_V" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/activity_start_date_text_tv"
+                    app:layout_constraintTop_toTopOf="@id/activity_start_date_text_tv" />
+
+                <LinearLayout
+                    android:id="@+id/activity_start_date_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@{activityRecruitViewModel.clickedActivityComponent == 0 ? @drawable/custom_radius_8_stroke_p500_solid_fff : @drawable/custom_radius_8_stroke_g300_solid_fff}"
+                    android:gravity="left|center_vertical"
+                    android:onClick="@{() -> activityRecruitViewModel.setClickedActivityComponent(0)}"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    app:layout_constraintEnd_toStartOf="@id/activity_end_date_ll"
+                    app:layout_constraintStart_toStartOf="@id/recruit_date_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_start_date_text_tv">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/calendar_icon" />
+
+                    <TextView
+                        android:id="@+id/activity_start_date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textColor="#263238"
+                        android:fontFamily="@font/pretendard_medium"
+
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.startAt.substring(0 , 10).replace('-', '.')}"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/activity_end_date_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@{activityRecruitViewModel.clickedActivityComponent == 1 ? @drawable/custom_radius_8_stroke_p500_solid_fff : @drawable/custom_radius_8_stroke_g300_solid_fff}"
+                    android:gravity="left|center_vertical"
+                    android:onClick="@{() -> activityRecruitViewModel.setClickedActivityComponent(1)}"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/activity_start_date_ll"
+                    app:layout_constraintTop_toTopOf="@id/activity_start_date_ll">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/calendar_icon" />
+
+                    <TextView
+                        android:id="@+id/end_date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.startAt.substring(11 , 16)}"
+                        android:textColor="#263238"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/date_start_spinner_ll"
+                    android:layout_width="156dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="@{activityRecruitViewModel.clickedActivityComponent == 1 ? View.VISIBLE : View.GONE}"
+                    android:weightSum="3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/activity_start_date_ll">
+
+                    <NumberPicker
+                        android:id="@+id/hour_picker"
+                        android:layout_width="0dp"
+                        android:layout_height="178dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:theme="@style/datePickerCustomSize"
+                        app:layout_constraintEnd_toEndOf="@id/activity_end_date_ll"
+                        app:layout_constraintStart_toStartOf="@id/activity_start_date_ll"
+                        app:layout_constraintTop_toBottomOf="@id/activity_start_date_tv" />
+
+                    <NumberPicker
+                        android:id="@+id/minute_picker"
+                        android:layout_width="0dp"
+                        android:layout_height="178dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:theme="@style/datePickerCustomSize"
+                        app:layout_constraintEnd_toEndOf="@id/activity_end_date_ll"
+                        app:layout_constraintStart_toStartOf="@id/activity_start_date_ll"
+                        app:layout_constraintTop_toBottomOf="@id/activity_start_date_ll" />
+
+                    <NumberPicker
+                        android:id="@+id/morning_and_afternoon_picker"
+                        android:layout_width="0dp"
+                        android:layout_height="178dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:theme="@style/datePickerCustomSize"
+                        app:layout_constraintEnd_toEndOf="@id/activity_end_date_ll"
+                        app:layout_constraintStart_toStartOf="@id/activity_start_date_ll"
+                        app:layout_constraintTop_toBottomOf="@id/activity_start_date_ll" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/custom_radius8_solid_14747480"
+                    android:visibility="@{activityRecruitViewModel.clickedActivityComponent == 1 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/date_start_spinner_ll"
+                    app:layout_constraintEnd_toEndOf="@id/activity_end_date_ll"
+                    app:layout_constraintStart_toStartOf="@id/activity_start_date_ll"
+                    app:layout_constraintTop_toTopOf="@id/date_start_spinner_ll" />
+
+                <TextView
+                    android:id="@+id/guide_activity_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="활동 프로그램 안내"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/calendar_activity_V"
+                    app:layout_goneMarginTop="192dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/guide_activity_tv"
+                    app:layout_constraintTop_toTopOf="@id/guide_activity_tv" />
+
+                <EditText
+                    android:id="@+id/guide_activity_et"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/blue_grayscale_bg100"
+                    android:hint="ex.12시 집결"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.programDetails}"
+                    android:maxLength="30"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColorHint="@color/blue_grayscale_bg200"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/guide_activity_tv" />
+
+                <TextView
+                    android:id="@+id/material_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="준비물"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/guide_activity_et" />
+
+                <EditText
+                    android:id="@+id/material_et"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/blue_grayscale_bg100"
+                    android:hint="ex.긴상하의"
+                    android:maxLength="30"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.preparation}"
+                    android:textColorHint="@color/blue_grayscale_bg200"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/material_tv" />
+
+                <TextView
+                    android:id="@+id/reward_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="참여 키퍼 리워드 여부"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="@id/activity_location_tv"
+                    app:layout_constraintTop_toBottomOf="@id/material_et" />
+
+                <Switch
+                    android:id="@+id/reward_swtich"
+                    android:layout_width="44dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@id/reward_tv"
+                    app:layout_constraintEnd_toEndOf="@id/activity_end_date_ll"
+                    app:layout_constraintTop_toTopOf="@id/reward_tv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/reward_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="@{activityRecruitViewModel.giveReward ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/reward_swtich"
+                    app:layout_constraintStart_toStartOf="@id/reward_tv"
+                    app:layout_constraintTop_toBottomOf="@id/reward_tv">
+
+                    <TextView
+                        android:id="@+id/give_reward_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="제공 리워드"
+                        android:textColor="@color/gray_scale_g900"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/give_reward_et"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginEnd="16dp"
+                        android:backgroundTint="@color/blue_grayscale_bg100"
+                        android:hint="ex.점심 제공"
+                        android:maxLength="30"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="@{mainViewModel.activityDetailSelectResult.response.rewards}"
+                        android:textColorHint="@color/blue_grayscale_bg200"
+                        android:textSize="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/give_reward_tv"
+                        app:layout_constraintTop_toBottomOf="@id/give_reward_tv" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/other_guide_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="기타 안내 사항"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/reward_ll" />
+
+                <EditText
+                    android:id="@+id/other_guide_et"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/blue_grayscale_bg100"
+                    android:hint="ex.긴상하의"
+                    android:maxLength="30"
+                    android:text="@{mainViewModel.activityDetailSelectResult.response.etc}"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColorHint="@color/blue_grayscale_bg200"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/project_name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/other_guide_tv" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/other_guide_et" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/save_bnt_ll"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/temp_save_btn"
+                android:layout_width="96dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/custom_radius8_solid_p500"
+                android:onClick="@{() -> editActivityRecruitFragment.onClickTempSaveBtn()}"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="임시 저장"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/next_btn"
+                app:layout_constraintTop_toTopOf="@id/next_btn" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/next_btn"
+                android:layout_width="96dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/custom_radius_8_stroke_p500_solid_fff"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="다음"
+                android:textColor="@color/primary_color_p500"
+                android:textSize="16dp"
+                android:onClick="@{() -> editActivityRecruitFragment.onClickNextBtn()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

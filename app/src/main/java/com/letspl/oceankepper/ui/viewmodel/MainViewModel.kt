@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.letspl.oceankepper.data.dto.ComingScheduleItem
 import com.letspl.oceankepper.data.dto.GetMyActivityDetailResponse
 import com.letspl.oceankepper.data.dto.MyActivityItem
+import com.letspl.oceankepper.data.model.ActivityRecruitModel
 import com.letspl.oceankepper.data.model.MainModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.MainRepositoryImpl
@@ -43,7 +44,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
     private var _garbageCategoryModalClickPosition = MutableLiveData<Int>(-1)
     val garbageCategoryModalClickPosition: LiveData<Int> get() = _garbageCategoryModalClickPosition
 
-    // 쓰레기 종류 팝업 선택 값
+    // 활동 조회 결과
     private var _activityDetailSelectResult = MutableLiveData<GetMyActivityDetailResponse?>(null)
     val activityDetailSelectResult: LiveData<GetMyActivityDetailResponse?> get() = _activityDetailSelectResult
 
@@ -125,7 +126,6 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                     }
                 }
             }
-
         }
     }
 

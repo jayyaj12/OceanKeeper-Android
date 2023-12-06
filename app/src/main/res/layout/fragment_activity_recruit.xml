@@ -1306,6 +1306,7 @@
                 android:text="임시 저장"
                 android:textColor="@color/white"
                 android:textSize="16dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/next_btn"
                 app:layout_constraintTop_toTopOf="@id/next_btn" />
 

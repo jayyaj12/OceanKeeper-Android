@@ -1,15 +1,20 @@
 package com.letspl.oceankepper.ui.view
 
+import android.Manifest.permission.*
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -30,6 +35,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.lang.Exception
+import java.security.AccessController.checkPermission
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,7 +43,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
     private var _binding: FragmentActivityRecruit2Binding? = null
     private val binding: FragmentActivityRecruit2Binding get() = _binding!!
     private val activityRecruitViewModel: ActivityRecruitViewModel by viewModels()
-
+    private lateinit var mActivityResultLauncher: ActivityResultLauncher<Intent>
     @Inject
     lateinit var activityRecruit2ViewModel: ActivityRecruit2ViewModel
     private val REQ_GALLERY = 1000
@@ -149,6 +155,15 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+            //기존의 startActivityForResult(intent)에 해당
+        }
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -179,15 +194,12 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         // 활동 모집 등록 성공 여부
         activityRecruit2ViewModel.recruitActivityIsSuccess.observe(viewLifecycleOwner) {
             if(it) {
-                activityRecruitViewModel.clearTempData()
-                activityRecruit2ViewModel.clearData()
-
                 val dialog = RecruitActivityCompleteDialog(requireContext(),
                     "활동 모집 등록 완료",
                     activityRecruit2ViewModel.getRecruitCompleteText(),
                     {
                         // 나의 활동 확인하기
-
+                        activity.onReplaceFragment(MyActivityFragment(), false, true)
                     },
                     {
                         // 확인 버튼
@@ -196,6 +208,9 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
                 dialog.setCancelable(false)
                 dialog.show()
+                
+                activityRecruitViewModel.clearTempData()
+                activityRecruit2ViewModel.clearData()
             }
         }
     }
@@ -217,20 +232,36 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         val readPermission = ContextCompat.checkSelfPermission(
             requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
         )
+        val imagePermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
+        )
 
-        // 권한 확인
-        return if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
-            // 권한 요청
-            ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE
-                ), REQ_GALLERY
-            )
+        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
+            Timber.e("true")
+            if(imagePermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.READ_MEDIA_IMAGES
+                    ), REQ_GALLERY
+                )
 
-            false
-        } else {
-            true
+                false
+            } else {
+                true
+            }
+        } else{
+            Timber.e("else")
+            if(writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    ), REQ_GALLERY
+                )
+                false
+            } else {
+                true
+            }
         }
     }
 

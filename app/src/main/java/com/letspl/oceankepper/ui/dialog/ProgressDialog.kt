@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Window
 import com.github.ybq.android.spinkit.style.ThreeBounce
-import com.letspl.oceankepper.databinding.DialogAreaChoiceBinding
 import com.letspl.oceankepper.databinding.DialogProgressBinding
 
 class ProgressDialog(context: Context): Dialog(context) {

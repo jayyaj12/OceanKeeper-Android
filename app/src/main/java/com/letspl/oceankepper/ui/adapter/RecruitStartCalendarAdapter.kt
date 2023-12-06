@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.letspl.oceankepper.databinding.ItemCalendarCellBinding
 import com.letspl.oceankepper.ui.viewmodel.ActivityRecruitViewModel
+import timber.log.Timber
 
 class  RecruitStartCalendarAdapter(private val activityRecruitViewModel: ActivityRecruitViewModel, private val onChangeDate: () -> Unit): RecyclerView.Adapter<RecruitStartCalendarAdapter.CalendarViewHolder>() {
 
     private var dateArr = arrayListOf<String>()
 
     inner class CalendarViewHolder(private val binding: ItemCalendarCellBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun onBind(item: String) {
             if(activityRecruitViewModel.getRecruitStartClickedDate() == activityRecruitViewModel.getRecruitStartDate().substring(0, 7) &&
                 adapterPosition == activityRecruitViewModel.getRecruitStartDateClickPosition()) {

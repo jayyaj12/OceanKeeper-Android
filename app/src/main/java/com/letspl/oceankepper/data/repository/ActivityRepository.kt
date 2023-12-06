@@ -28,4 +28,6 @@ interface ActivityRepository {
     suspend fun deleteApplyCancel(applicationId: String): Response<DeleteApplyDto>
     // 모집 취소
     suspend fun deleteRecruitmentCancel(activityId: String): Response<DeleteRecruitmentDto>
+    // 활동 수정
+    suspend fun patchActivity(activityId: String, activityRegisterDto: EditActivityRegisterDto): Response<DeleteApplyDto>
 }

@@ -78,8 +78,6 @@ class ApplyActivityListAdapter(private val context: Context, private val onClick
 
         // 활동별에 맞는 버튼을 표시함
         private fun showBtn(status: String, crewStatus: String) {
-            Timber.e("status $status")
-            Timber.e("crewStatus $crewStatus")
             when(status) {
                 "OPEN" -> {
                     when(crewStatus) {

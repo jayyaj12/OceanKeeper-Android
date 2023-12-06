@@ -8,6 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.letspl.oceankepper.data.dto.ActivityRegisterLocationDto
+import com.letspl.oceankepper.data.dto.GetMyActivityDetailItem
+import com.letspl.oceankepper.data.dto.GetMyActivityDetailResponse
+import com.letspl.oceankepper.data.model.ActivityRecruit2Model
 import com.letspl.oceankepper.data.model.ActivityRecruitModel
 import com.letspl.oceankepper.util.ContextUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +22,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class ActivityRecruitViewModel: ViewModel() {
+class ActivityRecruitViewModel : ViewModel() {
     // 모집 시작일 날짜 텍스트
     private var _choiceRecruitStartDateText = MutableLiveData<String>("")
     val choiceRecruitStartDateText: LiveData<String> get() = _choiceRecruitStartDateText
@@ -71,7 +74,7 @@ class ActivityRecruitViewModel: ViewModel() {
      * 3: 활동 시작일 캘린더 달력
      */
     fun onPreviousBtnClicked(type: Int) {
-        when(type) {
+        when (type) {
             1 -> onMinusChoiceDateValue(type)
             2 -> onMinusChoiceDateValue(type)
             3 -> onMinusChoiceDateValue(type)
@@ -86,7 +89,7 @@ class ActivityRecruitViewModel: ViewModel() {
      * 3: 활동 시작일 캘린더 달력
      */
     fun onNextBtnClicked(type: Int) {
-        when(type) {
+        when (type) {
             1 -> onPlusChoiceDateValue(type)
             2 -> onPlusChoiceDateValue(type)
             3 -> onPlusChoiceDateValue(type)
@@ -97,33 +100,42 @@ class ActivityRecruitViewModel: ViewModel() {
         when (type) {
             1 -> {
                 if (ActivityRecruitModel.recruitStartNowMonth + 1 == 13) {
-                    ActivityRecruitModel.recruitStartNowYear = ActivityRecruitModel.recruitStartNowYear + 1
+                    ActivityRecruitModel.recruitStartNowYear =
+                        ActivityRecruitModel.recruitStartNowYear + 1
                     ActivityRecruitModel.recruitStartNowMonth = 1
                 } else {
-                    ActivityRecruitModel.recruitStartNowMonth = ActivityRecruitModel.recruitStartNowMonth + 1
+                    ActivityRecruitModel.recruitStartNowMonth =
+                        ActivityRecruitModel.recruitStartNowMonth + 1
                 }
 
-                _choiceRecruitStartDateText.value = "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
+                _choiceRecruitStartDateText.value =
+                    "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
             }
             2 -> {
                 if (ActivityRecruitModel.recruitEndNowMonth + 1 == 13) {
-                    ActivityRecruitModel.recruitEndNowYear = ActivityRecruitModel.recruitEndNowYear + 1
+                    ActivityRecruitModel.recruitEndNowYear =
+                        ActivityRecruitModel.recruitEndNowYear + 1
                     ActivityRecruitModel.recruitEndNowMonth = 1
                 } else {
-                    ActivityRecruitModel.recruitEndNowMonth = ActivityRecruitModel.recruitEndNowMonth + 1
+                    ActivityRecruitModel.recruitEndNowMonth =
+                        ActivityRecruitModel.recruitEndNowMonth + 1
                 }
 
-                _choiceRecruitEndDateText.value = "${getMonthStr(ActivityRecruitModel.recruitEndNowMonth)} ${ActivityRecruitModel.recruitEndNowYear}"
+                _choiceRecruitEndDateText.value =
+                    "${getMonthStr(ActivityRecruitModel.recruitEndNowMonth)} ${ActivityRecruitModel.recruitEndNowYear}"
             }
             3 -> {
                 if (ActivityRecruitModel.activityStartNowMonth + 1 == 13) {
-                    ActivityRecruitModel.activityStartNowYear = ActivityRecruitModel.activityStartNowYear + 1
+                    ActivityRecruitModel.activityStartNowYear =
+                        ActivityRecruitModel.activityStartNowYear + 1
                     ActivityRecruitModel.activityStartNowMonth = 1
                 } else {
-                    ActivityRecruitModel.activityStartNowMonth = ActivityRecruitModel.activityStartNowMonth + 1
+                    ActivityRecruitModel.activityStartNowMonth =
+                        ActivityRecruitModel.activityStartNowMonth + 1
                 }
 
-                _choiceActivityStartDateText.value = "${getMonthStr(ActivityRecruitModel.activityStartNowMonth)} ${ActivityRecruitModel.activityStartNowYear}"
+                _choiceActivityStartDateText.value =
+                    "${getMonthStr(ActivityRecruitModel.activityStartNowMonth)} ${ActivityRecruitModel.activityStartNowYear}"
             }
         }
     }
@@ -132,7 +144,8 @@ class ActivityRecruitViewModel: ViewModel() {
         when (type) {
             1 -> {
                 if (ActivityRecruitModel.recruitStartNowMonth - 1 == 0) {
-                    ActivityRecruitModel.recruitStartNowYear = ActivityRecruitModel.recruitStartNowYear - 1
+                    ActivityRecruitModel.recruitStartNowYear =
+                        ActivityRecruitModel.recruitStartNowYear - 1
                     ActivityRecruitModel.recruitStartNowMonth = 12
                 } else {
                     ActivityRecruitModel.recruitStartNowMonth =
@@ -144,7 +157,8 @@ class ActivityRecruitViewModel: ViewModel() {
             }
             2 -> {
                 if (ActivityRecruitModel.recruitEndNowMonth - 1 == 0) {
-                    ActivityRecruitModel.recruitEndNowYear = ActivityRecruitModel.recruitEndNowYear - 1
+                    ActivityRecruitModel.recruitEndNowYear =
+                        ActivityRecruitModel.recruitEndNowYear - 1
                     ActivityRecruitModel.recruitEndNowMonth = 12
                 } else {
                     ActivityRecruitModel.recruitEndNowMonth =
@@ -156,7 +170,8 @@ class ActivityRecruitViewModel: ViewModel() {
             }
             3 -> {
                 if (ActivityRecruitModel.activityStartNowMonth - 1 == 0) {
-                    ActivityRecruitModel.activityStartNowYear = ActivityRecruitModel.activityStartNowYear - 1
+                    ActivityRecruitModel.activityStartNowYear =
+                        ActivityRecruitModel.activityStartNowYear - 1
                     ActivityRecruitModel.activityStartNowMonth = 12
                 } else {
                     ActivityRecruitModel.activityStartNowMonth =
@@ -188,9 +203,29 @@ class ActivityRecruitViewModel: ViewModel() {
         _choiceRecruitStartDateText.value =
             "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
         _choiceRecruitEndDateText.value =
-            "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
+            "${getMonthStr(ActivityRecruitModel.recruitEndNowMonth)} ${ActivityRecruitModel.recruitEndNowYear}"
         _choiceActivityStartDateText.value =
+            "${getMonthStr(ActivityRecruitModel.activityStartNowMonth)} ${ActivityRecruitModel.activityStartNowYear}"
+    }
+
+    // 현재 날짜 가져오기
+    fun getNowDate(recruitStartDate: String,recruitEndDate: String,activityStartDate: String) {
+        ActivityRecruitModel.recruitStartNowYear = recruitStartDate.split("-")[0].toInt()
+        ActivityRecruitModel.recruitStartNowMonth = recruitStartDate.split("-")[1].toInt()
+        ActivityRecruitModel.recruitStartNowDate = recruitStartDate.split("-")[2].toInt()
+        ActivityRecruitModel.recruitEndNowYear = recruitEndDate.split("-")[0].toInt()
+        ActivityRecruitModel.recruitEndNowMonth = recruitEndDate.split("-")[1].toInt()
+        ActivityRecruitModel.recruitEndNowDate = recruitEndDate.split("-")[2].toInt()
+        ActivityRecruitModel.activityStartNowYear = activityStartDate.split("-")[0].toInt()
+        ActivityRecruitModel.activityStartNowMonth = activityStartDate.split("-")[1].toInt()
+        ActivityRecruitModel.activityStartNowDate = activityStartDate.split("-")[2].toInt()
+
+        _choiceRecruitStartDateText.value =
             "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
+        _choiceRecruitEndDateText.value =
+            "${getMonthStr(ActivityRecruitModel.recruitEndNowMonth)} ${ActivityRecruitModel.recruitEndNowYear}"
+        _choiceActivityStartDateText.value =
+            "${getMonthStr(ActivityRecruitModel.activityStartNowMonth)} ${ActivityRecruitModel.activityStartNowYear}"
     }
 
     private fun getMonthStr(month: Int): String {
@@ -222,7 +257,7 @@ class ActivityRecruitViewModel: ViewModel() {
         val dayList = arrayListOf<String>()
 
         val calendar = Calendar.getInstance()
-        when(type) {
+        when (type) {
             1 -> {
                 calendar.set(Calendar.YEAR, ActivityRecruitModel.recruitStartNowYear)
                 calendar.set(Calendar.MONTH, ActivityRecruitModel.recruitStartNowMonth - 1)
@@ -277,6 +312,67 @@ class ActivityRecruitViewModel: ViewModel() {
         setLocationInfo(address ?: "", loc)
     }
 
+    // 활동 모집 수정 페이지 불러온 데이터 model 에 저장
+    fun setupEditRecruitValue(response: GetMyActivityDetailItem) {
+        onChangedProjectNameEditText(response.title)
+        setGuideActivity(response.programDetails)
+        setQuota(response.quota)
+        setProjectName(response.title)
+        setMaterial(response.preparation)
+        setGiveReward(response.rewards)
+        setOtherGuide(response.etc)
+        setTrafficGuideValue(getGuideTrafficValue(response.transportation))
+
+        val loc = Location("")
+        loc.latitude = response.location.latitude
+        loc.longitude = response.location.longitude
+        setLocationInfo(response.location.address, loc)
+
+        setRecruitStartClickedDate(response.recruitStartAt.substring(0, 7))
+        setRecruitEndClickedDate(response.recruitEndAt.substring(0, 7))
+        setActivityStartClickedDate(response.startAt.substring(0, 7))
+
+        setRecruitStartDateClickPosition(getDayInMonthArray(1).indexOf(response.recruitStartAt.substring(8, 10).toInt().toString()), response.recruitStartAt.substring(8, 10).toInt())
+        setRecruitEndDateClickPosition(getDayInMonthArray(2).indexOf(response.recruitEndAt.substring(8, 10).toInt().toString()))
+        setActivityStartDateClickPosition(getDayInMonthArray(3).indexOf(response.startAt.substring(8, 10).toInt().toString()))
+
+        setEditRecruitValue(response.thumbnailUrl ?: "", response.keeperImageUrl ?: "", response.storyImageUrl ?: "", response.keeperIntroduction, response.activityStory)
+    }
+
+    // 활동 모집 수정 페이지 2 에서 불러올 값 저장
+    private fun setEditRecruitValue(thumbnail: String, keeperIntroduce: String, activityStory: String, keeperIntroduceContent: String, activityStoryContent: String) {
+        ActivityRecruit2Model.thumbnailImgStr = thumbnail
+        ActivityRecruit2Model.keeperIntroduceImgStr = keeperIntroduce
+        ActivityRecruit2Model.activityStoryImgStr = activityStory
+        ActivityRecruit2Model.keeperIntroduceContent = keeperIntroduceContent
+        ActivityRecruit2Model.activityStoryContent = activityStoryContent
+    }
+
+    // 썸네일 이미지 url 불러오기
+    fun getThumbnailImgStr(): String {
+        return ActivityRecruit2Model.thumbnailImgStr ?: ""
+    }
+
+    // 키퍼 소개 이미지 url 불러오기
+    fun getKeeperIntroduceStr(): String {
+        return ActivityRecruit2Model.keeperIntroduceImgStr ?: ""
+    }
+
+    // 활동 스토리 이미지 url 불러오기
+    fun getActivityStoryImgStr(): String {
+        return ActivityRecruit2Model.activityStoryImgStr ?: ""
+    }
+
+    // 활동 스토리 내용 불러오기
+    fun getKeeperIntroduceContent(): String {
+        return ActivityRecruit2Model.keeperIntroduceContent
+    }
+
+    // 활동 스토리 내용 불러오기
+    fun getActivityStoryContent(): String {
+        return ActivityRecruit2Model.activityStoryContent
+    }
+
     // 지도 검색 결과값
     fun setSearchMapResult(value: String) {
         _searchMap.postValue(value)
@@ -298,6 +394,12 @@ class ActivityRecruitViewModel: ViewModel() {
     fun setRecruitStartDateClickPosition(pos: Int) {
         ActivityRecruitModel.recruitStartClickedPosition = pos
         ActivityRecruitModel.recruitStartNowDate = pos
+    }
+
+    // 클릭된 날짜 저장
+    fun setRecruitStartDateClickPosition(pos: Int, date: Int) {
+        ActivityRecruitModel.recruitStartClickedPosition = pos
+        ActivityRecruitModel.recruitStartNowDate = date
     }
 
     // 모집 시작일 클릭된 날짜 불러오기
@@ -363,6 +465,7 @@ class ActivityRecruitViewModel: ViewModel() {
 
     // 활동 시작일 클릭된 날짜 저장
     fun setActivityStartDateNowDate(date: Int) {
+        Timber.e("setActivityStartDateNowDate $date")
         ActivityRecruitModel.activityStartNowDate = date
     }
 
@@ -378,7 +481,7 @@ class ActivityRecruitViewModel: ViewModel() {
 
     // 활동 시작일 클릭된 시간 저장
     fun setActivityStartTimeHour(hour: Int, amPm: String) {
-        if(amPm == "AM") {
+        if (amPm == "AM") {
             // 오전
             ActivityRecruitModel.activityStartTimeHour = hour
         } else {
@@ -394,22 +497,30 @@ class ActivityRecruitViewModel: ViewModel() {
 
     // 모집 시작일 날짜 시간 가져오기
     fun getRecruitStartDate(): String {
-        return "${ActivityRecruitModel.recruitStartNowYear}-${isLengthOne(ActivityRecruitModel.recruitStartNowMonth)}-${isLengthOne(ActivityRecruitModel.recruitStartNowDate)}T00:00:00"
+        return "${ActivityRecruitModel.recruitStartNowYear}-${isLengthOne(ActivityRecruitModel.recruitStartNowMonth)}-${
+            isLengthOne(ActivityRecruitModel.recruitStartNowDate)
+        }T00:00:00"
     }
 
     // 모집 종료일 날짜 시간 가져오기
     fun getRecruitEndDate(): String {
-        return "${ActivityRecruitModel.recruitEndNowYear}-${isLengthOne(ActivityRecruitModel.recruitEndNowMonth)}-${isLengthOne(ActivityRecruitModel.recruitEndNowDate)}T23:59:59"
+        return "${ActivityRecruitModel.recruitEndNowYear}-${isLengthOne(ActivityRecruitModel.recruitEndNowMonth)}-${
+            isLengthOne(ActivityRecruitModel.recruitEndNowDate)
+        }T23:59:59"
     }
 
     // 활동 시작일 날짜 시간 가져오기
     fun getActivityStartDate(): String {
-        return "${ActivityRecruitModel.activityStartNowYear}-${isLengthOne(ActivityRecruitModel.activityStartNowMonth)}-${isLengthOne(ActivityRecruitModel.activityStartNowDate)}T${isLengthOne(ActivityRecruitModel.activityStartTimeHour ?: 1)}:${isLengthOne(ActivityRecruitModel.activityStartTimeMinute ?: 0)}:00"
+        return "${ActivityRecruitModel.activityStartNowYear}-${isLengthOne(ActivityRecruitModel.activityStartNowMonth)}-${
+            isLengthOne(ActivityRecruitModel.activityStartNowDate)
+        }T${isLengthOne(ActivityRecruitModel.activityStartTimeHour ?: 1)}:${
+            isLengthOne(ActivityRecruitModel.activityStartTimeMinute ?: 0)
+        }:00"
     }
 
     // 한자리 수면 앞에 0 붙여줌
     private fun isLengthOne(text: Int): String {
-        return if(text.toString().length == 1) {
+        return if (text.toString().length == 1) {
             "0$text"
         } else {
             text.toString()
@@ -424,6 +535,11 @@ class ActivityRecruitViewModel: ViewModel() {
     // 임시저장 활성화 여부 변경
     fun setIsLoadTempData(flag: Boolean) {
         ActivityRecruitModel.isLoadTempData = flag
+    }
+
+    // 프로젝트 명 세팅
+    fun setProjectName(name: String) {
+        ActivityRecruitModel.projectName = name
     }
 
     // 참여 키퍼 리워드 여부 확인
@@ -448,14 +564,51 @@ class ActivityRecruitViewModel: ViewModel() {
         _trafficGuideValue.postValue(value)
     }
 
+    fun getGarbageCategory(type: String) {
+        _recruitCategory.postValue(when (type) {
+            "COASTAL" -> 1
+            "FLOATING" -> 2
+            "DEPOSITED" -> 3
+            "ETC" -> 4
+            else -> 0
+        }
+        )
+    }
+
+    fun getLocationTag(type: String) {
+        _recruitLocation.postValue(when (type) {
+            "WEST" -> 1
+            "EAST" -> 2
+            "SOUTH" -> 3
+            "JEJU" -> 4
+            "ETC" -> 4
+            else -> 0
+        }
+        )
+    }
+
     // 교통 안내 여부 값 가져오기
     fun getGuideTrafficStringValue(): String {
-        return when(ActivityRecruitModel.trafficGuide) {
+        return when (ActivityRecruitModel.trafficGuide) {
             1 -> "카셰어링 연결 예정"
             2 -> "단체차량 대절 예정"
             3 -> "교통편 제공 없음"
             else -> ""
         }
+    }
+
+    // 교통 안내 여부 값 가져오기
+    fun getGuideTrafficValue(str: String): Int {
+        var trafficGuide = 0
+        when (str.trim()) {
+            "카셰어링 연결 예정" -> trafficGuide = 1
+            "단체차량 대절 예정" -> trafficGuide = 2
+            "교통편 제공 없음" -> trafficGuide = 3
+        }
+
+        _trafficGuideValue.postValue(trafficGuide)
+
+        return trafficGuide
     }
 
     // 교통 안내 여부 값 가져오기
@@ -532,7 +685,7 @@ class ActivityRecruitViewModel: ViewModel() {
 
     // 모집 카테고리 값 가져오기
     fun getRecruitCategoryStringValue(): String {
-        return when(ActivityRecruitModel.recruitCategory) {
+        return when (ActivityRecruitModel.recruitCategory) {
             1 -> "COASTAL"
             2 -> "FLOATING"
             3 -> "DEPOSITED"
@@ -561,7 +714,7 @@ class ActivityRecruitViewModel: ViewModel() {
 
     // 모집 위치 값 가져오기
     fun getRecruitLocationStringValue(): String {
-        return when(ActivityRecruitModel.recruitLocation) {
+        return when (ActivityRecruitModel.recruitLocation) {
             1 -> "WEST"
             2 -> "EAST"
             3 -> "SOUTH"
@@ -606,9 +759,7 @@ class ActivityRecruitViewModel: ViewModel() {
 
     // 필수 정보가 모두 들어갔는지 여부 체크
     fun isExistNeedData(): Boolean {
-        Timber.e("activityStartTimeHour ${ActivityRecruitModel.activityStartTimeHour}")
-        Timber.e("activityStartTimeMinute ${ActivityRecruitModel.activityStartTimeMinute}")
-        return ActivityRecruitModel.projectName != "" && ActivityRecruitModel.location.address != "" && ActivityRecruitModel.quota != null && ActivityRecruitModel.recruitStartClickedDate != "" && ActivityRecruitModel.recruitEndClickedDate != "" && ActivityRecruitModel.activityStartClickedDate != "" && ActivityRecruitModel.activityStartTimeHour != null && ActivityRecruitModel.activityStartTimeMinute != null && ActivityRecruitModel.guideActivity != ""
+        return ActivityRecruitModel.projectName != "" && ActivityRecruitModel.location.address != "" && ActivityRecruitModel.quota != null && ActivityRecruitModel.recruitStartClickedDate != "" && ActivityRecruitModel.recruitEndClickedDate != "" && ActivityRecruitModel.activityStartClickedDate != "" && ActivityRecruitModel.activityStartTimeHour != null && ActivityRecruitModel.activityStartTimeMinute != null && ActivityRecruitModel.guideActivity != "" && ActivityRecruitModel.trafficGuide != 0
     }
 
     // 활동 모집 데이터 초기화 (필수로 지워줘야 하는거만 포함, 알아서 초기화 되는건 안함)

@@ -92,7 +92,7 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 it,
                 {
                     // 나의 활동 확인하기
-
+                    activity.onReplaceFragment(MyActivityFragment(), false, true)
                 },
                 {
                     // 확인 버튼

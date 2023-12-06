@@ -90,6 +90,9 @@ class OpenActivityListAdapter(private val context: Context, private val onClickM
                 "CLOSED" -> {
                     binding.countIv.visibility = View.GONE
                     binding.applyCountTv.text = "활동 종료"
+                    binding.manageApplyTv.visibility = View.GONE
+                    binding.editRecruitActivityTv.visibility = View.GONE
+                    binding.cancelRecruitTv.visibility = View.GONE
                 }
                 // 모집 취소
                 "CANCEL" -> {

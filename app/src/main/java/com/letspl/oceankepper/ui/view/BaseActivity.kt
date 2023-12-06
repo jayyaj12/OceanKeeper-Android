@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
@@ -15,6 +16,9 @@ import com.letspl.oceankepper.databinding.ActivityBaseBinding
 import com.letspl.oceankepper.ui.viewmodel.BaseViewModel
 import com.letspl.oceankepper.util.ContextUtil
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 
@@ -93,24 +97,30 @@ class BaseActivity : AppCompatActivity() {
             binding = ActivityBaseBinding.inflate(layoutInflater)
         }
 
-        if(isVisibleBottomNav) {
-            binding.bottomNav.visibility = View.VISIBLE
-        } else {
-            binding.bottomNav.visibility = View.GONE
-        }
-
         when(navItem) {
             1 -> binding.bottomNav.selectedItemId = R.id.home_icon
             2 -> binding.bottomNav.selectedItemId = R.id.msg_icon
             3 -> binding.bottomNav.selectedItemId = R.id.my_activity_icon
         }
 
-        supportFragmentManager.beginTransaction().let {
-            it.replace(R.id.fragment_container, fragment)
-            if(addToBackStack) {
-                it.addToBackStack(null)
+        lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                supportFragmentManager.beginTransaction().let {
+                    it.replace(R.id.fragment_container, fragment)
+                    if(addToBackStack) {
+                        it.addToBackStack(null)
+                    }
+                    it.commitAllowingStateLoss()
+                }
             }
-            it.commitAllowingStateLoss()
+
+            withContext(Dispatchers.Main) {
+                if(isVisibleBottomNav) {
+                    binding.bottomNav.visibility = View.VISIBLE
+                } else {
+                    binding.bottomNav.visibility = View.GONE
+                }
+            }
         }
     }
 

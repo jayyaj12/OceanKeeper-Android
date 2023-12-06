@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.view.ActivityRecruit2Fragment">
+
+    <data>
+
+        <variable
+            name="editActivityRecruit2Fragment"
+            type="com.letspl.oceankepper.ui.view.EditActivityRecruit2Fragment" />
+
+        <variable
+            name="activityRecruit2ViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/back_icon_ll"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            android:onClick="@{() -> editActivityRecruit2Fragment.onClickedBackBtn()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_icon_iv"
+                android:layout_width="9dp"
+                android:layout_height="16dp"
+                android:src="@drawable/title_left_icon" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="활동 모집 수정"
+            android:textColor="@color/gray_scale_g900"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/back_icon_ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/back_icon_ll" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="55dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/thumbnail_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="썸네일"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/thumbnail_tv"
+                    app:layout_constraintTop_toTopOf="@id/thumbnail_tv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/thumbnail_photo_cl"
+                    android:layout_width="match_parent"
+                    android:layout_height="192dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/custom_radius8_solid_bg100"
+                    android:onClick="@{() -> editActivityRecruit2Fragment.selectThumbnailGallery()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/thumbnail_tv">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="36dp"
+                        android:src="@drawable/not_exist_photo_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/thumbnail_photo_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="37dp"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:text="터치 후 이미지를 추가해주세요."
+                        android:textColor="@color/blue_grayscale_bg300"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/thumbnail_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="192dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="16dp"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/thumbnail_tv" />
+
+                <TextView
+                    android:id="@+id/introduce_keeper_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="키퍼 소개"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/thumbnail_tv"
+                    app:layout_constraintTop_toBottomOf="@id/thumbnail_photo_cl" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/introduce_keeper_tv"
+                    app:layout_constraintTop_toTopOf="@id/introduce_keeper_tv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/introduce_keeper_photo_cl"
+                    android:layout_width="match_parent"
+                    android:layout_height="192dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/custom_radius8_solid_bg100"
+                    android:onClick="@{() -> editActivityRecruit2Fragment.selectKeeperIntroduceGallery()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/introduce_keeper_tv">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="36dp"
+                        android:src="@drawable/not_exist_photo_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/introduce_keeper_photo_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="37dp"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:text="터치 후 이미지를 추가해주세요."
+                        android:textColor="@color/blue_grayscale_bg300"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/introduce_keeper_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="192dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/introduce_keeper_tv" />
+
+                <EditText
+                    android:id="@+id/introduce_keeper_et"
+                    android:layout_width="0dp"
+                    android:layout_height="128dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/custom_radius_8_stroke_bg200_solid_fff"
+                    android:gravity="top|left"
+                    android:hint="내용 입력"
+                    android:maxLength="500"
+                    android:paddingStart="14dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="14dp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/introduce_keeper_photo_cl"
+                    app:layout_constraintStart_toStartOf="@id/introduce_keeper_photo_cl"
+                    app:layout_constraintTop_toBottomOf="@id/introduce_keeper_photo_cl" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:id="@+id/keeper_introduce_length_tv"
+                    android:text="@{`글자수 제한 ` + activityRecruit2ViewModel.keeperIntroduceLength + `/500`}"
+                    android:textColor="@color/gray_scale_g500"
+                    android:textSize="14dp"
+                    app:layout_constraintEnd_toEndOf="@id/introduce_keeper_photo_cl"
+                    app:layout_constraintTop_toBottomOf="@id/introduce_keeper_et" />
+
+                <TextView
+                    android:id="@+id/activity_story_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="활동STORY"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/thumbnail_tv"
+                    app:layout_constraintTop_toBottomOf="@id/introduce_keeper_et" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/activity_story_tv"
+                    app:layout_constraintTop_toTopOf="@id/activity_story_tv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/activity_story_photo_cl"
+                    android:layout_width="match_parent"
+                    android:layout_height="192dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/custom_radius8_solid_bg100"
+                    android:onClick="@{() -> editActivityRecruit2Fragment.selectActivityStoryGallery()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_tv">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="36dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/not_exist_photo_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/activity_story_photo_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="37dp"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:text="터치 후 이미지를 추가해주세요."
+                        android:textColor="@color/blue_grayscale_bg300"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/activity_story_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="192dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_tv" />
+
+                <EditText
+                    android:id="@+id/activity_story_et"
+                    android:layout_width="0dp"
+                    android:layout_height="128dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/custom_radius_8_stroke_bg200_solid_fff"
+                    android:gravity="top|left"
+                    android:hint="내용 입력"
+                    android:maxLength="500"
+                    android:paddingStart="14dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="14dp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/activity_story_photo_cl"
+                    app:layout_constraintStart_toStartOf="@id/activity_story_photo_cl"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_photo_cl" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/activity_story_length_tv"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{`글자수 제한 ` + activityRecruit2ViewModel.activityStoryLength + `/500`}"
+                    android:textColor="@color/gray_scale_g500"
+                    android:textSize="14dp"
+                    app:layout_constraintEnd_toEndOf="@id/activity_story_et"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_et" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_et" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/save_bnt_ll"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/previous_btn"
+                android:layout_width="96dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/custom_radius8_solid_p500"
+                android:fontFamily="@font/pretendard_bold"
+                android:onClick="@{() -> editActivityRecruit2Fragment.onClickedBackBtn()}"
+                android:text="뒤로"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/complete_btn" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/temp_save_btn"
+                android:layout_width="96dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"
+                android:background="@drawable/custom_radius8_solid_p500"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="임시 저장"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/complete_btn"
+                app:layout_constraintTop_toTopOf="@id/complete_btn" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/complete_btn"
+                android:layout_width="96dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/custom_radius_8_stroke_p500_solid_fff"
+                android:fontFamily="@font/pretendard_bold"
+                android:onClick="@{() -> editActivityRecruit2Fragment.onClickedCompleteBtn()}"
+                android:text="완료"
+                android:textColor="@color/primary_color_p500"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

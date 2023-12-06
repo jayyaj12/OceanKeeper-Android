@@ -12,4 +12,7 @@ object ActivityRecruit2Model {
     var thumbnailImgStr: String? = null
     var keeperIntroduceImgStr: String? = null
     var activityStoryImgStr: String? = null
+
+    var keeperIntroduceContent = "" // 활동 모집 수정 키퍼 소개 불러온 값 저장
+    var activityStoryContent = "" // 활동 모집 수정 활동 스토리 불러온 값 저장
 }
