@@ -85,8 +85,6 @@ class ApplyActivityListAdapter(private val context: Context, private val onClick
                             binding.countIv.visibility = View.VISIBLE
                             binding.editApplyTv.visibility = View.VISIBLE
                             binding.cancelApplyTv.visibility = View.VISIBLE
-                            Timber.e("IN_PROGRESS close")
-
                         }
                         "CLOSED" -> {
                             binding.countIv.visibility = View.GONE
@@ -104,7 +102,6 @@ class ApplyActivityListAdapter(private val context: Context, private val onClick
                 }
                 // 모집 종료
                 "RECRUITMENT_CLOSE" -> {
-                    Timber.e("recruitment close")
                     binding.countIv.visibility = View.GONE
                     binding.editApplyTv.visibility = View.GONE
                     binding.cancelApplyTv.visibility = View.GONE

@@ -302,6 +302,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         binding.itemTab.setTabTextColors(Color.parseColor("#7a7a7a"), Color.parseColor("#545454"))
         binding.itemTab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                Timber.e("tab?.position ${tab?.position}")
                 when(tab?.position) {
                     0 -> {
                         binding.applyActivityRv.visibility = View.GONE
