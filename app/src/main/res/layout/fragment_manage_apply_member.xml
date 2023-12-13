@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/back_icon_ll"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_icon_iv"
+                android:layout_width="9dp"
+                android:layout_height="16dp"
+                android:src="@drawable/title_left_icon" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="신청자 관리"
+            android:textColor="@color/gray_scale_g900"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/back_icon_ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/back_icon_ll" />
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/pretendard_extrabold"
+            android:text="금능해변"
+            android:textColor="#212121"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/back_icon_ll" />
+
+        <ImageView
+            android:id="@+id/download_excel_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/download_excel_icon"
+            app:layout_constraintStart_toStartOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/title_tv" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="엑셀 다운로드"
+            android:textColor="#212121"
+            app:layout_constraintBottom_toBottomOf="@id/download_excel_iv"
+            app:layout_constraintStart_toEndOf="@id/download_excel_iv"
+            app:layout_constraintTop_toTopOf="@id/download_excel_iv" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/delete_btn"
+            android:layout_width="48dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/custom_radius8_solid_00b6c4"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="삭제"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="@id/download_excel_iv"
+            app:layout_constraintTop_toBottomOf="@id/download_excel_iv" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/reject_btn"
+            android:layout_width="72dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/custom_radius8_solid_00b6c4"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="거절하기"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toStartOf="@id/noshow_btn"
+            app:layout_constraintTop_toTopOf="@id/delete_btn" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/noshow_btn"
+            android:layout_width="72dp"
+            android:layout_height="28dp"
+            android:background="@drawable/custom_radius8_solid_00b6c4"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="노쇼 체크"
+            android:textColor="#ffffff"
+            android:layout_marginEnd="8dp"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toStartOf="@id/send_msg_btn"
+            app:layout_constraintTop_toTopOf="@id/delete_btn" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/send_msg_btn"
+            android:layout_width="87dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/custom_radius8_solid_00b6c4"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="쪽지 보내기"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/delete_btn" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="신청자 리스트"
+            android:textColor="#212121"
+            android:fontFamily="@font/pretendard_medium"
+            android:id="@+id/list_tv"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="@id/delete_btn"
+            app:layout_constraintTop_toBottomOf="@id/delete_btn"
+            android:layout_marginTop="24dp"/>
+        
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/checkbox_default"
+            app:layout_constraintStart_toStartOf="@id/list_tv"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/list_tv"
+            android:id="@+id/all_choice_iv"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="#212121"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@id/all_choice_iv"
+            app:layout_constraintTop_toTopOf="@id/all_choice_iv"
+            app:layout_constraintBottom_toBottomOf="@id/all_choice_iv"
+            android:layout_marginStart="12dp"
+            android:layout_height="wrap_content"
+            android:text="전체 선택하기"/>
+        
+        <View
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:id="@+id/list_background_v"
+            app:layout_constraintTop_toBottomOf="@id/all_choice_iv"
+            android:layout_marginStart="16dp"
+            android:background="#eeeeee"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:textColor="#212121"
+            android:gravity="center"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="@id/list_background_v"
+            app:layout_constraintTop_toTopOf="@id/list_background_v"
+            android:layout_marginStart="40dp"
+            android:id="@+id/no_tv"
+            app:layout_constraintBottom_toBottomOf="@id/list_background_v"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textColor="#212121"
+            android:id="@+id/name_tv"
+            app:layout_constraintHorizontal_weight="1"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="14dp"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/no_tv"
+            app:layout_constraintEnd_toStartOf="@id/nickname_tv"
+            app:layout_constraintTop_toTopOf="@id/list_background_v"
+            app:layout_constraintBottom_toBottomOf="@id/list_background_v"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="닉네임"
+            android:textColor="#212121"
+            android:id="@+id/nickname_tv"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="14dp"
+            android:gravity="center"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/name_tv"
+            app:layout_constraintEnd_toStartOf="@id/status_tv"
+            app:layout_constraintTop_toTopOf="@id/list_background_v"
+            app:layout_constraintBottom_toBottomOf="@id/list_background_v"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="활동상태"
+            android:textColor="#212121"
+            android:id="@+id/status_tv"
+            app:layout_constraintHorizontal_weight="1"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="14dp"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/nickname_tv"
+            app:layout_constraintTop_toTopOf="@id/list_background_v"
+            app:layout_constraintEnd_toEndOf="@id/list_background_v"
+            app:layout_constraintBottom_toBottomOf="@id/list_background_v"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:listitem="@layout/item_apply_list"
+            app:layout_constraintStart_toStartOf="@id/list_background_v"
+            app:layout_constraintEnd_toEndOf="@id/list_background_v"
+            app:layout_constraintTop_toBottomOf="@id/list_background_v"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/apply_list_rv"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

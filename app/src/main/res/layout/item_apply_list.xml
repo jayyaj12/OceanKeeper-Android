@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/checkbox_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/no_tv"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="40dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="#212121"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="김제주"
+            android:textColor="#212121"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintEnd_toStartOf="@id/nickname_tv"
+            app:layout_constraintStart_toEndOf="@id/no_tv" />
+
+        <TextView
+            android:id="@+id/nickname_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="제주돌고래"
+            android:textColor="#212121"
+            app:layout_constraintEnd_toStartOf="@id/status_tv"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/name_tv" />
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="거절"
+            android:textColor="#212121"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/nickname_tv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
