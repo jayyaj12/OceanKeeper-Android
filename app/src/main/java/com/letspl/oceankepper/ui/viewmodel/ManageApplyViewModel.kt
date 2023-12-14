@@ -82,8 +82,10 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                 }
             }
 
-            setAllChecked(!flag)
-            _allClicked.postValue(!flag)
+            withContext(Dispatchers.Default) {
+                setAllChecked(!flag)
+                _allClicked.postValue(!flag)
+            }
         }
     }
 
