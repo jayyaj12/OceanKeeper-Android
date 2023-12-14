@@ -1,8 +1,10 @@
 package com.letspl.oceankepper.data.model
 
-import com.letspl.oceankepper.util.ApplyMemberStatus
-
 object ManageApplyMemberModel {
+
+    var isAllChecked = false
+    var applyCrewList = arrayListOf<CrewInfoDto>()
+    var tempApplyCrewList = arrayListOf<CrewInfoDto>()
 
     @kotlinx.serialization.Serializable
     data class GetCrewInfoListResponseDto(
@@ -24,6 +26,15 @@ object ManageApplyMemberModel {
       val nickname: String,
       val number: Int,
       val username: String
+    )
+
+    @kotlinx.serialization.Serializable
+    data class CrewInfoDto(
+        val crewStatus: String,
+        val nickname: String,
+        var number: Int,
+        val username: String,
+        var isClicked: Boolean
     )
 
 

@@ -4,7 +4,9 @@ import android.view.View
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import com.bumptech.glide.Glide
+import com.letspl.oceankepper.R
 import timber.log.Timber
 
 object BindingAdapter {
@@ -25,10 +27,15 @@ object BindingAdapter {
         }
     }
 
-//    // 신청자 관리 리스트 텍스트 세팅
-//    @BindingAdapter("app:setApplyListText")
-//    @JvmStatic
-//    fun setApplyListText() {
-//
-//    }
+    // 신청자 관리 리스트 텍스트 세팅
+    @BindingAdapter("app:setNumberImageBox", "app:setFlag")
+    @JvmStatic
+    fun setApplyListText(imageView: ImageView, allChecked: LiveData<Boolean>, flag: Boolean) {
+        Timber.e("setApplyListText flag: $flag")
+        if(flag) {
+            imageView.setBackgroundResource(R.drawable.checkbox_checked)
+        } else {
+            imageView.setBackgroundResource(R.drawable.checkbox_default)
+        }
+    }
 }
