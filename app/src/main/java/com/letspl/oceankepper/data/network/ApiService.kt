@@ -1,6 +1,7 @@
 package com.letspl.oceankepper.data.network
 
 import com.letspl.oceankepper.data.dto.*
+import com.letspl.oceankepper.data.model.ManageApplyMemberModel
 import com.letspl.oceankepper.data.model.MessageModel
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -216,4 +217,11 @@ interface ApiService {
         @Path("activityId") activityId: String,
         @Body activityRegisterDto: EditActivityRegisterDto
     ): Response<DeleteApplyDto>
+
+    // 신청자 리스트 불러오기
+    @GET("/activity/recruitment/host/crew-info")
+    suspend fun getCrewInfoList(
+        @Header("Authorization") token: String,
+        @Query("activity-id") activityId: String,
+    ): Response<ManageApplyMemberModel.GetCrewInfoListResponseDto>
 }

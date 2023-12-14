@@ -165,7 +165,6 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 if(it.isNotEmpty()) {
                     binding.openActivityRv.visibility = View.GONE
                     binding.applyActivityRv.visibility = View.VISIBLE
-                    Timber.e("getUserActivityCrew ${it.size}")
                     applyActivityListAdapter.submitList(it.toMutableList())
                 }
             }
@@ -176,7 +175,6 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 if(it.isNotEmpty()) {
                     binding.applyActivityRv.visibility = View.GONE
                     binding.openActivityRv.visibility = View.VISIBLE
-                    Timber.e("getUserActivityHost ${it.size}")
                     openActivityListAdapter.submitList(it.toMutableList())
                 }
             }
@@ -237,8 +235,9 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     private fun setupOpenActivityListAdapter() {
-        openActivityListAdapter = OpenActivityListAdapter(requireContext(), {
+        openActivityListAdapter = OpenActivityListAdapter(requireContext(), { activityId ->
             // 신청서 관리 페이지로 이동
+            activity.onReplaceFragment(ManageApplyMemberFragment(activityId), false)
         }, { activityId ->
             // 모집 수정하기 페이지로 이동
            activity.onReplaceFragment(EditActivityRecruitFragment(activityId), false, false)

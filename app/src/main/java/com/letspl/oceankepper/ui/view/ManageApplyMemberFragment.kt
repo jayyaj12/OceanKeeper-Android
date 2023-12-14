@@ -5,56 +5,71 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.R
+import com.letspl.oceankepper.data.model.ManageApplyMemberModel
+import com.letspl.oceankepper.databinding.FragmentManageApplyMemberBinding
+import com.letspl.oceankepper.databinding.ItemApplyListBinding
+import com.letspl.oceankepper.ui.adapter.ManageApplyMemberListAdapter
+import com.letspl.oceankepper.ui.viewmodel.ManageApplyViewModel
+import com.letspl.oceankepper.util.ApplyMemberStatus
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ManageApplyMemberFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ManageApplyMemberFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+@AndroidEntryPoint
+class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
+    private var _binding: FragmentManageApplyMemberBinding? = null
+    private val binding: FragmentManageApplyMemberBinding get() = _binding!!
+    private lateinit var managerApplyListAdapter: ManageApplyMemberListAdapter
+    private val manageApplyViewModel: ManageApplyViewModel by viewModels()
+    private val activity: BaseActivity by lazy {
+        requireActivity() as BaseActivity
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_manage_apply_member, container, false)
+        _binding = FragmentManageApplyMemberBinding.inflate(layoutInflater)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ManageApplyMemberFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ManageApplyMemberFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupApplyMemberListAdapter()
+        setupViewModelObserver()
+        getCrewInfoList()
     }
+
+    // 신청자 리스트 불러오기
+    private fun getCrewInfoList() {
+        manageApplyViewModel.getCrewInfoList(activityId)
+    }
+
+    // 뷰모델 옵저버 세팅
+    private fun setupViewModelObserver() {
+        // 신청자 리스트 불러온 결과
+        manageApplyViewModel.getCrewInfoList.observe(viewLifecycleOwner) {
+            managerApplyListAdapter.submitList(it.toMutableList())
+        }
+
+        manageApplyViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
+
+    }
+
+    // 신청자 리스트 셋업
+    private fun setupApplyMemberListAdapter() {
+        managerApplyListAdapter = ManageApplyMemberListAdapter()
+        binding.applyListRv.adapter = managerApplyListAdapter
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
+
 }

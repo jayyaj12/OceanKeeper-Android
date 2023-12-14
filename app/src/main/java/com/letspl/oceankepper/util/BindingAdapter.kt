@@ -24,4 +24,11 @@ object BindingAdapter {
             cardView.visibility = View.VISIBLE
         }
     }
+
+//    // 신청자 관리 리스트 텍스트 세팅
+//    @BindingAdapter("app:setApplyListText")
+//    @JvmStatic
+//    fun setApplyListText() {
+//
+//    }
 }

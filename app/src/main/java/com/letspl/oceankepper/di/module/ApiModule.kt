@@ -198,6 +198,10 @@ object ApiModule {
 
     @Singleton
     @Provides
+    fun provideManageApplyRepositoryImpl(@OceanService apiService: ApiService) = ManageApplyRepositoryImpl(apiService)
+
+    @Singleton
+    @Provides
     fun provideGuideRepositoryImpl(@OceanService apiService: ApiService) = GuideRepositoryImpl(apiService)
 
     @Singleton
