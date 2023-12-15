@@ -72,6 +72,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
     private fun setupApplyMemberListAdapter() {
         val arr = arrayListOf<ManageApplyMemberModel.CrewInfoDto>()
         arr.add(ManageApplyMemberModel.CrewInfoDto(
+            "ㅂㅈㄷㅂㅈㄷ",
             "REJECT",
             "김제주",
             1,
@@ -79,6 +80,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
             false)
         )
         arr.add(ManageApplyMemberModel.CrewInfoDto(
+            "ㅂㅈㄷㅂㅈㄷ",
             "CONFIRM",
             "기모치",
             2,
@@ -86,6 +88,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
             false)
         )
         arr.add(ManageApplyMemberModel.CrewInfoDto(
+            "ㅂㅈㄷㅂㅈㄷ",
             "NOSHOW",
             "기모치",
             3,
@@ -95,19 +98,27 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
 
         ManageApplyMemberModel.applyCrewList = arr
 
-        managerApplyListAdapter = ManageApplyMemberListAdapter() { allClicked ->
-            if(allClicked == AllClickedStatus.AllClicked) {
-                binding.allChoiceIv.setBackgroundResource(R.drawable.checkbox_checked)
-                manageApplyViewModel.setAllChecked(true)
-            } else if(allClicked == AllClickedStatus.NotAllClicked) {
-                binding.allChoiceIv.setBackgroundResource(R.drawable.checkbox_default)
-                manageApplyViewModel.setAllChecked(false)
-            } else {
-                binding.allChoiceIv.setBackgroundResource(R.drawable.checkbox_default)
-                manageApplyViewModel.setAllChecked(false)
+        managerApplyListAdapter = ManageApplyMemberListAdapter({ allClicked ->
+            // 리스트 체크 선택 시 전체 선택하기 체크박스 체크 여부
+            when (allClicked) {
+                AllClickedStatus.AllClicked -> {
+                    binding.allChoiceIv.setBackgroundResource(R.drawable.checkbox_checked)
+                    manageApplyViewModel.setAllChecked(true)
+                }
+                AllClickedStatus.NotAllClicked -> {
+                    binding.allChoiceIv.setBackgroundResource(R.drawable.checkbox_default)
+                    manageApplyViewModel.setAllChecked(false)
+                }
+                else -> {
+                    binding.allChoiceIv.setBackgroundResource(R.drawable.checkbox_default)
+                    manageApplyViewModel.setAllChecked(false)
+                }
             }
 
-        }
+        }, { applicationId ->
+            // 크루원 상세 페이지로 이동
+            activity.onReplaceFragment(CrewDetailFragment(applicationId))
+        })
         binding.applyListRv.adapter = managerApplyListAdapter
         managerApplyListAdapter.submitList(arr.toMutableList())
     }

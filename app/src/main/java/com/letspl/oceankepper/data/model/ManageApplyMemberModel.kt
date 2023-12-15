@@ -30,6 +30,7 @@ object ManageApplyMemberModel {
 
     @kotlinx.serialization.Serializable
     data class CrewInfoDto(
+        val applicationId: String,
         val crewStatus: String,
         val nickname: String,
         var number: Int,

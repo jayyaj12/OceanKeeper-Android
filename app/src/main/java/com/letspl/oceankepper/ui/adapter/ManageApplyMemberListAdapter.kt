@@ -13,7 +13,7 @@ import com.letspl.oceankepper.databinding.ItemApplyListBinding
 import com.letspl.oceankepper.util.AllClickedStatus
 import timber.log.Timber
 
-class ManageApplyMemberListAdapter(private val isAllClicked: (AllClickedStatus) -> Unit): ListAdapter<ManageApplyMemberModel.CrewInfoDto, ManageApplyMemberListAdapter.ManageApplyMemberViewHolder>(
+class ManageApplyMemberListAdapter(private val isAllClicked: (AllClickedStatus) -> Unit, private val clickedCrewDetail: (String) -> Unit): ListAdapter<ManageApplyMemberModel.CrewInfoDto, ManageApplyMemberListAdapter.ManageApplyMemberViewHolder>(
     diffUtil) {
 
     companion object {
@@ -47,13 +47,18 @@ class ManageApplyMemberListAdapter(private val isAllClicked: (AllClickedStatus) 
                     binding.checkBoxIv.setBackgroundResource(R.drawable.checkbox_disable)
                     setTextViewColor("#E0E0E0", "#E0E0E0", "#E0E0E0", "#E0E0E0")
                 }
-                "CONFIRM" -> {
+                "IN_PROGRESS" -> {
                     binding.statusTv.text = "승인"
                     binding.checkBoxIv.setBackgroundResource(R.drawable.checkbox_default)
                     setTextViewColor("#212121", "#212121", "#03A7B2", "#9E9E9E")
                 }
-                "NOSHOW" -> {
+                "NO_SHOW" -> {
                     binding.statusTv.text = "노쇼"
+                    binding.checkBoxIv.setBackgroundResource(R.drawable.checkbox_default)
+                    setTextViewColor("#212121", "#212121", "#03A7B2", "#9E9E9E")
+                }
+                "CLOSED" -> {
+                    binding.statusTv.text = "활동종료"
                     binding.checkBoxIv.setBackgroundResource(R.drawable.checkbox_default)
                     setTextViewColor("#212121", "#212121", "#03A7B2", "#9E9E9E")
                 }
@@ -63,6 +68,10 @@ class ManageApplyMemberListAdapter(private val isAllClicked: (AllClickedStatus) 
                 binding.checkBoxIv.setBackgroundResource(R.drawable.checkbox_checked)
             } else if(item.crewStatus != "REJECT" && !item.isClicked) {
                 binding.checkBoxIv.setBackgroundResource(R.drawable.checkbox_default)
+            }
+
+            binding.nicknameTv.setOnClickListener {
+                clickedCrewDetail(item.applicationId)
             }
 
             binding.checkBoxV.setOnClickListener {

@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/apply_detail_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="신청서 상세"
+            android:textColor="#212121"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/close_btn_icon"
+            app:layout_constraintBottom_toBottomOf="@id/apply_detail_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/apply_detail_tv" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/apply_detail_tv">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/profile_cv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/profile_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="제주돌고래"
+                    android:textColor="#212121"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_cv"
+                    app:layout_constraintStart_toEndOf="@+id/profile_cv"
+                    app:layout_constraintTop_toTopOf="@id/profile_cv" />
+
+                <TextView
+                    android:id="@+id/traffic_category_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/custom_radius16_solid_dff67f"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:minWidth="95dp"
+                    android:text="카셰어링 가능"
+                    android:textColor="#079299"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_cv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/profile_cv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/join_activity_cl"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
+                    android:visibility="@{myActivityViewModel.getActivityInfoResult.activity > 0 ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@id/traffic_category_tv"
+                    app:layout_constraintStart_toStartOf="@+id/profile_cv"
+                    app:layout_constraintTop_toBottomOf="@id/profile_cv">
+
+                    <ImageView
+                        android:id="@+id/join_activity_iv"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_marginStart="12dp"
+                        android:src="@drawable/join_activity_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="참여 활동"
+                        android:textColor="#546e7a"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/join_activity_iv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/pretendard_extrabold"
+                        android:text="@{myActivityViewModel.getActivityInfoResult.activity + `회`}"
+                        android:textColor="#263238"
+                        android:textSize="24dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/activity_recruit_cl"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
+                    android:visibility="@{myActivityViewModel.getActivityInfoResult.hosting > 0 ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/join_activity_cl">
+
+                    <ImageView
+                        android:id="@+id/activity_recruit_iv"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_marginStart="12dp"
+                        android:src="@drawable/activity_recruit_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="활동 모집"
+                        android:textColor="#546e7a"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/activity_recruit_iv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/pretendard_extrabold"
+                        android:text="@{myActivityViewModel.getActivityInfoResult.hosting + `회`}"
+                        android:textColor="#263238"
+                        android:textSize="24dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/activity_no_show_cl"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
+                    android:visibility="@{myActivityViewModel.getActivityInfoResult.noShow > 0 ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/activity_recruit_cl">
+
+                    <ImageView
+                        android:id="@+id/activity_no_show_iv"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_marginStart="12dp"
+                        android:src="@drawable/activity_no_show_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="활동 노쇼"
+                        android:textColor="#546e7a"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/activity_no_show_iv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:fontFamily="@font/pretendard_extrabold"
+                        android:text="@{myActivityViewModel.getActivityInfoResult.noShow + `회`}"
+                        android:textColor="#263238"
+                        android:textSize="24dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/not_join_activity_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="@{myActivityViewModel.getActivityInfoResult.activity == 0 ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@id/traffic_category_tv"
+                    app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/profile_cv">
+
+                    <TextView
+                        android:id="@+id/not_find_activity_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="참여한 활동이 없습니다."
+                        android:textColor="#546E7A"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/join_activity_tv"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/join_activity_tv"
+                        android:layout_width="68dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/custom_radius16_solid_dff67f"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:gravity="center"
+                        android:text="참여하기"
+                        android:textColor="#079299"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/not_find_activity_tv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/not_activity_recruit_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="@{myActivityViewModel.getActivityInfoResult.hosting == 0 ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/join_activity_cl">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="모집된 활동이 없습니다."
+                        android:textColor="#546E7A" />
+
+                    <TextView
+                        android:layout_width="68dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/custom_radius16_solid_dff67f"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:gravity="center"
+                        android:text="모집하기"
+                        android:textColor="#079299"
+                        android:textSize="14dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/not_no_show_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="@{myActivityViewModel.getActivityInfoResult.noShow == 0 ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/activity_recruit_cl">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="취소한 활동이 없습니다."
+                        android:textColor="#546E7A" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:layout_marginTop="42dp"
+                    android:text="이름"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/not_no_show_ll" />
+
+                <TextView
+                    android:id="@+id/name_box_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="left|center"
+                    android:background="#fafafa"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@id/name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/name_tv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#cfd8dc"
+                    android:id="@+id/name_v"
+                    app:layout_constraintStart_toStartOf="@id/name_box_tv"
+                    app:layout_constraintEnd_toEndOf="@id/name_box_tv"
+                    app:layout_constraintTop_toBottomOf="@id/name_box_tv"/>
+
+                <TextView
+                    android:id="@+id/phoneNumber_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:layout_marginTop="24dp"
+                    android:text="연락처"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/name_v" />
+
+                <TextView
+                    android:id="@+id/phoneNumber_box_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="left|center"
+                    android:background="#fafafa"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@id/name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/phoneNumber_tv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#cfd8dc"
+                    android:id="@+id/phonenumber_v"
+                    app:layout_constraintStart_toStartOf="@id/phoneNumber_box_tv"
+                    app:layout_constraintEnd_toEndOf="@id/phoneNumber_box_tv"
+                    app:layout_constraintTop_toBottomOf="@id/phoneNumber_box_tv"/>
+
+                <TextView
+                    android:id="@+id/id_1365_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:layout_marginTop="24dp"
+                    android:text="1365 아이디"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/phonenumber_v" />
+
+                <TextView
+                    android:id="@+id/id_1365_box_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="left|center"
+                    android:background="#fafafa"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@id/name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/id_1365_tv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#cfd8dc"
+                    android:id="@+id/id_1365_v"
+                    app:layout_constraintStart_toStartOf="@id/id_1365_box_tv"
+                    app:layout_constraintEnd_toEndOf="@id/id_1365_box_tv"
+                    app:layout_constraintTop_toBottomOf="@id/id_1365_box_tv"/>
+
+                <TextView
+                    android:id="@+id/start_location_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:layout_marginTop="24dp"
+                    android:text="출발 지역명"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/id_1365_v" />
+
+                <TextView
+                    android:id="@+id/start_location_box_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="left|center"
+                    android:background="#fafafa"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/start_location_tv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#cfd8dc"
+                    android:id="@+id/start_location_v"
+                    app:layout_constraintStart_toStartOf="@id/start_location_box_tv"
+                    app:layout_constraintEnd_toEndOf="@id/start_location_box_tv"
+                    app:layout_constraintTop_toBottomOf="@id/start_location_box_tv"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이동 수단"
+                    android:textColor="#212121"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:id="@+id/traffic_tv"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="@id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/start_location_v"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="자차(카셰어링 가능)"
+                    app:layout_constraintStart_toStartOf="@id/traffic_tv"
+                    android:id="@+id/traffic_box_tv"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/traffic_tv"
+                    android:textColor="#455a64"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/pretendard_medium"/>
+
+                <TextView
+                    android:id="@+id/ask_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:layout_marginTop="24dp"
+                    android:text="모집 키퍼에게 문의사항"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/traffic_box_tv" />
+
+                <TextView
+                    android:id="@+id/ask_box_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="left|center"
+                    android:background="#fafafa"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@id/name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/ask_tv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#cfd8dc"
+                    android:id="@+id/ask_v"
+                    app:layout_constraintStart_toStartOf="@id/ask_box_tv"
+                    app:layout_constraintEnd_toEndOf="@id/ask_box_tv"
+                    app:layout_constraintTop_toBottomOf="@id/ask_box_tv"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ask_v"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
