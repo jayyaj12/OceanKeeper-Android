@@ -41,7 +41,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
 
         setupApplyMemberListAdapter()
         setupViewModelObserver()
-//        getCrewInfoList()
+        getCrewInfoList()
     }
 
     // 신청자 리스트 불러오기
@@ -70,33 +70,33 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
 
     // 신청자 리스트 셋업
     private fun setupApplyMemberListAdapter() {
-        val arr = arrayListOf<ManageApplyMemberModel.CrewInfoDto>()
-        arr.add(ManageApplyMemberModel.CrewInfoDto(
-            "ㅂㅈㄷㅂㅈㄷ",
-            "REJECT",
-            "김제주",
-            1,
-            "제주돌고래",
-            false)
-        )
-        arr.add(ManageApplyMemberModel.CrewInfoDto(
-            "ㅂㅈㄷㅂㅈㄷ",
-            "CONFIRM",
-            "기모치",
-            2,
-            "기모치이",
-            false)
-        )
-        arr.add(ManageApplyMemberModel.CrewInfoDto(
-            "ㅂㅈㄷㅂㅈㄷ",
-            "NOSHOW",
-            "기모치",
-            3,
-            "기모치이",
-            false)
-        )
-
-        ManageApplyMemberModel.applyCrewList = arr
+//        val arr = arrayListOf<ManageApplyMemberModel.CrewInfoDto>()
+//        arr.add(ManageApplyMemberModel.CrewInfoDto(
+//            "ㅂㅈㄷㅂㅈㄷ",
+//            "REJECT",
+//            "김제주",
+//            1,
+//            "제주돌고래",
+//            false)
+//        )
+//        arr.add(ManageApplyMemberModel.CrewInfoDto(
+//            "ㅂㅈㄷㅂㅈㄷ",
+//            "CONFIRM",
+//            "기모치",
+//            2,
+//            "기모치이",
+//            false)
+//        )
+//        arr.add(ManageApplyMemberModel.CrewInfoDto(
+//            "ㅂㅈㄷㅂㅈㄷ",
+//            "NOSHOW",
+//            "기모치",
+//            3,
+//            "기모치이",
+//            false)
+//        )
+//
+//        ManageApplyMemberModel.applyCrewList = arr
 
         managerApplyListAdapter = ManageApplyMemberListAdapter({ allClicked ->
             // 리스트 체크 선택 시 전체 선택하기 체크박스 체크 여부
@@ -120,7 +120,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
             activity.onReplaceFragment(CrewDetailFragment(applicationId))
         })
         binding.applyListRv.adapter = managerApplyListAdapter
-        managerApplyListAdapter.submitList(arr.toMutableList())
+//        managerApplyListAdapter.submitList(arr.toMutableList())
     }
 
     override fun onDestroyView() {

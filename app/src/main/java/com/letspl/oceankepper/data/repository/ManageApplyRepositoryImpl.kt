@@ -10,4 +10,8 @@ class ManageApplyRepositoryImpl(@ApiModule.OceanRetrofit private val apiService:
     override suspend fun getCrewInfoList(activityId: String): Response<ManageApplyMemberModel.GetCrewInfoListResponseDto> {
         return apiService.getCrewInfoList("Bearer ${UserModel.userInfo.token.accessToken}", activityId)
     }
+
+    override suspend fun getCrewDetail(applicationId: String): Response<ManageApplyMemberModel.GetCrewDetailResponseDto> {
+        return apiService.getCrewDetail("Bearer ${UserModel.userInfo.token.accessToken}", applicationId)
+    }
 }

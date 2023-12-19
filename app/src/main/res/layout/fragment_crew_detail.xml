@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="manageApplyViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.ManageApplyViewModel" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,6 +62,7 @@
 
                     <ImageView
                         android:id="@+id/profile_iv"
+                        app:backgroundUrl="@{manageApplyViewModel.getCrewDetail.userInfo.profile}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop" />
@@ -70,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:fontFamily="@font/pretendard_bold"
-                    android:text="제주돌고래"
+                    android:text="@{manageApplyViewModel.getCrewDetail.userInfo.nickname}"
                     android:textColor="#212121"
                     android:textSize="16dp"
                     app:layout_constraintBottom_toBottomOf="@id/profile_cv"
@@ -80,13 +84,13 @@
                 <TextView
                     android:id="@+id/traffic_category_tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="24dp"
                     android:layout_marginEnd="24dp"
+                    android:layout_height="24dp"
                     android:background="@drawable/custom_radius16_solid_dff67f"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
                     android:minWidth="95dp"
-                    android:text="카셰어링 가능"
+                    android:text="@{manageApplyViewModel.getCrewDetail.application.transportation}"
                     android:textColor="#079299"
                     android:textSize="14dp"
                     app:layout_constraintBottom_toBottomOf="@id/profile_cv"
@@ -99,7 +103,7 @@
                     android:layout_height="70dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
-                    android:visibility="@{myActivityViewModel.getActivityInfoResult.activity > 0 ? View.VISIBLE : View.INVISIBLE}"
+                    android:visibility="@{manageApplyViewModel.getCrewDetail.activityInfo.activity > 0 ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintEnd_toEndOf="@id/traffic_category_tv"
                     app:layout_constraintStart_toStartOf="@+id/profile_cv"
                     app:layout_constraintTop_toBottomOf="@id/profile_cv">
@@ -131,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
                         android:fontFamily="@font/pretendard_extrabold"
-                        android:text="@{myActivityViewModel.getActivityInfoResult.activity + `회`}"
+                        android:text="@{manageApplyViewModel.getCrewDetail.activityInfo.activity + `회`}"
                         android:textColor="#263238"
                         android:textSize="24dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -146,7 +150,7 @@
                     android:layout_height="70dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
-                    android:visibility="@{myActivityViewModel.getActivityInfoResult.hosting > 0 ? View.VISIBLE : View.INVISIBLE}"
+                    android:visibility="@{manageApplyViewModel.getCrewDetail.activityInfo.hosting > 0 ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
                     app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
                     app:layout_constraintTop_toBottomOf="@id/join_activity_cl">
@@ -178,8 +182,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
                         android:fontFamily="@font/pretendard_extrabold"
-                        android:text="@{myActivityViewModel.getActivityInfoResult.hosting + `회`}"
                         android:textColor="#263238"
+                        android:text="@{manageApplyViewModel.getCrewDetail.activityInfo.hosting + `회`}"
                         android:textSize="24dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -193,7 +197,7 @@
                     android:layout_height="70dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
-                    android:visibility="@{myActivityViewModel.getActivityInfoResult.noShow > 0 ? View.VISIBLE : View.INVISIBLE}"
+                    android:visibility="@{manageApplyViewModel.getCrewDetail.activityInfo.noShow > 0 ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
                     app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
                     app:layout_constraintTop_toBottomOf="@id/activity_recruit_cl">
@@ -225,7 +229,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
                         android:fontFamily="@font/pretendard_extrabold"
-                        android:text="@{myActivityViewModel.getActivityInfoResult.noShow + `회`}"
+                        android:text="@{manageApplyViewModel.getCrewDetail.activityInfo.noShow + `회`}"
                         android:textColor="#263238"
                         android:textSize="24dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -242,7 +246,7 @@
                     android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:visibility="@{myActivityViewModel.getActivityInfoResult.activity == 0 ? View.VISIBLE : View.INVISIBLE}"
+                    android:visibility="@{manageApplyViewModel.getCrewDetail.activityInfo.activity == 0 ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintEnd_toEndOf="@id/traffic_category_tv"
                     app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
                     app:layout_constraintTop_toBottomOf="@id/profile_cv">
@@ -284,7 +288,7 @@
                     android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:visibility="@{myActivityViewModel.getActivityInfoResult.hosting == 0 ? View.VISIBLE : View.INVISIBLE}"
+                    android:visibility="@{manageApplyViewModel.getCrewDetail.activityInfo.hosting == 0 ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
                     app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
                     app:layout_constraintTop_toBottomOf="@id/join_activity_cl">
@@ -316,7 +320,7 @@
                     android:background="@drawable/custom_radius8_solid_fff_stroke_cfd8dc"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:visibility="@{myActivityViewModel.getActivityInfoResult.noShow == 0 ? View.VISIBLE : View.INVISIBLE}"
+                    android:visibility="@{manageApplyViewModel.getCrewDetail.activityInfo.noShow == 0 ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
                     app:layout_constraintStart_toStartOf="@+id/join_activity_cl"
                     app:layout_constraintTop_toBottomOf="@id/activity_recruit_cl">
@@ -348,6 +352,7 @@
                     android:layout_marginTop="6dp"
                     android:gravity="left|center"
                     android:background="#fafafa"
+                    android:text="@{manageApplyViewModel.getCrewDetail.application.name}"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
                     android:textSize="16dp"
@@ -384,6 +389,7 @@
                     android:gravity="left|center"
                     android:background="#fafafa"
                     android:paddingStart="14dp"
+                    android:text="@{manageApplyViewModel.getCrewDetail.application.phoneNumber}"
                     android:paddingEnd="14dp"
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
@@ -417,6 +423,7 @@
                     android:layout_height="42dp"
                     android:layout_marginTop="6dp"
                     android:gravity="left|center"
+                    android:text="@{manageApplyViewModel.getCrewDetail.application.id1365}"
                     android:background="#fafafa"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
@@ -452,6 +459,7 @@
                     android:layout_height="42dp"
                     android:layout_marginTop="6dp"
                     android:gravity="left|center"
+                    android:text="@{manageApplyViewModel.getCrewDetail.application.startPoint}"
                     android:background="#fafafa"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
@@ -484,7 +492,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="자차(카셰어링 가능)"
+                    android:text="@{manageApplyViewModel.getCrewDetail.application.transportation}"
                     app:layout_constraintStart_toStartOf="@id/traffic_tv"
                     android:id="@+id/traffic_box_tv"
                     android:layout_marginTop="8dp"
@@ -513,6 +521,7 @@
                     android:gravity="left|center"
                     android:background="#fafafa"
                     android:paddingStart="14dp"
+                    android:text="@{manageApplyViewModel.getCrewDetail.application.question}"
                     android:paddingEnd="14dp"
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="@id/join_activity_cl"

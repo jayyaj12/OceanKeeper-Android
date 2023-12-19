@@ -162,21 +162,17 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         // 내활동보기 결과 등록(크루)
         myActivityViewModel.getUserActivityCrew.observe(viewLifecycleOwner) {
             if (it != null) {
-                if(it.isNotEmpty()) {
-                    binding.openActivityRv.visibility = View.GONE
-                    binding.applyActivityRv.visibility = View.VISIBLE
-                    applyActivityListAdapter.submitList(it.toMutableList())
-                }
+                binding.openActivityRv.visibility = View.GONE
+                binding.applyActivityRv.visibility = View.VISIBLE
+                applyActivityListAdapter.submitList(it.toMutableList())
             }
         }
         // 내활동보기 결과 등록(호스트)
         myActivityViewModel.getUserActivityHost.observe(viewLifecycleOwner) {
             if (it != null) {
-                if(it.isNotEmpty()) {
-                    binding.applyActivityRv.visibility = View.GONE
-                    binding.openActivityRv.visibility = View.VISIBLE
-                    openActivityListAdapter.submitList(it.toMutableList())
-                }
+                binding.applyActivityRv.visibility = View.GONE
+                binding.openActivityRv.visibility = View.VISIBLE
+                openActivityListAdapter.submitList(it.toMutableList())
             }
         }
         // 활동 지원 취소

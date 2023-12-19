@@ -12,15 +12,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.internal.notify
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class ManageApplyViewModel @Inject constructor(private val manageApplyRepositoryImpl: ManageApplyRepositoryImpl): ViewModel(){
+class ManageApplyViewModel @Inject constructor(private val manageApplyRepositoryImpl: ManageApplyRepositoryImpl) :
+    ViewModel() {
 
-    // 공지사항 조회 결과
+    // 크루원 리스트 불러오기
     private var _getCrewInfoList = MutableLiveData<List<ManageApplyMemberModel.CrewInfoDto>>()
     val getCrewInfoList: LiveData<List<ManageApplyMemberModel.CrewInfoDto>> get() = _getCrewInfoList
+
+    // 크루원 정보 불러오기
+    private var _getCrewDetail = MutableLiveData<ManageApplyMemberModel.GetCrewDetailResponse>()
+    val getCrewDetail: LiveData<ManageApplyMemberModel.GetCrewDetailResponse> get() = _getCrewDetail
 
     // 전체 선택하기 이벤트 liveData
     private var _allClicked = MutableLiveData<Boolean>(false)
@@ -34,12 +40,13 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
     fun getCrewInfoList(activityId: String) {
         viewModelScope.launch {
             manageApplyRepositoryImpl.getCrewInfoList(activityId).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     it.body()?.response?.crewInfo?.let { crewInfoList ->
                         withContext(Dispatchers.Default) {
                             crewInfoList.forEachIndexed { index, getCrewInfoListDto ->
                                 ManageApplyMemberModel.applyCrewList.add(
                                     ManageApplyMemberModel.CrewInfoDto(
+                                        crewInfoList[index].applicationId,
                                         crewInfoList[index].crewStatus,
                                         crewInfoList[index].nickname,
                                         crewInfoList[index].number,
@@ -51,6 +58,48 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                         }
 
                         _getCrewInfoList.postValue(ManageApplyMemberModel.applyCrewList)
+                    }
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg =
+                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    // 크루원 정보 불러오기
+    fun getCrewDetail(applicationId: String) {
+        viewModelScope.launch {
+            manageApplyRepositoryImpl.getCrewDetail(applicationId).let {
+                if (it.isSuccessful) {
+                    it.body()?.response?.let { data ->
+                        _getCrewDetail.postValue(
+                            ManageApplyMemberModel.GetCrewDetailResponse(
+                                ManageApplyMemberModel.GetCrewDetailActivityInfoDto(
+                                    data.activityInfo.activity,
+                                    data.activityInfo.hosting,
+                                    data.activityInfo.noShow
+                                ),
+                                ManageApplyMemberModel.GetCrewDetailApplicationDto(
+                                    data.application.dayOfBirth,
+                                    data.application.email,
+                                    data.application.id1365,
+                                    data.application.name,
+                                    data.application.phoneNumber,
+                                    data.application.question,
+                                    data.application.startPoint,
+                                    data.application.transportation
+                                ),
+                                ManageApplyMemberModel.GetCrewDetailUserInfoDto(
+                                    data.userInfo.nickname, data.userInfo.profile
+                                )
+                            )
+                        )
                     }
                 } else {
                     val errorJsonObject =
@@ -90,7 +139,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
     }
 
     // 저장된 crewlist 불러오기
-    fun getTempApplyCrewList(): List<ManageApplyMemberModel.CrewInfoDto>{
+    fun getTempApplyCrewList(): List<ManageApplyMemberModel.CrewInfoDto> {
         return ManageApplyMemberModel.tempApplyCrewList
     }
 

@@ -85,7 +85,9 @@ class MessageViewModel @Inject constructor(
                     MessageModel.projectNameList = list
                     Timber.e("getActivityNameList")
 
-                    getCrewNickName(getActivityNameSpinnerClickActivityId())
+                    if(list.isNotEmpty()) {
+                        getCrewNickName(getActivityNameSpinnerClickActivityId())
+                    }
                 } else {
                     val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
                     if(errorJsonObject != null) {

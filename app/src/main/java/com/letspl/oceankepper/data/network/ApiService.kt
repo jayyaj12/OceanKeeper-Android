@@ -224,4 +224,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("activity-id") activityId: String,
     ): Response<ManageApplyMemberModel.GetCrewInfoListResponseDto>
+
+    // 신청자 리스트 불러오기
+    @GET("/activity/detail/application/full")
+    suspend fun getCrewDetail(
+        @Header("Authorization") token: String,
+        @Query("application-id") applicationId: String,
+    ): Response<ManageApplyMemberModel.GetCrewDetailResponseDto>
 }
