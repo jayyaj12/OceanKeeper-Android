@@ -40,6 +40,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="18dp"
+            android:onClick="@{() -> messageFragment.onMoveSetting()}"
             android:src="@drawable/setting_icon"
             app:layout_constraintBottom_toBottomOf="@id/ocean_logo_tv"
             app:layout_constraintEnd_toEndOf="parent"

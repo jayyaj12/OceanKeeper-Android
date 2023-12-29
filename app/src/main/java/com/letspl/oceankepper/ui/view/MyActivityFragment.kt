@@ -28,6 +28,7 @@ import com.letspl.oceankepper.ui.adapter.OpenActivityListAdapter
 import com.letspl.oceankepper.ui.dialog.*
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel
+import com.letspl.oceankepper.util.EntryPoint
 import com.letspl.oceankepper.util.ImgFileMaker
 import com.letspl.oceankepper.util.ResizingImage
 import com.letspl.oceankepper.util.RotateTransform
@@ -290,6 +291,12 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     // 프로필 수정 아이콘 클릭 시 촬영, 앨범에서 선택 팝업 표시
     fun onClickedChoiceProfileImage() {
         choiceProfileImageDialog.show()
+    }
+
+    // 설정 페이지 이동
+    fun onMoveSetting() {
+        EntryPoint.settingPoint = "myActivity"
+        activity.onReplaceFragment(SettingFragment(), false, false)
     }
 
     // tablayout 세팅

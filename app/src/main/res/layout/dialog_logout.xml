@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="logoutDialog"
+            type="com.letspl.oceankepper.ui.dialog.LogoutDialog" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="312dp"
+            android:layout_height="120dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/custom_radius8_solid_white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="로그아웃"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="#212121"
+                android:layout_marginTop="17dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="16dp"
+                android:id="@+id/logout_tv"
+                app:layout_constraintTop_toTopOf="parent"/>
+            
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/close_icon_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{() -> logoutDialog.onClickClose()}"
+                app:layout_constraintTop_toTopOf="@id/logout_tv"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/logout_tv"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="로그아웃 하기"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:fontFamily="@font/pretendard_medium"
+                android:textSize="14dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:onClick="@{() -> logoutDialog.onClickedLogout()}"
+                android:background="@drawable/custom_radius8_solid_000000"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

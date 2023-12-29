@@ -18,6 +18,7 @@ import com.letspl.oceankepper.ui.adapter.MainComingScheduleAdapter
 import com.letspl.oceankepper.ui.dialog.AreaChoiceDialog
 import com.letspl.oceankepper.ui.dialog.GarbageCategoryChoiceDialog
 import com.letspl.oceankepper.ui.viewmodel.MainViewModel
+import com.letspl.oceankepper.util.EntryPoint
 import com.letspl.oceankepper.util.Extension.fromDpToPx
 import com.letspl.oceankepper.util.GridSpacingItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
@@ -189,10 +190,12 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     fun onMoveSetting() {
+        EntryPoint.settingPoint = "main"
         activity.onReplaceFragment(SettingFragment(), false, false)
     }
 
     fun onMoveNotice() {
+        EntryPoint.noticePoint = "main"
         activity.onReplaceFragment(NoticeFragment(), false, false)
     }
 

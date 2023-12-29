@@ -28,6 +28,7 @@ import com.letspl.oceankepper.ui.adapter.MessageListAdapter
 import com.letspl.oceankepper.ui.adapter.MessageReceiveCrewAdapter
 import com.letspl.oceankepper.ui.dialog.ProgressDialog
 import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
+import com.letspl.oceankepper.util.EntryPoint
 import com.letspl.oceankepper.util.MessageEnterType
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -317,10 +318,11 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     }
 
-    private fun setupDialogSendMessageSpinner() {
-//        binding.sendMessageSpinner.adapter =
+    // 설정 페이지 이동
+    fun onMoveSetting() {
+        EntryPoint.settingPoint = "message"
+        activity.onReplaceFragment(SettingFragment(), false, false)
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
 

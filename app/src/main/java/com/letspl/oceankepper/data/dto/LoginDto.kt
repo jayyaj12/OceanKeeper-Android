@@ -1,5 +1,7 @@
 package com.letspl.oceankepper.data.dto
 
+import kotlinx.serialization.Serializable
+
 @kotlinx.serialization.Serializable
 data class LoginDto(
     val code: Int,
@@ -37,7 +39,6 @@ data class LoginBody(
     val providerId: String
 )
 
-
 @kotlinx.serialization.Serializable
 data class LoginResponseDto(
     val response: LoginUserResponseDto
@@ -62,4 +63,20 @@ data class LoginUserResponseUserDto(
     var id: String,
     var nickname: String,
     var profile: String
+)
+
+// 로그아웃
+@Serializable
+data class LogoutDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: String
+)
+
+// 로그아웃 request Body
+@Serializable
+data class LogoutBody(
+    val deviceToken: String,
+    val provider: String,
+    val providerId: String
 )

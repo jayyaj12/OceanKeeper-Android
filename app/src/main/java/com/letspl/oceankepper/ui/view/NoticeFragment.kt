@@ -10,6 +10,7 @@ import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.FragmentNoticeBinding
 import com.letspl.oceankepper.ui.adapter.NoticeListAdapter
 import com.letspl.oceankepper.ui.viewmodel.NoticeViewModel
+import com.letspl.oceankepper.util.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -75,7 +76,10 @@ class NoticeFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     fun onClickBackBtn() {
-        activity.onReplaceFragment(MainFragment(), false, true)
+        when(EntryPoint.noticePoint) {
+            "main" -> activity.onReplaceFragment(MainFragment(), false, true)
+            "setting" -> activity.onReplaceFragment(SettingFragment(), false, true)
+        }
     }
 
     override fun onDestroyView() {

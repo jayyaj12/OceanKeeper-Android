@@ -231,4 +231,27 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("application-id") applicationId: String,
     ): Response<ManageApplyMemberModel.GetCrewDetailResponseDto>
+
+    // 로그아웃
+    @POST("/auth/logout")
+    suspend fun postLogout(
+        @Header("Authorization") token: String,
+        @Body logoutReqDto: LogoutBody,
+    ): Response<LogoutDto>
+
+    // 탈퇴하기
+    @POST("/auth/withdrawal")
+    suspend fun postWithdraw(
+        @Header("Authorization") token: String,
+        @Body logoutReqDto: LogoutBody,
+    ): Response<LogoutDto>
+
+    // 알람 수신 여부 설정
+    @FormUrlEncoded
+    @POST("/notification/user/{userId}/alarm")
+    suspend fun postNotificationAlarm(
+        @Header("Authorization") token: String,
+        @Field("alarm") alarm: Boolean,
+        @Path("userId") userId: String
+    ): Response<NotificationDto>
 }
