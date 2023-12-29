@@ -19,4 +19,8 @@ class NotificationRepositoryImpl @Inject constructor(@ApiModule.OceanService pri
     ): Response<NotificationDto> {
         return service.postNotificationAlarm("Bearer ${UserModel.userInfo.token.accessToken}", alarm, userId)
     }
+
+    override suspend fun getNotificationAlarm(userId: String): Response<NotificationDto> {
+        return service.getNotificationAlarm("Bearer ${UserModel.userInfo.token.accessToken}", userId)
+    }
 }

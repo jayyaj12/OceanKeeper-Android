@@ -254,4 +254,11 @@ interface ApiService {
         @Field("alarm") alarm: Boolean,
         @Path("userId") userId: String
     ): Response<NotificationDto>
+
+    // 알람 수신 여부 가져오기
+    @GET("/notification/user/{userId}/alarm")
+    suspend fun getNotificationAlarm(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String
+    ): Response<NotificationDto>
 }

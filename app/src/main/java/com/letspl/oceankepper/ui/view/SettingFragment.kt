@@ -16,6 +16,7 @@ import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.ui.viewmodel.SettingViewModel
 import com.letspl.oceankepper.util.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import kotlin.math.log
 
 @AndroidEntryPoint
@@ -46,6 +47,12 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
         setupViewModelObserver()
         setupNotificationSwitch()
+        getNotificationState()
+    }
+
+    // 알림 설정 가져오기
+    private fun getNotificationState() {
+        settingViewModel.getNotificationAlarm()
     }
 
     private fun setupViewModelObserver() {
@@ -54,8 +61,17 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
         }
         settingViewModel.postNotificationAlarmResult.observe(viewLifecycleOwner) {
             // 알림 설정 실패 시 실패 모달 표시
-            if(!it) {
-                ConnectFailedDialog(requireContext()).show()
+            it?.let {
+                if(!it) {
+                    ConnectFailedDialog(requireContext()).show()
+                }
+            }
+        }
+        settingViewModel.getNotificationAlarmResult.observe(viewLifecycleOwner) {
+            Timber.e("getNotificationAlarmResult $it")
+            // 알림 설정 실패 시 실패 모달 표시
+            it?.let {
+                binding.notiSwitch.isChecked = it
             }
         }
     }
@@ -63,6 +79,7 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
     // 알림 설정
     private fun setupNotificationSwitch() {
         binding.notiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            Timber.e("setOnCheckedChangeListener $isChecked")
             settingViewModel.postNotificationAlarm(isChecked)
         }
     }
@@ -103,6 +120,7 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        settingViewModel.clearLiveData()
 
         _binding = null
     }

@@ -9,6 +9,10 @@ import retrofit2.Response
 
 interface NotificationRepository {
 
+    // 알림 설정
     suspend fun postNotificationAlarm(alarm: Boolean, userId: String): Response<NotificationDto>
+
+    // 알림 설정 가져오기
+    suspend fun getNotificationAlarm(userId: String): Response<NotificationDto>
 
 }

@@ -19,9 +19,11 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl, private val notificationRepositoryImpl: NotificationRepositoryImpl): ViewModel() {
 
-    private var _postNotificationAlarmResult = MutableLiveData<Boolean>()
-    val postNotificationAlarmResult: LiveData<Boolean> get() = _postNotificationAlarmResult
+    private var _getNotificationAlarmResult = MutableLiveData<Boolean?>(null)
+    val getNotificationAlarmResult: LiveData<Boolean?> get() = _getNotificationAlarmResult
 
+    private var _postNotificationAlarmResult = MutableLiveData<Boolean?>(null)
+    val postNotificationAlarmResult: LiveData<Boolean?> get() = _postNotificationAlarmResult
 
     private var _postWithDrawResult = MutableLiveData<Boolean>()
     val postWithDrawResult: LiveData<Boolean> get() = _postWithDrawResult
@@ -79,7 +81,6 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
 
     // 알림 설정
     fun postNotificationAlarm(alarm: Boolean) {
-        Timber.e("alarm $alarm")
         CoroutineScope(Dispatchers.IO).launch {
             notificationRepositoryImpl.postNotificationAlarm(
                 alarm,
@@ -92,6 +93,27 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
                 }
             }
         }
+    }
+
+
+    // 알림 설정 가져오기
+    fun getNotificationAlarm() {
+        CoroutineScope(Dispatchers.IO).launch {
+            notificationRepositoryImpl.getNotificationAlarm(
+                UserModel.userInfo.user.id
+            ).let {
+                if(it.isSuccessful) {
+                    _getNotificationAlarmResult.postValue(it.body()?.response?.alarm)
+                } else {
+                    _getNotificationAlarmResult.postValue(false)
+                }
+            }
+        }
+    }
+
+    fun clearLiveData() {
+        _getNotificationAlarmResult.postValue(null)
+        _postNotificationAlarmResult.postValue(null)
     }
 
 }
