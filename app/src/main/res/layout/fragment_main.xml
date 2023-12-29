@@ -45,6 +45,7 @@
             android:id="@+id/setting_iv"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:onClick="@{() -> mainFragment.onMoveSetting()}"
             android:layout_marginEnd="18dp"
             android:src="@drawable/setting_icon"
             app:layout_constraintBottom_toBottomOf="@id/ocean_logo_tv"
@@ -167,6 +168,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/setting_icon_btn"
+                    android:onClick="@{() -> mainFragment.onMoveSetting()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/guide_icon_iv"
                     app:layout_constraintTop_toTopOf="@+id/notice_icon_iv" />

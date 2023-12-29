@@ -52,7 +52,7 @@ data class GetMyActivityDetailItem(
     val quota: Int,
     val recruitEndAt: String,
     val recruitStartAt: String,
-    val rewards: String,
+    val rewards: String = "",
     val startAt: String,
     val storyImageUrl: String?,
     val thumbnailUrl: String?,

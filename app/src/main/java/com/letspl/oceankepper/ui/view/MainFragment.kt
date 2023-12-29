@@ -188,6 +188,10 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         activity.onReplaceFragment(GuideFragment(), false, false)
     }
 
+    fun onMoveSetting() {
+        activity.onReplaceFragment(SettingFragment(), false, false)
+    }
+
     fun onMoveNotice() {
         activity.onReplaceFragment(NoticeFragment(), false, false)
     }
