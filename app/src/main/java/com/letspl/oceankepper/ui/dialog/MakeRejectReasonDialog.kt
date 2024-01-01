@@ -1,0 +1,30 @@
+package com.letspl.oceankepper.ui.dialog
+
+import android.app.Dialog
+import android.content.Context
+import android.os.Bundle
+import com.letspl.oceankepper.databinding.DialogCancelApplyBinding
+import com.letspl.oceankepper.databinding.DialogMakeRejectReasonBinding
+import com.letspl.oceankepper.databinding.DialogRejectReasonBinding
+
+class MakeRejectReasonDialog(context: Context, private val nickname: String, private val onClickReject: () -> Unit): Dialog(context) {
+    private lateinit var binding: DialogMakeRejectReasonBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DialogMakeRejectReasonBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.topTv.text = "${nickname}님의 활동 신청을 거절하시겠어요?"
+    }
+
+    fun onClickClose() {
+        dismiss()
+    }
+
+    fun onClickedReject() {
+        onClickReject()
+        dismiss()
+    }
+
+}
