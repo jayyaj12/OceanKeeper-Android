@@ -299,6 +299,12 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         activity.onReplaceFragment(SettingFragment(), false, false)
     }
 
+    // 알림 페이지 이동
+    fun onMoveNotification() {
+        EntryPoint.notificationPoint = "myActivity"
+        activity.onReplaceFragment(NotificationFragment(), false, false)
+    }
+
     // tablayout 세팅
     private fun setupTabLayout() {
         binding.itemTab.setTabTextColors(Color.parseColor("#7a7a7a"), Color.parseColor("#545454"))

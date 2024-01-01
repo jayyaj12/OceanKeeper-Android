@@ -19,6 +19,7 @@
         <LinearLayout
             android:id="@+id/back_icon_ll"
             android:layout_width="20dp"
+            android:onClick="@{() -> manageApplyFragment.onClickedBackBtn()}"
             android:layout_height="20dp"
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"

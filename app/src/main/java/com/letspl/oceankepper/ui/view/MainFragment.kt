@@ -194,6 +194,11 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         activity.onReplaceFragment(SettingFragment(), false, false)
     }
 
+    fun onMoveNotification() {
+        EntryPoint.notificationPoint = "main"
+        activity.onReplaceFragment(NotificationFragment(), false, false)
+    }
+
     fun onMoveNotice() {
         EntryPoint.noticePoint = "main"
         activity.onReplaceFragment(NoticeFragment(), false, false)

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.letspl.oceankepper.data.dto.NotificationItemDto
 import com.letspl.oceankepper.data.model.LoginModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
@@ -22,6 +23,9 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
 
     private var _getNotificationAlarmResult = MutableLiveData<Boolean?>(null)
     val getNotificationAlarmResult: LiveData<Boolean?> get() = _getNotificationAlarmResult
+
+    private var _getNotificationListResult = MutableLiveData<List<NotificationItemDto>>()
+    val getNotificationListResult: LiveData<List<NotificationItemDto>> get() = _getNotificationListResult
 
     private var _postNotificationAlarmResult = MutableLiveData<Boolean?>(null)
     val postNotificationAlarmResult: LiveData<Boolean?> get() = _postNotificationAlarmResult
@@ -96,7 +100,6 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
         }
     }
 
-
     // 알림 설정 가져오기
     fun getNotificationAlarm() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -112,12 +115,46 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
         }
     }
 
+    // 알림 설정 가져오기
+    fun getNotificationList() {
+        viewModelScope.launch {
+            notificationRepositoryImpl.getNotificationList(
+                10,
+                UserModel.userInfo.user.id
+            ).let {
+                if(it.isSuccessful) {
+                    val notificationItemArr = arrayListOf<NotificationItemDto>()
+
+                    it.body()?.response?.data?.forEach { item ->
+                        notificationItemArr.add(
+                            NotificationItemDto(
+                                item.id,
+                                item.contents,
+                                item.createdAt,
+                                item.read
+                            )
+                        )
+                    }
+
+                    _getNotificationListResult.postValue(notificationItemArr)
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
     // 이용약관 가져오기
     fun getPrivacyPolicy() {
         viewModelScope.launch {
             privacyRepositoryImpl.getPrivacyPolicy().let {
                 if(it.isSuccessful) {
-
+                    // api 조회시 서버측 IOE 버그 발생
                 } else {
                     val errorJsonObject =
                         ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")

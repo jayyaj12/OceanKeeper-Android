@@ -323,6 +323,13 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         EntryPoint.settingPoint = "message"
         activity.onReplaceFragment(SettingFragment(), false, false)
     }
+
+    // 알림 페이지 이동
+    fun onMoveNotification() {
+        EntryPoint.notificationPoint = "message"
+        activity.onReplaceFragment(NotificationFragment(), false, false)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 

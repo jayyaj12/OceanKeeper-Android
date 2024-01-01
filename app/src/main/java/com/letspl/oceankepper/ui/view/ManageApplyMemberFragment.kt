@@ -24,13 +24,17 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @AndroidEntryPoint
-class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
+class ManageApplyMemberFragment(private val activityId: String) : Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentManageApplyMemberBinding? = null
     private val binding: FragmentManageApplyMemberBinding get() = _binding!!
     private lateinit var managerApplyListAdapter: ManageApplyMemberListAdapter
     private val manageApplyViewModel: ManageApplyViewModel by viewModels()
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
+    }
+
+    override fun onBackPressed() {
+        onClickedBackBtn()
     }
 
     override fun onCreateView(
@@ -191,6 +195,10 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
                 activity.showErrorMsg("1명 이상 선택 해주세요.")
             }
         }.show()
+    }
+
+    fun onClickedBackBtn() {
+        activity.onReplaceFragment(MyActivityFragment())
     }
 
     override fun onDestroyView() {

@@ -1,5 +1,6 @@
 package com.letspl.oceankepper.data.network
 
+import android.app.Notification
 import com.letspl.oceankepper.data.dto.*
 import com.letspl.oceankepper.data.model.ManageApplyMemberModel
 import com.letspl.oceankepper.data.model.MessageModel
@@ -261,6 +262,14 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("userId") userId: String
     ): Response<NotificationDto>
+
+    // 알람 수신 여부 가져오기
+    @GET("/notification/user/{userId}")
+    suspend fun getNotificationList(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String,
+        @Query("size") size: Int,
+    ): Response<NotificationListDto>
 
     // Privacy 가져오기
     @GET("/privacy-policy")

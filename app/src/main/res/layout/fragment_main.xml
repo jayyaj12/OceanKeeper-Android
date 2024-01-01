@@ -37,6 +37,7 @@
             android:layout_height="20dp"
             android:layout_marginEnd="18dp"
             android:src="@drawable/noti_icon"
+            android:onClick="@{() -> mainFragment.onMoveNotification()}"
             app:layout_constraintBottom_toBottomOf="@id/setting_iv"
             app:layout_constraintEnd_toStartOf="@+id/setting_iv"
             app:layout_constraintTop_toTopOf="@id/setting_iv" />
