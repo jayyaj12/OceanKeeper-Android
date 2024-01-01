@@ -159,12 +159,14 @@ class MessageViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     fun convertAMPMToCustomFormat(date: String): String {
         var dateStr = date.replace("-", ".")
-        val ampm = if(date.substring(11, 13).toInt() >= 12) {
+        Timber.e("date.substring(11, 13) ${date}")
+        Timber.e("date.substring(11, 13) ${date.substring(11, 13)}")
+        val ampm = if(date.substring(9, 11).toInt() >= 12) {
             "PM"
         } else {
             "AM"
         }
-        return "${dateStr.substring(0, 10)} ${dateStr.substring(11 ,16)}$ampm"
+        return "20${dateStr}$ampm"
     }
 
     fun getMessage(type: String) {

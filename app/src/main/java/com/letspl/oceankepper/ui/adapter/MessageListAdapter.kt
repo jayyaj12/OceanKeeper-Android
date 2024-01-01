@@ -30,7 +30,7 @@ class MessageListAdapter(private val messageViewModel: MessageViewModel, private
                 titleTv.text = item.activityTitle
                 contentTv.text = item.messageBody
                 fromTv.text = item.from
-                timeTv.text = messageViewModel.convertIso8601YYToCustomFormat(item.messageSentAt)
+                timeTv.text = item.messageSentAt.replace("-", ".")
             }
 
             binding.moveDetailPageIv.setOnClickListener {
