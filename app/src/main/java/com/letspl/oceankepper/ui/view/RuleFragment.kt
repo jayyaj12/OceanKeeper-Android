@@ -5,10 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.FragmentRuleBinding
 import com.letspl.oceankepper.databinding.FragmentSettingBinding
+import com.letspl.oceankepper.ui.viewmodel.SettingViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RuleFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private var _binding: FragmentRuleBinding? = null
@@ -16,6 +20,7 @@ class RuleFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private val activity:BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
+    private val settingViewModel: SettingViewModel by viewModels()
 
     override fun onBackPressed() {
         onClickedBackBtn()
@@ -33,6 +38,8 @@ class RuleFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        settingViewModel.getPrivacyPolicy()
     }
 
     fun onClickedBackBtn() {

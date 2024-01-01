@@ -141,7 +141,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
 
         }, { applicationId ->
             // 크루원 상세 페이지로 이동
-            activity.onReplaceFragment(CrewDetailFragment(applicationId))
+            activity.onReplaceFragment(CrewDetailFragment(applicationId, activityId))
         })
         binding.applyListRv.adapter = managerApplyListAdapter
 
@@ -152,13 +152,18 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
     // 삭제하기 버튼 클릭
     fun onClickedDeleteBtn() {
         DeleteListDialog(requireContext()) {
+            val crewList = manageApplyViewModel.getClickedCrewList()
 
+            if (!manageApplyViewModel.isClickedEmpty()) {
+                // 삭제하기 api 조회
+            } else {
+                activity.showErrorMsg("1명 이상 선택 해주세요.")
+            }
         }.show()
     }
 
     // 거절하기 버튼 클릭
     fun onClickedRejectBtn() {
-        Timber.e("manageApplyViewModel.getClickedCrewList ${manageApplyViewModel.getClickedCrewList()}")
         val crewList = manageApplyViewModel.getClickedCrewList()
 
         if (!manageApplyViewModel.isClickedEmpty()) {
@@ -178,7 +183,13 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment() {
     // 노쇼 체크 버튼 클릭
     fun onClickedNoShowBtn() {
         NoShowCheckDialog(requireContext()) {
+            val crewList = manageApplyViewModel.getClickedCrewList()
 
+            if (!manageApplyViewModel.isClickedEmpty()) {
+                // 노쇼체크 api 조회
+            } else {
+                activity.showErrorMsg("1명 이상 선택 해주세요.")
+            }
         }.show()
     }
 

@@ -261,4 +261,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("userId") userId: String
     ): Response<NotificationDto>
+
+    // Privacy 가져오기
+    @GET("/privacy-policy")
+    suspend fun getPrivacyPolicy(
+        @Header("Authorization") token: String,
+    ): Response<PrivacyDto>
 }

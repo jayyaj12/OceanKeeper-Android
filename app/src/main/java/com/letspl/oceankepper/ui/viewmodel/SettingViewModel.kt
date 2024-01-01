@@ -8,6 +8,7 @@ import com.letspl.oceankepper.data.model.LoginModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.data.repository.NotificationRepositoryImpl
+import com.letspl.oceankepper.data.repository.PrivacyRepositoryImpl
 import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +18,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl, private val notificationRepositoryImpl: NotificationRepositoryImpl): ViewModel() {
+class SettingViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl, private val notificationRepositoryImpl: NotificationRepositoryImpl, private val privacyRepositoryImpl: PrivacyRepositoryImpl): ViewModel() {
 
     private var _getNotificationAlarmResult = MutableLiveData<Boolean?>(null)
     val getNotificationAlarmResult: LiveData<Boolean?> get() = _getNotificationAlarmResult
@@ -106,6 +107,24 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
                     _getNotificationAlarmResult.postValue(it.body()?.response?.alarm)
                 } else {
                     _getNotificationAlarmResult.postValue(false)
+                }
+            }
+        }
+    }
+
+    // 이용약관 가져오기
+    fun getPrivacyPolicy() {
+        viewModelScope.launch {
+            privacyRepositoryImpl.getPrivacyPolicy().let {
+                if(it.isSuccessful) {
+
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
                 }
             }
         }
