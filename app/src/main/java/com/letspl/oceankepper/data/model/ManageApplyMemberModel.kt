@@ -1,10 +1,33 @@
 package com.letspl.oceankepper.data.model
 
+import kotlinx.serialization.Serializable
+
 object ManageApplyMemberModel {
 
     var isAllChecked = false
     var applyCrewList = arrayListOf<CrewInfoDto>()
     var tempApplyCrewList = arrayListOf<CrewInfoDto>()
+
+    @Serializable
+    data class PostCrewStatusBody(
+        val applicationId: List<String>,
+        val rejectReason: String?,
+        val status: String
+    )
+
+    @kotlinx.serialization.Serializable
+    data class PostCrewStatusDto(
+        val statusCode: Int,
+        val timestamp: String,
+        val response: PostCrewStatusResponseDto
+    )
+
+    @kotlinx.serialization.Serializable
+    data class PostCrewStatusResponseDto(
+        val crewStatus: Int,
+        val messageId: List<Int>,
+        val result: Boolean
+    )
 
     @kotlinx.serialization.Serializable
     data class GetCrewInfoListResponseDto(
@@ -37,7 +60,6 @@ object ManageApplyMemberModel {
         val username: String,
         var isClicked: Boolean
     )
-
 
     @kotlinx.serialization.Serializable
     data class GetCrewDetailResponseDto(

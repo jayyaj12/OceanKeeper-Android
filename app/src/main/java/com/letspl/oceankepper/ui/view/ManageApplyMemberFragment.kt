@@ -175,8 +175,9 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
             if (crewList.size > 1) {
                 activity.showErrorMsg("거절하기는 1명씩 가능합니다.")
             } else {
-                MakeRejectReasonDialog(requireContext(), crewList[0].nickname) {
+                MakeRejectReasonDialog(requireContext(), crewList[0].nickname) {reason ->
                     // 거절 api 호출
+                    manageApplyViewModel.postCrewStatus(manageApplyViewModel.getClickedCrewApplicationIdList(), "REJECT", reason)
                 }.show()
             }
         } else {
@@ -191,6 +192,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
 
             if (!manageApplyViewModel.isClickedEmpty()) {
                 // 노쇼체크 api 조회
+                manageApplyViewModel.postCrewStatus(manageApplyViewModel.getClickedCrewApplicationIdList(), "NO_SHOW")
             } else {
                 activity.showErrorMsg("1명 이상 선택 해주세요.")
             }

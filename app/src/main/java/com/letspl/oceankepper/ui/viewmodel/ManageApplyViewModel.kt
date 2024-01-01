@@ -114,6 +114,31 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
         }
     }
 
+    // 크루원 정보 불러오기
+    fun postCrewStatus(applicationId: List<String>, status: String, rejectReason: String? = null) {
+        viewModelScope.launch {
+            manageApplyRepositoryImpl.postCrewStatus(
+                ManageApplyMemberModel.PostCrewStatusBody(
+                    applicationId,
+                    rejectReason,
+                    status
+                )
+            ).let {
+                if (it.isSuccessful) {
+
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg =
+                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
     // 전체 선택하기 버튼
     fun setAllIsClickedApplyMember(flag: Boolean) {
         viewModelScope.launch {
@@ -152,6 +177,19 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
         }
 
         return tempCrewArr
+    }
+
+    // 클릭된 유저 불러오기
+    fun getClickedCrewApplicationIdList(): List<String> {
+        val tempApplicationIdArr = arrayListOf<String>()
+
+        ManageApplyMemberModel.applyCrewList.forEach {
+            if(it.isClicked) {
+                tempApplicationIdArr.add(it.applicationId)
+            }
+        }
+
+        return tempApplicationIdArr
     }
 
     // 저장된 crewlist 불러오기

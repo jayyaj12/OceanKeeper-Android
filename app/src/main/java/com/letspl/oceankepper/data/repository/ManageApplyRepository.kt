@@ -8,4 +8,8 @@ interface ManageApplyRepository {
     suspend fun getCrewInfoList(activityId: String): Response<ManageApplyMemberModel.GetCrewInfoListResponseDto>
     // 크루원 정보 불러오기
     suspend fun getCrewDetail(applicationId: String): Response<ManageApplyMemberModel.GetCrewDetailResponseDto>
+    // 크루원 승인 설정
+    suspend fun postCrewStatus(body: ManageApplyMemberModel.PostCrewStatusBody): Response<ManageApplyMemberModel.PostCrewStatusDto>
+
+
 }

@@ -78,7 +78,7 @@ class NoticeFragment : Fragment(), BaseActivity.OnBackPressedListener {
     fun onClickBackBtn() {
         when(EntryPoint.noticePoint) {
             "main" -> activity.onReplaceFragment(MainFragment(), false, true)
-            "setting" -> activity.onReplaceFragment(SettingFragment(), false, true)
+            "setting" -> activity.onReplaceFragment(SettingFragment(), false, false)
         }
     }
 

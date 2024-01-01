@@ -117,7 +117,7 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
 
     // 알림 설정 가져오기
     fun getNotificationList() {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             notificationRepositoryImpl.getNotificationList(
                 10,
                 UserModel.userInfo.user.id

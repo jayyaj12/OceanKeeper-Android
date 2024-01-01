@@ -7,7 +7,7 @@ import com.letspl.oceankepper.databinding.DialogCancelApplyBinding
 import com.letspl.oceankepper.databinding.DialogMakeRejectReasonBinding
 import com.letspl.oceankepper.databinding.DialogRejectReasonBinding
 
-class MakeRejectReasonDialog(context: Context, private val nickname: String, private val onClickReject: () -> Unit): Dialog(context) {
+class MakeRejectReasonDialog(context: Context, private val nickname: String, private val onClickReject: (String) -> Unit): Dialog(context) {
     private lateinit var binding: DialogMakeRejectReasonBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MakeRejectReasonDialog(context: Context, private val nickname: String, pri
     }
 
     fun onClickedReject() {
-        onClickReject()
+        onClickReject(binding.rejectReasonEt.text.toString())
         dismiss()
     }
 

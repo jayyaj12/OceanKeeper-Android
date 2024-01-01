@@ -36,8 +36,8 @@
             android:layout_width="16dp"
             android:layout_height="20dp"
             android:layout_marginEnd="18dp"
-            android:src="@drawable/noti_icon"
             android:onClick="@{() -> mainFragment.onMoveNotification()}"
+            android:src="@drawable/noti_icon"
             app:layout_constraintBottom_toBottomOf="@id/setting_iv"
             app:layout_constraintEnd_toStartOf="@+id/setting_iv"
             app:layout_constraintTop_toTopOf="@id/setting_iv" />
@@ -46,8 +46,8 @@
             android:id="@+id/setting_iv"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:onClick="@{() -> mainFragment.onMoveSetting()}"
             android:layout_marginEnd="18dp"
+            android:onClick="@{() -> mainFragment.onMoveSetting()}"
             android:src="@drawable/setting_icon"
             app:layout_constraintBottom_toBottomOf="@id/ocean_logo_tv"
             app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,6 @@
                     android:text="다가오는 일정"
                     android:textColor="@color/gray_scale_g900"
                     android:textSize="20dp"
-                    android:visibility="@{mainViewModel.getComingScheduleResult.size() > 0 ? View.VISIBLE : View.GONE}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,11 +85,26 @@
                     android:layout_height="128dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
                     android:visibility="@{mainViewModel.getComingScheduleResult.size() > 0 ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/coming_tv" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/custom_radius16_solid_eceff1"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:text="참여 예정인 활동이 없습니다."
+                    android:textColor="#546e7a"
+                    android:textSize="14dp"
+                    android:visibility="@{mainViewModel.getComingScheduleResult.size() > 0 ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/coming_tv" />
 
                 <LinearLayout
                     android:id="@+id/view_pager_circle_ll"
@@ -99,9 +113,11 @@
                     android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:orientation="horizontal"
+                    android:visibility="@{mainViewModel.getComingScheduleResult.size() > 0 ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/schedule_view_pager">
+                    app:layout_constraintTop_toBottomOf="@+id/schedule_view_pager"
+                    app:layout_goneMarginTop="54dp">
 
                     <ImageView
                         android:id="@+id/circle_1_iv"
@@ -152,7 +168,8 @@
                     android:src="@drawable/notice_icon_btn"
                     app:layout_constraintEnd_toStartOf="@+id/guide_icon_iv"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_pager_circle_ll" />
+                    app:layout_constraintTop_toBottomOf="@+id/view_pager_circle_ll"
+                    app:layout_goneMarginTop="100dp" />
 
                 <ImageView
                     android:id="@+id/guide_icon_iv"
@@ -168,8 +185,8 @@
                     android:id="@+id/setting_icon_iv"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/setting_icon_btn"
                     android:onClick="@{() -> mainFragment.onMoveSetting()}"
+                    android:src="@drawable/setting_icon_btn"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/guide_icon_iv"
                     app:layout_constraintTop_toTopOf="@+id/notice_icon_iv" />

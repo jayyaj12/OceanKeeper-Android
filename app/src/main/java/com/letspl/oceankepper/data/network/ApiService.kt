@@ -272,8 +272,15 @@ interface ApiService {
     ): Response<NotificationListDto>
 
     // Privacy 가져오기
-    @GET("/privacy-policy")
+    @GET("/terms")
     suspend fun getPrivacyPolicy(
         @Header("Authorization") token: String,
     ): Response<PrivacyDto>
+
+    // Privacy 가져오기
+    @POST("/activity/recruitment/host/crew-status")
+    suspend fun postCrewStatus(
+        @Header("Authorization") token: String,
+        @Body request: ManageApplyMemberModel.PostCrewStatusBody,
+    ): Response<ManageApplyMemberModel.PostCrewStatusDto>
 }
