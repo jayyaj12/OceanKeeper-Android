@@ -11,13 +11,17 @@ import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MessageDetailFragment : Fragment() {
+class MessageDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private var _binding: FragmentMessageDetailBinding? = null
     val binding:FragmentMessageDetailBinding get() = _binding!!
     private val messageViewModel: MessageViewModel by viewModels()
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
+    }
+
+    override fun onBackPressed() {
+        onClickedBackBtn()
     }
 
     override fun onCreateView(
