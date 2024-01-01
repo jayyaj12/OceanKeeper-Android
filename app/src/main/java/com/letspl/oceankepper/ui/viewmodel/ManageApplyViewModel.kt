@@ -116,9 +116,6 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
 
     // 전체 선택하기 버튼
     fun setAllIsClickedApplyMember(flag: Boolean) {
-        Timber.e("flag $flag")
-        ManageApplyMemberModel.tempApplyCrewList.clear()
-
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
                 ManageApplyMemberModel.applyCrewList.forEach {
@@ -126,8 +123,9 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                 }
 
                 ManageApplyMemberModel.tempApplyCrewList.forEachIndexed { index, crewInfoDto ->
-                    ManageApplyMemberModel.tempApplyCrewList[index].isClicked = !flag
-                    ManageApplyMemberModel.applyCrewList[index].isClicked = !flag
+                    if(crewInfoDto.crewStatus != "REJECT") {
+                        ManageApplyMemberModel.tempApplyCrewList[index].isClicked = !flag
+                    }
                 }
             }
 
@@ -136,6 +134,24 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                 _allClicked.postValue(!flag)
             }
         }
+    }
+
+    // 크루원이 선택된 상태인지 체크
+    fun isClickedEmpty(): Boolean {
+        return getClickedCrewList().isEmpty()
+    }
+
+    // 클릭된 유저 불러오기
+    fun getClickedCrewList(): List<ManageApplyMemberModel.CrewInfoDto> {
+        val tempCrewArr = arrayListOf<ManageApplyMemberModel.CrewInfoDto>()
+
+        ManageApplyMemberModel.applyCrewList.forEach {
+            if(it.isClicked) {
+                tempCrewArr.add(it)
+            }
+        }
+
+        return tempCrewArr
     }
 
     // 저장된 crewlist 불러오기

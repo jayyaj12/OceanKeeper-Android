@@ -29,6 +29,8 @@ class ManageApplyMemberListAdapter(private val isAllClicked: (AllClickedStatus) 
                 oldItem: ManageApplyMemberModel.CrewInfoDto,
                 newItem: ManageApplyMemberModel.CrewInfoDto,
             ): Boolean {
+                Timber.e("oldItem $oldItem")
+                Timber.e("newItem $newItem")
                 return oldItem.number == newItem.number && oldItem.isClicked == newItem.isClicked
             }
         }
@@ -64,6 +66,7 @@ class ManageApplyMemberListAdapter(private val isAllClicked: (AllClickedStatus) 
                 }
             }
 
+            Timber.e("item $item")
             if(item.crewStatus != "REJECT" && item.isClicked) {
                 binding.checkBoxIv.setBackgroundResource(R.drawable.checkbox_checked)
             } else if(item.crewStatus != "REJECT" && !item.isClicked) {
@@ -75,8 +78,6 @@ class ManageApplyMemberListAdapter(private val isAllClicked: (AllClickedStatus) 
             }
 
             binding.checkBoxV.setOnClickListener {
-                Timber.e("ManageApplyMemberModel.applyCrewList2 ${ManageApplyMemberModel.applyCrewList}")
-
                 // 거절 상태일 경우 선택 불가
                 if(item.crewStatus != "REJECT") {
                     // 눌렀을 때 이미 체크일 경우 체크 해제
@@ -118,10 +119,6 @@ class ManageApplyMemberListAdapter(private val isAllClicked: (AllClickedStatus) 
 
             // 전체 아이템 - reject Item 을 저장한다.
             val totalCount = ManageApplyMemberModel.applyCrewList.size - isReject
-
-            Timber.e("isClickedTrue $isClickedTrue")
-            Timber.e("isClickedFalse $isClickedFalse")
-            Timber.e("totalCount $totalCount")
 
             // 전체 아이템의 수와 isClickedTrue 의 값을 비교하여
             // 같다면 전체 선택하기 On
