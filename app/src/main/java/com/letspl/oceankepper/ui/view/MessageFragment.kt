@@ -41,7 +41,6 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         activity.finish()
     }
 
-    @Inject
     lateinit var progressDialog: ProgressDialog
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
@@ -69,16 +68,23 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         setupNoteListAdapter()
         setupViewModelObserver()
         onChangeItemTab()
+        setupProgressDialog()
 
-        progressDialog.show()
         messageViewModel.getMessage("ALL") // 메세지 조회
         messageViewModel.getActivityNameList()
     }
 
+    private fun setupProgressDialog() {
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog.show()
+    }
+
     private fun setupViewModelObserver() {
         messageViewModel.sendMessageResult.observe(viewLifecycleOwner) {
-            bottomSheetDialog.dismiss()
-            activity.showSuccessMsg("메세지 전송이 정상 처리 되었습니다.")
+            if(it) {
+                bottomSheetDialog.dismiss()
+                activity.showSuccessMsg("메세지 전송이 정상 처리 되었습니다.")
+            }
         }
 
         messageViewModel.errorMsg.observe(viewLifecycleOwner) {

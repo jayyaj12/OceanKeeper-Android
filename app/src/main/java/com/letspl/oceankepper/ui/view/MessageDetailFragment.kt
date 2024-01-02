@@ -49,6 +49,10 @@ class MessageDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
     // 메세지 아이템 불러오기
     private fun setupLoadMessageItem() {
         val item = messageViewModel.getClickedMessageItem()
+
+        // 읽음 상태로 변경
+        messageViewModel.postMessageDetail(item.id)
+
         binding.run {
             garbageCategoryTv.text = messageViewModel.getGarbageCategory(item.garbageCategory)
             titleTv.text = item.activityTitle

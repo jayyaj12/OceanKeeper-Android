@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.letspl.oceankepper.data.dto.MessageItemDto
+import com.letspl.oceankepper.data.dto.PostMessageDetailBodyDto
 import com.letspl.oceankepper.data.model.MessageModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.ActivityRepositoryImpl
@@ -29,7 +30,7 @@ import kotlin.collections.ArrayList
 @HiltViewModel
 class MessageViewModel @Inject constructor(
     private val messageRepositoryImpl: MessageRepositoryImpl,
-    private val activityRepositoryImpl: ActivityRepositoryImpl
+    private val activityRepositoryImpl: ActivityRepositoryImpl,
 ) : ViewModel() {
 
     // 메세지 조회 결과
@@ -43,7 +44,8 @@ class MessageViewModel @Inject constructor(
         get() = _sendMessageResult
 
     // 프로젝트 크루 닉네임 불러오기
-    private var _getCrewNicknameList = MutableLiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>>()
+    private var _getCrewNicknameList =
+        MutableLiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>>()
     val getCrewNicknameList: LiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>> get() = _getCrewNicknameList
 
     // 에러 토스트 메세지 text
@@ -73,10 +75,10 @@ class MessageViewModel @Inject constructor(
     fun getActivityNameList() {
         viewModelScope.launch {
             activityRepositoryImpl.getActivityProject().let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     val list = arrayListOf<MessageModel.MessageSpinnerProjectNameItem>()
                     it.body()?.response?.hostActivities.let { projectList ->
-                        projectList?.forEach {data ->
+                        projectList?.forEach { data ->
                             list.add(MessageModel.MessageSpinnerProjectNameItem(
                                 data.activityId, data.title, false
                             ))
@@ -85,12 +87,13 @@ class MessageViewModel @Inject constructor(
                     MessageModel.projectNameList = list
                     Timber.e("getActivityNameList")
 
-                    if(list.isNotEmpty()) {
+                    if (list.isNotEmpty()) {
                         getCrewNickName(getActivityNameSpinnerClickActivityId())
                     }
                 } else {
-                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if(errorJsonObject != null) {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
                         val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                         _errorMsg.postValue(errorMsg)
                     }
@@ -103,7 +106,7 @@ class MessageViewModel @Inject constructor(
     fun getCrewNickName(activityId: String) {
         viewModelScope.launch {
             activityRepositoryImpl.getCrewNickname(activityId).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     val list = arrayListOf<MessageModel.MessageSpinnerCrewNicknameItem>()
                     it.body()?.response?.crewInformationList?.forEach {
                         list.add(MessageModel.MessageSpinnerCrewNicknameItem(it.nickname, false))
@@ -112,8 +115,9 @@ class MessageViewModel @Inject constructor(
                     MessageModel.crewNicknameList = list
                     _getCrewNicknameList.postValue(list)
                 } else {
-                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if(errorJsonObject != null) {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
                         val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                         _errorMsg.postValue(errorMsg)
                     }
@@ -133,11 +137,33 @@ class MessageViewModel @Inject constructor(
                     getTypeSpinnerClickedItem()
                 )
             ).let {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     _sendMessageResult.postValue(true)
                 } else {
-                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if(errorJsonObject != null) {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    // 쪽지의 읽음 상태를 변경
+    fun postMessageDetail(messageId: Long) {
+        CoroutineScope(Dispatchers.IO).launch {
+            messageRepositoryImpl.postMessageRead(
+                PostMessageDetailBodyDto(
+                    messageId,
+                    true
+                )
+            ).let {
+                if (!it.isSuccessful) {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
                         val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                         _errorMsg.postValue(errorMsg)
                     }
@@ -148,12 +174,12 @@ class MessageViewModel @Inject constructor(
 
     fun convertIso8601YYToCustomFormat(date: String): String {
         var dateStr = date.replace("-", ".")
-        return "${dateStr.substring(2, 10)} ${dateStr.substring(11 ,19)}"
+        return "${dateStr.substring(2, 10)} ${dateStr.substring(11, 19)}"
     }
 
     fun convertIso8601YYYYToCustomFormat(date: String): String {
         var dateStr = date.replace("-", ".")
-        return "${dateStr.substring(0, 10)} ${dateStr.substring(11 ,19)}"
+        return "${dateStr.substring(0, 10)} ${dateStr.substring(11, 19)}"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -161,7 +187,7 @@ class MessageViewModel @Inject constructor(
         var dateStr = date.replace("-", ".")
         Timber.e("date.substring(11, 13) ${date}")
         Timber.e("date.substring(11, 13) ${date.substring(11, 13)}")
-        val ampm = if(date.substring(9, 11).toInt() >= 12) {
+        val ampm = if (date.substring(9, 11).toInt() >= 12) {
             "PM"
         } else {
             "AM"
@@ -196,9 +222,11 @@ class MessageViewModel @Inject constructor(
                     }
                 } else {
                     // 실패 시 토스트 표시
-                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if(errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg =
+                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                         _errorMsg.postValue(errorMsg)
                     }
                 }
@@ -209,7 +237,7 @@ class MessageViewModel @Inject constructor(
     // MessageSpinnerCrewNicknameItem의 nickname만 필터링 하여 list로 반환함
     fun getConvertFromMessageCrewItemToStringForNickname(): List<String> {
         val crewList: ArrayList<String> = arrayListOf()
-        getCrewList().forEach{ item ->
+        getCrewList().forEach { item ->
             crewList.add(item.nickname)
         }
 
@@ -249,7 +277,7 @@ class MessageViewModel @Inject constructor(
     }
 
     // 읽음 여부 변경
-    fun setCrewNicknameListChecked(index: Int){
+    fun setCrewNicknameListChecked(index: Int) {
 //        MessageModel.crewNicknameList[index].isChecked = flag
     }
 
@@ -265,7 +293,7 @@ class MessageViewModel @Inject constructor(
 
     // 쪽지 유형 선택값 가져오기
     fun getTypeSpinnerClickedItem(): String {
-        return when(MessageModel.typeSpinnerClickPos) {
+        return when (MessageModel.typeSpinnerClickPos) {
             0 -> "NOTICE"
             1 -> "PRIVATE"
             2 -> "REJECT"
@@ -312,5 +340,6 @@ class MessageViewModel @Inject constructor(
         MessageModel.isLast = false
         MessageModel.messageId = null
         MessageModel.messageList.clear()
+        _sendMessageResult.postValue(false)
     }
 }

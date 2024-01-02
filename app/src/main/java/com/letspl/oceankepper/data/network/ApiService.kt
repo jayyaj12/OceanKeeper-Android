@@ -118,6 +118,13 @@ interface ApiService {
         @Query("user") user: String
     ): Response<MessageDto>
 
+    // 메세지 상태를 읽음으로 변경
+    @POST("message/detail")
+    suspend fun postMessageRead(
+        @Header("Authorization") token: String,
+        @Body data: PostMessageDetailBodyDto
+    ): Response<MessageDetailDto>
+
     // 활동 프로젝트 리스트 불러오기
     @GET("activity/recruitment/host/activity-name")
     suspend fun getProjectList(

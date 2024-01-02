@@ -1,6 +1,8 @@
 package com.letspl.oceankepper.data.repository
 
+import com.letspl.oceankepper.data.dto.MessageDetailDto
 import com.letspl.oceankepper.data.dto.MessageDto
+import com.letspl.oceankepper.data.dto.PostMessageDetailBodyDto
 import com.letspl.oceankepper.data.dto.PostSendMessageResultDto
 import com.letspl.oceankepper.data.model.MessageModel
 import com.letspl.oceankepper.data.model.UserModel
@@ -24,5 +26,9 @@ class MessageRepositoryImpl @Inject constructor(@ApiModule.OceanService private 
         messageBody: MessageModel.SendMessageRequestBody
     ): Response<PostSendMessageResultDto> {
         return service.postMessage("Bearer ${UserModel.userInfo.token.accessToken}", messageBody)
+    }
+
+    override suspend fun postMessageRead(dataBody: PostMessageDetailBodyDto): Response<MessageDetailDto> {
+        return service.postMessageRead("Bearer ${UserModel.userInfo.token.accessToken}", dataBody)
     }
 }

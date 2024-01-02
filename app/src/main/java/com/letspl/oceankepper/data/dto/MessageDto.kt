@@ -32,3 +32,16 @@ data class MessageMetaDto(
     val last: Boolean,
     val size: Int
 )
+
+@kotlinx.serialization.Serializable
+data class PostMessageDetailBodyDto(
+    val messageId: Long,
+    val read: Boolean
+)
+
+@kotlinx.serialization.Serializable
+data class MessageDetailDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: Boolean
+)
