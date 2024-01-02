@@ -1,10 +1,14 @@
 package com.letspl.oceankepper.ui.view
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.letspl.oceankepper.R
@@ -16,6 +20,7 @@ import com.letspl.oceankepper.ui.dialog.MakeRejectReasonDialog
 import com.letspl.oceankepper.ui.dialog.NoShowCheckDialog
 import com.letspl.oceankepper.ui.dialog.RejectReasonDialog
 import com.letspl.oceankepper.ui.viewmodel.ManageApplyViewModel
+import com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel
 import com.letspl.oceankepper.util.AllClickedStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +34,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
     private val binding: FragmentManageApplyMemberBinding get() = _binding!!
     private lateinit var managerApplyListAdapter: ManageApplyMemberListAdapter
     private val manageApplyViewModel: ManageApplyViewModel by viewModels()
+    private val myActivityViewModel: MyActivityViewModel by viewModels()
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
@@ -52,9 +58,15 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupProjectName()
+        checkGalleryPermission()
         setupApplyMemberListAdapter()
         setupViewModelObserver()
         getCrewInfoList()
+    }
+
+    private fun setupProjectName() {
+        binding.titleTv.text = myActivityViewModel.getClickProjectName()
     }
 
     // 신청자 리스트 불러오기
@@ -90,39 +102,39 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
 
     // 신청자 리스트 셋업
     private fun setupApplyMemberListAdapter() {
-        val arr = arrayListOf<ManageApplyMemberModel.CrewInfoDto>()
-        arr.add(
-            ManageApplyMemberModel.CrewInfoDto(
-                "ㅂㅈㄷㅂㅈㄷ",
-                "REJECT",
-                "김제주",
-                1,
-                "제주돌고래",
-                false
-            )
-        )
-        arr.add(
-            ManageApplyMemberModel.CrewInfoDto(
-                "ㅂㅈㄷㅂㅈㄷ",
-                "IN_PROGRESS",
-                "기모치",
-                2,
-                "기모치이",
-                false
-            )
-        )
-        arr.add(
-            ManageApplyMemberModel.CrewInfoDto(
-                "ㅂㅈㄷㅂㅈㄷ",
-                "NO_SHOW",
-                "기모치",
-                3,
-                "기모치이",
-                false
-            )
-        )
-
-        ManageApplyMemberModel.applyCrewList = arr
+//        val arr = arrayListOf<ManageApplyMemberModel.CrewInfoDto>()
+//        arr.add(
+//            ManageApplyMemberModel.CrewInfoDto(
+//                "ㅂㅈㄷㅂㅈㄷ",
+//                "REJECT",
+//                "김제주",
+//                1,
+//                "제주돌고래",
+//                false
+//            )
+//        )
+//        arr.add(
+//            ManageApplyMemberModel.CrewInfoDto(
+//                "ㅂㅈㄷㅂㅈㄷ",
+//                "IN_PROGRESS",
+//                "기모치",
+//                2,
+//        "기모치이",
+//        false
+//        )
+//        )
+//        arr.add(
+//            ManageApplyMemberModel.CrewInfoDto(
+//                "ㅂㅈㄷㅂㅈㄷ",
+//                "NO_SHOW",
+//                "기모치",
+//                3,
+//                "기모치이",
+//                false
+//            )
+//        )
+//
+//        ManageApplyMemberModel.applyCrewList = arr
 
         managerApplyListAdapter = ManageApplyMemberListAdapter({ allClicked ->
             // 리스트 체크 선택 시 전체 선택하기 체크박스 체크 여부
@@ -149,8 +161,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
         })
         binding.applyListRv.adapter = managerApplyListAdapter
 
-        managerApplyListAdapter.submitList(ManageApplyMemberModel.applyCrewList)
-
+//        managerApplyListAdapter.submitList(ManageApplyMemberModel.applyCrewList)
     }
 
     // 삭제하기 버튼 클릭
@@ -199,12 +210,59 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
         }.show()
     }
 
+    private fun checkGalleryPermission(): Boolean {
+        val writePermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        val readPermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        val imagePermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
+        )
+
+        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
+            Timber.e("true")
+            if(imagePermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.READ_MEDIA_IMAGES
+                    ), 1
+                )
+
+                false
+            } else {
+                true
+            }
+        } else{
+            Timber.e("else")
+            if(writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    ), 2
+                )
+                false
+            } else {
+                true
+            }
+        }
+    }
+
+    // 노쇼 체크 버튼 클릭
+    fun onClickedDownloadExcel() {
+        manageApplyViewModel.getCrewInfoFileDownloadUrl(activityId, myActivityViewModel.getClickProjectName())
+    }
+
     fun onClickedBackBtn() {
-        activity.onReplaceFragment(MyActivityFragment())
+        activity.onReplaceFragment(MyActivityFragment(), false, true)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        manageApplyViewModel.clearData()
 
         _binding = null
     }

@@ -13,6 +13,7 @@ class MakeRejectReasonDialog(context: Context, private val nickname: String, pri
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogMakeRejectReasonBinding.inflate(layoutInflater)
+        binding.makeRejectReasonDialog = this
         setContentView(binding.root)
 
         binding.topTv.text = "${nickname}님의 활동 신청을 거절하시겠어요?"

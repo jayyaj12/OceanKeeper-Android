@@ -127,7 +127,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
                 activityRecruitViewModel.setupEditRecruitValue(it.response)
 
-                val time = it.response.startAt.split("T")[1].split(":")
+                val time = it.response.startAt.split(" ")[1].split(":")
                 if(time[0].toInt() - 1 > 12) {
                     setUpActivityTimeSpinner((time[0].toInt() - 13), time[1].toInt(), 1)
                 } else {

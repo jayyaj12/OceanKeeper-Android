@@ -85,7 +85,7 @@ object ManageApplyMemberModel {
 
     @kotlinx.serialization.Serializable
     data class GetCrewDetailApplicationDto(
-      val dayOfBirth: String,
+      val dayOfBirth: String? = "",
       val email: String,
       val id1365: String,
       val name: String,
@@ -100,6 +100,71 @@ object ManageApplyMemberModel {
     data class GetCrewDetailUserInfoDto(
       val nickname: String,
       val profile: String
+    )
+
+    data class GetExcelDownloadUrlResponseDto(
+        val byteArray: String,
+        val description: String,
+        val file: GetExcelDownloadUrlFileDto,
+        val filename: String,
+        val inputStream: String? = null,
+        val open: Boolean,
+        val readable: Boolean,
+        val uri: GetExcelDownloadUriFileDto,
+        val url: GetExcelDownloadUrlDto
+    )
+
+    data class GetExcelDownloadUrlFileDto(
+        val absolute: Boolean,
+        val absolutePath: String,
+        val canonicalPath: String,
+        val directory: Boolean,
+        val executable: Boolean,
+        val file: Boolean,
+        val freeSpace: Int,
+        val hidden: Boolean,
+        val lastModified: Int,
+        val name: String,
+        val parent: String,
+        val path: String,
+        val readable: Boolean,
+        val totalSpace: Int,
+        val usableSpace: Int,
+        val writable: Boolean
+    )
+
+    data class GetExcelDownloadUriFileDto(
+        val absolute: Boolean,
+        val authority: String,
+        val fragment: String,
+        val host: String,
+        val opaque: Boolean,
+        val path: String,
+        val port: Int,
+        val query: String,
+        val rawAuthority: String,
+        val rawFragment: String,
+        val rawPath: String,
+        val rawQuery: String,
+        val rawSchemeSpecificPart: String,
+        val rawUserInfo: String,
+        val scheme: String,
+        val schemeSpecificPart: String,
+        val userInfo: String
+    )
+
+    data class GetExcelDownloadUrlDto(
+        val authority: String,
+        val content: String? = null,
+        val defaultPort: Int,
+        val file: String,
+        val host: String,
+        val path: String,
+        val port: Int,
+        val protocol: String,
+        val query: String,
+        val ref: String,
+        val userInfo: String
     )
 
 

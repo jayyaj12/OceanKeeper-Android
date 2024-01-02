@@ -10,6 +10,8 @@ object MyActivityModel {
     var crewLast = false
     val crewActivities = arrayListOf<GetUserActivityListDto>()
     val hostActivities = arrayListOf<GetUserActivityListDto>()
+    // 신청자 관리 엑셀 다운로드 시 파일명으로 프로젝트 명을 사용
+    var clickProjectName = ""
     var lastCrewActivityId: String? = null
     var hostLast = false
     var lastHostActivityId: String? = null

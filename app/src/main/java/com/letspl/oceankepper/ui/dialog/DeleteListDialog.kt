@@ -14,6 +14,7 @@ class DeleteListDialog(context: Context, private val onClickDelete: () -> Unit):
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogListDeleteBinding.inflate(layoutInflater)
+        binding.deleteListDialog = this
         setContentView(binding.root)
     }
 

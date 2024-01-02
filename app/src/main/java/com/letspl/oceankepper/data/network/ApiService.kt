@@ -5,6 +5,8 @@ import com.letspl.oceankepper.data.dto.*
 import com.letspl.oceankepper.data.model.ManageApplyMemberModel
 import com.letspl.oceankepper.data.model.MessageModel
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -291,4 +293,12 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: ManageApplyMemberModel.PostCrewStatusBody,
     ): Response<ManageApplyMemberModel.PostCrewStatusDto>
+
+    // 크루원 상태 변경
+    @GET("/activity/recruitment/host/crew-info-file")
+    @Streaming
+    suspend fun getCrewInfoFile(
+        @Header("Authorization") token: String,
+        @Query("activity-id") activityId: String
+    ): Response<ResponseBody>
 }

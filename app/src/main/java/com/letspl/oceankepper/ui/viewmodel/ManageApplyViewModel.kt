@@ -1,19 +1,42 @@
 package com.letspl.oceankepper.ui.viewmodel
 
+import android.content.Context
+import android.os.Environment
+import android.os.Environment.DIRECTORY_DOWNLOADS
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.letspl.oceankepper.BuildConfig
 import com.letspl.oceankepper.data.dto.GetGuideListDto
 import com.letspl.oceankepper.data.model.ManageApplyMemberModel
+import com.letspl.oceankepper.data.model.UserModel
+import com.letspl.oceankepper.data.network.ApiService
 import com.letspl.oceankepper.data.repository.ManageApplyRepositoryImpl
 import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
 import okhttp3.internal.notify
+import okhttp3.logging.HttpLoggingInterceptor
+import org.apache.commons.lang3.SerializationException
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -116,7 +139,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
 
     // 크루원 정보 불러오기
     fun postCrewStatus(applicationId: List<String>, status: String, rejectReason: String? = null) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             manageApplyRepositoryImpl.postCrewStatus(
                 ManageApplyMemberModel.PostCrewStatusBody(
                     applicationId,
@@ -139,6 +162,61 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
         }
     }
 
+    // 크루원 정보 엑셀 다운로드
+    fun getCrewInfoFileDownloadUrl(activityId: String, fileName: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            manageApplyRepositoryImpl.getCrewInfoFileDownloadUrl(activityId).let {
+                if (it.isSuccessful) {
+                    // 파일을 저장할 디렉토리 가져오기
+                    val input = it.body()?.bytes()
+                    makeFile(input, fileName)
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg =
+                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun makeFile(byte: ByteArray?, fileName: String) {
+        Timber.e("byte $byte")
+        Timber.e("fileName $fileName")
+        if(byte != null) {
+            try {
+                val directory = File(
+                    Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS),
+                    "OceanKeeper"
+                )
+
+                // 디렉토리가 없으면 생성
+                if (!directory.exists()) {
+                    directory.mkdirs()
+                }
+                var fos: FileOutputStream? = null
+                val file = File(directory, "${fileName}.xlsx")
+
+                Timber.e("file $file")
+                Timber.e("file.exists() ${file.exists()}")
+                if (file.exists()) {
+                    file.delete()
+                } else {
+                    file.createNewFile()
+                }
+                fos = FileOutputStream(file)
+                fos.write(byte)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        } else {
+            _errorMsg.postValue("파일 다운로드에 실패하였습니다. 잠시 후 다시 시도해주세요.")
+        }
+    }
+
     // 전체 선택하기 버튼
     fun setAllIsClickedApplyMember(flag: Boolean) {
         viewModelScope.launch {
@@ -148,7 +226,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                 }
 
                 ManageApplyMemberModel.tempApplyCrewList.forEachIndexed { index, crewInfoDto ->
-                    if(crewInfoDto.crewStatus != "REJECT") {
+                    if (crewInfoDto.crewStatus != "REJECT") {
                         ManageApplyMemberModel.tempApplyCrewList[index].isClicked = !flag
                     }
                 }
@@ -171,7 +249,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
         val tempCrewArr = arrayListOf<ManageApplyMemberModel.CrewInfoDto>()
 
         ManageApplyMemberModel.applyCrewList.forEach {
-            if(it.isClicked) {
+            if (it.isClicked) {
                 tempCrewArr.add(it)
             }
         }
@@ -184,7 +262,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
         val tempApplicationIdArr = arrayListOf<String>()
 
         ManageApplyMemberModel.applyCrewList.forEach {
-            if(it.isClicked) {
+            if (it.isClicked) {
                 tempApplicationIdArr.add(it.applicationId)
             }
         }
@@ -203,5 +281,10 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
 
     fun getIsAllChecked(): Boolean {
         return ManageApplyMemberModel.isAllChecked
+    }
+
+    fun clearData() {
+        ManageApplyMemberModel.applyCrewList.clear()
+        ManageApplyMemberModel.tempApplyCrewList.clear()
     }
 }

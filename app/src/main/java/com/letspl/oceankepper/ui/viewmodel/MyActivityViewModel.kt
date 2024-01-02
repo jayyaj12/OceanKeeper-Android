@@ -292,6 +292,16 @@ class MyActivityViewModel @Inject constructor(
         return MyActivityModel.takePhotoUri
     }
 
+    // 사진 촬영 이미지 세팅하기
+    fun setClickProjectName(name: String) {
+        MyActivityModel.clickProjectName = name
+    }
+
+    // 사진 촬영 이미지 불러오기
+    fun getClickProjectName(): String {
+        return MyActivityModel.clickProjectName
+    }
+
     fun clearLivedata() {
         setCrewLast(false)
         setHostLast(false)

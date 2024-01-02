@@ -15,6 +15,7 @@ class NoShowCheckDialog(context: Context, private val onClickNoShow: () -> Unit)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogNoShowCheckBinding.inflate(layoutInflater)
+        binding.noShowCheckDialog = this
         setContentView(binding.root)
     }
 
