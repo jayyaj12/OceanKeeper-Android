@@ -57,6 +57,12 @@ class NotificationFragment : Fragment(), BaseActivity.OnBackPressedListener {
         notificationListAdapter = NotificationListAdapter()
 
         binding.notificationRv.adapter = notificationListAdapter
+        binding.notificationRv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if(!binding.notificationRv.canScrollVertically(1)) {
+                Timber.e("최상단")
+                settingViewModel.getNotificationList()
+            }
+        }
     }
 
     fun onClickedCloseBtn() {

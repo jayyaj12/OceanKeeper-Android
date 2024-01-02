@@ -17,6 +17,6 @@ interface NotificationRepository {
     suspend fun getNotificationAlarm(userId: String): Response<NotificationDto>
 
     // 알림 리스트 가져오기
-    suspend fun getNotificationList(size:Int, userId: String): Response<NotificationListDto>
+    suspend fun getNotificationList(size:Int, id: Int?, userId: String): Response<NotificationListDto>
 
 }

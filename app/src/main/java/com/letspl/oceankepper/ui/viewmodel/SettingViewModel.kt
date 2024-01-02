@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.letspl.oceankepper.data.dto.NotificationItemDto
 import com.letspl.oceankepper.data.model.LoginModel
+import com.letspl.oceankepper.data.model.NotificationModel
 import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.data.repository.NotificationRepositoryImpl
@@ -120,32 +121,45 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
 
     // 알림 설정 가져오기
     fun getNotificationList() {
-        CoroutineScope(Dispatchers.IO).launch {
-            notificationRepositoryImpl.getNotificationList(
-                10,
-                UserModel.userInfo.user.id
-            ).let {
-                if(it.isSuccessful) {
-                    val notificationItemArr = arrayListOf<NotificationItemDto>()
+        if (!NotificationModel.lastMemo) {
+            CoroutineScope(Dispatchers.IO).launch {
+                notificationRepositoryImpl.getNotificationList(
+                    10,
+                    NotificationModel.lastMemoId,
+                    UserModel.userInfo.user.id
+                ).let {
+                    if (it.isSuccessful) {
+                        val notificationItemArr = arrayListOf<NotificationItemDto>()
+                        val response = it.body()?.response
 
-                    it.body()?.response?.data?.forEach { item ->
-                        notificationItemArr.add(
-                            NotificationItemDto(
-                                item.id,
-                                item.contents,
-                                item.createdAt,
-                                item.read
+                        response?.data?.forEach { item ->
+                            notificationItemArr.add(
+                                NotificationItemDto(
+                                    item.id,
+                                    item.contents,
+                                    item.createdAt,
+                                    item.read
+                                )
                             )
-                        )
-                    }
+                        }
 
-                    _getNotificationListResult.postValue(notificationItemArr)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+                        if (response?.meta?.last == true) {
+                            NotificationModel.lastMemo = true
+                            if (response.data.isNotEmpty()) {
+                                NotificationModel.lastMemoId =
+                                    response.data[response.data.size - 1].id
+                            }
+                        }
+
+                        _getNotificationListResult.postValue(notificationItemArr)
+                    } else {
+                        val errorJsonObject =
+                            ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
                 }
             }
@@ -171,6 +185,8 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
     }
 
     fun clearLiveData() {
+        NotificationModel.lastMemo = false
+        NotificationModel.lastMemoId = null
         _getNotificationAlarmResult.postValue(null)
         _postNotificationAlarmResult.postValue(null)
     }

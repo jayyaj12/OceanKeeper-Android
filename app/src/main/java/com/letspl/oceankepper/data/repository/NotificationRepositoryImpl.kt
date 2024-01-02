@@ -27,8 +27,9 @@ class NotificationRepositoryImpl @Inject constructor(@ApiModule.OceanService pri
 
     override suspend fun getNotificationList(
         size: Int,
+        id: Int?,
         userId: String
     ): Response<NotificationListDto> {
-        return service.getNotificationList("Bearer ${UserModel.userInfo.token.accessToken}", userId, size)
+        return service.getNotificationList("Bearer ${UserModel.userInfo.token.accessToken}", userId, size, id)
     }
 }

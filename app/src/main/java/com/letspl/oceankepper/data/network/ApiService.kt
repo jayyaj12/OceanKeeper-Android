@@ -263,21 +263,22 @@ interface ApiService {
         @Path("userId") userId: String
     ): Response<NotificationDto>
 
-    // 알람 수신 여부 가져오기
+    // 알람 리스트 가져오기
     @GET("/notification/user/{userId}")
     suspend fun getNotificationList(
         @Header("Authorization") token: String,
         @Path("userId") userId: String,
         @Query("size") size: Int,
+        @Query("id") id: Int?,
     ): Response<NotificationListDto>
 
-    // Privacy 가져오기
+    // 이용약관 가져오기
     @GET("/terms")
     suspend fun getPrivacyPolicy(
         @Header("Authorization") token: String
     ): Response<PrivacyDto>
 
-    // Privacy 가져오기
+    // 크루원 상태 변경
     @POST("/activity/recruitment/host/crew-status")
     suspend fun postCrewStatus(
         @Header("Authorization") token: String,

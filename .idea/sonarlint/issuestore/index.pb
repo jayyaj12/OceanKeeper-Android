@@ -63,8 +63,6 @@ x
 Happ/src/main/java/com/letspl/oceankepper/ui/viewmodel/NoticeViewModel.kt,8\b\8b6c8d64ac0614ef65b7bcc63efc8cbb27b0d0b0
 }
 Mapp/src/main/java/com/letspl/oceankepper/ui/view/EditActivityApplyFragment.kt,1\d\1d05cbce6eaf1ec1b42fb0693bd26428f525282f
-r
-Bapp/src/main/java/com/letspl/oceankepper/ui/view/NoticeFragment.kt,7\8\78ecafb38a403ea05937d71d968f1326d649e6e8
 ~
 Napp/src/main/java/com/letspl/oceankepper/data/repository/MainRepositoryImpl.kt,4\0\401064a7fa6d6d28c0a4fb665a5497821468f2ce
 z
@@ -129,8 +127,6 @@ w
 Gapp/src/main/java/com/letspl/oceankepper/ui/viewmodel/GuideViewModel.kt,8\c\8cd6f158c26f928a141a5c92696f428c64b2be08
 Ä
 Papp/src/main/java/com/letspl/oceankepper/ui/adapter/MainComingScheduleAdapter.kt,d\c\dce06d0594dd0ba9ed712215cc90ebf82c03e360
-p
-@app/src/main/java/com/letspl/oceankepper/ui/view/MainFragment.kt,b\c\bc7e1d1d44e5810c3990e84656042f46db33b2fd
 ~
 Napp/src/main/java/com/letspl/oceankepper/ui/adapter/OpenActivityListAdapter.kt,c\1\c15715f61b3c5ae49736a2dade3b635ec694fc1a
 q
@@ -155,8 +151,6 @@ Capp/src/main/java/com/letspl/oceankepper/data/model/MessageModel.kt,e\0\e05be7
 Qapp/src/main/java/com/letspl/oceankepper/data/repository/ManageApplyRepository.kt,6\c\6c496f147973e4c9ab2c52b785cc5ce94c9c61fb
 Ö
 Uapp/src/main/java/com/letspl/oceankepper/data/repository/ManageApplyRepositoryImpl.kt,f\1\f1fc5d95fed88dbe30e758a834650f512ef59f2c
-v
-Fapp/src/main/java/com/letspl/oceankepper/ui/view/MyActivityFragment.kt,6\a\6ae0ab08e29a3a8a2887f58a72ff1699219960b0
 }
 Mapp/src/main/java/com/letspl/oceankepper/ui/viewmodel/ManageApplyViewModel.kt,4\b\4bf8a22bd598ce7bbc86de978800e2d7a88ae42e
 y
@@ -171,9 +165,15 @@ m
 =app/src/main/java/com/letspl/oceankepper/di/AppApplication.kt,d\0\d0a13fff3912f703a1b09c7266e4899f342940fd
 y
 Iapp/src/main/java/com/letspl/oceankepper/ui/viewmodel/MessageViewModel.kt,4\7\47f845a3e95f2704d3100106424da56d16f98d0e
-s
-Capp/src/main/java/com/letspl/oceankepper/ui/view/MessageFragment.kt,e\7\e745baeed0e223f03a18e7cbf3be249799580c06
 }
 Mapp/src/main/java/com/letspl/oceankepper/data/model/ManageApplyMemberModel.kt,1\7\1709c99a34ab94af1a4bcba99fda1027ed9587df
 o
 ?app/src/main/java/com/letspl/oceankepper/di/module/ApiModule.kt,a\e\aea42735111160f19f2713b2698a29d70f2c6ced
+Å
+Qapp/src/main/java/com/letspl/oceankepper/data/repository/PrivacyRepositoryImpl.kt,7\1\71e200224b92767c33a298d5556c649de58aff70
+x
+Happ/src/main/java/com/letspl/oceankepper/ui/adapter/NoticeListAdapter.kt,1\9\19c7428f432d65a3bb13546e2d7e60769deafc1d
+o
+?app/src/main/java/com/letspl/oceankepper/data/dto/PrivacyDto.kt,2\a\2a71859d6fe5a625651e8534e75181d4103a5a5a
+p
+@app/src/main/java/com/letspl/oceankepper/ui/view/RuleFragment.kt,2\9\2955bb23e980d58ab273e2dff29974db40420e79
