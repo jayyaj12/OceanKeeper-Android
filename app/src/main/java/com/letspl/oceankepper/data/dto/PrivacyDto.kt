@@ -13,5 +13,5 @@ data class PrivacyDto(
 data class PrivacyResponseDto(
     val contents: String,
     val createdAt: String,
-    val id: Int,
+    val id: Int
 )

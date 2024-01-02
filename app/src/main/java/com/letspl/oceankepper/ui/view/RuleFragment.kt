@@ -1,10 +1,14 @@
 package com.letspl.oceankepper.ui.view
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.FragmentRuleBinding
@@ -36,10 +40,19 @@ class RuleFragment : Fragment(), BaseActivity.OnBackPressedListener {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupViewModelObserver()
         settingViewModel.getPrivacyPolicy()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun setupViewModelObserver() {
+        settingViewModel.getTermsResult.observe(viewLifecycleOwner) {
+            binding.contentTv.text = Html.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
     }
 
     fun onClickedBackBtn() {

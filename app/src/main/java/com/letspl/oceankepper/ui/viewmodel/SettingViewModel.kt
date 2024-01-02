@@ -21,6 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl, private val notificationRepositoryImpl: NotificationRepositoryImpl, private val privacyRepositoryImpl: PrivacyRepositoryImpl): ViewModel() {
 
+    private var _getTermsResult = MutableLiveData<String>()
+    val getTermsResult: LiveData<String> get() = _getTermsResult
+
     private var _getNotificationAlarmResult = MutableLiveData<Boolean?>(null)
     val getNotificationAlarmResult: LiveData<Boolean?> get() = _getNotificationAlarmResult
 
@@ -151,10 +154,10 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
 
     // 이용약관 가져오기
     fun getPrivacyPolicy() {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             privacyRepositoryImpl.getPrivacyPolicy().let {
                 if(it.isSuccessful) {
-                    // api 조회시 서버측 IOE 버그 발생
+                    _getTermsResult.postValue(it.body()?.response?.contents)
                 } else {
                     val errorJsonObject =
                         ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")

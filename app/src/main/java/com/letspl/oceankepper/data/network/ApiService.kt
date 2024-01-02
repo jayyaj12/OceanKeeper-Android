@@ -274,7 +274,7 @@ interface ApiService {
     // Privacy 가져오기
     @GET("/terms")
     suspend fun getPrivacyPolicy(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String
     ): Response<PrivacyDto>
 
     // Privacy 가져오기
