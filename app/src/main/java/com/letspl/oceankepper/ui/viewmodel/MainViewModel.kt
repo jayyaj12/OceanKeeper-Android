@@ -205,11 +205,24 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
         }
     }
 
+
+    // 지역 모달 선택 결과값
+    fun getAreaModalClickWordKor(type: String?): String {
+        return when (type) {
+            "WEST" -> "서해번쩍"
+            "EAST" -> "동해번쩍"
+            "SOUTH" -> "남해번쩍"
+            "JEJU" -> "제주번쩍"
+            "ETC " -> "기타"
+            else -> ""
+        }
+    }
+
     // 활동 상태 결과값
     fun getActivityStatus(): String? {
         return when (activityStatusPosition.value) {
-            0 -> null
-            1 -> "open"
+            0 -> "open"
+            1 -> "recruitment-closed"
             2 -> "closed"
             else -> null
         }
@@ -235,6 +248,16 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
             1 -> "FLOATING"
             2 -> "DEPOSITED"
             3 -> "ETC"
+            else -> ""
+        }
+    }
+
+    fun getGarbageCategoryKor(type: String?): String {
+        return when (type) {
+            "COASTAL" -> "연안쓰레기"
+            "FLOATING" -> "부유쓰레기"
+            "DEPOSITED" -> "침적쓰레기"
+            "ETC" -> "기타"
             else -> ""
         }
     }

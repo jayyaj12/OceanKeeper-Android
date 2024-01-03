@@ -212,7 +212,7 @@
 
                     <LinearLayout
                         android:id="@+id/all_tab_view_ll"
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
@@ -227,7 +227,7 @@
                             android:layout_height="40dp"
                             android:fontFamily="@font/pretendard_medium"
                             android:gravity="center"
-                            android:text="전체"
+                            android:text="모집중 활동"
                             android:textColor="@{mainViewModel.activityStatusPosition == 0 ? @color/gray_700 : @color/gray_500}"
                             android:textSize="16dp" />
 

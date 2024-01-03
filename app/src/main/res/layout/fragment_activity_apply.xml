@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="applyActivityFragment"
             type="com.letspl.oceankepper.ui.view.ActivityApplyFragment" />
+
         <variable
             name="applyActivityViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.ApplyActivityViewModel" />
@@ -19,10 +21,10 @@
             android:id="@+id/back_icon_ll"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:onClick="@{() -> applyActivityFragment.onBackBtnClicked()}"
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"
             android:gravity="center"
+            android:onClick="@{() -> applyActivityFragment.onBackBtnClicked()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -50,8 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="55dp"
-            android:overScrollMode="never"
-            android:layout_marginBottom="64dp">
+            android:layout_marginBottom="64dp"
+            android:overScrollMode="never">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -124,7 +126,7 @@
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="16dp"
                     android:backgroundTint="@color/blue_grayscale_bg100"
-                    android:hint="'-'를 포함하여 입력"
+                    android:hint="연락처 입력"
                     android:maxLength="30"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
@@ -286,8 +288,8 @@
                     android:id="@+id/traffic_walk_iv"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:onClick="@{() -> applyActivityViewModel.onClickedTransport(1)}"
                     android:layout_marginTop="10dp"
+                    android:onClick="@{() -> applyActivityViewModel.onClickedTransport(1)}"
                     android:src="@{applyActivityViewModel.transportPosition == 1 ? @drawable/radio_btn_checked : @drawable/radio_btn_default}"
                     app:layout_constraintStart_toStartOf="@id/traffic_tv"
                     app:layout_constraintTop_toBottomOf="@id/traffic_tv" />
@@ -297,6 +299,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="도보"
+                    android:textColor="#344054"
                     app:layout_constraintBottom_toBottomOf="@id/traffic_walk_iv"
                     app:layout_constraintStart_toEndOf="@id/traffic_walk_iv"
                     app:layout_constraintTop_toTopOf="@id/traffic_walk_iv" />
@@ -316,6 +319,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="대중교통"
+                    android:textColor="#344054"
                     app:layout_constraintBottom_toBottomOf="@id/traffic_public_iv"
                     app:layout_constraintStart_toEndOf="@id/traffic_public_iv"
                     app:layout_constraintTop_toTopOf="@id/traffic_public_iv" />
@@ -335,6 +339,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="자차 (카셰어링 가능)"
+                    android:textColor="#344054"
                     app:layout_constraintBottom_toBottomOf="@id/traffic_cant_share_iv"
                     app:layout_constraintStart_toEndOf="@id/traffic_cant_share_iv"
                     app:layout_constraintTop_toTopOf="@id/traffic_cant_share_iv" />
@@ -342,9 +347,9 @@
                 <ImageView
                     android:id="@+id/traffic_can_share_iv"
                     android:layout_width="16dp"
-                    android:onClick="@{() -> applyActivityViewModel.onClickedTransport(4)}"
                     android:layout_height="16dp"
                     android:layout_marginTop="10dp"
+                    android:onClick="@{() -> applyActivityViewModel.onClickedTransport(4)}"
                     android:src="@{applyActivityViewModel.transportPosition == 4 ? @drawable/radio_btn_checked : @drawable/radio_btn_default}"
                     app:layout_constraintStart_toStartOf="@id/traffic_tv"
                     app:layout_constraintTop_toBottomOf="@id/traffic_cant_share_iv" />
@@ -354,6 +359,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="자차 (카셰어링 불가능)"
+                    android:textColor="#344054"
                     app:layout_constraintBottom_toBottomOf="@id/traffic_can_share_iv"
                     app:layout_constraintStart_toEndOf="@id/traffic_can_share_iv"
                     app:layout_constraintTop_toTopOf="@id/traffic_can_share_iv" />
@@ -399,6 +405,8 @@
 
                 <TextView
                     android:id="@+id/privacy_tv"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textColor="#212121"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -451,15 +459,15 @@
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="64dp"
             android:layout_height="44dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/custom_radius_8_stroke_p500_solid_fff"
             android:fontFamily="@font/pretendard_bold"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="16dp"
+            android:onClick="@{() -> applyActivityFragment.onClickedConfirm()}"
             android:text="확인"
             android:textColor="@color/primary_color_p500"
-            android:onClick="@{() -> applyActivityFragment.onClickedConfirm()}"
             android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
