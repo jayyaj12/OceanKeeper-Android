@@ -20,8 +20,7 @@ android {
         minSdk 23
         targetSdk 34
         versionCode 1
-        versionName "1.0"
-
+        versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String","NAVER_BASE_URL",properties['naver_base_url']
         buildConfigField "String","KAKAO_NATIVE_APP_KEY",properties['kakao_native_app_key']
@@ -34,6 +33,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        applicationVariants.all { variant ->
+            variant.outputs.all {
+                def name = parent.project.getName()
+                def versionName = variant.versionName
+                outputFileName = "${name}-v${versionName}.apk"
+            }
         }
     }
     compileOptions {

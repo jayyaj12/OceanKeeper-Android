@@ -30,6 +30,6 @@ class NotificationRepositoryImpl @Inject constructor(@ApiModule.OceanService pri
         id: Int?,
         userId: String
     ): Response<NotificationListDto> {
-        return service.getNotificationList("Bearer ${UserModel.userInfo.token.accessToken}", userId, size, id)
+        return service.getNotificationList("Bearer ${UserModel.userInfo.token.accessToken}", userId, null, id)
     }
 }

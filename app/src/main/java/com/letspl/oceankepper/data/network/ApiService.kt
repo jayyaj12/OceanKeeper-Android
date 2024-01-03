@@ -277,7 +277,7 @@ interface ApiService {
     suspend fun getNotificationList(
         @Header("Authorization") token: String,
         @Path("userId") userId: String,
-        @Query("size") size: Int,
+        @Query("size") size: Int?,
         @Query("id") id: Int?,
     ): Response<NotificationListDto>
 

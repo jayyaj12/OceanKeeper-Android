@@ -50,6 +50,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
     ): View? {
         _binding = FragmentManageApplyMemberBinding.inflate(layoutInflater)
         binding.manageApplyViewModel = manageApplyViewModel
+        binding.myActivityViewModel = myActivityViewModel
         binding.manageApplyFragment = this
         binding.lifecycleOwner = this
         return binding.root
@@ -66,7 +67,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
     }
 
     private fun setupProjectName() {
-        binding.titleTv.text = myActivityViewModel.getClickProjectName()
+        binding.titleTv.text = myActivityViewModel.getClickItem().title
     }
 
     // 신청자 리스트 불러오기
@@ -83,6 +84,12 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
 
         manageApplyViewModel.errorMsg.observe(viewLifecycleOwner) {
             activity.showErrorMsg(it)
+        }
+
+        manageApplyViewModel.excelMakeResult.observe(viewLifecycleOwner) {
+            if(it) {
+                activity.showSuccessMsg("엑셀 다운로드가 성공하였습니다.\n저장된 위치: 다운로드 폴더/오션키퍼/${myActivityViewModel.getClickItem().title}.xlsx")
+            }
         }
 
         manageApplyViewModel.allClicked.observe(viewLifecycleOwner) {
@@ -252,7 +259,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
 
     // 노쇼 체크 버튼 클릭
     fun onClickedDownloadExcel() {
-        manageApplyViewModel.getCrewInfoFileDownloadUrl(activityId, myActivityViewModel.getClickProjectName())
+        manageApplyViewModel.getCrewInfoFileDownloadUrl(activityId, myActivityViewModel.getClickItem().title)
     }
 
     fun onClickedBackBtn() {

@@ -252,6 +252,7 @@
                     android:layout_marginEnd="16dp"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
+                    android:visibility="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl == null ? View.GONE : View.VISIBLE}"
                     app:cardUseCompatPadding="false"
                     app:isBackgroundGone="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -275,8 +276,9 @@
                     android:fontFamily="@font/pretendard_light"
                     android:text="@{mainViewModel.activityDetailSelectResult.response.keeperIntroduction}"
                     android:textColor="@color/gray_scale_g900"
-                    app:layout_constraintEnd_toEndOf="@id/keeper_introduce_cv"
-                    app:layout_constraintStart_toStartOf="@id/keeper_introduce_cv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
                     app:layout_constraintTop_toBottomOf="@id/keeper_introduce_cv" />
 
                 <TextView
@@ -297,6 +299,7 @@
                     android:layout_height="194dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:visibility="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl == null ? View.GONE : View.VISIBLE}"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
                     app:cardUseCompatPadding="false"
@@ -322,8 +325,9 @@
                     android:fontFamily="@font/pretendard_light"
                     android:text="@{mainViewModel.activityDetailSelectResult.response.activityStory}"
                     android:textColor="@color/gray_scale_g900"
-                    app:layout_constraintEnd_toEndOf="@id/activity_story_cv"
-                    app:layout_constraintStart_toStartOf="@id/activity_story_cv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
                     app:layout_constraintTop_toBottomOf="@id/activity_story_cv" />
 
                 <TextView

@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="manageApplyFragment"
             type="com.letspl.oceankepper.ui.view.ManageApplyMemberFragment" />
@@ -12,6 +14,10 @@
         <variable
             name="manageApplyViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.ManageApplyViewModel" />
+
+        <variable
+            name="myActivityViewModel"
+            type="com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,7 +63,6 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/pretendard_extrabold"
-            android:text="금능해변"
             android:textColor="#212121"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,6 +75,7 @@
             android:layout_marginTop="24dp"
             android:onClick="@{() -> manageApplyFragment.onClickedDownloadExcel()}"
             android:src="@drawable/download_excel_icon"
+            android:visibility="@{manageApplyViewModel.isEndRecruitment(myActivityViewModel.getClickItem().recruitEndAt) == true ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="@id/title_tv"
             app:layout_constraintTop_toBottomOf="@id/title_tv" />
 
@@ -81,28 +87,16 @@
             android:onClick="@{() -> manageApplyFragment.onClickedDownloadExcel()}"
             android:text="엑셀 다운로드"
             android:textColor="#212121"
+            android:visibility="@{manageApplyViewModel.isEndRecruitment(myActivityViewModel.getClickItem().recruitEndAt) == true ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/download_excel_iv"
             app:layout_constraintStart_toEndOf="@id/download_excel_iv"
             app:layout_constraintTop_toTopOf="@id/download_excel_iv" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/delete_btn"
-            android:layout_width="48dp"
-            android:layout_height="28dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/custom_radius8_solid_00b6c4"
-            android:fontFamily="@font/pretendard_medium"
-            android:onClick="@{() -> manageApplyFragment.onClickedDeleteBtn()}"
-            android:text="삭제"
-            android:textColor="#ffffff"
-            android:textSize="14dp"
-            app:layout_constraintStart_toStartOf="@id/download_excel_iv"
-            app:layout_constraintTop_toBottomOf="@id/download_excel_iv" />
-
-        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/reject_btn"
             android:layout_width="72dp"
             android:layout_height="28dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/custom_radius8_solid_00b6c4"
             android:fontFamily="@font/pretendard_medium"
@@ -110,35 +104,35 @@
             android:text="거절하기"
             android:textColor="#ffffff"
             android:textSize="14dp"
-            app:layout_constraintEnd_toStartOf="@id/noshow_btn"
-            app:layout_constraintTop_toTopOf="@id/delete_btn" />
+            app:layout_constraintStart_toStartOf="@id/download_excel_iv"
+            app:layout_constraintTop_toBottomOf="@id/download_excel_iv" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/noshow_btn"
             android:layout_width="72dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/custom_radius8_solid_00b6c4"
             android:fontFamily="@font/pretendard_medium"
             android:onClick="@{() -> manageApplyFragment.onClickedNoShowBtn()}"
             android:text="노쇼 체크"
             android:textColor="#ffffff"
             android:textSize="14dp"
-            app:layout_constraintEnd_toStartOf="@id/send_msg_btn"
-            app:layout_constraintTop_toTopOf="@id/delete_btn" />
+            app:layout_constraintStart_toEndOf="@id/reject_btn"
+            app:layout_constraintTop_toTopOf="@id/reject_btn" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/send_msg_btn"
             android:layout_width="87dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:background="@drawable/custom_radius8_solid_00b6c4"
             android:fontFamily="@font/pretendard_medium"
             android:text="쪽지 보내기"
             android:textColor="#ffffff"
             android:textSize="14dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/delete_btn" />
+            app:layout_constraintStart_toEndOf="@id/noshow_btn"
+            app:layout_constraintTop_toTopOf="@id/reject_btn" />
 
         <TextView
             android:id="@+id/list_tv"
@@ -149,8 +143,8 @@
             android:text="신청자 리스트"
             android:textColor="#212121"
             android:textSize="14dp"
-            app:layout_constraintStart_toStartOf="@id/delete_btn"
-            app:layout_constraintTop_toBottomOf="@id/delete_btn" />
+            app:layout_constraintStart_toStartOf="@id/reject_btn"
+            app:layout_constraintTop_toBottomOf="@id/reject_btn" />
 
         <ImageView
             android:id="@+id/all_choice_iv"

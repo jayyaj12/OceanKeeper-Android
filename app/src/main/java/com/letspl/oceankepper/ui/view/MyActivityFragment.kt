@@ -232,8 +232,8 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     private fun setupOpenActivityListAdapter() {
-        openActivityListAdapter = OpenActivityListAdapter(requireContext(), { activityId, title ->
-            myActivityViewModel.setClickProjectName(title)
+        openActivityListAdapter = OpenActivityListAdapter(requireContext(), { activityId, item ->
+            myActivityViewModel.setClickItem(item)
             // 신청서 관리 페이지로 이동
             activity.onReplaceFragment(ManageApplyMemberFragment(activityId), false)
         }, { activityId ->

@@ -292,14 +292,14 @@ class MyActivityViewModel @Inject constructor(
         return MyActivityModel.takePhotoUri
     }
 
-    // 사진 촬영 이미지 세팅하기
-    fun setClickProjectName(name: String) {
-        MyActivityModel.clickProjectName = name
+    // 신청자 관리 페이지 변경 시 클릭한 활동 정보 저장
+    fun setClickItem(item: GetUserActivityListDto) {
+        MyActivityModel.clickItem = item
     }
 
-    // 사진 촬영 이미지 불러오기
-    fun getClickProjectName(): String {
-        return MyActivityModel.clickProjectName
+    // 신청자 관리 페이지 변경 시 클릭한 활동 정보 가져오기
+    fun getClickItem(): GetUserActivityListDto {
+        return MyActivityModel.clickItem
     }
 
     fun clearLivedata() {

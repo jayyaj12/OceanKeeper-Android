@@ -37,6 +37,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,6 +60,10 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
     // 에러 토스트 메세지 text
     private var _errorMsg = MutableLiveData<String>()
     val errorMsg: LiveData<String> get() = _errorMsg
+
+    // 에러 토스트 메세지 text
+    private var _excelMakeResult = MutableLiveData<Boolean>()
+    val excelMakeResult: LiveData<Boolean> get() = _excelMakeResult
 
     // 신청자 리스트 불러오기
     fun getCrewInfoList(activityId: String) {
@@ -184,8 +190,6 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
     }
 
     private fun makeFile(byte: ByteArray?, fileName: String) {
-        Timber.e("byte $byte")
-        Timber.e("fileName $fileName")
         if(byte != null) {
             try {
                 val directory = File(
@@ -200,8 +204,6 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                 var fos: FileOutputStream? = null
                 val file = File(directory, "${fileName}.xlsx")
 
-                Timber.e("file $file")
-                Timber.e("file.exists() ${file.exists()}")
                 if (file.exists()) {
                     file.delete()
                 } else {
@@ -209,8 +211,11 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                 }
                 fos = FileOutputStream(file)
                 fos.write(byte)
+
+                _excelMakeResult.postValue(true)
             } catch (e: Exception) {
                 e.printStackTrace()
+                _errorMsg.postValue("파일 다운로드에 실패하였습니다. 잠시 후 다시 시도해주세요.")
             }
         } else {
             _errorMsg.postValue("파일 다운로드에 실패하였습니다. 잠시 후 다시 시도해주세요.")
@@ -236,6 +241,34 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                 setAllChecked(!flag)
                 _allClicked.postValue(!flag)
             }
+        }
+    }
+
+    fun isEndRecruitment(endRecruitmentDate: String): Boolean {
+        // nowDate 2024-01-03
+        // endDate 2023-03-04
+        val date = Date()
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        var nowDate = simpleDateFormat.format(date)
+
+        Timber.e("nowDate $nowDate")
+
+        val nowDateArr = nowDate.split("-")
+        val endDateArr = endRecruitmentDate.split("-")
+        return if(nowDateArr[0].toInt() <= endDateArr[0].toInt()) {
+            // 연도가 이전임
+            if(nowDateArr[1].toInt() < endDateArr[1].toInt()) {
+                // 월이 같거나 큼
+                false
+            } else if(nowDateArr[1].toInt() == endDateArr[1].toInt()) {
+                nowDateArr[2].toInt() >= endDateArr[2].toInt()
+            } else {
+                // 같은 연도이지만 모집 종료됨
+                true
+            }
+        } else {
+            // 연도가 같거나 크므로, 모집 종료됨
+            true
         }
     }
 
@@ -284,6 +317,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
     }
 
     fun clearData() {
+        _excelMakeResult.postValue(false)
         ManageApplyMemberModel.applyCrewList.clear()
         ManageApplyMemberModel.tempApplyCrewList.clear()
     }
