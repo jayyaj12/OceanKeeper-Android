@@ -245,8 +245,9 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
     }
 
     fun isEndRecruitment(endRecruitmentDate: String): Boolean {
-        // nowDate 2024-01-03
-        // endDate 2023-03-04
+        // nowDate 2024-01-05
+        // endDate 2024-01-04
+
         val date = Date()
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         var nowDate = simpleDateFormat.format(date)
@@ -261,7 +262,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                 // 월이 같거나 큼
                 false
             } else if(nowDateArr[1].toInt() == endDateArr[1].toInt()) {
-                nowDateArr[2].toInt() >= endDateArr[2].toInt()
+                nowDateArr[2].toInt() > endDateArr[2].toInt()
             } else {
                 // 같은 연도이지만 모집 종료됨
                 true
