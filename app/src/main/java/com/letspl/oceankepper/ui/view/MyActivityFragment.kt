@@ -27,6 +27,7 @@ import com.letspl.oceankepper.ui.adapter.ApplyActivityListAdapter
 import com.letspl.oceankepper.ui.adapter.OpenActivityListAdapter
 import com.letspl.oceankepper.ui.dialog.*
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
+import com.letspl.oceankepper.ui.viewmodel.MainViewModel
 import com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel
 import com.letspl.oceankepper.util.EntryPoint
 import com.letspl.oceankepper.util.ImgFileMaker
@@ -56,28 +57,30 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private val activity by lazy {
         requireActivity() as BaseActivity
     }
-    private val loginViewModel: LoginViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
     private val myActivityViewModel: MyActivityViewModel by viewModels()
     private lateinit var choiceProfileImageDialog: ChoiceProfileImageDialog
-    private val resizingImage = ResizingImage()
     private lateinit var applyActivityListAdapter: ApplyActivityListAdapter
     private lateinit var openActivityListAdapter: OpenActivityListAdapter
     private lateinit var applyCancelDialog: ApplyCancelDialog
     private lateinit var recruitCancelDialog: RecruitCancelDialog
     private lateinit var rejectReasonDialog: RejectReasonDialog
     private lateinit var editNicknameDialog: EditNicknameDialog
-    private lateinit var activityRepositoryImpl: ActivityRepositoryImpl
 
     // 사진 찍기 결과
     private val takePhoto = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
                 try {
-                    val path = ImgFileMaker.getFullPathFromUri(requireContext(), myActivityViewModel.getTakePhotoUri())!!
+                    val path = ImgFileMaker.getFullPathFromUri(requireContext(),
+                        myActivityViewModel.getTakePhotoUri())!!
                     val angle = RotateTransform.getRotationAngle(path)
-                    val rotateBitmap = RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
+                    val rotateBitmap =
+                        RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
 
-                    myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
+                    myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(
+                        rotateBitmap!!,
+                        path))
 
                     Glide.with(requireContext())
                         .load(myActivityViewModel.getTakePhotoUri())
@@ -105,7 +108,9 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                         it
                     )
 
-                    myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
+                    myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(
+                        rotateBitmap!!,
+                        path))
 
                     Glide.with(requireContext())
                         .load(it)
@@ -124,7 +129,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentMyActivityBinding.inflate(layoutInflater)
         binding.myActivityViewModel = myActivityViewModel
@@ -178,13 +183,13 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         }
         // 활동 지원 취소
         myActivityViewModel.deleteApplyCancel.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 myActivityViewModel.getUserActivity("crew", null)
             }
         }
         // 모집 취소
         myActivityViewModel.deleteRecruitCancel.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 myActivityViewModel.getUserActivity("host", null)
             }
         }
@@ -207,7 +212,11 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     private fun setupApplyActivityListAdapter() {
-        applyActivityListAdapter = ApplyActivityListAdapter(requireContext(), {
+        applyActivityListAdapter = ApplyActivityListAdapter(requireContext(), { activityId ->
+            EntryPoint.activityDetail = "myActivity"
+            mainViewModel.setClickedActivityId(activityId)
+            activity.onReplaceFragment(ActivityDetailFragment(), false, false)
+        }, {
             // 활동 신청서 수정 페이지로 이동
             activity.onReplaceFragment(EditActivityApplyFragment(it))
         }, {
@@ -225,20 +234,24 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         binding.applyActivityRv.adapter = applyActivityListAdapter
 
         binding.applyActivityRv.setOnScrollChangeListener { view, i, i2, i3, i4 ->
-            if(!binding.applyActivityRv.canScrollVertically(1)) {
-                myActivityViewModel.getUserActivity("crew", myActivityViewModel.getLastCrewActivityId())
+            if (!binding.applyActivityRv.canScrollVertically(1)) {
+                myActivityViewModel.getUserActivity("crew",
+                    myActivityViewModel.getLastCrewActivityId())
             }
         }
     }
 
     private fun setupOpenActivityListAdapter() {
-        openActivityListAdapter = OpenActivityListAdapter(requireContext(), { activityId, item ->
+        openActivityListAdapter = OpenActivityListAdapter(requireContext(), { activityId ->
+            mainViewModel.setClickedActivityId(activityId)
+            activity.onReplaceFragment(ActivityDetailFragment(), false, false)
+        }, { activityId, item ->
             myActivityViewModel.setClickItem(item)
             // 신청서 관리 페이지로 이동
             activity.onReplaceFragment(ManageApplyMemberFragment(activityId), false)
         }, { activityId ->
             // 모집 수정하기 페이지로 이동
-           activity.onReplaceFragment(EditActivityRecruitFragment(activityId), false, false)
+            activity.onReplaceFragment(EditActivityRecruitFragment(activityId), false, false)
         }, { activityId ->
             // 모집 취소 모달 표시
             recruitCancelDialog = RecruitCancelDialog(requireContext()) {
@@ -250,8 +263,9 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         binding.openActivityRv.adapter = openActivityListAdapter
 
         binding.openActivityRv.setOnScrollChangeListener { view, i, i2, i3, i4 ->
-            if(!binding.openActivityRv.canScrollVertically(1)) {
-                myActivityViewModel.getUserActivity("host", myActivityViewModel.getLastHostActivityId())
+            if (!binding.openActivityRv.canScrollVertically(1)) {
+                myActivityViewModel.getUserActivity("host",
+                    myActivityViewModel.getLastHostActivityId())
             }
         }
     }
@@ -286,7 +300,8 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
             put(MediaStore.Images.Media.DISPLAY_NAME, "img_$now.jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
         }
-        return requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, content)
+        return requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            content)
     }
 
     // 프로필 수정 아이콘 클릭 시 촬영, 앨범에서 선택 팝업 표시
@@ -309,10 +324,10 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     // tablayout 세팅
     private fun setupTabLayout() {
         binding.itemTab.setTabTextColors(Color.parseColor("#7a7a7a"), Color.parseColor("#545454"))
-        binding.itemTab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+        binding.itemTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 Timber.e("tab?.position ${tab?.position}")
-                when(tab?.position) {
+                when (tab?.position) {
                     0 -> {
                         binding.applyActivityRv.visibility = View.GONE
                         binding.openActivityRv.visibility = View.GONE

@@ -11,6 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/top_tv">
+
         <LinearLayout
             android:id="@+id/thumbnail_ll"
             android:layout_width="wrap_content"
@@ -143,6 +150,8 @@
             app:layout_constraintStart_toStartOf="@id/title_tv"
             app:layout_constraintTop_toBottomOf="@id/date_tv" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
             android:id="@+id/manage_apply_tv"
             android:layout_width="87dp"
@@ -155,8 +164,8 @@
             android:textColor="#ffffff"
             android:textSize="14dp"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
-            app:layout_constraintTop_toBottomOf="@id/thumbnail_ll" />
+            app:layout_constraintStart_toStartOf="@id/top_tv"
+            app:layout_constraintTop_toBottomOf="@id/top_tv" />
 
         <TextView
             android:id="@+id/edit_recruit_activity_tv"
@@ -200,8 +209,8 @@
             android:textColor="#ffffff"
             android:textSize="14dp"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
-            app:layout_constraintTop_toBottomOf="@id/thumbnail_ll" />
+            app:layout_constraintStart_toStartOf="@id/top_tv"
+            app:layout_constraintTop_toBottomOf="@id/top_tv" />
 
         <TextView
             android:id="@+id/confirm_apply_tv"
@@ -215,8 +224,8 @@
             android:textColor="#ffffff"
             android:textSize="14dp"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/thumbnail_ll"
-            app:layout_constraintTop_toBottomOf="@id/thumbnail_ll" />
+            app:layout_constraintStart_toStartOf="@id/top_tv"
+            app:layout_constraintTop_toBottomOf="@id/top_tv" />
 
         <View
             android:layout_width="match_parent"

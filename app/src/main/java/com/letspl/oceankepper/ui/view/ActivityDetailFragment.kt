@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.data.dto.GetMyActivityDetailLocation
 import com.letspl.oceankepper.databinding.FragmentActivityDetailBinding
 import com.letspl.oceankepper.ui.viewmodel.MainViewModel
+import com.letspl.oceankepper.util.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -19,7 +20,10 @@ import net.daum.mf.map.api.MapView
 class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onBackPressed() {
-        activity.onReplaceFragment(MainFragment(), false, true)
+        when(EntryPoint.activityDetail) {
+            "main" -> activity.onReplaceFragment(MainFragment(), false, true)
+            "myActivity" -> activity.onReplaceFragment(MyActivityFragment(), false, true)
+        }
     }
 
     private val activity: BaseActivity by lazy {
@@ -63,7 +67,10 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 뒤로가기 버튼 클릭 시
     fun onClickedPreviousBtn() {
-        activity.onReplaceFragment(MainFragment())
+        when(EntryPoint.activityDetail) {
+            "main" -> activity.onReplaceFragment(MainFragment(), false, true)
+            "myActivity" -> activity.onReplaceFragment(MyActivityFragment(), false, true)
+        }
     }
 
     // 지원하기 버튼 클릭 시

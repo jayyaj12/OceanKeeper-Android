@@ -65,7 +65,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         loadData()
     }
 
-    fun setScreenHeightSize() {
+    private fun setScreenHeightSize() {
         val display = requireActivity().windowManager.defaultDisplay // in case of Activity
         /* val display = activity!!.windowManaver.defaultDisplay */ // in case of Fragment
         val size = Point()
@@ -217,6 +217,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         // 선택될 경우 activityId 값을 저장 후 상세 페이지로 이동
         adapter = MainActivityListAdapter(requireContext()) {
+            EntryPoint.activityDetail = "main"
             mainViewModel.setClickedActivityId(it)
             activity.onReplaceFragment(ActivityDetailFragment(), false, false)
             mainViewModel.clearActivityList()

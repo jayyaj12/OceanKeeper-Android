@@ -157,7 +157,6 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     // 받는 사람 recyclerview 셋업
     private fun setupMessageReceiveCrewAdapterRecyclerView(bottomSheetDialog: BottomSheetDialog) {
-        Timber.e("setupMessageReceiveCrewAdapterRecyclerView")
         messageReceiveCrewAdapter = MessageReceiveCrewAdapter(messageViewModel)
         bottomSheetDialog.findViewById<RecyclerView>(R.id.receive_rv)?.adapter = messageReceiveCrewAdapter
     }

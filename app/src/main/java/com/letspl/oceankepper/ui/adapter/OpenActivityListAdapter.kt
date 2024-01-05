@@ -21,7 +21,7 @@ import com.letspl.oceankepper.databinding.ItemNoticeBinding
 import com.letspl.oceankepper.databinding.ItemOpenActivityBinding
 import timber.log.Timber
 
-class OpenActivityListAdapter(private val context: Context, private val onClickManage: (String, GetUserActivityListDto) -> Unit, private val onClickEditRecruit: (String) -> Unit, private val onClickCancelRecruit: (String) -> Unit) :
+class OpenActivityListAdapter(private val context: Context, private val onClickedItem: (String) -> Unit, private val onClickManage: (String, GetUserActivityListDto) -> Unit, private val onClickEditRecruit: (String) -> Unit, private val onClickCancelRecruit: (String) -> Unit) :
     ListAdapter<GetUserActivityListDto, OpenActivityListAdapter.OpenActivityViewHolder>(diffUtil) {
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<GetUserActivityListDto>() {
@@ -59,6 +59,10 @@ class OpenActivityListAdapter(private val context: Context, private val onClickM
 
             showBtn(item.status)
             onClickBtn(item)
+
+            binding.topTv.setOnClickListener {
+                onClickedItem(item.activityId)
+            }
         }
 
         // 클릭 이벤트
