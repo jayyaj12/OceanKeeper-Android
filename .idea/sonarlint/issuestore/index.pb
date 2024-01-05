@@ -123,8 +123,6 @@ Aapp/src/main/java/com/letspl/oceankepper/util/AllClickedStatus.kt,c\0\c0b80178
 Sapp/src/main/java/com/letspl/oceankepper/ui/adapter/ManageApplyMemberListAdapter.kt,2\4\248fca7e07c4d9fbe30d12cbb132bc36c80ef4fc
 o
 ?app/src/main/java/com/letspl/oceankepper/util/BindingAdapter.kt,4\f\4fb0d1c14f92edc609c7413c871800ba465b8032
-|
-Lapp/src/main/java/com/letspl/oceankepper/ui/viewmodel/MyActivityViewModel.kt,a\e\ae2fb5136e155854d6ef2265c03d49aa38d4496a
 Å
 Qapp/src/main/java/com/letspl/oceankepper/data/repository/ManageApplyRepository.kt,6\c\6c496f147973e4c9ab2c52b785cc5ce94c9c61fb
 Ö
@@ -157,8 +155,6 @@ Rapp/src/main/java/com/letspl/oceankepper/data/repository/NotificationRepository
 Vapp/src/main/java/com/letspl/oceankepper/data/repository/NotificationRepositoryImpl.kt,5\1\5144118e465e632a9299856c0bc5cdf9c50b06f5
 y
 Iapp/src/main/java/com/letspl/oceankepper/ui/viewmodel/SettingViewModel.kt,b\7\b720725b486ab365d8676d54ce5c6fc3f6995ba5
-p
-@app/src/main/java/com/letspl/oceankepper/data/dto/ActivityDto.kt,1\1\11bf505e711c4f145a4cff0b3c74c8301f6bbcde
 
 Oapp/src/main/java/com/letspl/oceankepper/util/fcm/MyFirebaseMessagingService.kt,6\1\61581b9bdfd3f67c35d13ddcfcd91d583f5653a3
 o
