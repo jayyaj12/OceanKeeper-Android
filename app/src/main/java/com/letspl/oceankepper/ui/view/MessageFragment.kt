@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
@@ -170,7 +171,6 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     // 메세지 전송 bottomDialogSheet 세팅
     private fun setupSendMessageBottomSheetDialog(projectNameList: List<MessageModel.MessageSpinnerProjectNameItem>, crewNicknameList: List<MessageModel.MessageSpinnerCrewNicknameItem>) {
-
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_send_message, null)
         bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(bottomSheetView)
@@ -266,6 +266,11 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
                  messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
                 messageViewModel.getTypeSpinnerClickedItem()
             )
+        }
+
+        // 전송 버튼 클릭
+        bottomSheetView.findViewById<ImageView>(R.id.close_btn).setOnClickListener {
+            bottomSheetDialog.dismiss()
         }
     }
 

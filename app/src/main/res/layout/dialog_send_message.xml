@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    
+
     <data>
+
         <variable
-            name="sendMessageManageDialog"
-            type="com.letspl.oceankepper.ui.dialog.SendMessageManageDialog" />
-        
+            name="messageFragment"
+            type="com.letspl.oceankepper.ui.view.MessageFragment" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,9 +30,9 @@
 
 
         <ImageView
+            android:id="@+id/close_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:onClick="@{() -> sendMessageManageDialog.onClickClose()}"
             android:layout_marginEnd="16dp"
             android:src="@drawable/close_icon_black"
             app:layout_constraintBottom_toBottomOf="@id/title_tv"
@@ -112,10 +113,10 @@
             android:id="@+id/receive_rv"
             android:layout_width="0dp"
             android:layout_height="172dp"
-            android:orientation="vertical"
             android:layout_marginTop="8dp"
-            android:visibility="gone"
             android:background="@drawable/custom_radius8_solid_fff_stroke_f2f4f7"
+            android:orientation="vertical"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="@+id/my_project_spinner"
             app:layout_constraintStart_toStartOf="@+id/my_project_spinner"
@@ -155,7 +156,6 @@
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginStart="16dp"
-            android:onClick="@{() -> sendMessageManageDialog.onClickedCheck()}"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/custom_radius30_solid_00b6c4"
