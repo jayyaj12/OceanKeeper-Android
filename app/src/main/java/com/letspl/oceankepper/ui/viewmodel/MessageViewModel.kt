@@ -127,14 +127,14 @@ class MessageViewModel @Inject constructor(
     }
 
     // 쪽지 보내기
-    fun postMessage(content: String, receiveList: List<String>) {
+    fun postMessage(activityId: String, content: String, receiveList: List<String>, type: String) {
         CoroutineScope(Dispatchers.IO).launch {
             messageRepositoryImpl.postMessage(
                 MessageModel.SendMessageRequestBody(
-                    getActivityNameSpinnerClickActivityId(),
+                    activityId,
                     content,
                     receiveList,
-                    getTypeSpinnerClickedItem()
+                    type
                 )
             ).let {
                 if (it.isSuccessful) {

@@ -163,7 +163,9 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     // 메세지 전송 bottomSheetDialog 표시
     fun showSendMessageDialog() {
-        bottomSheetDialog.show()
+        if(::bottomSheetDialog.isInitialized) {
+            bottomSheetDialog.show()
+        }
     }
 
     // 메세지 전송 bottomDialogSheet 세팅
@@ -259,8 +261,10 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         // 전송 버튼 클릭
         bottomSheetView.findViewById<AppCompatButton>(R.id.send_btn).setOnClickListener {
             messageViewModel.postMessage(
+                messageViewModel.getActivityNameSpinnerClickActivityId(),
                 bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
-                 messageViewModel.getConvertFromMessageCrewItemToStringForNickname()
+                 messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
+                messageViewModel.getTypeSpinnerClickedItem()
             )
         }
     }

@@ -15,11 +15,9 @@ import com.letspl.oceankepper.R
 import com.letspl.oceankepper.data.model.ManageApplyMemberModel
 import com.letspl.oceankepper.databinding.FragmentManageApplyMemberBinding
 import com.letspl.oceankepper.ui.adapter.ManageApplyMemberListAdapter
-import com.letspl.oceankepper.ui.dialog.DeleteListDialog
-import com.letspl.oceankepper.ui.dialog.MakeRejectReasonDialog
-import com.letspl.oceankepper.ui.dialog.NoShowCheckDialog
-import com.letspl.oceankepper.ui.dialog.RejectReasonDialog
+import com.letspl.oceankepper.ui.dialog.*
 import com.letspl.oceankepper.ui.viewmodel.ManageApplyViewModel
+import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
 import com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel
 import com.letspl.oceankepper.util.AllClickedStatus
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,11 +27,13 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @AndroidEntryPoint
-class ManageApplyMemberFragment(private val activityId: String) : Fragment(), BaseActivity.OnBackPressedListener {
+class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
+    BaseActivity.OnBackPressedListener {
     private var _binding: FragmentManageApplyMemberBinding? = null
     private val binding: FragmentManageApplyMemberBinding get() = _binding!!
     private lateinit var managerApplyListAdapter: ManageApplyMemberListAdapter
     private val manageApplyViewModel: ManageApplyViewModel by viewModels()
+    private val messageViewModel: MessageViewModel by viewModels()
     private val myActivityViewModel: MyActivityViewModel by viewModels()
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
@@ -77,6 +77,12 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
 
     // 뷰모델 옵저버 세팅
     private fun setupViewModelObserver() {
+        // 메세지 전송 결과
+        messageViewModel.sendMessageResult.observe(viewLifecycleOwner) {
+            if (it) {
+                activity.showSuccessMsg("메세지 전송이 정상 처리 되었습니다.")
+            }
+        }
         // 신청자 리스트 불러온 결과
         manageApplyViewModel.getCrewInfoList.observe(viewLifecycleOwner) {
             managerApplyListAdapter.submitList(it.toMutableList())
@@ -86,8 +92,12 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
             activity.showErrorMsg(it)
         }
 
+        messageViewModel.errorMsg.observe(viewLifecycleOwner) {
+            activity.showErrorMsg(it)
+        }
+
         manageApplyViewModel.excelMakeResult.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 activity.showSuccessMsg("엑셀 다운로드가 성공하였습니다.\n저장된 위치: 다운로드 폴더/오션키퍼/${myActivityViewModel.getClickItem().title}.xlsx")
             }
         }
@@ -171,50 +181,52 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
 //        managerApplyListAdapter.submitList(ManageApplyMemberModel.applyCrewList)
     }
 
-    // 삭제하기 버튼 클릭
-    fun onClickedDeleteBtn() {
-        DeleteListDialog(requireContext()) {
-            val crewList = manageApplyViewModel.getClickedCrewList()
-
-            if (!manageApplyViewModel.isClickedEmpty()) {
-                // 삭제하기 api 조회
-            } else {
-                activity.showErrorMsg("1명 이상 선택 해주세요.")
-            }
-        }.show()
-    }
-
     // 거절하기 버튼 클릭
     fun onClickedRejectBtn() {
-        val crewList = manageApplyViewModel.getClickedCrewList()
-
         if (!manageApplyViewModel.isClickedEmpty()) {
+            val crewList = manageApplyViewModel.getClickedCrewList()
             // 거절하기는 1회 실행 시 한명씩 가능
             if (crewList.size > 1) {
                 activity.showErrorMsg("거절하기는 1명씩 가능합니다.")
             } else {
-                MakeRejectReasonDialog(requireContext(), crewList[0].nickname) {reason ->
+                MakeRejectReasonDialog(requireContext(), crewList[0].nickname) { reason ->
                     // 거절 api 호출
-                    manageApplyViewModel.postCrewStatus(manageApplyViewModel.getClickedCrewApplicationIdList(), "REJECT", reason)
+                    manageApplyViewModel.postCrewStatus(manageApplyViewModel.getClickedCrewApplicationIdList(),
+                        "REJECT",
+                        reason)
                 }.show()
             }
         } else {
-            activity.showErrorMsg("1명 이상 선택 해주세요.")
+            activity.showErrorMsg("1명 이상 선택해 주세요.")
         }
     }
 
     // 노쇼 체크 버튼 클릭
     fun onClickedNoShowBtn() {
-        NoShowCheckDialog(requireContext()) {
-            val crewList = manageApplyViewModel.getClickedCrewList()
-
-            if (!manageApplyViewModel.isClickedEmpty()) {
+        if (!manageApplyViewModel.isClickedEmpty()) {
+            NoShowCheckDialog(requireContext()) {
                 // 노쇼체크 api 조회
-                manageApplyViewModel.postCrewStatus(manageApplyViewModel.getClickedCrewApplicationIdList(), "NO_SHOW")
-            } else {
-                activity.showErrorMsg("1명 이상 선택 해주세요.")
-            }
-        }.show()
+                manageApplyViewModel.postCrewStatus(manageApplyViewModel.getClickedCrewApplicationIdList(),
+                    "NO_SHOW")
+            }.show()
+        } else {
+            activity.showErrorMsg("1명 이상 선택해 주세요.")
+        }
+    }
+
+    // 쪽지 보내기 버튼 클릭
+    fun onClickedSendMessage() {
+        val clickedNickList = manageApplyViewModel.getClickedCrewNicknameList()
+        if (clickedNickList.isNotEmpty()) {
+            SendMessageManageDialog(requireContext()) { content ->
+                messageViewModel.postMessage(activityId,
+                    content,
+                    clickedNickList,
+                    "NOTICE")
+            }.show()
+        } else {
+            activity.showErrorMsg("1명 이상 선택해 주세요.")
+        }
     }
 
     private fun checkGalleryPermission(): Boolean {
@@ -228,9 +240,9 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
             requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
         )
 
-        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Timber.e("true")
-            if(imagePermission == PackageManager.PERMISSION_DENIED) {
+            if (imagePermission == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(
                     requireActivity(), arrayOf(
                         android.Manifest.permission.READ_MEDIA_IMAGES
@@ -241,9 +253,9 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
             } else {
                 true
             }
-        } else{
+        } else {
             Timber.e("else")
-            if(writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+            if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(
                     requireActivity(), arrayOf(
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -259,7 +271,8 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
 
     // 노쇼 체크 버튼 클릭
     fun onClickedDownloadExcel() {
-        manageApplyViewModel.getCrewInfoFileDownloadUrl(activityId, myActivityViewModel.getClickItem().title)
+        manageApplyViewModel.getCrewInfoFileDownloadUrl(activityId,
+            myActivityViewModel.getClickItem().title)
     }
 
     fun onClickedBackBtn() {
@@ -270,6 +283,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(), Ba
         super.onDestroyView()
 
         manageApplyViewModel.clearData()
+        messageViewModel.clearMessageList()
 
         _binding = null
     }

@@ -129,6 +129,7 @@
             android:background="@drawable/custom_radius8_solid_00b6c4"
             android:fontFamily="@font/pretendard_medium"
             android:text="쪽지 보내기"
+            android:onClick="@{() -> manageApplyFragment.onClickedSendMessage()}"
             android:textColor="#ffffff"
             android:textSize="14dp"
             app:layout_constraintStart_toEndOf="@id/noshow_btn"

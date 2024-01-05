@@ -291,13 +291,26 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
         return tempCrewArr
     }
 
-    // 클릭된 유저 불러오기
+    // 클릭된 유저의 applicationId 불러오기
     fun getClickedCrewApplicationIdList(): List<String> {
         val tempApplicationIdArr = arrayListOf<String>()
 
         ManageApplyMemberModel.applyCrewList.forEach {
             if (it.isClicked) {
                 tempApplicationIdArr.add(it.applicationId)
+            }
+        }
+
+        return tempApplicationIdArr
+    }
+
+    // 클릭된 유저의 닉네임 불러오기
+    fun getClickedCrewNicknameList(): List<String> {
+        val tempApplicationIdArr = arrayListOf<String>()
+
+        ManageApplyMemberModel.applyCrewList.forEach {
+            if (it.isClicked) {
+                tempApplicationIdArr.add(it.nickname)
             }
         }
 
