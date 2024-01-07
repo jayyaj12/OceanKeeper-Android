@@ -26,19 +26,17 @@
             android:layout_marginStart="12dp"/>
 
         <TextView
-            android:id="@+id/garbage_category_tv"
-            android:layout_width="80dp"
-            android:layout_height="24dp"
-            android:background="@drawable/radius_20_solid_p50"
-            android:fontFamily="@font/pretendard_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내가 보낸 쪽지"
             app:layout_constraintTop_toBottomOf="@id/back_iv"
             app:layout_constraintStart_toStartOf="parent"
-            android:gravity="center"
-            android:text="연안쓰레기"
+            android:textSize="12dp"
+            android:textColor="@color/blue_grayscale_bg400"
+            android:fontFamily="@font/pretendard_medium"
             android:layout_marginStart="16dp"
             android:layout_marginTop="28dp"
-            android:textColor="@color/primary_color_p700"
-            android:textSize="14dp"/>
+            android:id="@+id/from_tv"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,8 +47,8 @@
             android:textSize="20dp"
             android:fontFamily="@font/pretendard_bold"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@id/garbage_category_tv"
-            app:layout_constraintTop_toBottomOf="@id/garbage_category_tv"/>
+            app:layout_constraintStart_toStartOf="@id/from_tv"
+            app:layout_constraintTop_toBottomOf="@id/from_tv"/>
 
         <ImageView
             android:layout_width="24dp"
@@ -85,23 +83,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="내가 보낸 쪽지"
-            app:layout_constraintStart_toStartOf="@id/title_tv"
-            app:layout_constraintTop_toBottomOf="@id/space_view"
-            android:textSize="12dp"
-            android:textColor="@color/blue_grayscale_bg400"
-            android:fontFamily="@font/pretendard_medium"
-            android:layout_marginTop="16dp"
-            android:id="@+id/from_tv"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="쪽지 내용"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:id="@+id/content_tv"
             app:layout_constraintStart_toStartOf="@id/title_tv"
-            app:layout_constraintTop_toBottomOf="@id/from_tv"
+            app:layout_constraintTop_toBottomOf="@id/space_view"
             android:textColor="#37474F"
             android:textSize="16dp"
             android:fontFamily="@font/pretendard_medium"/>
