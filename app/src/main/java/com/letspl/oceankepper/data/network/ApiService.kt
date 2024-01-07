@@ -115,7 +115,7 @@ interface ApiService {
     suspend fun getMessage(
         @Header("Authorization") token: String,
         @Query("id") id: Long?,
-        @Query("size") size:Int,
+        @Query("size") size: Int,
         @Query("type") type: String?,
         @Query("user") user: String
     ): Response<MessageDto>
@@ -125,6 +125,13 @@ interface ApiService {
     suspend fun postMessageRead(
         @Header("Authorization") token: String,
         @Body data: PostMessageDetailBodyDto
+    ): Response<MessageDetailDto>
+
+    // 메세지 상태를 읽음으로 변경
+    @DELETE("/message")
+    suspend fun deleteMessage(
+        @Header("Authorization") token: String,
+        @Query("message-id") messageId: Int
     ): Response<MessageDetailDto>
 
     // 활동 프로젝트 리스트 불러오기

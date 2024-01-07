@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.databinding.FragmentMessageDetailBinding
+import com.letspl.oceankepper.ui.dialog.DeleteMessageDialog
 import com.letspl.oceankepper.ui.dialog.ReplyMessageDialog
 import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,13 +54,28 @@ class MessageDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 activity.showSuccessMsg("메세지 전송이 정상 처리 되었습니다.")
             }
         }
+        messageViewModel.deleteMessageResult.observe(viewLifecycleOwner) {
+            if(it) {
+                onClickedBackBtn()
+            }
+        }
     }
 
+    // 답장하기 버튼 클릭
     fun onClickReplyBtn() {
         ReplyMessageDialog(requireContext()) {content ->
             val item = messageViewModel.getClickedMessageItem()
 
             messageViewModel.postMessage(item.activityId, content, arrayListOf(item.from), "PRIVATE")
+        }.show()
+    }
+
+    // 삭제버튼 클릭
+    fun onClickDeleteBtn() {
+        DeleteMessageDialog(requireContext()) {
+            val item = messageViewModel.getClickedMessageItem()
+
+            messageViewModel.deleteMessage(item.id.toInt())
         }.show()
     }
 

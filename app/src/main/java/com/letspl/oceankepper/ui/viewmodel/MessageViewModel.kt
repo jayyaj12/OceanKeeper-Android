@@ -43,6 +43,12 @@ class MessageViewModel @Inject constructor(
     val sendMessageResult: LiveData<Boolean>
         get() = _sendMessageResult
 
+
+    // 메세지 삭제
+    private var _deleteMessageResult = MutableLiveData<Boolean>()
+    val deleteMessageResult: LiveData<Boolean>
+        get() = _deleteMessageResult
+
     // 프로젝트 크루 닉네임 불러오기
     private var _getCrewNicknameList =
         MutableLiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>>()
@@ -139,6 +145,24 @@ class MessageViewModel @Inject constructor(
             ).let {
                 if (it.isSuccessful) {
                     _sendMessageResult.postValue(true)
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    // 쪽지 삭제하기
+    fun deleteMessage(messageId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            messageRepositoryImpl.deleteMessage(messageId).let {
+                if (it.isSuccessful) {
+                    _deleteMessageResult.postValue(true)
                 } else {
                     val errorJsonObject =
                         ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
@@ -340,6 +364,7 @@ class MessageViewModel @Inject constructor(
 
     fun clearMessageLiveData() {
         _sendMessageResult.postValue(false)
+        _deleteMessageResult.postValue(false)
     }
 
     fun clearMessageList() {

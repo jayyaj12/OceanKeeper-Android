@@ -17,4 +17,7 @@ interface MessageRepository {
     // 쪽지의 상태를 읽음으로 변경
     suspend fun postMessageRead(dataBody: PostMessageDetailBodyDto): Response<MessageDetailDto>
 
+    // 쪽지 삭제
+    suspend fun deleteMessage(messageId: Int): Response<MessageDetailDto>
+
 }

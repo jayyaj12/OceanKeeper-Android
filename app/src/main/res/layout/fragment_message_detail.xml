@@ -127,6 +127,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/reply_btn"
+            android:onClick="@{() -> messageDetailFragment.onClickDeleteBtn()}"
             android:background="@drawable/custom_radius_30_stroke_p500_solid_fff"
             android:fontFamily="@font/pretendard_medium"
             android:text="삭제"

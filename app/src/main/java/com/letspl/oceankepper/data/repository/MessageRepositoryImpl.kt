@@ -31,4 +31,8 @@ class MessageRepositoryImpl @Inject constructor(@ApiModule.OceanService private 
     override suspend fun postMessageRead(dataBody: PostMessageDetailBodyDto): Response<MessageDetailDto> {
         return service.postMessageRead("Bearer ${UserModel.userInfo.token.accessToken}", dataBody)
     }
+
+    override suspend fun deleteMessage(messageId: Int): Response<MessageDetailDto> {
+        return service.deleteMessage("Bearer ${UserModel.userInfo.token.accessToken}", messageId)
+    }
 }
