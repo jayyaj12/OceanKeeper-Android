@@ -243,6 +243,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private fun setupOpenActivityListAdapter() {
         openActivityListAdapter = OpenActivityListAdapter(requireContext(), { activityId ->
+            EntryPoint.activityDetail = "myActivity"
             mainViewModel.setClickedActivityId(activityId)
             activity.onReplaceFragment(ActivityDetailFragment(), false, false)
         }, { activityId, item ->

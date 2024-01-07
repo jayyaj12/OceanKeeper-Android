@@ -119,7 +119,7 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
         }
     }
 
-    // 알림 설정 가져오기
+    // 알림 리스트  가져오기
     fun getNotificationList() {
         if (!NotificationModel.lastMemo) {
             CoroutineScope(Dispatchers.IO).launch {

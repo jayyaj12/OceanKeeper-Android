@@ -245,14 +245,9 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
     }
 
     fun isEndRecruitment(endRecruitmentDate: String): Boolean {
-        // nowDate 2024-01-05
-        // endDate 2024-01-04
-
         val date = Date()
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         var nowDate = simpleDateFormat.format(date)
-
-        Timber.e("nowDate $nowDate")
 
         val nowDateArr = nowDate.split("-")
         val endDateArr = endRecruitmentDate.split("-")

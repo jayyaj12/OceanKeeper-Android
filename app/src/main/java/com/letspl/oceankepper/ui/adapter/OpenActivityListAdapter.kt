@@ -109,13 +109,11 @@ class OpenActivityListAdapter(
                     binding.editRecruitActivityTv.visibility = View.GONE
                     binding.cancelRecruitTv.visibility = View.GONE
                     binding.countIv.visibility = View.GONE
-//                    binding.manageApplyTv.visibility = if (isBecomeEndAfter7(startAt)) {
-//                        View.GONE
-//                    } else {
-//                        View.VISIBLE
-//                    }
-                    binding.manageApplyTv.visibility = View.GONE
-
+                    binding.manageApplyTv.visibility = if (isBecomeEndAfter7(startAt)) {
+                        View.GONE
+                    } else {
+                        View.VISIBLE
+                    }
                 }
                 // 모집 취소
                 "CANCEL" -> {
@@ -135,10 +133,9 @@ class OpenActivityListAdapter(
         // 활동 종료일 이후 7일까지는 신청자 관리 버튼 표시되어야 함
         private fun isBecomeEndAfter7(startAt: String): Boolean {
             val today = Calendar.getInstance()
-            val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startAt)
+            val date = SimpleDateFormat("yyyy-MM-dd HH:mm").parse(startAt)
 
             val diffDate = (today.time.time - date.time) / (60 * 60 * 24 * 1000)
-            Timber.e("diffDate $diffDate")
             return diffDate > 7
         }
 

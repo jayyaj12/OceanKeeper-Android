@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.letspl.oceankepper.data.dto.ComingScheduleItem
+import com.letspl.oceankepper.data.dto.GetMyActivityDetailItem
 import com.letspl.oceankepper.data.dto.GetMyActivityDetailResponse
 import com.letspl.oceankepper.data.dto.MyActivityItem
 import com.letspl.oceankepper.data.model.ActivityRecruitModel
@@ -15,6 +16,9 @@ import com.letspl.oceankepper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -118,6 +122,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
             mainRepositoryImpl.getMyActivityDetail("Bearer ${UserModel.userInfo.token.accessToken}", activityId).let {
                 if(it.isSuccessful) {
                     _activityDetailSelectResult.postValue(it.body())
+                    setClickedActivityItem(it.body()?.response!!)
                 } else{
                     val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
                     if(errorJsonObject != null) {
@@ -127,6 +132,24 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                 }
             }
         }
+    }
+
+    // 모집 기간인지 확인
+    fun isRecruitmentTerms(startRecruitmentDate: String?, endRecruitmentDate: String?): Boolean {
+        return if(startRecruitmentDate != null && endRecruitmentDate != null) {
+            (getDateDiff(startRecruitmentDate) > 0 && getDateDiff(endRecruitmentDate) <= 0)
+        } else {
+            false
+        }
+    }
+
+    // 활동 종료일 이후 7일까지는 신청자 관리 버튼 표시되어야 함
+    private fun getDateDiff(startAt: String): Long {
+        val today = Calendar.getInstance()
+        val date = SimpleDateFormat("yyyy-MM-dd").parse(startAt)
+        Timber.e("startAt $startAt")
+
+        return (today.time.time - date.time) / (60 * 60 * 24 * 1000)
     }
 
     // 활동 상태를 변경 하거나, 카테고리 변경 시 마지막 활동 리스트 여부를 초기화
@@ -269,6 +292,15 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
 
     fun getClickedActivityId(): String {
         return MainModel.clickedActivityId
+    }
+
+    // clickedActivityName 값 변경
+    private fun setClickedActivityItem(item: GetMyActivityDetailItem) {
+        MainModel.clickedActivityItem = item
+    }
+
+    fun getClickedActivityItem(): GetMyActivityDetailItem {
+        return MainModel.clickedActivityItem
     }
 
     fun initGarbageLocationSelected() {

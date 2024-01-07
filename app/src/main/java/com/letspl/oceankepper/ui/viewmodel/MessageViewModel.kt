@@ -179,7 +179,7 @@ class MessageViewModel @Inject constructor(
 
     fun convertIso8601YYYYToCustomFormat(date: String): String {
         var dateStr = date.replace("-", ".")
-        return "20${dateStr}"
+        return "활동일: 20$dateStr"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

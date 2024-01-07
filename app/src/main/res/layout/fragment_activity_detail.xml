@@ -11,6 +11,7 @@
         <variable
             name="activityDetailFragment"
             type="com.letspl.oceankepper.ui.view.ActivityDetailFragment" />
+
         <variable
             name="mainViewModel"
             type="com.letspl.oceankepper.ui.viewmodel.MainViewModel" />
@@ -39,17 +40,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-                
+
                 <ImageView
+                    android:id="@+id/previous_btn"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/previous_white_icon"
-                    android:layout_marginTop="12dp"
-                    android:id="@+id/previous_btn"
                     android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
                     android:onClick="@{() -> activityDetailFragment.onClickedPreviousBtn()}"
+                    android:src="@drawable/previous_white_icon"
                     app:layout_constraintStart_toStartOf="@id/thumbnail_iv"
-                    app:layout_constraintTop_toTopOf="@id/thumbnail_iv"/>
+                    app:layout_constraintTop_toTopOf="@id/thumbnail_iv" />
 
                 <TextView
                     android:id="@+id/garbage_category_tv"
@@ -89,9 +90,9 @@
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center"
                     android:text="리워드 제공"
-                    android:visibility="@{mainViewModel.activityDetailSelectResult.response.rewards == `` ? View.GONE : View.VISIBLE}"
                     android:textColor="@color/primary_color_p700"
                     android:textSize="14dp"
+                    android:visibility="@{mainViewModel.activityDetailSelectResult.response.rewards == `` ? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toEndOf="@id/location_category_tv"
                     app:layout_constraintTop_toTopOf="@id/location_category_tv" />
 
@@ -125,8 +126,8 @@
                     <ImageView
                         android:id="@+id/profile_iv"
                         android:layout_width="match_parent"
-                        android:scaleType="centerCrop"
                         android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.hostImageUrl}" />
 
                 </androidx.cardview.widget.CardView>
@@ -250,9 +251,9 @@
                     android:layout_height="194dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:visibility="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl == null ? View.GONE : View.VISIBLE}"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
-                    android:visibility="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl == null ? View.GONE : View.VISIBLE}"
                     app:cardUseCompatPadding="false"
                     app:isBackgroundGone="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -262,8 +263,8 @@
                     <ImageView
                         android:id="@+id/keeper_introduce_iv"
                         android:layout_width="match_parent"
-                        android:scaleType="centerCrop"
                         android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}" />
 
                 </androidx.cardview.widget.CardView>
@@ -273,11 +274,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:fontFamily="@font/pretendard_light"
                     android:text="@{mainViewModel.activityDetailSelectResult.response.keeperIntroduction}"
                     android:textColor="@color/gray_scale_g900"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="16dp"
                     app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
                     app:layout_constraintTop_toBottomOf="@id/keeper_introduce_cv" />
 
@@ -311,8 +312,8 @@
                     <ImageView
                         android:id="@+id/activity_story_iv"
                         android:layout_width="match_parent"
-                        android:scaleType="centerCrop"
                         android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl}" />
 
                 </androidx.cardview.widget.CardView>
@@ -322,11 +323,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:fontFamily="@font/pretendard_light"
                     android:text="@{mainViewModel.activityDetailSelectResult.response.activityStory}"
                     android:textColor="@color/gray_scale_g900"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="16dp"
                     app:layout_constraintStart_toStartOf="@id/keeper_introduce_title_tv"
                     app:layout_constraintTop_toBottomOf="@id/activity_story_cv" />
 
@@ -513,9 +514,11 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/custom_radius30_solid_p500"
             android:fontFamily="@font/pretendard_medium"
+            android:onClick="@{() -> activityDetailFragment.onClickedInquireBtn()}"
             android:text="문의하기"
             android:textColor="@color/white"
             android:textSize="16dp"
+            android:visibility="@{mainViewModel.isRecruitmentTerms(mainViewModel.activityDetailSelectResult.response.recruitStartAt, mainViewModel.activityDetailSelectResult.response.recruitEndAt) == true ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/apply_btn"
             app:layout_constraintStart_toStartOf="parent" />
@@ -529,10 +532,11 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/custom_radius30_solid_p500"
             android:fontFamily="@font/pretendard_medium"
-            android:text="신청하기"
             android:onClick="@{() -> activityDetailFragment.onClickedApplyBtn()}"
+            android:text="신청하기"
             android:textColor="@color/white"
             android:textSize="16dp"
+            android:visibility="@{mainViewModel.isRecruitmentTerms(mainViewModel.activityDetailSelectResult.response.recruitStartAt, mainViewModel.activityDetailSelectResult.response.recruitEndAt) == true ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ask_btn" />

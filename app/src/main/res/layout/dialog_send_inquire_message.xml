@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="inquireMessageDialog"
+            type="com.letspl.oceankepper.ui.dialog.InquireMessageDialog" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:background="@drawable/custom_radius8_solid_white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="312dp"
+            android:layout_height="338dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/top_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="문의하기"
+                android:textColor="@color/gray_scale_g900"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:onClick="@{() -> inquireMessageDialog.onClickClose()}"
+                android:src="@drawable/close_btn_icon"
+                app:layout_constraintBottom_toBottomOf="@id/top_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/top_tv" />
+
+            <TextView
+                android:id="@+id/send_message_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="000님의 활동에 대해 문의가 있으신가요?"
+                android:textColor="#455A64"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/top_tv" />
+
+            <TextView
+                android:id="@+id/etc_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/pretendard_light"
+                android:text="문의에 대한 회신은 쪽지함에서 확인해 주세요."
+                android:textColor="#90A4AE"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/send_message_tv" />
+
+            <EditText
+                android:id="@+id/contents_tv"
+                android:layout_width="296dp"
+                android:layout_height="128dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/custom_radius8_solid_fff_stroke_b0bec5"
+                android:fontFamily="@font/pretendard_light"
+                android:gravity="top|left"
+                android:hint="문의 내용 입력"
+                android:paddingStart="14dp"
+                android:paddingTop="10dp"
+                android:textColor="#212121"
+                android:textColorHint="#bdbdbd"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etc_tv" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/confirm_btn"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/custom_radius8_solid_000000"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:onClick="@{() -> inquireMessageDialog.onClickedCheck()}"
+                android:text="확인"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

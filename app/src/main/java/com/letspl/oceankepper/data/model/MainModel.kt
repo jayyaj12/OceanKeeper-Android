@@ -1,6 +1,7 @@
 package com.letspl.oceankepper.data.model
 
 import android.location.Location
+import com.letspl.oceankepper.data.dto.GetMyActivityDetailItem
 import com.letspl.oceankepper.data.dto.MyActivityItem
 
 object MainModel {
@@ -22,4 +23,6 @@ object MainModel {
     var garbageCategoryPosition = -1
     // 선택된 activityId
     var clickedActivityId = ""
+    // 문의하기 클릭 시 닉네임 표시에 사용
+    lateinit var clickedActivityItem: GetMyActivityDetailItem
 }
