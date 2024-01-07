@@ -87,7 +87,6 @@ class MessageDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
         messageViewModel.postMessageDetail(item.id)
 
         binding.run {
-            garbageCategoryTv.text = messageViewModel.getGarbageCategory(item.garbageCategory)
             titleTv.text = item.activityTitle
             activityDateTv.text = messageViewModel.convertIso8601YYYYToCustomFormat(item.activityStartAt)
             messageAtTv.text = "${messageViewModel.convertAMPMToCustomFormat(item.messageSentAt)} 보냄"
