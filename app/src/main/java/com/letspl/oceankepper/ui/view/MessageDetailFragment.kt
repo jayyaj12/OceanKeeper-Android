@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.letspl.oceankepper.databinding.FragmentMessageDetailBinding
+import com.letspl.oceankepper.ui.dialog.ReplyMessageDialog
 import com.letspl.oceankepper.ui.viewmodel.MessageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,11 +40,27 @@ class MessageDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupLoadMessageItem()
-
+        setupViewModelObserver()
     }
 
     fun onClickedBackBtn() {
         activity.onReplaceFragment(MessageFragment(), false, true)
+    }
+
+    private fun setupViewModelObserver() {
+        messageViewModel.sendMessageResult.observe(viewLifecycleOwner) {
+            if(it) {
+                activity.showSuccessMsg("메세지 전송이 정상 처리 되었습니다.")
+            }
+        }
+    }
+
+    fun onClickReplyBtn() {
+        ReplyMessageDialog(requireContext()) {content ->
+            val item = messageViewModel.getClickedMessageItem()
+
+            messageViewModel.postMessage(item.activityId, content, arrayListOf(item.from), "PRIVATE")
+        }.show()
     }
 
     // 메세지 아이템 불러오기
@@ -66,6 +83,7 @@ class MessageDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
     override fun onDestroyView() {
         super.onDestroyView()
 
+        messageViewModel.clearMessageLiveData()
         _binding = null
     }
 }

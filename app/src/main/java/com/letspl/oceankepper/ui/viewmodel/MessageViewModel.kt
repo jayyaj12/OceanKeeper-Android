@@ -182,7 +182,6 @@ class MessageViewModel @Inject constructor(
         return "활동일: 20$dateStr"
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun convertAMPMToCustomFormat(date: String): String {
         var dateStr = date.replace("-", ".")
         Timber.e("date.substring(11, 13) ${date}")
@@ -206,8 +205,11 @@ class MessageViewModel @Inject constructor(
             ).let {
                 if (it.isSuccessful) {
                     it.body()?.let { item ->
+                        Timber.e("item ${item.response.messages}")
                         if (item.response.messages.isNotEmpty()) {
+
                             MessageModel.messageList.addAll(item.response.messages)
+                            Timber.e("MessageModel.messageList ${MessageModel.messageList}")
                             _getMessageResult.postValue(MessageModel.messageList)
 
                             MessageModel.messageId =
@@ -334,6 +336,10 @@ class MessageViewModel @Inject constructor(
 
     fun isMessageLast(): Boolean {
         return MessageModel.isLast
+    }
+
+    fun clearMessageLiveData() {
+        _sendMessageResult.postValue(false)
     }
 
     fun clearMessageList() {

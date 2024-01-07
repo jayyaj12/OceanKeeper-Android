@@ -93,6 +93,7 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         }
 
         messageViewModel.getMessageResult.observe(viewLifecycleOwner) {
+            Timber.e("it ${MessageModel.messageList}")
             it?.let {
                 messageListAdapter.submitList(it.toMutableList())
                 progressDialog.dismiss()
