@@ -61,7 +61,7 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private fun setupViewModelObserver() {
         mainViewModel.activityDetailSelectResult.observe(viewLifecycleOwner) {
             it?.let {
-//                setupKakaoMap(it.response.location)
+                setupKakaoMap(it.response.location)
             }
         }
         mainViewModel.errorMsg.observe(viewLifecycleOwner) {
@@ -69,7 +69,9 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
         }
 
         messageViewModel.sendMessageResult.observe(viewLifecycleOwner) {
-            activity.showSuccessMsg("메세지 전송이 정상 처리 되었습니다.")
+            if(it) {
+                activity.showSuccessMsg("메세지 전송이 정상 처리 되었습니다.")
+            }
         }
     }
 

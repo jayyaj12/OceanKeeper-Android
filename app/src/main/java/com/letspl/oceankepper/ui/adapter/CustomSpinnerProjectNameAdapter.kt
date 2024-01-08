@@ -26,12 +26,12 @@ class CustomSpinnerProjectNameAdapter(context: Context, @LayoutRes private val r
         val binding = SpinnerInnerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.itemTv.text = menuList[position].title
 
-//        if(messageViewModel.getSpinnerClickedItemPos() == position) {
-//            binding.checkIcon.visibility = View.VISIBLE
-//            binding.spinnerCstl.setBackgroundResource(R.drawable.custom_solid_eceff1)
-//        } else {
-//            binding.checkIcon.visibility = View.GONE
-//        }
+        if(messageViewModel.getActivityNameSpinnerClickPos() == position) {
+            binding.checkIcon.visibility = View.VISIBLE
+            binding.spinnerCstl.setBackgroundResource(R.drawable.custom_solid_eceff1)
+        } else {
+            binding.checkIcon.visibility = View.GONE
+        }
 
         return binding.root
     }

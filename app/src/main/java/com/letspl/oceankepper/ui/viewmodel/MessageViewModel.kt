@@ -79,7 +79,7 @@ class MessageViewModel @Inject constructor(
 
     // 활동 프로젝트명 불러오기
     fun getActivityNameList() {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             activityRepositoryImpl.getActivityProject().let {
                 if (it.isSuccessful) {
                     val list = arrayListOf<MessageModel.MessageSpinnerProjectNameItem>()
@@ -110,7 +110,7 @@ class MessageViewModel @Inject constructor(
 
     // 크루원 닉네임 불러오기
     fun getCrewNickName(activityId: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             activityRepositoryImpl.getCrewNickname(activityId).let {
                 if (it.isSuccessful) {
                     val list = arrayListOf<MessageModel.MessageSpinnerCrewNicknameItem>()
@@ -317,6 +317,36 @@ class MessageViewModel @Inject constructor(
         return MessageModel.typeSpinnerClickPos
     }
 
+    // 쪽지 보내기 메세지 타입 선택 여부 설정
+    fun setIsClickedMessageType(flag: Boolean) {
+        MessageModel.isClickedMessageType = flag
+    }
+
+    // 쪽지 보내기 메세지 타입 선택 여부 가져오기
+    fun isClickedMessageType(): Boolean {
+        return MessageModel.isClickedMessageType
+    }
+
+    // 쪽지 보내기 프로젝트 명 선택 여부 설정
+    fun setIsClickedProjectName(flag: Boolean) {
+        MessageModel.isClickedProjectName = flag
+    }
+
+    // 쪽지 보내기 프로젝트 명 선택 여부 가져오기
+    fun isClickedProjectName(): Boolean {
+        return MessageModel.isClickedProjectName
+    }
+
+    // 쪽지 보내기 메세지 타입 선택 여부 설정
+    fun setIsClickedReceive(flag: Boolean) {
+        MessageModel.isClickedReceive = flag
+    }
+
+    // 쪽지 보내기 메세지 타입 선택 여부 가져오기
+    fun isClickedReceive(): Boolean {
+        return MessageModel.isClickedReceive
+    }
+
     // 쪽지 유형 선택값 가져오기
     fun getTypeSpinnerClickedItem(): String {
         return when (MessageModel.typeSpinnerClickPos) {
@@ -330,6 +360,11 @@ class MessageViewModel @Inject constructor(
     // 활동 프로젝트 선택값 설정
     fun setActivityNameSpinnerClickPos(value: Int) {
         MessageModel.activityNameSpinnerClickPos = value
+    }
+
+    // 활동 프로젝트 선택값 가져오기
+    fun getActivityNameSpinnerClickPos(): Int {
+        return MessageModel.activityNameSpinnerClickPos
     }
 
     // 활동 프로젝트 선택값의 activityId 가져오기
@@ -362,6 +397,13 @@ class MessageViewModel @Inject constructor(
         return MessageModel.isLast
     }
 
+    fun clearMessageSpinnerClick() {
+        setIsClickedMessageType(false)
+        setIsClickedProjectName(false)
+        setIsClickedReceive(false)
+    }
+
+
     fun clearMessageLiveData() {
         _sendMessageResult.postValue(false)
         _deleteMessageResult.postValue(false)
@@ -371,6 +413,8 @@ class MessageViewModel @Inject constructor(
         MessageModel.isLast = false
         MessageModel.messageId = null
         MessageModel.messageList.clear()
+        setTypeSpinnerClickedItemPos(0)
+        setActivityNameSpinnerClickPos(0)
         _sendMessageResult.postValue(false)
     }
 }

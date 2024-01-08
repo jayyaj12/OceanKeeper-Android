@@ -17,7 +17,10 @@ object MessageModel {
     var projectNameList = listOf<MessageSpinnerProjectNameItem>() // 활동 프로젝트 명 list
     var crewNicknameList = arrayListOf<MessageSpinnerCrewNicknameItem>() // 크루원 닉네임 리스트
     var receiveList = arrayListOf<String>() // 받는 사람 list
-    var enterType = MessageEnterType.NOTHING // 진입 여부에 따라 Spinner Block 처리가 달라짐 그에 대한 변수
+    var enterType = MessageEnterType.ActivityMessage // 진입 여부에 따라 Spinner Block 처리가 달라짐 그에 대한 변수
+    var isClickedMessageType = false // 쪽지 보내기 메세지 타입 선택 여부
+    var isClickedProjectName = false // 쪽지 보내기 프로젝트 명 선택 여부 
+    var isClickedReceive = false // 쪽지 보내기 받는사람 선택 여부 
 
     // 쪽지유형 스피너 내부 아이템 data class
     data class MessageSpinnerMessageTypeItem(
