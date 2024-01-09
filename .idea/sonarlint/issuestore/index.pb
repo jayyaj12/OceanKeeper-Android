@@ -123,8 +123,6 @@ k
 ;app/src/main/java/com/letspl/oceankepper/util/EntryPoint.kt,f\c\fc55b888a3c0e1b221f04d4d5428017a27980cb6
 s
 Capp/src/main/java/com/letspl/oceankepper/data/network/ApiService.kt,c\9\c93429ee48800b13f89f9d8e693e72872052b0a9
-s
-Capp/src/main/java/com/letspl/oceankepper/data/model/MessageModel.kt,e\0\e05be77273ac1ab4403c1db5f8f1af4544fb94c9
 Å
 Qapp/src/main/java/com/letspl/oceankepper/data/repository/MessageRepositoryImpl.kt,7\b\7b967a953f885b1dbd35b9d131d48b24cc4bd243
 w

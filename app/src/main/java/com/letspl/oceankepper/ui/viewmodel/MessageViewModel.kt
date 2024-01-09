@@ -284,8 +284,9 @@ class MessageViewModel @Inject constructor(
     }
 
     // 받을 사람 세팅
-    fun setReceiveList(list: List<String>) {
-        MessageModel.receiveList = list as ArrayList<String>
+    fun setReceiveList(nickname: String) {
+        Timber.e("nickname $nickname")
+        MessageModel.receiveList = arrayListOf(nickname)
     }
 
     // 받을 사람 추가
@@ -296,6 +297,11 @@ class MessageViewModel @Inject constructor(
     // 받을 사람 삭제
     fun removeReceiveList(nickName: String) {
         MessageModel.receiveList.remove(nickName)
+    }
+
+    // 받을 사람 삭제
+    fun getReceiveList(): List<String> {
+        return MessageModel.receiveList
     }
 
     fun getCrewList(): ArrayList<MessageModel.MessageSpinnerCrewNicknameItem> {
@@ -352,7 +358,6 @@ class MessageViewModel @Inject constructor(
         return when (MessageModel.typeSpinnerClickPos) {
             0 -> "NOTICE"
             1 -> "PRIVATE"
-            2 -> "REJECT"
             else -> ""
         }
     }
