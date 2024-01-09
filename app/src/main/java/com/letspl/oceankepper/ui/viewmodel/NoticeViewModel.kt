@@ -56,4 +56,8 @@ class NoticeViewModel @Inject constructor(private val noticeRepositoryImpl: Noti
     fun setIsLast(flag: Boolean) {
         NoticeModel.isLast = flag
     }
+
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
 }

@@ -417,4 +417,8 @@ class MessageViewModel @Inject constructor(
         setActivityNameSpinnerClickPos(0)
         _sendMessageResult.postValue(false)
     }
+
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
 }

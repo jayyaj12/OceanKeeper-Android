@@ -91,7 +91,9 @@ class EditActivityApplyFragment(private val applicationId: String) : Fragment(),
 
     private fun setupViewModelObserver() {
         applyActivityViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         applyActivityViewModel.getDetailApplication.observe(viewLifecycleOwner) {
@@ -132,6 +134,8 @@ class EditActivityApplyFragment(private val applicationId: String) : Fragment(),
 
     override fun onDestroyView() {
         _binding = null
+        applyActivityViewModel.clearErrorMsg()
+
         super.onDestroyView()
     }
 

@@ -65,7 +65,9 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
             }
         }
         mainViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         messageViewModel.sendMessageResult.observe(viewLifecycleOwner) {
@@ -131,6 +133,7 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
         super.onDestroyView()
 
         messageViewModel.clearMessageList()
+        mainViewModel.clearErrorMsg()
 
         _binding = null
     }

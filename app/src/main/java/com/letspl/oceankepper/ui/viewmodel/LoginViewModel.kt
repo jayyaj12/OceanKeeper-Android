@@ -110,4 +110,8 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
     fun clearLiveData() {
         _onLoginResult.postValue(null)
     }
+
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
 }

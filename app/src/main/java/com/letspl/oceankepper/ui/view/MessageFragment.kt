@@ -89,7 +89,9 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         }
 
         messageViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         messageViewModel.getMessageResult.observe(viewLifecycleOwner) {
@@ -299,6 +301,7 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         // 전송 버튼 클릭
         bottomSheetView.findViewById<AppCompatButton>(R.id.send_btn).setOnClickListener {
+            Timber.e("send_btn")
             messageViewModel.postMessage(
                 messageViewModel.getActivityNameSpinnerClickActivityId(),
                 bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
@@ -373,5 +376,6 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         _binding = null
         messageViewModel.setMessageEnterType(MessageEnterType.ActivityMessage)
         messageViewModel.clearMessageList()
+        messageViewModel.clearErrorMsg()
     }
 }

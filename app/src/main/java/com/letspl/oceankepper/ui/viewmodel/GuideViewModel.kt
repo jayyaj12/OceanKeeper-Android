@@ -72,4 +72,8 @@ class GuideViewModel @Inject constructor(private val guideRepositoryImpl: GuideR
         GuideModel.isLast = flag
     }
 
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
+
 }

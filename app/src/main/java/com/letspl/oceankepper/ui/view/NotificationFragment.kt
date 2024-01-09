@@ -51,6 +51,11 @@ class NotificationFragment : Fragment(), BaseActivity.OnBackPressedListener {
             Timber.e("it $it")
             notificationListAdapter.submitList(it.toMutableList())
         }
+        settingViewModel.errorMsg.observe(viewLifecycleOwner) {
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
+        }
     }
 
     private fun setupNotificationListAdapter() {
@@ -75,6 +80,7 @@ class NotificationFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        settingViewModel.clearLiveData()
 
         _binding = null
     }

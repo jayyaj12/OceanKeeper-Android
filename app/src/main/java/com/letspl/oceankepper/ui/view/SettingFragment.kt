@@ -74,6 +74,11 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 binding.notiSwitch.isChecked = it
             }
         }
+        settingViewModel.errorMsg.observe(viewLifecycleOwner) {
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
+        }
     }
 
     // 알림 설정
@@ -121,6 +126,7 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
     override fun onDestroyView() {
         super.onDestroyView()
         settingViewModel.clearLiveData()
+        settingViewModel.clearErrorMsg()
 
         _binding = null
     }

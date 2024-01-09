@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
+import kotlin.math.log
 
 @AndroidEntryPoint
 class LoginFragment: Fragment(), BaseActivity.OnBackPressedListener {
@@ -63,7 +64,9 @@ class LoginFragment: Fragment(), BaseActivity.OnBackPressedListener {
     // viewModel 옵저버 세팅
     private fun setUpViewModelObservers() {
         loginViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         loginViewModel.onLoginResult.observe(viewLifecycleOwner){ isExistLoginInfo ->
@@ -81,6 +84,7 @@ class LoginFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onDestroyView() {
         loginViewModel.clearLiveData()
+        loginViewModel.clearErrorMsg()
         _binding = null
         super.onDestroyView()
     }

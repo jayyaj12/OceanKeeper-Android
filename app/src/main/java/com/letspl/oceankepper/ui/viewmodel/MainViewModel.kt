@@ -313,4 +313,8 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
     fun clearActivityList() {
         MainModel.activityList.clear()
     }
+
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
 }

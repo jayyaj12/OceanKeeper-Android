@@ -163,7 +163,9 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private fun setupViewModelObserver() {
         myActivityViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
         // 내활동보기 결과 등록(크루)
         myActivityViewModel.getUserActivityCrew.observe(viewLifecycleOwner) {
@@ -361,6 +363,9 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     override fun onDestroyView() {
         super.onDestroyView()
         myActivityViewModel.clearLivedata()
+        mainViewModel.clearErrorMsg()
+        myActivityViewModel.clearErrorMsg()
+
         _binding = null
     }
 }

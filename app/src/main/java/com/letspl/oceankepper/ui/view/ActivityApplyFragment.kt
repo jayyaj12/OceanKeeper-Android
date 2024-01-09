@@ -83,7 +83,9 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private fun setupViewModelObserver() {
         applyActivityViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         applyActivityViewModel.applyResult.observe(viewLifecycleOwner) {
@@ -110,6 +112,8 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onDestroyView() {
         _binding = null
+
+        applyActivityViewModel.clearErrorMsg()
         super.onDestroyView()
     }
 

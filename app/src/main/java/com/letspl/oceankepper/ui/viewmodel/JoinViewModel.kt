@@ -153,4 +153,8 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     private fun getProfileImageFile(): File? {
         return JoinModel.profileImageFile
     }
+
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
 }
