@@ -187,6 +187,7 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
     fun clearLiveData() {
         NotificationModel.lastMemo = false
         NotificationModel.lastMemoId = null
+        _postLogoutResult.postValue(false)
         _getNotificationAlarmResult.postValue(null)
         _postNotificationAlarmResult.postValue(null)
     }

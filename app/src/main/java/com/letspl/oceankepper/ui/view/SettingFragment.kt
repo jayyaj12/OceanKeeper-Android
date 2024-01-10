@@ -57,7 +57,9 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private fun setupViewModelObserver() {
         settingViewModel.postLogoutResult.observe(viewLifecycleOwner) {
-            activity.onReplaceFragment(LoginFragment())
+            if(it){
+                activity.onReplaceFragment(LoginFragment(), false, false, 1)
+            }
         }
         settingViewModel.postNotificationAlarmResult.observe(viewLifecycleOwner) {
             // 알림 설정 실패 시 실패 모달 표시
