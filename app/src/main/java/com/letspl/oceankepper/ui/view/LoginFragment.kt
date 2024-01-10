@@ -53,7 +53,6 @@ class LoginFragment : Fragment(), BaseActivity.OnBackPressedListener {
         binding.naverLoginManager = naverLoginManager
         binding.appleLoginManager = appleLoginManager
         binding.kakaoLoginManager = kakaoLoginManager
-        binding.loginFragment = this
     }
 
     override fun onCreateView(
@@ -68,12 +67,6 @@ class LoginFragment : Fragment(), BaseActivity.OnBackPressedListener {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModelObservers()
     }
-
-    fun onClickedKakaoLogin() {
-
-
-    }
-
 
     // viewModel 옵저버 세팅
     private fun setUpViewModelObservers() {

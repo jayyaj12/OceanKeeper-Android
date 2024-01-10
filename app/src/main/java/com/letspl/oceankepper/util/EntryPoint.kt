@@ -5,4 +5,5 @@ object EntryPoint {
     var settingPoint = ""
     var notificationPoint = ""
     var activityDetail = ""
+    var login = ""
 }

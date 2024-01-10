@@ -16,6 +16,7 @@ import com.letspl.oceankepper.data.model.UserModel
 import com.letspl.oceankepper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankepper.ui.view.BaseActivity
 import com.letspl.oceankepper.util.ContextUtil
+import com.letspl.oceankepper.util.EntryPoint
 import com.letspl.oceankepper.util.ParsingErrorMsg
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -57,7 +58,7 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                             LoginModel.login.profile = it.profileImage.replace("\\", "")
                         }
                     }
-                    loginUser()
+                    loginUser("NAVER")
                 } else {
                     val errorJsonObject =
                         ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
@@ -75,7 +76,7 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
     }
 
     // 로그인 시도 회원가입 유무 확인 후 분기 처리
-    fun loginUser() {
+    fun loginUser(loginType: String) {
         CoroutineScope(Dispatchers.IO).launch {
             loginRepositoryImpl.loginUser(
                 LoginModel.login.deviceToken,
@@ -83,6 +84,8 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                 LoginModel.login.providerId
             ).let {
                 if(it.isSuccessful) {
+                    EntryPoint.login = loginType
+
                     UserModel.userInfo.let { data ->
                         it.body()?.let {serverData ->
                             data.token.accessToken =

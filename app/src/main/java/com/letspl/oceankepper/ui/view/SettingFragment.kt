@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.letspl.oceankepper.R
 import com.letspl.oceankepper.databinding.FragmentSettingBinding
 import com.letspl.oceankepper.ui.dialog.ConnectFailedDialog
@@ -18,6 +19,9 @@ import com.letspl.oceankepper.util.EntryPoint
 import com.letspl.oceankepper.util.loginManager.KakaoLoginManager
 import com.letspl.oceankepper.util.loginManager.NaverLoginManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.log
@@ -25,13 +29,15 @@ import kotlin.math.log
 @AndroidEntryPoint
 class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentSettingBinding? = null
-    private val binding:FragmentSettingBinding get() = _binding!!
-    private val activity:BaseActivity by lazy {
+    private val binding: FragmentSettingBinding get() = _binding!!
+    private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
     private val settingViewModel: SettingViewModel by viewModels()
+
     @Inject
     lateinit var naverLoginManager: NaverLoginManager
+
     @Inject
     lateinit var kakaoLoginManager: KakaoLoginManager
 
@@ -64,14 +70,14 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private fun setupViewModelObserver() {
         settingViewModel.postLogoutResult.observe(viewLifecycleOwner) {
-            if(it){
+            if (it) {
                 activity.onReplaceFragment(LoginFragment(), false, false, 1)
             }
         }
         settingViewModel.postNotificationAlarmResult.observe(viewLifecycleOwner) {
             // 알림 설정 실패 시 실패 모달 표시
             it?.let {
-                if(!it) {
+                if (!it) {
                     ConnectFailedDialog(requireContext()).show()
                 }
             }
@@ -84,7 +90,7 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
             }
         }
         settingViewModel.errorMsg.observe(viewLifecycleOwner) {
-            if(it != "") {
+            if (it != "") {
                 activity.showErrorMsg(it)
             }
         }
@@ -100,7 +106,7 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 뒤로가기 버튼
     fun onClickedBackBtn() {
-        when(EntryPoint.settingPoint) {
+        when (EntryPoint.settingPoint) {
             "main" -> activity.onReplaceFragment(MainFragment(), false, true)
             "message" -> activity.onReplaceFragment(MessageFragment(), false, true)
             "myActivity" -> activity.onReplaceFragment(MyActivityFragment(), false, true)
@@ -121,8 +127,24 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
     // 로그아웃
     fun onClickedLogout() {
         LogoutDialog(requireContext()) {
-            naverLoginManager.startNaverLogout()
-            settingViewModel.postLogout()
+            var logoutResult = true
+            lifecycleScope.launch(Dispatchers.IO) {
+                withContext(Dispatchers.IO) {
+                    when (EntryPoint.login) {
+                        "NAVER" -> naverLoginManager.startNaverLogout()
+                        "KAKAO" -> logoutResult = kakaoLoginManager.startLogout()
+                        "APPLE" -> false
+                        else -> logoutResult = false
+                    }
+                }
+
+                if(logoutResult) {
+                    settingViewModel.postLogout()
+                } else {
+                    activity.showErrorMsg("로그아웃에 실패하였습니다.\n잠시 후 다시 시도해주세요.")
+                }
+            }
+
         }.show()
     }
 
