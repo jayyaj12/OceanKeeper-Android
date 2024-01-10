@@ -36,16 +36,15 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
-                <data
-                    android:host="oauth"
-                    android:scheme="kakao22435e09dd60b9b2d7f32c7026057bbe}" />
+                <data android:host="oauth"
+                    android:scheme="kakao22435e09dd60b9b2d7f32c7026057bbe" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.view.BaseActivity"
             android:exported="true">

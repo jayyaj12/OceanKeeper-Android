@@ -35,8 +35,8 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl) :
     ViewModel() {
 
-    private var _onLoginResult = MutableLiveData<Boolean>()
-    val onLoginResult: LiveData<Boolean>
+    private var _onLoginResult = MutableLiveData<Boolean?>()
+    val onLoginResult: LiveData<Boolean?>
         get() = _onLoginResult
 
     // 에러 토스트 메세지 text
@@ -104,6 +104,10 @@ class LoginViewModel @Inject constructor(private val loginRepositoryImpl: LoginR
                 }
             }
         }
+    }
+
+    fun sendErrorMsg(msg: String) {
+        _errorMsg.postValue(msg)
     }
 
     // liveData 값 초기화

@@ -14,6 +14,9 @@
         <variable
             name="kakaoLoginManager"
             type="com.letspl.oceankepper.util.loginManager.KakaoLoginManager" />
+        <variable
+            name="loginFragment"
+            type="com.letspl.oceankepper.ui.view.LoginFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

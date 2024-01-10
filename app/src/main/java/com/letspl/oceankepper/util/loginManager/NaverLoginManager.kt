@@ -49,10 +49,12 @@ class NaverLoginManager @Inject constructor(private val loginViewModel: LoginVie
             override fun onFailure(httpStatus: Int, message: String) {
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                loginViewModel.sendErrorMsg(errorDescription ?: "네이버 로그인에 실패하였습니다.")
             }
 
             override fun onError(errorCode: Int, message: String) {
                 onFailure(errorCode, message)
+                loginViewModel.sendErrorMsg(message)
             }
         }
 
@@ -71,14 +73,12 @@ class NaverLoginManager @Inject constructor(private val loginViewModel: LoginVie
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
                 Timber.e("errorCode: ${errorCode}")
                 Timber.e("errorDescription: ${errorDescription}")
-                Toast.makeText(
-                    ContextUtil.context, "errorCode: ${errorCode}\n" +
-                            "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT
-                ).show()
+                loginViewModel.sendErrorMsg(errorDescription ?: "네이버 로그인에 실패하였습니다.")
             }
 
             override fun onError(errorCode: Int, message: String) {
                 onFailure(errorCode, message)
+                loginViewModel.sendErrorMsg(message)
             }
         }
 
@@ -88,7 +88,6 @@ class NaverLoginManager @Inject constructor(private val loginViewModel: LoginVie
     // 로그아웃
     fun startNaverLogout() {
         NaverIdLoginSDK.logout()
-        Toast.makeText(ContextUtil.context, "네이버 아이디 로그아웃 성공!", Toast.LENGTH_SHORT).show()
     }
 
     // 연동 해제

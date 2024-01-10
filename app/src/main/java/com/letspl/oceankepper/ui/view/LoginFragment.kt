@@ -8,6 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.user.UserApiClient
 import com.letspl.oceankepper.data.model.LoginModel
 import com.letspl.oceankepper.databinding.FragmentLoginBinding
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
@@ -22,7 +26,7 @@ import javax.inject.Inject
 import kotlin.math.log
 
 @AndroidEntryPoint
-class LoginFragment: Fragment(), BaseActivity.OnBackPressedListener {
+class LoginFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding get() = _binding!!
     private val loginViewModel: LoginViewModel by viewModels()
@@ -30,8 +34,11 @@ class LoginFragment: Fragment(), BaseActivity.OnBackPressedListener {
         requireActivity() as BaseActivity
     }
 
-    @Inject lateinit var naverLoginManager: NaverLoginManager
-    @Inject lateinit var kakaoLoginManager: KakaoLoginManager
+    @Inject
+    lateinit var naverLoginManager: NaverLoginManager
+
+    @Inject
+    lateinit var kakaoLoginManager: KakaoLoginManager
     lateinit var appleLoginManager: AppleLoginManager
 
     override fun onBackPressed() {
@@ -46,6 +53,7 @@ class LoginFragment: Fragment(), BaseActivity.OnBackPressedListener {
         binding.naverLoginManager = naverLoginManager
         binding.appleLoginManager = appleLoginManager
         binding.kakaoLoginManager = kakaoLoginManager
+        binding.loginFragment = this
     }
 
     override fun onCreateView(
@@ -61,16 +69,22 @@ class LoginFragment: Fragment(), BaseActivity.OnBackPressedListener {
         setUpViewModelObservers()
     }
 
+    fun onClickedKakaoLogin() {
+
+
+    }
+
+
     // viewModel 옵저버 세팅
     private fun setUpViewModelObservers() {
         loginViewModel.errorMsg.observe(viewLifecycleOwner) {
-            if(it != "") {
+            if (it != "") {
                 activity.showErrorMsg(it)
             }
         }
 
-        loginViewModel.onLoginResult.observe(viewLifecycleOwner){ isExistLoginInfo ->
-            if(isExistLoginInfo != null) {
+        loginViewModel.onLoginResult.observe(viewLifecycleOwner) { isExistLoginInfo ->
+            if (isExistLoginInfo != null) {
                 if (isExistLoginInfo) {
                     // 있으면 메인 페이지로 이동
                     activity.onReplaceFragment(MainFragment(), false, true)
