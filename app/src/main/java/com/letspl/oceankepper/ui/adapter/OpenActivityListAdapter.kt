@@ -158,5 +158,4 @@ class OpenActivityListAdapter(
             holder.showLastView()
         }
     }
-
 }

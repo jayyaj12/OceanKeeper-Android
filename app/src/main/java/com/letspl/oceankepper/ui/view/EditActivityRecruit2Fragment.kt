@@ -217,7 +217,9 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
 
     private fun setupViewModelObserver() {
         activityRecruit2ViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         // 활동 모집 수정 성공 여부
@@ -368,6 +370,8 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
 
     override fun onDestroyView() {
         _binding = null
+        activityRecruit2ViewModel.clearErrorMsg()
+
         super.onDestroyView()
     }
 

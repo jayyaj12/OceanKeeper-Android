@@ -205,4 +205,8 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
         return name != "" && phoneNumber != "" && email != "" && transportPosition.value != 0
     }
 
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
+
 }

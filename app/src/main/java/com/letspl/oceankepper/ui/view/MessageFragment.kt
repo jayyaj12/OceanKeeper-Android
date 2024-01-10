@@ -89,7 +89,9 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         }
 
         messageViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         messageViewModel.getMessageResult.observe(viewLifecycleOwner) {
@@ -186,7 +188,10 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         val crewNicknameSpinner = CustomSpinnerCrewNicknameAdapter(requireContext(), R.layout.spinner_outer_layout, crewNicknameList, messageViewModel)
         bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).adapter = crewNicknameSpinner
-        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetDialog.behavior.isDraggable = false
+        bottomSheetDialog.behavior.skipCollapsed = true
 
         bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).setOnTouchListener { v, event ->
             messageViewModel.setIsClickedMessageType(true)
@@ -285,7 +290,11 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
                 position: Int,
                 id: Long
             ) {
+                Timber.e("messageViewModel.isClickedReceive() ${messageViewModel.isClickedReceive()}")
+
                 if(messageViewModel.isClickedReceive()) {
+                    Timber.e("crewNicknameList[position].nickname ${crewNicknameList[position].nickname}")
+                    messageViewModel.setReceiveList(crewNicknameList[position].nickname)
                     messageViewModel.setActivityNameSpinnerClickPos(position)
 //                    messageViewModel.setCrewNicknameListChecked(position)
                     crewNicknameSpinner.setMenuList(messageViewModel.getCrewList())
@@ -299,12 +308,41 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         // 전송 버튼 클릭
         bottomSheetView.findViewById<AppCompatButton>(R.id.send_btn).setOnClickListener {
-            messageViewModel.postMessage(
-                messageViewModel.getActivityNameSpinnerClickActivityId(),
-                bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
-                 messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
-                messageViewModel.getTypeSpinnerClickedItem()
-            )
+            if(bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString() != ""){
+                when(messageViewModel.getTypeSpinnerClickedItem()) {
+                    "NOTICE" -> {
+//                        messageViewModel.postMessage(
+//                            messageViewModel.getActivityNameSpinnerClickActivityId(),
+//                            bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
+//                            messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
+//                            messageViewModel.getTypeSpinnerClickedItem()
+//                        )
+                    }
+                    "PRIVATE" -> {
+                        if(messageViewModel.getConvertFromMessageCrewItemToStringForNickname().size == 1) {
+                            Timber.e("getConvertFromMessageCrewItemToStringForNickname ${messageViewModel.getConvertFromMessageCrewItemToStringForNickname()}")
+                        } else {
+                            Timber.e("getReceiveList ${messageViewModel.getReceiveList()}")
+
+                        }
+//                        messageViewModel.postMessage(
+//                            messageViewModel.getActivityNameSpinnerClickActivityId(),
+//                            bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
+//                            messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
+//                            messageViewModel.getTypeSpinnerClickedItem()
+//                        )
+                    }
+                }
+//                messageViewModel.postMessage(
+//                    messageViewModel.getActivityNameSpinnerClickActivityId(),
+//                    bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
+//                    messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
+//                    messageViewModel.getTypeSpinnerClickedItem()
+//                )
+            } else {
+                activity.showErrorMsg("메세지 내용을 작성해주세요.")
+            }
+
         }
 
         // 닫기 버튼 클릭
@@ -373,5 +411,6 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         _binding = null
         messageViewModel.setMessageEnterType(MessageEnterType.ActivityMessage)
         messageViewModel.clearMessageList()
+        messageViewModel.clearErrorMsg()
     }
 }

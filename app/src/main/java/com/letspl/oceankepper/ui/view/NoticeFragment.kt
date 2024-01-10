@@ -59,7 +59,9 @@ class NoticeFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
         // 에러 시 토스트 표시
         noticeViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
     }
 
@@ -85,6 +87,7 @@ class NoticeFragment : Fragment(), BaseActivity.OnBackPressedListener {
     override fun onDestroyView() {
         super.onDestroyView()
         noticeViewModel.setIsLast(false)
+        noticeViewModel.clearErrorMsg()
         _binding = null
     }
 }

@@ -139,7 +139,9 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private fun setupViewModelObserver() {
         joinViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         joinViewModel.signUpResult.observe(viewLifecycleOwner) {
@@ -232,6 +234,8 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onDestroyView() {
         _binding = null
+        loginViewModel.clearErrorMsg()
+        joinViewModel.clearErrorMsg()
 
         super.onDestroyView()
     }

@@ -53,7 +53,9 @@ class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
         // 에러 시 토스트 표시
         guideViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
     }
 
@@ -82,6 +84,8 @@ class GuideFragment : Fragment(), BaseActivity.OnBackPressedListener {
     override fun onDestroyView() {
         super.onDestroyView()
         guideViewModel.setIsLast(false)
+        guideViewModel.clearErrorMsg()
+
         _binding = null
     }
 

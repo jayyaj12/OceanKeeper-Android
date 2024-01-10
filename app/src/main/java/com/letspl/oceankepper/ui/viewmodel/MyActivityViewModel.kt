@@ -308,4 +308,8 @@ class MyActivityViewModel @Inject constructor(
         _getUserActivityCrew.postValue(null)
         _getUserActivityHost.postValue(null)
     }
+
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
 }

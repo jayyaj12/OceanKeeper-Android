@@ -349,4 +349,8 @@ class ActivityRecruit2ViewModel @Inject constructor(
         _recruitActivityIsSuccess.postValue(false)
         _editRecruitActivityIsSuccess.postValue(false)
     }
+
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
 }

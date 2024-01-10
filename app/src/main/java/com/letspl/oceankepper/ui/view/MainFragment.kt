@@ -90,7 +90,9 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     // viewModel 옵저버 세팅
     private fun setUpViewModelObservers() {
         mainViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         // 다가오는 일정 조회 완료되면 viewpager 자동 슬라이드 setup
@@ -237,6 +239,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onDestroyView() {
         _binding = null
+        mainViewModel.clearErrorMsg()
         super.onDestroyView()
     }
 

@@ -89,7 +89,9 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
         }
 
         manageApplyViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         messageViewModel.errorMsg.observe(viewLifecycleOwner) {
@@ -119,40 +121,6 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
 
     // 신청자 리스트 셋업
     private fun setupApplyMemberListAdapter() {
-//        val arr = arrayListOf<ManageApplyMemberModel.CrewInfoDto>()
-//        arr.add(
-//            ManageApplyMemberModel.CrewInfoDto(
-//                "ㅂㅈㄷㅂㅈㄷ",
-//                "REJECT",
-//                "김제주",
-//                1,
-//                "제주돌고래",
-//                false
-//            )
-//        )
-//        arr.add(
-//            ManageApplyMemberModel.CrewInfoDto(
-//                "ㅂㅈㄷㅂㅈㄷ",
-//                "IN_PROGRESS",
-//                "기모치",
-//                2,
-//        "기모치이",
-//        false
-//        )
-//        )
-//        arr.add(
-//            ManageApplyMemberModel.CrewInfoDto(
-//                "ㅂㅈㄷㅂㅈㄷ",
-//                "NO_SHOW",
-//                "기모치",
-//                3,
-//                "기모치이",
-//                false
-//            )
-//        )
-//
-//        ManageApplyMemberModel.applyCrewList = arr
-
         managerApplyListAdapter = ManageApplyMemberListAdapter({ allClicked ->
             // 리스트 체크 선택 시 전체 선택하기 체크박스 체크 여부
             when (allClicked) {
@@ -284,6 +252,8 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
 
         manageApplyViewModel.clearData()
         messageViewModel.clearMessageList()
+        manageApplyViewModel.clearErrorMsg()
+        messageViewModel.clearErrorMsg()
 
         _binding = null
     }

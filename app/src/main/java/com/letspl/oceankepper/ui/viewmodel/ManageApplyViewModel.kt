@@ -330,4 +330,8 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
         ManageApplyMemberModel.applyCrewList.clear()
         ManageApplyMemberModel.tempApplyCrewList.clear()
     }
+
+    fun clearErrorMsg() {
+        _errorMsg.postValue("")
+    }
 }

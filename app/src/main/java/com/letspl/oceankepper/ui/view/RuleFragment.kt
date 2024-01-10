@@ -53,6 +53,11 @@ class RuleFragment : Fragment(), BaseActivity.OnBackPressedListener {
         settingViewModel.getTermsResult.observe(viewLifecycleOwner) {
             binding.contentTv.text = Html.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
+        settingViewModel.errorMsg.observe(viewLifecycleOwner) {
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
+        }
     }
 
     fun onClickedBackBtn() {
@@ -60,6 +65,8 @@ class RuleFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     override fun onDestroyView() {
+        _binding = null
+        settingViewModel.clearErrorMsg()
         super.onDestroyView()
     }
 }
