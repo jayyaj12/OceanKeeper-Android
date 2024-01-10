@@ -15,8 +15,11 @@ import com.letspl.oceankepper.ui.dialog.WithdrawDialog
 import com.letspl.oceankepper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankepper.ui.viewmodel.SettingViewModel
 import com.letspl.oceankepper.util.EntryPoint
+import com.letspl.oceankepper.util.loginManager.KakaoLoginManager
+import com.letspl.oceankepper.util.loginManager.NaverLoginManager
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 import kotlin.math.log
 
 @AndroidEntryPoint
@@ -27,6 +30,10 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
         requireActivity() as BaseActivity
     }
     private val settingViewModel: SettingViewModel by viewModels()
+    @Inject
+    lateinit var naverLoginManager: NaverLoginManager
+    @Inject
+    lateinit var kakaoLoginManager: KakaoLoginManager
 
     override fun onBackPressed() {
         onClickedBackBtn()
@@ -114,6 +121,7 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
     // 로그아웃
     fun onClickedLogout() {
         LogoutDialog(requireContext()) {
+            naverLoginManager.startNaverLogout()
             settingViewModel.postLogout()
         }.show()
     }

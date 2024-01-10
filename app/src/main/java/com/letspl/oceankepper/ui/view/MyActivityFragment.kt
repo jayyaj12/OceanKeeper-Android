@@ -76,7 +76,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                         myActivityViewModel.getTakePhotoUri())!!
                     val angle = RotateTransform.getRotationAngle(path)
                     val rotateBitmap =
-                        RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
+                        RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat(), myActivityViewModel.getTakePhotoUri())
 
                     myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(
                         rotateBitmap!!,

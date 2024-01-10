@@ -133,7 +133,7 @@ class BaseActivity : AppCompatActivity() {
         }, 3000)
     }
 
-    // 에러 메세지 표시
+    // 성공 메세지 표시
     fun showSuccessMsg(msg: String) {
         binding.sucessCl.visibility = View.VISIBLE
         binding.successMsgTv.text = msg

@@ -1,9 +1,11 @@
 package com.letspl.oceankepper.ui.view
 
 import android.content.ContentValues
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.provider.MediaStore
@@ -12,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -62,18 +66,19 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 ImgFileMaker.getFullPathFromUri(requireContext(), joinViewModel.getTakePhotoUri())!!
             val angle = RotateTransform.getRotationAngle(path)
             val rotateBitmap =
-                RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
+                RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat(), joinViewModel.getTakePhotoUri())
 
             joinViewModel.setProfileImageFile(it?.let { uri ->
                 ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
             })
 
             Glide.with(requireContext())
-                .load(joinViewModel.getTakePhotoUri())
+                .load(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
                 .fitCenter()
                 .centerCrop()
                 .into(binding.profileIv)
         } catch (e: Exception) {
+            Timber.e("e.getMessage ${e.message}")
             activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
         }
     }
@@ -82,21 +87,22 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private val choicePhoto = registerForActivityResult(ActivityResultContracts.GetContent()) {
         try {
             val path =
-                ImgFileMaker.getFullPathFromUri(requireContext(), joinViewModel.getTakePhotoUri())!!
+                ImgFileMaker.getFullPathFromUri(requireContext(), it)!!
             val angle = RotateTransform.getRotationAngle(path)
             val rotateBitmap =
-                RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat())
+                RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat(), it)
 
             joinViewModel.setProfileImageFile(it?.let { uri ->
                 ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
             })
 
             Glide.with(requireContext())
-                .load(joinViewModel.getTakePhotoUri())
+                .load(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
                 .fitCenter()
                 .centerCrop()
                 .into(binding.profileIv)
         } catch (e: Exception) {
+            Timber.e("e.getMessage ${e.message}")
             activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
         }
     }
@@ -124,7 +130,7 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         BaseUrlType.setBaseUrlType("naver")
-        requestPermission()
+        checkGalleryPermission()
         setupChoiceProfileImageDialog()
 
         Glide.with(requireContext())
@@ -159,14 +165,55 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     // 필요한 권한 요청
-    private fun requestPermission() {
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-            result.forEach {
-                if (it.value) {
-                    Toast.makeText(requireContext(), "권한 허용 필요", Toast.LENGTH_SHORT).show()
-                }
+//    private fun requestPermission() {
+//        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+//            result.forEach {
+//                if (it.value) {
+//                    Toast.makeText(requireContext(), "권한 허용 필요", Toast.LENGTH_SHORT).show()
+//
+//                }
+//            }
+//        }.launch(permissionList)
+//    }
+
+    private fun checkGalleryPermission(): Boolean {
+        val writePermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        val readPermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        val imagePermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
+        )
+
+        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
+            Timber.e("true")
+            if(imagePermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.READ_MEDIA_IMAGES
+                    ), 1
+                )
+
+                false
+            } else {
+                true
             }
-        }.launch(permissionList)
+        } else{
+            Timber.e("else")
+            if(writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    ), 2
+                )
+                false
+            } else {
+                true
+            }
+        }
     }
 
     // 프로필 사진 선택 모달 표시

@@ -29,15 +29,15 @@ object RotateTransform {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        Timber.e("rotationAngle $rotationAngle")
         return rotationAngle
     }
 
     // 이미지 회전
     fun rotateImage(source: Bitmap, angle: Float, imageUri: Uri? = null): Bitmap? {
         val matrix = Matrix()
-        matrix.postRotate(angle)
-        val bitmap = MediaStore.Images.Media.getBitmap(ContextUtil.context.contentResolver, imageUri)
-        return Bitmap.createScaledBitmap(bitmap, bitmap.width / 2, bitmap.height / 2, true)
+        matrix.setRotate(angle, source.width.toFloat() / 2, source.height.toFloat() / 2)
+        val bitmap =
+            MediaStore.Images.Media.getBitmap(ContextUtil.context.contentResolver, imageUri)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width / 2, bitmap.height / 2, matrix, true)
     }
 }
