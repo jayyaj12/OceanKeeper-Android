@@ -264,11 +264,13 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 이전 달 버튼 클릭
     fun onMovePreviousMonth(type: Int) {
+        Timber.e("onMovePreviousMonth")
         activityRecruitViewModel.onPreviousBtnClicked(type)
     }
 
     // 다음 달 버튼 클릭
     fun onMoveNextMonth(type: Int) {
+        Timber.e("onMoveNextMonth")
         activityRecruitViewModel.onNextBtnClicked(type)
     }
 

@@ -583,25 +583,37 @@
 
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/recruit_start_previous_ib"
-                        android:layout_width="20dp"
-                        android:layout_height="17dp"
-                        android:layout_marginEnd="31dp"
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(1)}"
-                        android:src="@drawable/calendar_previous_icon"
-                        app:layout_constraintEnd_toStartOf="@id/recruit_start_next_ib"
-                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" />
+                        android:layout_marginEnd="31dp"
+                        android:id="@+id/recruit_start_previous_ll"
+                        app:layout_constraintEnd_toStartOf="@id/recruit_start_next_ll"
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" >
 
-                    <ImageView
-                        android:id="@+id/recruit_start_next_ib"
-                        android:layout_width="20dp"
-                        android:layout_height="17dp"
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:src="@drawable/calendar_previous_icon" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(1)}"
                         android:layout_marginEnd="16dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(1)}"
-                        android:src="@drawable/calendar_next_icon"
+                        android:id="@+id/recruit_start_next_ll"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" />
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_start_date_ll" >
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:src="@drawable/calendar_next_icon" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/recruit_start_week_ll"
@@ -725,25 +737,38 @@
 
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/recruit_end_previous_ib"
-                        android:layout_width="20dp"
-                        android:layout_height="17dp"
-                        android:layout_marginEnd="31dp"
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(2)}"
-                        android:src="@drawable/calendar_previous_icon"
-                        app:layout_constraintEnd_toStartOf="@id/recruit_end_next_ib"
-                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll" />
+                        android:layout_marginEnd="31dp"
+                        app:layout_constraintEnd_toStartOf="@id/recruit_end_next_ll"
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll">
 
-                    <ImageView
-                        android:id="@+id/recruit_end_next_ib"
-                        android:layout_width="20dp"
-                        android:layout_height="17dp"
-                        android:layout_marginEnd="16dp"
+                        <ImageView
+                            android:id="@+id/recruit_end_previous_ib"
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:src="@drawable/calendar_previous_icon"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(2)}"
-                        android:src="@drawable/calendar_next_icon"
+                        android:layout_marginEnd="16dp"
+                        android:id="@+id/recruit_end_next_ll"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll" />
+                        app:layout_constraintTop_toTopOf="@id/calendar_recruit_end_date_ll" >
+
+                        <ImageView
+                            android:id="@+id/recruit_end_next_ib"
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:src="@drawable/calendar_next_icon"/>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/recruit_end_week_ll"
@@ -868,25 +893,39 @@
 
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/activity_previous_ib"
-                        android:layout_width="20dp"
-                        android:layout_height="17dp"
-                        android:layout_marginEnd="31dp"
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(3)}"
-                        android:src="@drawable/calendar_previous_icon"
-                        app:layout_constraintEnd_toStartOf="@id/activity_next_ib"
-                        app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll" />
+                        android:layout_marginEnd="31dp"
+                        android:id="@+id/activity_previous_ll"
+                        app:layout_constraintEnd_toStartOf="@id/activity_next_ll"
+                        app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll"  >
 
-                    <ImageView
-                        android:id="@+id/activity_next_ib"
-                        android:layout_width="20dp"
-                        android:layout_height="17dp"
+                        <ImageView
+                            android:id="@+id/activity_previous_ib"
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:src="@drawable/calendar_previous_icon"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:onClick="@{() -> activityRecruitFragment.onMovePreviousMonth(3)}"
                         android:layout_marginEnd="16dp"
-                        android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(3)}"
-                        android:src="@drawable/calendar_next_icon"
+                        android:id="@+id/activity_next_ll"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll" />
+                        app:layout_constraintTop_toTopOf="@id/calendar_activity_date_ll"  >
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="17dp"
+                            android:onClick="@{() -> activityRecruitFragment.onMoveNextMonth(3)}"
+                            android:src="@drawable/calendar_next_icon" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/activity_week_ll"
