@@ -7,42 +7,24 @@
     <data>
         <variable
             name="naverLoginManager"
-            type="com.letspl.oceankepper.util.loginManager.NaverLoginManager" />
+            type="com.letspl.oceankeeper.util.loginManager.NaverLoginManager" />
         <variable
             name="appleLoginManager"
-            type="com.letspl.oceankepper.util.loginManager.AppleLoginManager" />
+            type="com.letspl.oceankeeper.util.loginManager.AppleLoginManager" />
         <variable
             name="kakaoLoginManager"
-            type="com.letspl.oceankepper.util.loginManager.KakaoLoginManager" />
+            type="com.letspl.oceankeeper.util.loginManager.KakaoLoginManager" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/back_icon_ll"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="22dp"
-            android:gravity="center"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/back_icon_iv"
-                android:layout_width="9dp"
-                android:layout_height="16dp"
-                android:src="@drawable/title_left_icon" />
-
-        </LinearLayout>
-
         <TextView
             android:id="@+id/logo_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="120dp"
             android:fontFamily="@font/pretendard_bold"
             android:gravity="center"
             android:text="오션키퍼가 되어\n바다를 구해주세요"
@@ -50,9 +32,9 @@
             android:textSize="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/back_icon_ll" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.letspl.oceankepper.util.CustomLoginButton
+        <com.letspl.oceankeeper.util.CustomLoginButton
             android:id="@+id/naver_login_btn"
             android:layout_width="0dp"
             android:layout_height="46dp"
@@ -66,7 +48,7 @@
             app:loginTextColor="@color/white"
             app:symbol="@drawable/naver_symbol" />
 
-        <com.letspl.oceankepper.util.CustomLoginButton
+        <com.letspl.oceankeeper.util.CustomLoginButton
             android:id="@+id/kakao_login_btn"
             android:layout_width="0dp"
             android:layout_height="46dp"
@@ -80,7 +62,7 @@
             app:loginTextColor="@color/black"
             app:symbol="@drawable/kakao_symbol" />
 
-        <com.letspl.oceankepper.util.CustomLoginButton
+        <com.letspl.oceankeeper.util.CustomLoginButton
             android:id="@+id/apple_login_btn"
             android:layout_width="match_parent"
             android:layout_height="46dp"

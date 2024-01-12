@@ -6,7 +6,7 @@
     <data>
         <variable
             name="guideFragment"
-            type="com.letspl.oceankepper.ui.view.GuideFragment" />
+            type="com.letspl.oceankeeper.ui.view.GuideFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

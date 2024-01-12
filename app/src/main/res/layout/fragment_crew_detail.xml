@@ -6,10 +6,10 @@
     <data>
         <variable
             name="manageApplyViewModel"
-            type="com.letspl.oceankepper.ui.viewmodel.ManageApplyViewModel" />
+            type="com.letspl.oceankeeper.ui.viewmodel.ManageApplyViewModel" />
         <variable
             name="crewDetailFragment"
-            type="com.letspl.oceankepper.ui.view.CrewDetailFragment" />
+            type="com.letspl.oceankeeper.ui.view.CrewDetailFragment" />
         <import type="android.view.View"/>
     </data>
 

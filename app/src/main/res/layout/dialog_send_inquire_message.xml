@@ -6,7 +6,7 @@
 
         <variable
             name="inquireMessageDialog"
-            type="com.letspl.oceankepper.ui.dialog.InquireMessageDialog" />
+            type="com.letspl.oceankeeper.ui.dialog.InquireMessageDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

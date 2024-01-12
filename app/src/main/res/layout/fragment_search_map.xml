@@ -5,7 +5,7 @@
     <data>
         <variable
             name="searchMapFragment"
-            type="com.letspl.oceankepper.ui.view.SearchMapFragment" />
+            type="com.letspl.oceankeeper.ui.view.SearchMapFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

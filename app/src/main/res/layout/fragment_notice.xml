@@ -6,7 +6,7 @@
     <data>
         <variable
             name="notiecFragment"
-            type="com.letspl.oceankepper.ui.view.NoticeFragment" />
+            type="com.letspl.oceankeeper.ui.view.NoticeFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -9,15 +9,15 @@
 
         <variable
             name="manageApplyFragment"
-            type="com.letspl.oceankepper.ui.view.ManageApplyMemberFragment" />
+            type="com.letspl.oceankeeper.ui.view.ManageApplyMemberFragment" />
 
         <variable
             name="manageApplyViewModel"
-            type="com.letspl.oceankepper.ui.viewmodel.ManageApplyViewModel" />
+            type="com.letspl.oceankeeper.ui.viewmodel.ManageApplyViewModel" />
 
         <variable
             name="myActivityViewModel"
-            type="com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel" />
+            type="com.letspl.oceankeeper.ui.viewmodel.MyActivityViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

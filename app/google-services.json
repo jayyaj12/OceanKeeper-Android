@@ -7,7 +7,26 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:954599637849:android:9b20114fab112ddb424248",
+        "mobilesdk_app_id": "1:954599637849:android:b32e24b7636f8926424248",
+        "android_client_info": {
+          "package_name": "com.letspl.oceankeeper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMQdItco7UpV2F1HzCOL5MSollVe_S-r0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954599637849:android:de9a0d7be414f25b424248",
         "android_client_info": {
           "package_name": "com.letspl.oceankepper"
         }

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="noShowCheckDialog"
-            type="com.letspl.oceankepper.ui.dialog.NoShowCheckDialog" />
+            type="com.letspl.oceankeeper.ui.dialog.NoShowCheckDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

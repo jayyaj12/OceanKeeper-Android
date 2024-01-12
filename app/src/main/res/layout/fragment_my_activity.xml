@@ -7,11 +7,11 @@
 
         <variable
             name="myActivityViewModel"
-            type="com.letspl.oceankepper.ui.viewmodel.MyActivityViewModel" />
+            type="com.letspl.oceankeeper.ui.viewmodel.MyActivityViewModel" />
 
         <variable
             name="myActivityFragment"
-            type="com.letspl.oceankepper.ui.view.MyActivityFragment" />
+            type="com.letspl.oceankeeper.ui.view.MyActivityFragment" />
 
         <import type="android.view.View" />
     </data>

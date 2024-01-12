@@ -12,11 +12,11 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
-    namespace 'com.letspl.oceankepper'
+    namespace 'com.letspl.oceankeeper'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.letspl.oceankepper"
+        applicationId "com.letspl.oceankeeper"
         minSdk 23
         targetSdk 34
         versionCode 1

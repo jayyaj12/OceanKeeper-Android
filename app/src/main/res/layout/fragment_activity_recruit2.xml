@@ -8,11 +8,11 @@
 
         <variable
             name="activityRecruit2Fragment"
-            type="com.letspl.oceankepper.ui.view.ActivityRecruit2Fragment" />
+            type="com.letspl.oceankeeper.ui.view.ActivityRecruit2Fragment" />
 
         <variable
             name="activityRecruit2ViewModel"
-            type="com.letspl.oceankepper.ui.viewmodel.ActivityRecruit2ViewModel" />
+            type="com.letspl.oceankeeper.ui.viewmodel.ActivityRecruit2ViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

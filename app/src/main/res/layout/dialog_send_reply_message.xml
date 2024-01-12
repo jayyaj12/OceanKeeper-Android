@@ -6,7 +6,7 @@
 
         <variable
             name="replyMessageDialog"
-            type="com.letspl.oceankepper.ui.dialog.ReplyMessageDialog" />
+            type="com.letspl.oceankeeper.ui.dialog.ReplyMessageDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

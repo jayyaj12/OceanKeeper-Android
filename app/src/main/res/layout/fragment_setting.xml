@@ -7,7 +7,7 @@
 
         <variable
             name="settingFragment"
-            type="com.letspl.oceankepper.ui.view.SettingFragment" />
+            type="com.letspl.oceankeeper.ui.view.SettingFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

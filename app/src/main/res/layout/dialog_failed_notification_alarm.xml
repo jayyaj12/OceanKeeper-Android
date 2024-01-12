@@ -5,7 +5,7 @@
     <data>
         <variable
             name="connectFailedDialog"
-            type="com.letspl.oceankepper.ui.dialog.ConnectFailedDialog" />
+            type="com.letspl.oceankeeper.ui.dialog.ConnectFailedDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

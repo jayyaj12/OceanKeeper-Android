@@ -6,7 +6,7 @@
 
         <variable
             name="messageFragment"
-            type="com.letspl.oceankepper.ui.view.MessageFragment" />
+            type="com.letspl.oceankeeper.ui.view.MessageFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

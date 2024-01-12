@@ -5,7 +5,7 @@
     <data>
         <variable
             name="logoutDialog"
-            type="com.letspl.oceankepper.ui.dialog.LogoutDialog" />
+            type="com.letspl.oceankeeper.ui.dialog.LogoutDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

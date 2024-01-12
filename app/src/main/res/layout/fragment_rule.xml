@@ -6,7 +6,7 @@
     <data>
         <variable
             name="ruleFragment"
-            type="com.letspl.oceankepper.ui.view.RuleFragment" />
+            type="com.letspl.oceankeeper.ui.view.RuleFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

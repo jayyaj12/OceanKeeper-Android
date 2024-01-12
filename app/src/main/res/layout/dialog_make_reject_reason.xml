@@ -6,7 +6,7 @@
 
         <variable
             name="makeRejectReasonDialog"
-            type="com.letspl.oceankepper.ui.dialog.MakeRejectReasonDialog" />
+            type="com.letspl.oceankeeper.ui.dialog.MakeRejectReasonDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

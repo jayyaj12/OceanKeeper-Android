@@ -6,11 +6,11 @@
 
         <variable
             name="editApplyActivityFragment"
-            type="com.letspl.oceankepper.ui.view.EditActivityApplyFragment" />
+            type="com.letspl.oceankeeper.ui.view.EditActivityApplyFragment" />
 
         <variable
             name="applyActivityViewModel"
-            type="com.letspl.oceankepper.ui.viewmodel.ApplyActivityViewModel" />
+            type="com.letspl.oceankeeper.ui.viewmodel.ApplyActivityViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

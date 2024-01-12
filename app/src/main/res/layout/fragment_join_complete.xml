@@ -7,7 +7,7 @@
     <data>
         <variable
             name="joinViewModel"
-            type="com.letspl.oceankepper.ui.viewmodel.JoinViewModel" />
+            type="com.letspl.oceankeeper.ui.viewmodel.JoinViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

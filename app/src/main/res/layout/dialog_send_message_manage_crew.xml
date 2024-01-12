@@ -6,7 +6,7 @@
 
         <variable
             name="sendMessageManageDialog"
-            type="com.letspl.oceankepper.ui.dialog.SendMessageManageDialog" />
+            type="com.letspl.oceankeeper.ui.dialog.SendMessageManageDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

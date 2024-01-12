@@ -5,7 +5,7 @@
     <data>
         <variable
             name="deleteMessageDialog"
-            type="com.letspl.oceankepper.ui.dialog.DeleteMessageDialog" />
+            type="com.letspl.oceankeeper.ui.dialog.DeleteMessageDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

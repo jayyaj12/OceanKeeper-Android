@@ -10,11 +10,11 @@
 
         <variable
             name="activityDetailFragment"
-            type="com.letspl.oceankepper.ui.view.ActivityDetailFragment" />
+            type="com.letspl.oceankeeper.ui.view.ActivityDetailFragment" />
 
         <variable
             name="mainViewModel"
-            type="com.letspl.oceankepper.ui.viewmodel.MainViewModel" />
+            type="com.letspl.oceankeeper.ui.viewmodel.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
