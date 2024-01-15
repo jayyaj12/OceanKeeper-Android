@@ -162,11 +162,11 @@ data class GetActivityRecruitmentCrewNameResultDto(
 data class GetActivityRecruitmentCrewNameResponseDto(
     val activityId: String,
     val activityTitle: String,
-    val crewInformationList: List<GetActivityRecruitmentCrewNameList>
+    val crewInformationList: List<GetActivityRecruitmentCrewNameList> = listOf()
 )
 @kotlinx.serialization.Serializable
 data class GetActivityRecruitmentCrewNameList(
-    val nickname: String
+    val nickname: String = ""
 )
 
 // 요청자가 호스트인 활동의 크루원 닉네임 불러오기

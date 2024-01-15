@@ -45,7 +45,7 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
 
     // 로그아웃
     fun postLogout() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             loginRepositoryImpl.logoutUser(
                 LoginModel.login.deviceToken,
                 LoginModel.login.provider,

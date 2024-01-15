@@ -45,7 +45,7 @@ object ManageApplyMemberModel {
     @kotlinx.serialization.Serializable
     data class GetCrewInfoListActivityInfoResponse(
         val activityId: String,
-        val activityStatus: String
+        val activityStatus: String = ""
     )
 
     @kotlinx.serialization.Serializable

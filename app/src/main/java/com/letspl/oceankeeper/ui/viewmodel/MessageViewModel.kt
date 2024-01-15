@@ -109,7 +109,6 @@ class MessageViewModel @Inject constructor(
                     it.body()?.response?.crewInformationList?.forEach {
                         list.add(MessageModel.MessageSpinnerCrewNicknameItem(it.nickname, false))
                     }
-
                     MessageModel.crewNicknameList = list
                     _getCrewNicknameList.postValue(list)
                 } else {

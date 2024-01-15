@@ -1,5 +1,6 @@
 package com.letspl.oceankeeper.ui.adapter
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ class MessageReceiveCrewAdapter(private val messageViewModel: MessageViewModel):
     inner class CalendarViewHolder(private val binding: ItemReceiveCrewBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(item: MessageModel.MessageSpinnerCrewNicknameItem) {
+            Timber.e("MessageReceiveCrewAdapter item $item")
             if(item.isChecked) {
                 binding.itemCl.setBackgroundColor(Color.parseColor("#eceff1"))
                 binding.checkIconIv.visibility = View.VISIBLE
@@ -47,17 +49,18 @@ class MessageReceiveCrewAdapter(private val messageViewModel: MessageViewModel):
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        holder.onBind(nicknameArr[position])
+        Timber.e("onBindViewHolder ${messageViewModel.getCrewList()}")
+        holder.onBind(messageViewModel.getCrewList()[position])
     }
 
     override fun getItemCount(): Int {
-        return nicknameArr.size
+        Timber.e("getItemCount ${messageViewModel.getCrewList().size}")
+        return messageViewModel.getCrewList().size
     }
 
     fun setNicknameArr(_nicknameArr: ArrayList<MessageModel.MessageSpinnerCrewNicknameItem>) {
         nicknameArr = _nicknameArr
-        Timber.e("_nicknameArr $_nicknameArr")
-
+        Timber.e("nicknameArr $nicknameArr")
         notifyDataSetChanged()
     }
 }

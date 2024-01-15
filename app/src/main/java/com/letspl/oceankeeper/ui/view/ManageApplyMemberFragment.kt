@@ -91,7 +91,9 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
         }
 
         messageViewModel.errorMsg.observe(viewLifecycleOwner) {
-            activity.showErrorMsg(it)
+            if(it != "") {
+                activity.showErrorMsg(it)
+            }
         }
 
         manageApplyViewModel.excelMakeResult.observe(viewLifecycleOwner) {
