@@ -46,6 +46,11 @@ class MessageViewModel @Inject constructor(
         MutableLiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>>()
     val getCrewNicknameList: LiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>> get() = _getCrewNicknameList
 
+    // 프로젝트 크루 닉네임 불러오기
+    private var _getCrewNicknameList2 =
+        MutableLiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>>()
+    val getCrewNicknameList2: LiveData<List<MessageModel.MessageSpinnerCrewNicknameItem>> get() = _getCrewNicknameList2
+
     // 에러 토스트 메세지 text
     private var _errorMsg = MutableLiveData<String>()
     val errorMsg: LiveData<String> get() = _errorMsg
@@ -111,6 +116,29 @@ class MessageViewModel @Inject constructor(
                     }
                     MessageModel.crewNicknameList = list
                     _getCrewNicknameList.postValue(list)
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    // 크루원 닉네임 불러오기
+    fun getCrewNickName2(activityId: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            activityRepositoryImpl.getCrewNickname(activityId).let {
+                if (it.isSuccessful) {
+                    val list = arrayListOf<MessageModel.MessageSpinnerCrewNicknameItem>()
+                    it.body()?.response?.crewInformationList?.forEach {
+                        list.add(MessageModel.MessageSpinnerCrewNicknameItem(it.nickname, false))
+                    }
+                    MessageModel.crewNicknameList = list
+                    _getCrewNicknameList2.postValue(list)
                 } else {
                     val errorJsonObject =
                         ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
@@ -290,9 +318,19 @@ class MessageViewModel @Inject constructor(
         MessageModel.receiveList.remove(nickName)
     }
 
-    // 받을 사람 삭제
+    // 받을 사람 가져오기
     fun getReceiveList(): List<String> {
         return MessageModel.receiveList
+    }
+
+    // 받을 사람 가져오기
+    fun getReceiveListStr(): String {
+        var nickname = ""
+        MessageModel.receiveList.forEach {
+            nickname += "$it,"
+        }
+
+        return nickname.substring(0, nickname.length - 1)
     }
 
     fun getCrewList(): ArrayList<MessageModel.MessageSpinnerCrewNicknameItem> {
@@ -409,9 +447,16 @@ class MessageViewModel @Inject constructor(
         MessageModel.isLast = false
         MessageModel.messageId = null
         MessageModel.messageList.clear()
+        MessageModel.receiveList.clear()
         setTypeSpinnerClickedItemPos(0)
         setActivityNameSpinnerClickPos(0)
         _sendMessageResult.postValue(false)
+    }
+
+    fun clearSendMessageDialog() {
+        MessageModel.receiveList.clear()
+        setTypeSpinnerClickedItemPos(0)
+        setActivityNameSpinnerClickPos(0)
     }
 
     fun clearErrorMsg() {

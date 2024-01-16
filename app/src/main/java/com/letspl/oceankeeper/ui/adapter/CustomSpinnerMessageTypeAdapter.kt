@@ -10,7 +10,7 @@ import com.letspl.oceankeeper.databinding.SpinnerInnerLayoutBinding
 import com.letspl.oceankeeper.databinding.SpinnerOuterLayoutBinding
 import com.letspl.oceankeeper.ui.viewmodel.MessageViewModel
 
-class CustomSpinnerMessageTypeAdapter(context: Context, @LayoutRes private val resId: Int, private val menuList: List<MessageModel.MessageSpinnerMessageTypeItem>, private val messageViewModel: MessageViewModel)
+class CustomSpinnerMessageTypeAdapter(context: Context, @LayoutRes private val resId: Int, private var menuList: List<MessageModel.MessageSpinnerMessageTypeItem>, private val messageViewModel: MessageViewModel)
     : ArrayAdapter<MessageModel.MessageSpinnerMessageTypeItem>(context, resId, menuList) {
 
     // 드롭다운하지 않은 상태의 Spinner 항목의 뷰
@@ -37,4 +37,9 @@ class CustomSpinnerMessageTypeAdapter(context: Context, @LayoutRes private val r
     }
 
     override fun getCount() = menuList.size
+
+    fun setMenuList(list: List<MessageModel.MessageSpinnerMessageTypeItem>) {
+        menuList = list
+        notifyDataSetChanged()
+    }
 }

@@ -4,10 +4,13 @@ import CustomSpinnerCrewNicknameAdapter
 import CustomSpinnerMessageTypeAdapter
 import CustomSpinnerProjectNameAdapter
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.ImageView
@@ -15,6 +18,7 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -34,10 +38,11 @@ import com.letspl.oceankeeper.ui.viewmodel.MessageViewModel
 import com.letspl.oceankeeper.util.EntryPoint
 import com.letspl.oceankeeper.util.MessageEnterType
 import dagger.hilt.android.AndroidEntryPoint
+import org.w3c.dom.Text
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
+class MessageFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onBackPressed() {
         activity.finish()
@@ -51,8 +56,10 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
     private val activity by lazy {
         requireActivity() as BaseActivity
     }
-    private lateinit var bottomSheetDialog : BottomSheetDialog
-    private lateinit var messageReceiveCrewAdapter : MessageReceiveCrewAdapter
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var bottomSheetView: View
+    private lateinit var messageReceiveCrewAdapter: MessageReceiveCrewAdapter
+    private lateinit var crewNicknameSpinner: CustomSpinnerCrewNicknameAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,15 +91,19 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     private fun setupViewModelObserver() {
         messageViewModel.sendMessageResult.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 bottomSheetDialog.dismiss()
                 activity.showSuccessMsg("메세지 전송이 정상 처리 되었습니다.")
             }
         }
 
         messageViewModel.errorMsg.observe(viewLifecycleOwner) {
-            if(it != "") {
+            if (it != "") {
+                bottomSheetView.findViewById<AppCompatButton>(R.id.message_content_et).text = ""
                 activity.showErrorMsg(it)
+                if(::bottomSheetView.isInitialized) {
+                    showErrorMsg(it)
+                }
             }
         }
 
@@ -105,7 +116,11 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         }
 
         messageViewModel.getCrewNicknameList.observe(viewLifecycleOwner) {
-            setupSendMessageBottomSheetDialog(messageViewModel.getActivityNameSaveList(), it)
+            setupSendMessageBottomSheetDialog(messageViewModel.getActivityNameSaveList(), messageViewModel.getCrewList())
+        }
+
+        messageViewModel.getCrewNicknameList2.observe(viewLifecycleOwner) {
+            crewNicknameSpinner.setMenuList(messageViewModel.getCrewList())
         }
     }
 
@@ -122,8 +137,8 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
         )
 
         binding.messageRv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if(!binding.messageRv.canScrollVertically(1)) {
-                if(!messageViewModel.isMessageLast()) {
+            if (!binding.messageRv.canScrollVertically(1)) {
+                if (!messageViewModel.isMessageLast()) {
                     progressDialog.show()
                     messageViewModel.getMessage(messageViewModel.getTypeTabItem()) // 메세지 조회
                 }
@@ -133,11 +148,11 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     // 상단 탭 변경
     private fun onChangeItemTab() {
-        binding.itemTab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+        binding.itemTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 // tab 상태가 변경됨
                 Timber.e("pos ${tab?.position}")
-                when(tab?.position) {
+                when (tab?.position) {
                     0 -> messageViewModel.changeTypeTabItem("ALL")
                     1 -> messageViewModel.changeTypeTabItem("NOTICE")
                     2 -> messageViewModel.changeTypeTabItem("PRIVATE")
@@ -163,198 +178,212 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
     private fun setupMessageReceiveCrewAdapterRecyclerView() {
 
         messageReceiveCrewAdapter = MessageReceiveCrewAdapter(messageViewModel)
+        crewNicknameSpinner = CustomSpinnerCrewNicknameAdapter(
+            requireContext(),
+            R.layout.spinner_outer_layout,
+            messageViewModel.getCrewList(),
+            messageViewModel
+        )
     }
 
     // 메세지 전송 bottomSheetDialog 표시
     fun showSendMessageDialog() {
-        if(::bottomSheetDialog.isInitialized) {
+        if (::bottomSheetDialog.isInitialized) {
             bottomSheetDialog.show()
         }
     }
 
+    private fun showErrorMsg(msg: String) {
+        bottomSheetView.findViewById<ConstraintLayout>(R.id.error_cl).visibility = View.VISIBLE
+        bottomSheetView.findViewById<TextView>(R.id.error_msg_tv).text = msg
+        Handler(Looper.myLooper()!!).postDelayed({
+            bottomSheetView.findViewById<ConstraintLayout>(R.id.error_cl).visibility = View.GONE
+        }, 3000)
+    }
+
     // 메세지 전송 bottomDialogSheet 세팅
-    private fun setupSendMessageBottomSheetDialog(projectNameList: List<MessageModel.MessageSpinnerProjectNameItem>, crewNicknameList: List<MessageModel.MessageSpinnerCrewNicknameItem>) {
-        val bottomSheetView = layoutInflater.inflate(R.layout.dialog_send_message, null)
+    private fun setupSendMessageBottomSheetDialog(
+        projectNameList: List<MessageModel.MessageSpinnerProjectNameItem>,
+        crewNicknameList: List<MessageModel.MessageSpinnerCrewNicknameItem>
+    ) {
+
+        val listMessageType: List<MessageModel.MessageSpinnerMessageTypeItem> = listOf(
+            MessageModel.MessageSpinnerMessageTypeItem("활동공지", true),
+            MessageModel.MessageSpinnerMessageTypeItem("개인쪽지", false)
+        )
+
+        bottomSheetView = layoutInflater.inflate(R.layout.dialog_send_message, null)
         bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(bottomSheetView)
 
+        bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).adapter =
+            CustomSpinnerMessageTypeAdapter(
+                requireContext(),
+                R.layout.spinner_outer_layout,
+                listMessageType,
+                messageViewModel
+            )
+        bottomSheetView.findViewById<Spinner>(R.id.my_project_spinner).adapter =
+            CustomSpinnerProjectNameAdapter(
+                requireContext(),
+                R.layout.spinner_outer_layout,
+                projectNameList,
+                messageViewModel
+            )
 
-        Timber.e("projectNameList $projectNameList")
-        Timber.e("crewNicknameList $crewNicknameList")
-
-        val listMessageType: List<MessageModel.MessageSpinnerMessageTypeItem> = listOf(MessageModel.MessageSpinnerMessageTypeItem("활동공지", false),MessageModel.MessageSpinnerMessageTypeItem("개인쪽지", true))
-        bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).adapter = CustomSpinnerMessageTypeAdapter(requireContext(), R.layout.spinner_outer_layout, listMessageType, messageViewModel)
-        bottomSheetView.findViewById<Spinner>(R.id.my_project_spinner).adapter = CustomSpinnerProjectNameAdapter(requireContext(), R.layout.spinner_outer_layout, projectNameList, messageViewModel)
-
-//        val crewNicknameSpinner = CustomSpinnerCrewNicknameAdapter(requireContext(), R.layout.spinner_outer_layout, messageViewModel.getCrewList(), messageViewModel)
-//        bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).adapter = crewNicknameSpinner
-//        crewNicknameSpinner.notifyDataSetChanged()
+        bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).adapter = crewNicknameSpinner
+        crewNicknameSpinner.setMenuList(crewNicknameList)
 
         bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetDialog.behavior.isDraggable = false
         bottomSheetDialog.behavior.skipCollapsed = true
 
-        bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).setOnTouchListener { v, event ->
-            messageViewModel.setIsClickedMessageType(true)
-            false
-        }
+        bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner)
+            .setOnTouchListener { v, event ->
+                messageViewModel.setIsClickedMessageType(true)
+                false
+            }
 
-        bottomSheetView.findViewById<Spinner>(R.id.my_project_spinner).setOnTouchListener { v, event ->
-            messageViewModel.setIsClickedProjectName(true)
-            false
-        }
+        bottomSheetView.findViewById<Spinner>(R.id.my_project_spinner)
+            .setOnTouchListener { v, event ->
+                messageViewModel.setIsClickedProjectName(true)
+                false
+            }
 
-        bottomSheetView.findViewById<RecyclerView>(R.id.receive_rv)?.adapter = messageReceiveCrewAdapter
+        bottomSheetView.findViewById<RecyclerView>(R.id.receive_rv)?.adapter =
+            messageReceiveCrewAdapter
 
         messageReceiveCrewAdapter.setNicknameArr(crewNicknameList as ArrayList<MessageModel.MessageSpinnerCrewNicknameItem>)
         messageReceiveCrewAdapter.notifyDataSetChanged()
 
-//        bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).setOnTouchListener { v, event ->
-//            messageViewModel.setIsClickedReceive(true)
-//            false
-//        }
-
         getEnterType(bottomSheetDialog)
 
         // 쪽지 유형 선택 시
-        bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if(messageViewModel.isClickedMessageType()) {
-                    messageViewModel.setTypeSpinnerClickedItemPos(position)
-                    when (position) {
-                        0 -> {
-                            bottomSheetView.findViewById<TextView>(R.id.receive_tv).visibility =
-                                View.GONE
+        bottomSheetView.findViewById<Spinner>(R.id.message_type_spinner).onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (messageViewModel.isClickedMessageType()) {
+                        Timber.e("message_type_spinner")
+                        messageViewModel.setTypeSpinnerClickedItemPos(position)
+                        when (position) {
+                            0 -> {
+                                messageViewModel.setTypeSpinnerClickedItemPos(0)
+                                bottomSheetView.findViewById<TextView>(R.id.receive_tv).visibility =
+                                    View.GONE
+                                bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).visibility =
+                                    View.GONE
+                                messageViewModel.clearReceiveList()
+                                messageViewModel.setMessageEnterType(MessageEnterType.ActivityMessage)
+                            }
 
-                            messageViewModel.clearReceiveList()
-                            messageViewModel.setMessageEnterType(MessageEnterType.ActivityMessage)
+                            1 -> {
+                                messageViewModel.setTypeSpinnerClickedItemPos(1)
+                                messageViewModel.setMessageEnterType(MessageEnterType.UserToUser)
+                                bottomSheetView.findViewById<TextView>(R.id.receive_tv).visibility =
+                                    View.VISIBLE
+                                bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).visibility =
+                                    View.VISIBLE
+                            }
                         }
 
-                        1 -> {
-                            messageViewModel.setMessageEnterType(MessageEnterType.UserToUser)
-                            bottomSheetView.findViewById<TextView>(R.id.receive_tv).visibility =
-                                View.VISIBLE
-                        }
+                        messageViewModel.clearMessageSpinnerClick()
                     }
+                }
 
-                    messageViewModel.clearMessageSpinnerClick()
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    Timber.e("test")
                 }
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                Timber.e("test")
-            }
-        }
 
         // 활동 프로젝트 선택 시
-        bottomSheetView.findViewById<Spinner>(R.id.my_project_spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if(messageViewModel.isClickedProjectName()) {
-                     when (messageViewModel.getMessageEnterType()) {
-                        MessageEnterType.ActivityMessage -> {
-                            messageViewModel.setMessageEnterType(MessageEnterType.ActivityMessage)
-                        }
+        bottomSheetView.findViewById<Spinner>(R.id.my_project_spinner).onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (messageViewModel.isClickedProjectName()) {
+                        Timber.e("my_project_spinner")
+                        when (messageViewModel.getMessageEnterType()) {
+                            MessageEnterType.ActivityMessage -> {
+                                messageViewModel.setMessageEnterType(MessageEnterType.ActivityMessage)
+                            }
 
-                        MessageEnterType.UserToUser -> {
-                            messageViewModel.setMessageEnterType(MessageEnterType.UserToUser)
-                        }
+                            MessageEnterType.UserToUser -> {
+                                messageViewModel.setMessageEnterType(MessageEnterType.UserToUser)
+                            }
 
-                        else -> false
+                            else -> false
+                        }
+                        Timber.e("messageViewModel.setActivityNameSpinnerClickPos(position) $position")
+                        messageViewModel.setActivityNameSpinnerClickPos(position)
+                        messageViewModel.getCrewNickName2(messageViewModel.getActivityNameSpinnerClickActivityId())
+
+                        messageViewModel.clearMessageSpinnerClick()
                     }
-                    messageViewModel.setActivityNameSpinnerClickPos(position)
-                    messageViewModel.getCrewNickName(messageViewModel.getActivityNameSpinnerClickActivityId())
+                }
 
-                    messageViewModel.clearMessageSpinnerClick()
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    Timber.e("test")
                 }
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                Timber.e("test")
-            }
-        }
-
-        // 받는 사람 선택 시
-//        bottomSheetView.findViewById<Spinner>(R.id.receive_spinner).onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                Timber.e("messageViewModel.isClickedReceive() ${messageViewModel.isClickedReceive()}")
-//
-//                if(messageViewModel.isClickedReceive()) {
-//                    Timber.e("crewNicknameList[position].nickname ${crewNicknameList[position].nickname}")
-//                    messageViewModel.setReceiveList(crewNicknameList[position].nickname)
-//                    messageViewModel.setActivityNameSpinnerClickPos(position)
-////                    messageViewModel.setCrewNicknameListChecked(position)
-//                    Timber.e("")
-//                }
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//                Timber.e("test")
-//            }
-//        }
 
         // 전송 버튼 클릭
         bottomSheetView.findViewById<AppCompatButton>(R.id.send_btn).setOnClickListener {
-            if(bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString() != ""){
-                when(messageViewModel.getTypeSpinnerClickedItem()) {
+            Timber.e("send_btn")
+            Timber.e("bottomSheetView.findViewById<EditText>(R.id.message_content_et).text ${bottomSheetView.findViewById<EditText>(R.id.message_content_et).text}")
+            if (bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString() != "") {
+                Timber.e("messageViewModel.getTypeSpinnerClickedItem() ${messageViewModel.getTypeSpinnerClickedItem()}")
+                when (messageViewModel.getTypeSpinnerClickedItem()) {
                     "NOTICE" -> {
-//                        messageViewModel.postMessage(
-//                            messageViewModel.getActivityNameSpinnerClickActivityId(),
-//                            bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
-//                            messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
-//                            messageViewModel.getTypeSpinnerClickedItem()
-//                        )
-                    }
-                    "PRIVATE" -> {
-                        if(messageViewModel.getConvertFromMessageCrewItemToStringForNickname().size == 1) {
-                            Timber.e("getConvertFromMessageCrewItemToStringForNickname ${messageViewModel.getConvertFromMessageCrewItemToStringForNickname()}")
+                        if(messageViewModel.getConvertFromMessageCrewItemToStringForNickname().isNotEmpty()){
+                            messageViewModel.postMessage(
+                                messageViewModel.getActivityNameSpinnerClickActivityId(),
+                                bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
+                                messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
+                                messageViewModel.getTypeSpinnerClickedItem()
+                            )
                         } else {
-                            Timber.e("getReceiveList ${messageViewModel.getReceiveList()}")
-
+                            showErrorMsg("해당 프로젝트는 신청한 인원이 없습니다.")
                         }
-//                        messageViewModel.postMessage(
-//                            messageViewModel.getActivityNameSpinnerClickActivityId(),
-//                            bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
-//                            messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
-//                            messageViewModel.getTypeSpinnerClickedItem()
-//                        )
+                    }
+
+                    "PRIVATE" -> {
+                        if (messageViewModel.getReceiveList().isNotEmpty()) {
+                            messageViewModel.postMessage(
+                                messageViewModel.getActivityNameSpinnerClickActivityId(),
+                                bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
+                                messageViewModel.getReceiveList(),
+                                messageViewModel.getTypeSpinnerClickedItem()
+                            )
+                        } else {
+                            showErrorMsg("받는 사람을 1명 이상 선택해 주세요.")
+                        }
                     }
                 }
-//                messageViewModel.postMessage(
-//                    messageViewModel.getActivityNameSpinnerClickActivityId(),
-//                    bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
-//                    messageViewModel.getConvertFromMessageCrewItemToStringForNickname(),
-//                    messageViewModel.getTypeSpinnerClickedItem()
-//                )
             } else {
-                activity.showErrorMsg("메세지 내용을 작성해주세요.")
+                showErrorMsg("메세지 내용을 작성해 주세요.")
             }
-
         }
 
         // 닫기 버튼 클릭
         bottomSheetView.findViewById<ImageView>(R.id.close_btn).setOnClickListener {
             Timber.e("close_btn ")
             bottomSheetDialog.dismiss()
+            messageViewModel.clearSendMessageDialog()
         }
     }
 
     private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
-        val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
+        val bottomSheet =
+            bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
         val behavior = BottomSheetBehavior.from(bottomSheet)
         val layoutParams = bottomSheet!!.layoutParams
         layoutParams.height = getBottomSheetDialogDefaultHeight()
@@ -378,16 +407,18 @@ class MessageFragment: Fragment(), BaseActivity.OnBackPressedListener {
     // enterType 에 따라 Spinner Block 처리함
     private fun getEnterType(bottomSheetDialog: BottomSheetDialog) {
         Timber.e("messageViewModel.getMessageEnterType() ${messageViewModel.getMessageEnterType()}")
-        when(messageViewModel.getMessageEnterType()) {
+        when (messageViewModel.getMessageEnterType()) {
             // 일반 활동 공지 쪽지
             MessageEnterType.ActivityMessage -> {
                 bottomSheetDialog.findViewById<TextView>(R.id.receive_tv)?.visibility = View.GONE
-                bottomSheetDialog.findViewById<Spinner>(R.id.receive_spinner)?.visibility = View.GONE
+                bottomSheetDialog.findViewById<Spinner>(R.id.receive_spinner)?.visibility =
+                    View.GONE
             }
             // 개인쪽지
             MessageEnterType.UserToUser -> {
                 bottomSheetDialog.findViewById<TextView>(R.id.receive_tv)?.visibility = View.VISIBLE
-                bottomSheetDialog.findViewById<Spinner>(R.id.receive_spinner)?.visibility = View.VISIBLE
+                bottomSheetDialog.findViewById<Spinner>(R.id.receive_spinner)?.visibility =
+                    View.VISIBLE
             }
 
             else -> false

@@ -185,10 +185,19 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
         val clickedNickList = manageApplyViewModel.getClickedCrewNicknameList()
         if (clickedNickList.isNotEmpty()) {
             SendMessageManageDialog(requireContext()) { content ->
-                messageViewModel.postMessage(activityId,
-                    content,
-                    clickedNickList,
-                    "NOTICE")
+                Timber.e("clickedNickList.size ${clickedNickList.size}")
+                Timber.e("manageApplyViewModel.getApplyCrewList().size ${manageApplyViewModel.getApplyCrewList().size}")
+                if(clickedNickList.size == manageApplyViewModel.getApplyCrewList().size) {
+                    messageViewModel.postMessage(activityId,
+                        content,
+                        clickedNickList,
+                        "NOTICE")
+                } else {
+                    messageViewModel.postMessage(activityId,
+                        content,
+                        clickedNickList,
+                        "PRIVATE")
+                }
             }.show()
         } else {
             activity.showErrorMsg("1명 이상 선택해 주세요.")
@@ -252,6 +261,7 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
         messageViewModel.clearMessageList()
         manageApplyViewModel.clearErrorMsg()
         messageViewModel.clearErrorMsg()
+        manageApplyViewModel.setAllChecked(false)
 
         _binding = null
     }

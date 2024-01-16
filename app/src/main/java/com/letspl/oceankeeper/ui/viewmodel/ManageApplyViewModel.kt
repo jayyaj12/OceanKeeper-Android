@@ -291,9 +291,14 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
         return tempApplicationIdArr
     }
 
-    // 저장된 crewlist 불러오기
+    // 저장된 temp crewlist 불러오기
     fun getTempApplyCrewList(): List<ManageApplyMemberModel.CrewInfoDto> {
         return ManageApplyMemberModel.tempApplyCrewList
+    }
+
+    // 저장된 crewlist 불러오기
+    fun getApplyCrewList(): List<ManageApplyMemberModel.CrewInfoDto> {
+        return ManageApplyMemberModel.applyCrewList
     }
 
     fun setAllChecked(flag: Boolean) {
