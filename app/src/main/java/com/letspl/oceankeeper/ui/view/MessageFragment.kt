@@ -28,15 +28,15 @@ import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
-import com.letspl.oceankeeper.R
 import com.letspl.oceankeeper.data.model.MessageModel
-import com.letspl.oceankeeper.databinding.FragmentMessageBinding
 import com.letspl.oceankeeper.ui.adapter.MessageListAdapter
 import com.letspl.oceankeeper.ui.adapter.MessageReceiveCrewAdapter
 import com.letspl.oceankeeper.ui.dialog.ProgressDialog
 import com.letspl.oceankeeper.ui.viewmodel.MessageViewModel
 import com.letspl.oceankeeper.util.EntryPoint
 import com.letspl.oceankeeper.util.MessageEnterType
+import com.letspl.oceankeeper.R
+import com.letspl.oceankeeper.databinding.FragmentMessageBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.w3c.dom.Text
 import timber.log.Timber

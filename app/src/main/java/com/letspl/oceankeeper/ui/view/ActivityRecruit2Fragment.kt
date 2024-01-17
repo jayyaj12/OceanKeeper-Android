@@ -154,7 +154,6 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-
             //기존의 startActivityForResult(intent)에 해당
         }
 
