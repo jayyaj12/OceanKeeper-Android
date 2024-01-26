@@ -267,8 +267,8 @@
                     <ImageView
                         android:id="@+id/keeper_introduce_iv"
                         android:layout_width="match_parent"
-                        android:scaleType="centerCrop"
                         android:layout_height="match_parent"
+                        android:background="#000000"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}" />
 
                 </androidx.cardview.widget.CardView>
@@ -317,6 +317,7 @@
                         android:id="@+id/activity_story_iv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="#000000"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl}" />
 
                 </androidx.cardview.widget.CardView>

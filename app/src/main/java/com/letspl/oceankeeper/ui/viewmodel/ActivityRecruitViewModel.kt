@@ -359,7 +359,7 @@ class ActivityRecruitViewModel : ViewModel() {
         return ActivityRecruit2Model.activityStoryImgStr ?: ""
     }
 
-    // 활동 스토리 내용 불러오기
+    // 키퍼소개 내용 불러오기
     fun getKeeperIntroduceContent(): String {
         return ActivityRecruit2Model.keeperIntroduceContent
     }
@@ -524,13 +524,13 @@ class ActivityRecruitViewModel : ViewModel() {
     }
 
     // 임서저장 활성화 여부 확인
-    fun isLoadTempData(): Boolean {
+    fun isLoadTempData(): String {
         return ActivityRecruitModel.isLoadTempData
     }
 
     // 임시저장 활성화 여부 변경
-    fun setIsLoadTempData(flag: Boolean) {
-        ActivityRecruitModel.isLoadTempData = flag
+    fun setIsLoadTempData(str: String) {
+        ActivityRecruitModel.isLoadTempData = str
     }
 
     // 프로젝트 명 세팅
@@ -645,6 +645,16 @@ class ActivityRecruitViewModel : ViewModel() {
     // 준비물 변경
     fun setMaterial(text: String) {
         ActivityRecruitModel.material = text
+    }
+
+    // 기타 안내 사항 가져오기
+    fun isQuotaClicked(): Boolean {
+        return ActivityRecruitModel.isQuotaClicked
+    }
+
+    // 제공 리워드 변경
+    fun setQuotaClicked(flag: Boolean) {
+        ActivityRecruitModel.isQuotaClicked = flag
     }
 
     // 제공 리워드 가져오기
@@ -774,5 +784,6 @@ class ActivityRecruitViewModel : ViewModel() {
         ActivityRecruitModel.material = ""
         ActivityRecruitModel.giveReward = ""
         ActivityRecruitModel.otherGuide = ""
+        ActivityRecruitModel.isQuotaClicked = false
     }
 }

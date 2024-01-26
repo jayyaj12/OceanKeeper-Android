@@ -309,11 +309,13 @@ class ActivityRecruit2ViewModel @Inject constructor(
 
     // 키퍼 소개 텍스트 길이 변경
     fun onChangedKeeperIntroduceEditText(str: String) {
+        ActivityRecruit2Model.keeperIntroduceContent = str
         _keeperIntroduceLength.postValue(str.length)
     }
 
     // 활동 스토리 텍스트 길이 변경
     fun onChangedActivityStoryEditText(str: String) {
+        ActivityRecruit2Model.activityStoryContent = str
         _activityStoryLength.postValue(str.length)
     }
 
@@ -334,6 +336,8 @@ class ActivityRecruit2ViewModel @Inject constructor(
         ActivityRecruit2Model.thumbnailImgStr = null
         ActivityRecruit2Model.keeperIntroduceImgStr = null
         ActivityRecruit2Model.activityStoryImgStr = null
+        ActivityRecruit2Model.keeperIntroduceContent = ""
+        ActivityRecruit2Model.activityStoryContent = ""
         _recruitActivityIsSuccess.postValue(false)
         _editRecruitActivityIsSuccess.postValue(false)
     }

@@ -120,13 +120,13 @@
 
                 <ImageView
                     android:id="@+id/thumbnail_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="192dp"
+                    android:layout_width="0dp"
+                    android:layout_height="190dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:scaleType="centerCrop"
+                    android:layout_marginTop="9dp"
                     android:layout_marginEnd="16dp"
-                    android:adjustViewBounds="true"
+                    android:background="#000000"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/thumbnail_tv" />
@@ -191,13 +191,14 @@
 
                 <ImageView
                     android:id="@+id/introduce_keeper_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="192dp"
+                    android:layout_width="0dp"
+                    android:layout_height="190dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="9dp"
                     android:layout_marginEnd="16dp"
-                    android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
+                    android:background="#000000"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/introduce_keeper_tv" />
@@ -294,12 +295,13 @@
 
                 <ImageView
                     android:id="@+id/activity_story_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="192dp"
+                    android:layout_width="0dp"
+                    android:layout_height="190dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="9dp"
                     android:layout_marginEnd="16dp"
-                    android:adjustViewBounds="true"
+                    android:background="#000000"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/activity_story_tv" />
@@ -371,12 +373,12 @@
                 android:layout_width="96dp"
                 android:layout_height="44dp"
                 android:layout_marginEnd="8dp"
-                android:visibility="gone"
                 android:background="@drawable/custom_radius8_solid_p500"
                 android:fontFamily="@font/pretendard_bold"
                 android:text="임시 저장"
                 android:textColor="@color/white"
                 android:textSize="16dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/complete_btn"
                 app:layout_constraintTop_toTopOf="@id/complete_btn" />
 

@@ -27,6 +27,7 @@ import com.letspl.oceankeeper.util.ImgFileMaker
 import com.letspl.oceankeeper.util.ResizingImage
 import com.letspl.oceankeeper.util.RotateTransform
 import com.letspl.oceankeeper.R
+import com.letspl.oceankeeper.data.model.ActivityRecruit2Model
 import com.letspl.oceankeeper.databinding.FragmentActivityRecruit2Binding
 import com.letspl.oceankeeper.ui.dialog.ProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,8 +74,8 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                             ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
                         )
 
-                        Glide.with(requireActivity()).load(imageUri).fitCenter()
-                            .into(binding.thumbnailIv)
+                        binding.thumbnailIv.visibility = View.VISIBLE
+                        Glide.with(requireActivity()).load(imageUri).into(binding.thumbnailIv)
 
                         binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.thumbnailPhotoTv.visibility = View.GONE
@@ -107,8 +108,8 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                             ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
                         )
 
-                        Glide.with(requireActivity()).load(imageUri).fitCenter()
-                            .into(binding.introduceKeeperIv)
+                        binding.introduceKeeperIv.visibility = View.VISIBLE
+                        Glide.with(requireActivity()).load(imageUri).into(binding.introduceKeeperIv)
 
                         binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.introduceKeeperPhotoTv.visibility = View.GONE
@@ -141,8 +142,8 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                             ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
                         )
 
-                        Glide.with(requireActivity()).load(imageUri).fitCenter()
-                            .into(binding.activityStoryIv)
+                        binding.activityStoryIv.visibility = View.VISIBLE
+                        Glide.with(requireActivity()).load(imageUri).into(binding.activityStoryIv)
 
                         binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.activityStoryPhotoTv.visibility = View.GONE
@@ -156,14 +157,15 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            //기존의 startActivityForResult(intent)에 해당
-        }
+        mActivityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                //기존의 startActivityForResult(intent)에 해당
+            }
 
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentActivityRecruit2Binding.inflate(layoutInflater)
@@ -179,10 +181,39 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         setupEditTextListener()
         setupViewModelObserver()
         setupProgressDialog()
+        loadData()
+    }
 
-        Timber.e("1 ${activityRecruitViewModel.getRecruitStartDate()}")
-        Timber.e("2 ${activityRecruitViewModel.getRecruitEndDate()}")
-        Timber.e("3 ${activityRecruitViewModel.getActivityStartDate()}")
+    // 데이터 불러오기
+    private fun loadData() {
+        // 썸네일 이미지 불러오기
+        if (activityRecruit2ViewModel.getThumbnailImageFile() != null) {
+            Glide.with(requireActivity()).load(activityRecruit2ViewModel.getThumbnailImageFile())
+                .fitCenter()
+                .into(binding.thumbnailIv)
+        }
+        // 키퍼 소개 이미지 불러오기
+        if (activityRecruit2ViewModel.getKeeperIntroduceImageFile() != null) {
+            Glide.with(requireActivity())
+                .load(activityRecruit2ViewModel.getKeeperIntroduceImageFile())
+                .fitCenter()
+                .into(binding.introduceKeeperIv)
+        }
+        // 활동 스토리 이미지 불러오기
+        if (activityRecruit2ViewModel.getActivityStoryImageFile() != null) {
+            Glide.with(requireActivity())
+                .load(activityRecruit2ViewModel.getActivityStoryImageFile())
+                .fitCenter()
+                .into(binding.activityStoryIv)
+        }
+        // 키퍼 소개 text 불러오기
+        if (activityRecruitViewModel.getKeeperIntroduceContent() != "") {
+            binding.introduceKeeperEt.setText(activityRecruitViewModel.getKeeperIntroduceContent())
+        }
+        // 활동 스토리 text 불러오기
+        if (activityRecruitViewModel.getActivityStoryContent() != "") {
+            binding.activityStoryEt.setText(activityRecruitViewModel.getActivityStoryContent())
+        }
     }
 
     private fun setupProgressDialog() {
@@ -191,7 +222,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     private fun setupViewModelObserver() {
         activityRecruit2ViewModel.errorMsg.observe(viewLifecycleOwner) {
-            if(it != "") {
+            if (it != "") {
                 progressDialog.dismiss()
                 activity.showErrorMsg(it)
             }
@@ -199,7 +230,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
         // 활동 모집 등록 성공 여부
         activityRecruit2ViewModel.recruitActivityIsSuccess.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 progressDialog.dismiss()
 
                 val dialog = RecruitActivityCompleteDialog(requireContext(),
@@ -216,7 +247,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
                 dialog.setCancelable(false)
                 dialog.show()
-                
+
                 activityRecruitViewModel.clearTempData()
                 activityRecruit2ViewModel.clearData()
             }
@@ -244,9 +275,9 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
             requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
         )
 
-        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Timber.e("true")
-            if(imagePermission == PackageManager.PERMISSION_DENIED) {
+            if (imagePermission == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(
                     requireActivity(), arrayOf(
                         android.Manifest.permission.READ_MEDIA_IMAGES
@@ -257,9 +288,9 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
             } else {
                 true
             }
-        } else{
+        } else {
             Timber.e("else")
-            if(writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+            if (writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(
                     requireActivity(), arrayOf(
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -339,7 +370,6 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     // 뒤로가기 버튼 클릭
     fun onClickedBackBtn() {
-        activityRecruit2ViewModel.clearData()
         activity.onReplaceFragment(ActivityRecruitFragment())
     }
 

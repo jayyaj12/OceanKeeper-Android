@@ -34,9 +34,12 @@ object RotateTransform {
     // 이미지 회전
     fun rotateImage(source: Bitmap, angle: Float, imageUri: Uri? = null): Bitmap? {
         val matrix = Matrix()
-        matrix.setRotate(angle, source.width.toFloat() / 2, source.height.toFloat() / 2)
+        Timber.e("source.width ${source.width}")
+        Timber.e("source.height ${source.height}")
+//        matrix.setRotate(angle, source.width.toFloat() / 2, source.height.toFloat() / 2)
+        matrix.setRotate(angle, source.width.toFloat(), source.height.toFloat())
         val bitmap =
             MediaStore.Images.Media.getBitmap(ContextUtil.context.contentResolver, imageUri)
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width / 2, bitmap.height / 2, matrix, true)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 }

@@ -70,8 +70,7 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
                             ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
                         )
 
-                        Glide.with(requireActivity()).load(imageUri).fitCenter()
-                            .into(binding.thumbnailIv)
+                        Glide.with(requireActivity()).load(imageUri).into(binding.thumbnailIv)
 
                         binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.thumbnailPhotoTv.visibility = View.GONE
@@ -104,8 +103,8 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
                             ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
                         )
 
-                        Glide.with(requireActivity()).load(imageUri).fitCenter()
-                            .into(binding.introduceKeeperIv)
+                        binding.introduceKeeperIv.visibility = View.VISIBLE
+                        Glide.with(requireActivity()).load(imageUri).into(binding.introduceKeeperIv)
 
                         binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.introduceKeeperPhotoTv.visibility = View.GONE
@@ -138,8 +137,8 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
                             ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
                         )
 
-                        Glide.with(requireActivity()).load(imageUri).fitCenter()
-                            .into(binding.activityStoryIv)
+                        binding.activityStoryIv.visibility = View.VISIBLE
+                        Glide.with(requireActivity()).load(imageUri).into(binding.activityStoryIv)
 
                         binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.activityStoryPhotoTv.visibility = View.GONE
@@ -181,33 +180,32 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
 
     // 데이터 불러오기
     private fun setupLoadData() {
+        // 이미지 세팅
         Glide.with(requireActivity()).load(activityRecruitViewModel.getThumbnailImgStr()).fitCenter()
             .into(binding.thumbnailIv)
-        Glide.with(requireActivity()).load(activityRecruitViewModel.getKeeperIntroduceStr()).fitCenter()
-            .into(binding.introduceKeeperIv)
-        Glide.with(requireActivity()).load(activityRecruitViewModel.getActivityStoryImgStr()).fitCenter()
-            .into(binding.activityStoryIv)
 
-        binding.introduceKeeperEt.setText(activityRecruitViewModel.getKeeperIntroduceContent())
-        binding.activityStoryEt.setText(activityRecruitViewModel.getActivityStoryContent())
-
-        activityRecruit2ViewModel.onChangedKeeperIntroduceEditText(activityRecruitViewModel.getKeeperIntroduceContent())
-        activityRecruit2ViewModel.onChangedActivityStoryEditText(activityRecruitViewModel.getActivityStoryContent())
-
-        if(activityRecruitViewModel.getThumbnailImgStr() != "") {
-            binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
-            binding.thumbnailPhotoTv.visibility = View.GONE
-        }
-
+        // 키퍼 소개 이미지가 없을 경우 background 로 black 을 깔아뒀기 때문에 visble gone 되어 있음 이미지 있으면 배경 표시하기 위해 visble 로 변경
         if(activityRecruitViewModel.getKeeperIntroduceStr() != "") {
+            binding.introduceKeeperIv.visibility = View.VISIBLE
             binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
-            binding.introduceKeeperPhotoTv.visibility = View.GONE
+            Glide.with(requireActivity()).load(activityRecruitViewModel.getKeeperIntroduceStr()).fitCenter()
+                .into(binding.introduceKeeperIv)
+        }
+        if(activityRecruitViewModel.getActivityStoryImgStr() != "") {
+            binding.activityStoryIv.visibility = View.VISIBLE
+            binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
+            Glide.with(requireActivity()).load(activityRecruitViewModel.getActivityStoryImgStr()).fitCenter()
+                .into(binding.activityStoryIv)
         }
 
-        if(activityRecruitViewModel.getActivityStoryImgStr() != "") {
-            binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
-            binding.activityStoryPhotoTv.visibility = View.GONE
-        }
+        // 키퍼 소개 text
+        binding.introduceKeeperEt.setText(activityRecruitViewModel.getKeeperIntroduceContent())
+        // 활동 스토리 text
+        binding.activityStoryEt.setText(activityRecruitViewModel.getActivityStoryContent())
+        // 키퍼 소개 text length
+        activityRecruit2ViewModel.onChangedKeeperIntroduceEditText(activityRecruitViewModel.getKeeperIntroduceContent())
+        // 활동 스토리 text length
+        activityRecruit2ViewModel.onChangedActivityStoryEditText(activityRecruitViewModel.getActivityStoryContent())
     }
 
     private fun setupViewModelObserver() {

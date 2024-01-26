@@ -3,10 +3,11 @@ package com.letspl.oceankeeper.data.model
 import com.letspl.oceankeeper.data.dto.ActivityRegisterLocationDto
 
 object ActivityRecruitModel {
-    var isLoadTempData = false // 임시저장 활성화 여부
+    var isLoadTempData = "" // 임시저장 활성화 여부 address: 주소 검색 시 / temp : 임시 저장 활성화
     var isGiveReward = false // 참여 키퍼 리워드 여부
     var projectName = "" // 프로젝트 이름
     var quota : Int? = null // 모집 정원
+    var isQuotaClicked = false // 모집 정원 영역 클릭 됐는지 여부
     var trafficGuide = 0 // 교통 정보
     var recruitCategory = 1 // 모집 카테고리
     var recruitLocation = 1 // 모집 위치

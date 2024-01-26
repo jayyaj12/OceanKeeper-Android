@@ -82,7 +82,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     // 클릭 리스너
     private fun setUpClickedListener() {
         binding.activityLocationV.setOnClickListener {
-            activityRecruitViewModel.setIsLoadTempData(true)
+            activityRecruitViewModel.setIsLoadTempData("address")
             activity.onReplaceFragment(SearchMapFragment())
         }
     }
@@ -323,7 +323,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
             activityRecruitViewModel.setOtherGuide(binding.otherGuideEt.text.toString())
 
             // 임시저장 활성화
-            activityRecruitViewModel.setIsLoadTempData(true)
+            activityRecruitViewModel.setIsLoadTempData("temp")
             activity.onReplaceFragment(EditActivityRecruit2Fragment(activityId))
         } else {
             Toast.makeText(requireContext(), "모든 값을 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -336,14 +336,14 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
         activityRecruitViewModel.clearTempData()
 
         // 임시저장 활성화
-        activityRecruitViewModel.setIsLoadTempData(false)
-        activity.onReplaceFragment(MainFragment(), false, true, 1)
+        activityRecruitViewModel.setIsLoadTempData("temp")
+        activity.onReplaceFragment(MyActivityFragment(), false, true)
     }
 
     // 임시저장 버튼 클릭
     fun onClickTempSaveBtn() {
         // 임시저장 활성화
-        activityRecruitViewModel.setIsLoadTempData(true)
+        activityRecruitViewModel.setIsLoadTempData("temp")
         activity.onReplaceFragment(MainFragment(), false, true)
     }
 

@@ -14,7 +14,7 @@ object BindingAdapter {
     @JvmStatic
     fun setBackgroundUrl(imageView: ImageView, url: String?) {
         if(url != "" && url != null) {
-            Glide.with(ContextUtil.context).load(url).centerCrop().into(imageView)
+            Glide.with(ContextUtil.context).load(url).into(imageView)
         }
     }
     @BindingAdapter("app:isBackgroundGone")
