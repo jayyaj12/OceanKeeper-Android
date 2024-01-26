@@ -446,6 +446,78 @@
                     app:layout_constraintTop_toBottomOf="@id/id_1365_box_tv"/>
 
                 <TextView
+                    android:id="@+id/birthday_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:layout_marginTop="24dp"
+                    android:text="생년월일"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/id_1365_v" />
+
+                <TextView
+                    android:id="@+id/birthday_box_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="left|center"
+                    android:text="@{manageApplyViewModel.getCrewDetail.application.dayOfBirth}"
+                    android:background="#fafafa"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@id/name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/birthday_tv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#cfd8dc"
+                    android:id="@+id/birthday_v"
+                    app:layout_constraintStart_toStartOf="@id/birthday_box_tv"
+                    app:layout_constraintEnd_toEndOf="@id/birthday_box_tv"
+                    app:layout_constraintTop_toBottomOf="@id/birthday_box_tv"/>
+
+                <TextView
+                    android:id="@+id/email_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:layout_marginTop="24dp"
+                    android:text="메일주소"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/join_activity_cl"
+                    app:layout_constraintTop_toBottomOf="@id/birthday_v" />
+
+                <TextView
+                    android:id="@+id/email_box_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="left|center"
+                    android:text="@{manageApplyViewModel.getCrewDetail.application.email}"
+                    android:background="#fafafa"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/join_activity_cl"
+                    app:layout_constraintStart_toStartOf="@id/name_tv"
+                    app:layout_constraintTop_toBottomOf="@id/email_tv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#cfd8dc"
+                    android:id="@+id/email_v"
+                    app:layout_constraintStart_toStartOf="@id/email_box_tv"
+                    app:layout_constraintEnd_toEndOf="@id/email_box_tv"
+                    app:layout_constraintTop_toBottomOf="@id/email_box_tv"/>
+
+                <TextView
                     android:id="@+id/start_location_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -455,7 +527,7 @@
                     android:textColor="@color/gray_scale_g900"
                     android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="@id/join_activity_cl"
-                    app:layout_constraintTop_toBottomOf="@id/id_1365_v" />
+                    app:layout_constraintTop_toBottomOf="@id/email_v" />
 
                 <TextView
                     android:id="@+id/start_location_box_tv"

@@ -310,85 +310,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/area_selector_cl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
-                    android:gravity="center"
-                    android:onClick="@{() -> mainFragment.onClickedAreaChoice()}"
-                    android:orientation="horizontal"
-                    android:visibility="@{mainViewModel.getMyActivityResult.size() == 0 ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintStart_toStartOf="@id/fix_view"
-                    app:layout_constraintTop_toBottomOf="@id/fix_view">
-
-                    <TextView
-                        android:id="@+id/area_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="9dp"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:textColor="@{mainViewModel.areaModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
-                        android:textSize="12dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/area_icon"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/area_icon"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_marginEnd="13dp"
-                        android:src="@drawable/under_arrow_icon"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/kind_selector_cl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
-                    android:gravity="center"
-                    android:onClick="@{() -> mainFragment.onClickedGarbageCategoryChoice()}"
-                    android:orientation="horizontal"
-                    android:visibility="@{mainViewModel.getMyActivityResult.size() == 0 ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintStart_toEndOf="@id/area_selector_cl"
-                    app:layout_constraintTop_toTopOf="@id/area_selector_cl">
-
-                    <TextView
-                        android:id="@+id/kind_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="9dp"
-                        android:fontFamily="@font/pretendard_medium"
-                        android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
-                        android:textSize="12dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/kind_icon"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/kind_icon"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_marginEnd="13dp"
-                        android:src="@drawable/under_arrow_icon"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/activity_rv"
                     android:layout_width="0dp"
@@ -433,6 +354,83 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/not_activity_tv" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/area_selector_cl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
+                    android:gravity="center"
+                    android:onClick="@{() -> mainFragment.onClickedAreaChoice()}"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="@id/fix_view"
+                    app:layout_constraintTop_toBottomOf="@id/fix_view">
+
+                    <TextView
+                        android:id="@+id/area_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="9dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textColor="@{mainViewModel.areaModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/area_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/area_icon"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginEnd="13dp"
+                        android:src="@drawable/under_arrow_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/kind_selector_cl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/custom_radius16_solid_ffffff_border_e6e6e6"
+                    android:gravity="center"
+                    android:onClick="@{() -> mainFragment.onClickedGarbageCategoryChoice()}"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toEndOf="@id/area_selector_cl"
+                    app:layout_constraintTop_toTopOf="@id/area_selector_cl">
+
+                    <TextView
+                        android:id="@+id/kind_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="9dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:textColor="@{mainViewModel.garbageCategoryModalClickPosition == -1 ? @color/gray_700 : @color/primary_color_p600}"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/kind_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/kind_icon"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginEnd="13dp"
+                        android:src="@drawable/under_arrow_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.letspl.oceankeeper.util.NewScrollView>
 

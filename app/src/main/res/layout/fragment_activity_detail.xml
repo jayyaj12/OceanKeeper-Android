@@ -25,10 +25,10 @@
             android:id="@+id/detail_sv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/btn_area_v"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_goneMarginBottom="62dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,7 +39,7 @@
                     android:id="@+id/thumbnail_iv"
                     android:layout_width="417dp"
                     android:layout_height="270dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.thumbnailUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -267,8 +267,8 @@
                     <ImageView
                         android:id="@+id/keeper_introduce_iv"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
                         android:scaleType="centerCrop"
+                        android:layout_height="match_parent"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}" />
 
                 </androidx.cardview.widget.CardView>
@@ -317,7 +317,6 @@
                         android:id="@+id/activity_story_iv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl}" />
 
                 </androidx.cardview.widget.CardView>
@@ -511,13 +510,13 @@
         </ScrollView>
 
         <View
+            android:id="@+id/btn_area_v"
             android:layout_width="match_parent"
             android:layout_height="62dp"
             android:background="#ffffff"
-            android:id="@+id/btn_area_v"
+            android:visibility="@{mainViewModel.isRecruitmentTerms(mainViewModel.activityDetailSelectResult.response.recruitStartAt, mainViewModel.activityDetailSelectResult.response.recruitEndAt) == true ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:visibility="@{mainViewModel.isRecruitmentTerms(mainViewModel.activityDetailSelectResult.response.recruitStartAt, mainViewModel.activityDetailSelectResult.response.recruitEndAt) == true ? View.VISIBLE : View.GONE}"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ask_btn"

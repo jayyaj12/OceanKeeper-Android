@@ -101,7 +101,6 @@ object ManageApplyMemberModel {
       val transportation: String,
     )
 
-
     @kotlinx.serialization.Serializable
     data class GetCrewDetailUserInfoDto(
       val nickname: String,
