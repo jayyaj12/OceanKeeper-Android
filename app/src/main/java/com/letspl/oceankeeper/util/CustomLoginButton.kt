@@ -60,6 +60,7 @@ class CustomLoginButton: ConstraintLayout {
 
         val text = typedArray.getText(R.styleable.LoginButton_loginText)
         loginTv.text = text
+        loginTv.textSize = 16F
 
         typedArray.recycle()
     }

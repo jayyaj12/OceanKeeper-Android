@@ -25,56 +25,126 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
-            android:fontFamily="@font/pretendard_bold"
+            android:fontFamily="@font/pretendard_extrabold"
             android:gravity="center"
             android:text="오션키퍼가 되어\n바다를 구해주세요"
             android:textColor="@color/primary_color_p600"
-            android:textSize="24dp"
+            android:textSize="28dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.letspl.oceankeeper.util.CustomLoginButton
+        <View
             android:id="@+id/naver_login_btn"
             android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="60dp"
             android:onClick="@{() -> naverLoginManager.startNaverLogin()}"
-            app:bg="@drawable/custom_radius30_solid_03c75a"
+            android:background="@drawable/custom_radius30_solid_03c75a"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/logo_tv"
-            app:loginText="네이버로 로그인"
-            app:loginTextColor="@color/white"
             app:symbol="@drawable/naver_symbol" />
 
-        <com.letspl.oceankeeper.util.CustomLoginButton
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/naver_login_btn"
+            android:text="네이버로 계속하기"
+            android:textSize="16dp"
+            android:id="@+id/naver_login_tv"
+            android:fontFamily="@font/pretendard_bold"
+            android:layout_marginStart="30dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/naver_login_btn"
+            app:layout_constraintEnd_toEndOf="@id/naver_login_btn"
+            app:layout_constraintStart_toStartOf="@id/naver_login_btn"/>
+
+
+        <ImageView
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            app:layout_constraintTop_toTopOf="@id/naver_login_btn"
+            app:layout_constraintBottom_toBottomOf="@id/naver_login_btn"
+            app:layout_constraintEnd_toStartOf="@id/naver_login_tv"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/naver_symbol"/>
+
+        <View
             android:id="@+id/kakao_login_btn"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="48dp"
             android:layout_marginTop="24dp"
-            app:bg="@drawable/custom_radius30_solid_fae100"
+            android:onClick="@{() -> kakaoLoginManager.onClickedKakaoLogin()}"
+            android:background="@drawable/custom_radius30_solid_fae100"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/naver_login_btn"
-            app:loginText="카카오톡으로 로그인"
-            android:onClick="@{() -> kakaoLoginManager.onClickedKakaoLogin()}"
-            app:loginTextColor="@color/black"
-            app:symbol="@drawable/kakao_symbol" />
+            app:symbol="@drawable/naver_symbol" />
 
-        <com.letspl.oceankeeper.util.CustomLoginButton
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/kakao_login_btn"
+            android:text="카카오톡으로 계속하기"
+            android:textSize="16dp"
+            android:id="@+id/kakao_login_tv"
+            android:fontFamily="@font/pretendard_bold"
+            android:layout_marginStart="30dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/kakao_login_btn"
+            app:layout_constraintEnd_toEndOf="@id/kakao_login_btn"
+            app:layout_constraintStart_toStartOf="@id/kakao_login_btn"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            app:layout_constraintTop_toTopOf="@id/kakao_login_btn"
+            app:layout_constraintBottom_toBottomOf="@id/kakao_login_btn"
+            app:layout_constraintEnd_toStartOf="@id/kakao_login_tv"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/kakao_symbol"/>
+
+        <View
             android:id="@+id/apple_login_btn"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
             android:layout_marginTop="24dp"
-            app:bg="@drawable/custom_radius30_solid_000000"
             android:onClick="@{() -> appleLoginManager.checkPending()}"
+            android:background="@drawable/custom_radius30_solid_000000"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/kakao_login_btn"
-            app:loginText="Apple로 로그인"
-            app:loginTextColor="@color/white"
-            app:symbol="@drawable/apple_symbol" />
+            app:symbol="@drawable/naver_symbol" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/apple_login_btn"
+            android:text="Apple로 계속하기"
+            android:textSize="16dp"
+            android:id="@+id/apple_login_tv"
+            android:fontFamily="@font/pretendard_bold"
+            android:layout_marginStart="30dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/apple_login_btn"
+            app:layout_constraintEnd_toEndOf="@id/apple_login_btn"
+            app:layout_constraintStart_toStartOf="@id/apple_login_btn"/>
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            app:layout_constraintTop_toTopOf="@id/apple_login_btn"
+            app:layout_constraintBottom_toBottomOf="@id/apple_login_btn"
+            app:layout_constraintEnd_toStartOf="@id/apple_login_tv"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/apple_symbol"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

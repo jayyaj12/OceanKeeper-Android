@@ -15,3 +15,13 @@ y
 Iapp/src/main/java/com/letspl/oceankeeper/ui/view/MessageDetailFragment.kt,a\9\a9973810fda22a27e51590f6b7b06605dadbd8ce
 ?
 settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
+m
+=app/src/main/java/com/letspl/oceankeeper/util/ImgFileMaker.kt,d\5\d54be6e0fa827299b50b5f8bf549ffd23441733e
+<
+build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
+A
+gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
+
+Qapp/src/main/java/com/letspl/oceankeeper/ui/viewmodel/ActivityRecruitViewModel.kt,3\e\3eb3e7868ed1de0072b3a632e87711c4befcd8e5
+s
+Capp/src/main/java/com/letspl/oceankeeper/ui/view/MessageFragment.kt,6\7\671d33518d80a35c2c762c2ca80b6908c867f882
