@@ -25,7 +25,11 @@
             android:id="@+id/detail_sv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="62dp">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_area_v"
+            app:layout_goneMarginBottom="62dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -505,6 +509,15 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            android:background="#ffffff"
+            android:id="@+id/btn_area_v"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{mainViewModel.isRecruitmentTerms(mainViewModel.activityDetailSelectResult.response.recruitStartAt, mainViewModel.activityDetailSelectResult.response.recruitEndAt) == true ? View.VISIBLE : View.GONE}"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ask_btn"
