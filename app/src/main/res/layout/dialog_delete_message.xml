@@ -46,7 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="쪽지를 전부 삭제 하시겠어요?"
+                android:text="쪽지를 삭제하시겠어요?"
                 android:textSize="16dp"
                 android:textColor="#455A64"
                 app:layout_constraintStart_toStartOf="parent"
