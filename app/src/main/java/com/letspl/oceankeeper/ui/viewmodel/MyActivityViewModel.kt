@@ -47,9 +47,13 @@ class MyActivityViewModel @Inject constructor(
     private var _deleteApplyCancel = MutableLiveData<Boolean>()
     val deleteApplyCancel: LiveData<Boolean> get() = _deleteApplyCancel
 
-    // 활동 지원 취소
+    // 닉네임 변경
     private var _changeNicknameResult = MutableLiveData<String>()
     val changeNicknameResult: LiveData<String> get() = _changeNicknameResult
+
+    // 프로필 이미지 변경
+    private var _changeProfileImageResult = MutableLiveData<Boolean>()
+    val changeProfileImageResult: LiveData<Boolean> get() = _changeProfileImageResult
 
     // 모집 취소
     private var _deleteRecruitCancel = MutableLiveData<Boolean>()
@@ -122,6 +126,7 @@ class MyActivityViewModel @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             activityViRepositoryImpl.uploadEditProfileImage(file).let {
                 if (it.isSuccessful) {
+                    _changeProfileImageResult.postValue(true)
                     UserModel.userInfo.user.profile = it.body()?.url!!
                 } else {
                     val errorJsonObject =

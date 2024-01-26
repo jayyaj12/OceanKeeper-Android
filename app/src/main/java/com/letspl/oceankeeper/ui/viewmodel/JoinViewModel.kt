@@ -16,6 +16,7 @@ import com.letspl.oceankeeper.data.repository.JoinRepositoryImpl
 import com.letspl.oceankeeper.util.ContextUtil
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,7 +47,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
 
     // 서버로 내려받은 url 을 파일로 생성
     fun createProfileImageFile() {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val tempFile = withContext(Dispatchers.IO) {
                 val inputStream = URL(LoginModel.login.profile).openStream()
                 val tempFile = File.createTempFile(inputStream.hashCode().toString(), ".jpg")
@@ -61,7 +62,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     }
 
     fun onClickedSignup(){
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.IO) {
                 uploadImageFile(getProfileImageFile())
             }
@@ -86,7 +87,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
 
     // 프로필 이미지 업로드
     private fun uploadImageFile(file: File?) {
-        viewModelScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             if(file != null) {
                 joinRepositoryImpl.uploadProfileImage(file).let {
                     if (it.isSuccessful) {
@@ -110,7 +111,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
 
     // 회원가입
     private fun signUpUser(profileUrl: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             LoginModel.login.run {
                 joinRepositoryImpl.signUpUser(
                     this.deviceToken,
@@ -142,7 +143,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
 
     // 애플로그인의 경우 기본 이미지가 없으므로 생성
     fun makeTempProfileFile() {
-        viewModelScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.IO) {
                 val bm = BitmapFactory.decodeResource(ContextUtil.context.resources, R.drawable.default_profile)
 

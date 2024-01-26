@@ -10,6 +10,7 @@ import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.GuideRepositoryImpl
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -30,7 +31,7 @@ class GuideViewModel @Inject constructor(private val guideRepositoryImpl: GuideR
     fun getGuide(noticeId: Int?, size: Int) {
         Timber.e("getGuide 1")
         Timber.e("viewModelScope $viewModelScope")
-        viewModelScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             Timber.e("getGuide 2")
             if(!GuideModel.isLast) {
                 Timber.e("getGuide 3")

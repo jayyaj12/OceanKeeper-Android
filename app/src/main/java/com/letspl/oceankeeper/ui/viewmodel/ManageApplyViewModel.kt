@@ -46,7 +46,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
 
     // 신청자 리스트 불러오기
     fun getCrewInfoList(activityId: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             manageApplyRepositoryImpl.getCrewInfoList(activityId).let {
                 if (it.isSuccessful) {
                     it.body()?.response?.crewInfo?.let { crewInfoList ->
@@ -82,7 +82,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
 
     // 크루원 정보 불러오기
     fun getCrewDetail(applicationId: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             manageApplyRepositoryImpl.getCrewDetail(applicationId).let {
                 if (it.isSuccessful) {
                     it.body()?.response?.let { data ->
@@ -203,7 +203,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
 
     // 전체 선택하기 버튼
     fun setAllIsClickedApplyMember(flag: Boolean) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Default) {
                 ManageApplyMemberModel.applyCrewList.forEach {
                     ManageApplyMemberModel.tempApplyCrewList.add(it.copy())

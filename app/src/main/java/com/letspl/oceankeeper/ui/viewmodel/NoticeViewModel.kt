@@ -10,6 +10,7 @@ import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.NoticeRepositoryImpl
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +28,7 @@ class NoticeViewModel @Inject constructor(private val noticeRepositoryImpl: Noti
 
     // 공지사항 조회
     fun getNotice(noticeId: Int?, size: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             if(!NoticeModel.isLast) {
                 noticeRepositoryImpl.getNotice("Bearer ${UserModel.userInfo.token.accessToken}", noticeId, size).let {
                     if(it.isSuccessful) {

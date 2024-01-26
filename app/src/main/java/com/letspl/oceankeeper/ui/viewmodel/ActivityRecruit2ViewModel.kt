@@ -15,6 +15,7 @@ import com.letspl.oceankeeper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankeeper.util.ContextUtil
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -61,7 +62,7 @@ class ActivityRecruit2ViewModel @Inject constructor(
         transportation: String,
     ) {
 
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.IO) {
                 uploadThumbnailImage()
             }
@@ -124,7 +125,7 @@ class ActivityRecruit2ViewModel @Inject constructor(
         transportation: String,
     ) {
 
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.IO) {
                 uploadThumbnailImage()
             }

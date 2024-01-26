@@ -13,6 +13,8 @@ import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.MainRepositoryImpl
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -55,7 +57,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
     val errorMsg: LiveData<String> get() = _errorMsg
     // 다가오는 일정 데이터 조회
     fun getComingSchedule() {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             Timber.e("UserModel.userInfo.user.id ${UserModel.userInfo.user.id}")
             mainRepositoryImpl.getComingSchedule(
                 "Bearer ${UserModel.userInfo.token.accessToken}",
@@ -76,9 +78,9 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
 
     // 활동 조회 첫 조회
     fun getMyActivities(garbageCategory: String?, locationTag: String?, size: Int, status: String?) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             // 활동 조회 첫 조회시에는 activityId 안 보냄
-            viewModelScope.launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 // 마지막 액티비티가 아닌 경우에만 조회
                 if(!MainModel.lastActivity) {
                     mainRepositoryImpl.getMyActivity(
@@ -116,7 +118,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
 
     // 활동 조회 첫 조회
     fun getMyActivityDetail(activityId: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             mainRepositoryImpl.getMyActivityDetail("Bearer ${UserModel.userInfo.token.accessToken}", activityId).let {
                 if(it.isSuccessful) {
                     _activityDetailSelectResult.postValue(it.body())

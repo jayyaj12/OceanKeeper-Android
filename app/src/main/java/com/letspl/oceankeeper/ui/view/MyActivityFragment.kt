@@ -158,6 +158,13 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 activity.showErrorMsg(it)
             }
         }
+
+        // 프로필 이미지 수정
+        myActivityViewModel.changeProfileImageResult.observe(viewLifecycleOwner) {
+            if(it) {
+                activity.showSuccessMsg("프로필 이미지가 수정되었습니다.")
+            }
+        }
         // 내활동보기 결과 등록(크루)
         myActivityViewModel.getUserActivityCrew.observe(viewLifecycleOwner) {
             if (it != null) {

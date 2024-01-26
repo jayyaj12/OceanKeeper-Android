@@ -12,6 +12,8 @@ import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.ApplyActivityRepositoryImpl
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,7 +57,7 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
         question: String,
         startPoint: String
     ) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             applyActivityRepositoryImpl.postRecruitmentApplication(
                 "Bearer ${UserModel.userInfo.token.accessToken}", PostApplyApplicationBody(
                     MainModel.clickedActivityId,
@@ -87,7 +89,7 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
 
     // 특정 활동 지원서 불러오기
     fun getDetailApplication(applicationId: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             applyActivityRepositoryImpl.getDetailApplication(applicationId).let {
                 if (it.isSuccessful) {
                     _getDetailApplication.postValue(it.body()?.response)
@@ -114,7 +116,7 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
         question: String,
         startPoint: String,
     ) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             applyActivityRepositoryImpl.patchApplication(
                 applicationId, PatchApplyApplicationBody(
                     dayOfBirth.toLong(),
