@@ -37,7 +37,8 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
-    private lateinit var adapter: MainActivityListAdapter
+    private lateinit var activityListAdapter: MainActivityListAdapter
+    private lateinit var comingScheduleAdapte: MainComingScheduleAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +104,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         // 내 활동 조회 결과 표시
         mainViewModel.getMyActivityResult.observe(viewLifecycleOwner) {
             Timber.e("getMyActivityResult $it")
-            adapter.submitList(it.toMutableList())
+            activityListAdapter.submitList(it.toMutableList())
         }
 
         // 활동 진행 상태 변경 시 활동을 재조회 한다.
@@ -163,10 +164,16 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
     // 자동 슬라이드 구현(viewpager2)
     private fun setupViewPager2(list: List<ComingScheduleItem>) {
+        comingScheduleAdapte = MainComingScheduleAdapter(list) { activityId ->
+            mainViewModel.setClickedActivityId(activityId)
+            EntryPoint.activityDetail = "main"
+            activity.onReplaceFragment(ActivityDetailFragment(), false, false)
+        }
+
         binding.scheduleViewPager.apply {
             clipToPadding = false
             clipChildren = false
-            adapter = MainComingScheduleAdapter(list)
+            adapter = comingScheduleAdapte
             addItemDecoration(
                 // 슬라이드간 마진 간격
                 MarginItemDecoration(17)
@@ -218,14 +225,14 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         }
 
         // 선택될 경우 activityId 값을 저장 후 상세 페이지로 이동
-        adapter = MainActivityListAdapter(requireContext()) {
+        activityListAdapter = MainActivityListAdapter(requireContext()) {
             EntryPoint.activityDetail = "main"
             mainViewModel.setClickedActivityId(it)
             activity.onReplaceFragment(ActivityDetailFragment(), false, false)
             mainViewModel.clearActivityList()
         }
 
-        binding.activityRv.adapter = adapter
+        binding.activityRv.adapter = activityListAdapter
 
         binding.mainScrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             Timber.e("binding.mainScrollview.canScrollVertically(1) ${!binding.mainScrollview.canScrollVertically(1)}")

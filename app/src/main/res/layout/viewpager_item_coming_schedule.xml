@@ -4,6 +4,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:id="@+id/item_cl"
         android:layout_height="match_parent"
         android:background="@drawable/custom_radius8_solid_white_stroke_bg100">
 

@@ -55,10 +55,10 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
     // 에러 토스트 메세지 text
     private var _errorMsg = MutableLiveData<String>()
     val errorMsg: LiveData<String> get() = _errorMsg
+
     // 다가오는 일정 데이터 조회
     fun getComingSchedule() {
         CoroutineScope(Dispatchers.IO).launch {
-            Timber.e("UserModel.userInfo.user.id ${UserModel.userInfo.user.id}")
             mainRepositoryImpl.getComingSchedule(
                 "Bearer ${UserModel.userInfo.token.accessToken}",
                 UserModel.userInfo.user.id
