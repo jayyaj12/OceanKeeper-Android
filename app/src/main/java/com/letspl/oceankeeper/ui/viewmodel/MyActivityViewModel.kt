@@ -57,7 +57,7 @@ class MyActivityViewModel @Inject constructor(
 
     // 닉네임 중복 확인
     fun getDuplicateNickname(nickname: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             userRepositoryImpl.getDuplicateNickname(nickname).let {
                 if (it.isSuccessful) {
                     putNickname(nickname)
@@ -75,7 +75,7 @@ class MyActivityViewModel @Inject constructor(
 
     // 닉네임 수정
     private fun putNickname(nickname: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             userRepositoryImpl.putNickname(
                 PutNicknameBody(nickname, UserModel.userInfo.user.id)
             ).let {
@@ -95,7 +95,7 @@ class MyActivityViewModel @Inject constructor(
 
     // 나의 오션키퍼 활동정보 조회
     fun getMyActivityInfo() {
-        viewModelScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
             activityViRepositoryImpl.getActivityInfo(UserModel.userInfo.user.id).let {
                 if (it.isSuccessful) {
                     _getActivityInfoResult.postValue(
@@ -185,7 +185,7 @@ class MyActivityViewModel @Inject constructor(
 
     // 활동 지원 취소
     fun deleteApplyCancel(applicationId: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             activityViRepositoryImpl.deleteApplyCancel(applicationId).let {
                 if (it.isSuccessful) {
                     _deleteApplyCancel.postValue(true)
@@ -204,7 +204,7 @@ class MyActivityViewModel @Inject constructor(
 
     // 모집 취소
     fun deleteRecruitmentCancel(activityId: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             activityViRepositoryImpl.deleteRecruitmentCancel(activityId).let {
                 if (it.isSuccessful) {
                     _deleteRecruitCancel.postValue(true)

@@ -19,6 +19,7 @@ class ProgressDialog(context: Context): Dialog(context) {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        setCancelable(false)
 
         setContentView(binding.root)
         binding.spinkit.setIndeterminateDrawable(ThreeBounce())

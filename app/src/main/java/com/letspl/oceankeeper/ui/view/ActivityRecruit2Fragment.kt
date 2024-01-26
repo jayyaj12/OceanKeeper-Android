@@ -28,6 +28,7 @@ import com.letspl.oceankeeper.util.ResizingImage
 import com.letspl.oceankeeper.util.RotateTransform
 import com.letspl.oceankeeper.R
 import com.letspl.oceankeeper.databinding.FragmentActivityRecruit2Binding
+import com.letspl.oceankeeper.ui.dialog.ProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -40,6 +41,8 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
     private val binding: FragmentActivityRecruit2Binding get() = _binding!!
     private val activityRecruitViewModel: ActivityRecruitViewModel by viewModels()
     private lateinit var mActivityResultLauncher: ActivityResultLauncher<Intent>
+    lateinit var progressDialog: ProgressDialog
+
     @Inject
     lateinit var activityRecruit2ViewModel: ActivityRecruit2ViewModel
     private val REQ_GALLERY = 1000
@@ -175,15 +178,21 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
         setupEditTextListener()
         setupViewModelObserver()
+        setupProgressDialog()
 
         Timber.e("1 ${activityRecruitViewModel.getRecruitStartDate()}")
         Timber.e("2 ${activityRecruitViewModel.getRecruitEndDate()}")
         Timber.e("3 ${activityRecruitViewModel.getActivityStartDate()}")
     }
 
+    private fun setupProgressDialog() {
+        progressDialog = ProgressDialog(requireContext())
+    }
+
     private fun setupViewModelObserver() {
         activityRecruit2ViewModel.errorMsg.observe(viewLifecycleOwner) {
             if(it != "") {
+                progressDialog.dismiss()
                 activity.showErrorMsg(it)
             }
         }
@@ -191,6 +200,8 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         // 활동 모집 등록 성공 여부
         activityRecruit2ViewModel.recruitActivityIsSuccess.observe(viewLifecycleOwner) {
             if(it) {
+                progressDialog.dismiss()
+
                 val dialog = RecruitActivityCompleteDialog(requireContext(),
                     "활동 모집 등록 완료",
                     activityRecruit2ViewModel.getRecruitCompleteText(),
@@ -303,7 +314,11 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     // 완료 버튼 클릭
     fun onClickedCompleteBtn() {
+
         if (activityRecruit2ViewModel.isExistNeedData()) {
+            // 로딩바 표시
+            progressDialog.show()
+
             activityRecruit2ViewModel.activityRegister(
                 activityStory = binding.activityStoryEt.text.toString(),
                 etc = activityRecruitViewModel.getOtherGuide(),
