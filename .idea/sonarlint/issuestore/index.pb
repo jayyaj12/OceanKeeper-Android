@@ -61,8 +61,6 @@ Mapp/src/main/java/com/letspl/oceankeeper/ui/view/ManageApplyMemberFragment.kt,
 Uapp/src/main/java/com/letspl/oceankeeper/data/repository/ManageApplyRepositoryImpl.kt,6\c\6cf3ab4f573cec249225fbd50c0c0567cb902b0a
 ~
 Napp/src/main/java/com/letspl/oceankeeper/ui/dialog/ChoiceProfileImageDialog.kt,8\d\8d00c2521f1be40539fafa9dd6cc2ebbf4bdc5c7
-
-Oapp/src/main/java/com/letspl/oceankeeper/ui/viewmodel/ApplyActivityViewModel.kt,2\6\26e100176315e3082f715238f1e9a67229488551
 w
 Gapp/src/main/java/com/letspl/oceankeeper/ui/viewmodel/GuideViewModel.kt,d\a\dab858ec9c2aacb2c60cdf9316e2d6664e9402e9
 v
@@ -75,8 +73,6 @@ x
 Happ/src/main/java/com/letspl/oceankeeper/ui/viewmodel/NoticeViewModel.kt,b\3\b3e14f2fa86275fb088dd553598c8243f0dfd802
 y
 Iapp/src/main/java/com/letspl/oceankeeper/ui/viewmodel/SettingViewModel.kt,d\2\d2029fcafa62330959fb07216be4145e4a8a98cd
-v
-Fapp/src/main/java/com/letspl/oceankeeper/ui/view/MyActivityFragment.kt,5\b\5b9184a4b0d11da01e74de26a3bf027bcac83dae
 r
 Bapp/src/main/java/com/letspl/oceankeeper/ui/view/NoticeFragment.kt,6\5\65dd060e8d682a16ed5d5ed285e8001f5203ce4b
 ~
