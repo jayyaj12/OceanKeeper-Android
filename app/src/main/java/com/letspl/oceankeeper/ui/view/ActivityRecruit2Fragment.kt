@@ -188,12 +188,14 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
     private fun loadData() {
         // 썸네일 이미지 불러오기
         if (activityRecruit2ViewModel.getThumbnailImageFile() != null) {
+            binding.thumbnailIv.visibility = View.VISIBLE
             Glide.with(requireActivity()).load(activityRecruit2ViewModel.getThumbnailImageFile())
                 .fitCenter()
                 .into(binding.thumbnailIv)
         }
         // 키퍼 소개 이미지 불러오기
         if (activityRecruit2ViewModel.getKeeperIntroduceImageFile() != null) {
+            binding.introduceKeeperIv.visibility = View.VISIBLE
             Glide.with(requireActivity())
                 .load(activityRecruit2ViewModel.getKeeperIntroduceImageFile())
                 .fitCenter()
@@ -201,6 +203,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
         }
         // 활동 스토리 이미지 불러오기
         if (activityRecruit2ViewModel.getActivityStoryImageFile() != null) {
+            binding.activityStoryIv.visibility = View.VISIBLE
             Glide.with(requireActivity())
                 .load(activityRecruit2ViewModel.getActivityStoryImageFile())
                 .fitCenter()

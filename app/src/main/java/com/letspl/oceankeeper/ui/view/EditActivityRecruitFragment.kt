@@ -18,7 +18,9 @@ import com.letspl.oceankeeper.ui.adapter.RecruitStartCalendarAdapter
 import com.letspl.oceankeeper.ui.dialog.ProgressDialog
 import com.letspl.oceankeeper.ui.viewmodel.ActivityRecruitViewModel
 import com.letspl.oceankeeper.ui.viewmodel.MainViewModel
+import com.letspl.oceankeeper.util.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -39,7 +41,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
     override fun onBackPressed() {
         activityRecruitViewModel.clearTempData()
-        activity.onReplaceFragment(MainFragment(), false, true, 1)
+        activity.onReplaceFragment(MyActivityFragment(), false, true, 3)
     }
 
     override fun onCreateView(
@@ -61,12 +63,16 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
         setUpCalendarRecyclerView()
         setUpViewModelObserver()
         setupRewardSwitchListener()
+        setUpClickedListener()
         getActivityData()
     }
 
     // 주소 불러오기 
     private fun loadAddress() {
         // 활동 위치
+        Timber.e("activityRecruitViewModel.getLocationInfo().address1 ${activityRecruitViewModel.getLocationInfo().address}")
+        Timber.e("activityLocationEt.setText 1")
+
         binding.activityLocationEt.setText(activityRecruitViewModel.getLocationInfo().address)
     }
 
@@ -74,16 +80,12 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
         mainViewModel.getMyActivityDetail(activityId)
     }
 
-    // 캘린더 date 셋업
-    private fun setupCalendarDate() {
-        activityRecruitViewModel.getNowDate()
-    }
-
     // 클릭 리스너
     private fun setUpClickedListener() {
         binding.activityLocationV.setOnClickListener {
             activityRecruitViewModel.setIsLoadTempData("address")
-            activity.onReplaceFragment(SearchMapFragment())
+            EntryPoint.searchMapPoint = "edit"
+            activity.onReplaceFragment(SearchMapFragment(activityId))
         }
     }
 
@@ -119,8 +121,17 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
                 activityRecruitViewModel.getGarbageCategory(it.response.garbageCategory)
                 activityRecruitViewModel.getLocationTag(it.response.locationTag)
                 binding.rewardSwtich.isChecked = it.response.rewards != ""
+                Timber.e("activityRecruitViewModel.getLocationInfo().address -1 ${activityRecruitViewModel.getLocationInfo().address}")
 
                 activityRecruitViewModel.setupEditRecruitValue(it.response)
+                Timber.e("activityRecruitViewModel.getLocationInfo().address 0 ${activityRecruitViewModel.getLocationInfo().address}")
+
+                if(activityRecruitViewModel.getLocationInfo().address != "") {
+                    loadAddress()
+                } else {
+                    Timber.e("activityLocationEt.setText 2")
+                    binding.activityLocationEt.setText(it.response.location.address)
+                }
 
                 val time = it.response.startAt.split(" ")[1].split(":")
                 if(time[0].toInt() - 1 > 12) {
@@ -138,7 +149,6 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
     // calendarRecyclerview 셋업
     private fun setUpCalendarRecyclerView() {
-
         recruitStartCalendarAdapter = RecruitStartCalendarAdapter(activityRecruitViewModel){
             binding.recruitStartDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
             binding.recruitStartDateTv.text = activityRecruitViewModel.getRecruitStartDate().substring(0, 10).replace("-", ".")
@@ -337,7 +347,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
         // 임시저장 활성화
         activityRecruitViewModel.setIsLoadTempData("temp")
-        activity.onReplaceFragment(MyActivityFragment(), false, true)
+        activity.onReplaceFragment(MyActivityFragment(), false, true, 3)
     }
 
     // 임시저장 버튼 클릭

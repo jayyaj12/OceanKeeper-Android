@@ -181,20 +181,22 @@ class ActivityRecruitViewModel : ViewModel() {
     }
 
     // 현재 날짜 가져오기
-    fun getNowDate() {
+    fun getNowDate(isTempData: Boolean = false) {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val nowDate = Date(System.currentTimeMillis())
         val dateStr = dateFormat.format(nowDate)
 
-        ActivityRecruitModel.recruitStartNowYear = dateStr.split("-")[0].toInt()
-        ActivityRecruitModel.recruitStartNowMonth = dateStr.split("-")[1].toInt()
-        ActivityRecruitModel.recruitStartNowDate = dateStr.split("-")[2].toInt()
-        ActivityRecruitModel.recruitEndNowYear = dateStr.split("-")[0].toInt()
-        ActivityRecruitModel.recruitEndNowMonth = dateStr.split("-")[1].toInt()
-        ActivityRecruitModel.recruitEndNowDate = dateStr.split("-")[2].toInt()
-        ActivityRecruitModel.activityStartNowYear = dateStr.split("-")[0].toInt()
-        ActivityRecruitModel.activityStartNowMonth = dateStr.split("-")[1].toInt()
-        ActivityRecruitModel.activityStartNowDate = dateStr.split("-")[2].toInt()
+        if(!isTempData) {
+            ActivityRecruitModel.recruitStartNowYear = dateStr.split("-")[0].toInt()
+            ActivityRecruitModel.recruitStartNowMonth = dateStr.split("-")[1].toInt()
+            ActivityRecruitModel.recruitStartNowDate = dateStr.split("-")[2].toInt()
+            ActivityRecruitModel.recruitEndNowYear = dateStr.split("-")[0].toInt()
+            ActivityRecruitModel.recruitEndNowMonth = dateStr.split("-")[1].toInt()
+            ActivityRecruitModel.recruitEndNowDate = dateStr.split("-")[2].toInt()
+            ActivityRecruitModel.activityStartNowYear = dateStr.split("-")[0].toInt()
+            ActivityRecruitModel.activityStartNowMonth = dateStr.split("-")[1].toInt()
+            ActivityRecruitModel.activityStartNowDate = dateStr.split("-")[2].toInt()
+        }
 
         _choiceRecruitStartDateText.value =
             "${getMonthStr(ActivityRecruitModel.recruitStartNowMonth)} ${ActivityRecruitModel.recruitStartNowYear}"
@@ -319,10 +321,17 @@ class ActivityRecruitViewModel : ViewModel() {
         setOtherGuide(response.etc)
         setTrafficGuideValue(getGuideTrafficValue(response.transportation))
 
-        val loc = Location("")
-        loc.latitude = response.location.latitude
-        loc.longitude = response.location.longitude
-        setLocationInfo(response.location.address, loc)
+        Timber.e("getLocationInfo().address ${getLocationInfo().address}")
+        Timber.e("response.location.address ${response.location.address}")
+        if(getLocationInfo().address != "") {
+            if(getLocationInfo().address == response.location.address) {
+                val loc = Location("")
+                loc.latitude = response.location.latitude
+                loc.longitude = response.location.longitude
+                setLocationInfo(response.location.address, loc)
+            }
+        }
+
 
         setRecruitStartClickedDate(response.recruitStartAt.substring(0, 7))
         setRecruitEndClickedDate(response.recruitEndAt.substring(0, 7))

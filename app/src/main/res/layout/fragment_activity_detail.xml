@@ -40,6 +40,7 @@
                     android:layout_width="417dp"
                     android:layout_height="270dp"
                     android:scaleType="fitCenter"
+                    android:background="#000000"
                     app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.thumbnailUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

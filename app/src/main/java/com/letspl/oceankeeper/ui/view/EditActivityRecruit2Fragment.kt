@@ -357,8 +357,7 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
     }
 
     override fun onBackPressed() {
-        activityRecruit2ViewModel.clearData()
-        activity.onReplaceFragment(EditActivityRecruitFragment(activityId))
+        onClickedBackBtn()
     }
 
     override fun onDestroyView() {

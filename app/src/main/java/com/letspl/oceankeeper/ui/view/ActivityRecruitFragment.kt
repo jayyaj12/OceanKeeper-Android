@@ -3,6 +3,7 @@ package com.letspl.oceankeeper.ui.view
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -17,6 +18,7 @@ import com.letspl.oceankeeper.ui.adapter.ActivityStartCalendarAdapter
 import com.letspl.oceankeeper.ui.adapter.RecruitEndCalendarAdapter
 import com.letspl.oceankeeper.ui.adapter.RecruitStartCalendarAdapter
 import com.letspl.oceankeeper.ui.viewmodel.ActivityRecruitViewModel
+import com.letspl.oceankeeper.util.EntryPoint
 import timber.log.Timber
 
 class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
@@ -61,7 +63,7 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
         loadTempData()
     }
 
-    // 주소 불러오기 
+    // 주소 불러오기
     private fun loadAddress() {
         // 활동 위치
         binding.activityLocationEt.setText(activityRecruitViewModel.getLocationInfo().address)
@@ -69,14 +71,18 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 캘린더 date 셋업
     private fun setupCalendarDate() {
-        activityRecruitViewModel.getNowDate()
+        if(activityRecruitViewModel.isLoadTempData() == "") {
+            activityRecruitViewModel.getNowDate()
+        } else {
+            activityRecruitViewModel.getNowDate(true)
+        }
     }
 
     // 클릭 리스너
     private fun setUpClickedListener() {
         binding.activityLocationV.setOnClickListener {
             activityRecruitViewModel.setIsLoadTempData("address")
-            activityRecruitViewModel.setQuotaClicked(false)
+            EntryPoint.searchMapPoint = "recruit"
             activity.onReplaceFragment(SearchMapFragment())
         }
     }
@@ -147,16 +153,12 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
     // editText Listener 등록
     private fun setUpEditTextListener() {
         binding.quotaEt.addTextChangedListener {
-            if(activityRecruitViewModel.isQuotaClicked()) {
-                Timber.e("binding.quotaEt $it")
-                if(it.toString().isNotEmpty()) {
-                    activityRecruitViewModel.setQuota(it.toString().toInt())
-                } else {
-                    activityRecruitViewModel.setQuota(0)
-                }
+            if(it.toString() != "") {
+                activityRecruitViewModel.setQuota(it.toString().toInt())
+            } else {
+                activityRecruitViewModel.setQuota(0)
             }
         }
-        binding.quotaEt.setText("")
         binding.projectNameEt.addTextChangedListener {
             activityRecruitViewModel.onChangedProjectNameEditText(it.toString())
         }
@@ -171,10 +173,6 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
         }
         binding.otherGuideEt.addTextChangedListener {
             activityRecruitViewModel.setOtherGuide(it.toString())
-        }
-        binding.quotaEt.setOnClickListener {
-            Timber.e("binding.quotaEt setOnClickListener")
-            activityRecruitViewModel.setQuotaClicked(true)
         }
     }
 
@@ -240,9 +238,10 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 임시저장 데이터 불러오기
     private fun loadTempData() {
-        Timber.e("activityRecruitViewModel.isLoadTempData() ${activityRecruitViewModel.isLoadTempData()}")
-        Timber.e("activityRecruitViewModel.getRecruitStartClickedDate() ${activityRecruitViewModel.getRecruitStartClickedDate()}")
-        Timber.e("activityRecruitViewModel.getQuota() ${activityRecruitViewModel.getQuota()}")
+        Timber.e("quota ${activityRecruitViewModel.getQuota()}")
+        Timber.e("getRecruitStartDate ${activityRecruitViewModel.getRecruitStartDate()}")
+        Timber.e("getRecruitEndDate ${activityRecruitViewModel.getRecruitEndDate()}")
+        Timber.e("getActivityStartDate ${activityRecruitViewModel.getActivityStartDate()}")
         if(activityRecruitViewModel.isLoadTempData() != "") {
             if(activityRecruitViewModel.isLoadTempData() == "temp") {
                 binding.recruitStartDateTv.setTextColor(Color.parseColor("#212121"))
@@ -282,7 +281,11 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
             // 활동 프로그램 안내
             binding.guideActivityEt.setText(activityRecruitViewModel.getGuideActivity())
             // 모집 정원
-            binding.quotaEt.setText(activityRecruitViewModel.getQuota().toString())
+            if(activityRecruitViewModel.getQuota() == 0) {
+                binding.quotaEt.setText("")
+            } else {
+                binding.quotaEt.setText(activityRecruitViewModel.getQuota().toString())
+            }
             // 준비물
             binding.materialEt.setText(activityRecruitViewModel.getMaterial())
             // 제공 리워드
@@ -313,9 +316,12 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 다음 버튼 클릭
     fun onClickNextBtn() {
+        Timber.e("getRecruitStartDate ${activityRecruitViewModel.getRecruitStartDate()}")
+        Timber.e("getRecruitEndDate ${activityRecruitViewModel.getRecruitEndDate()}")
+        Timber.e("getActivityStartDate ${activityRecruitViewModel.getActivityStartDate()}")
+
         if(activityRecruitViewModel.isExistNeedData()) {
             // 임시저장 활성화
-            activityRecruitViewModel.setQuotaClicked(false)
             activityRecruitViewModel.setIsLoadTempData("temp")
             activity.onReplaceFragment(ActivityRecruit2Fragment())
         } else {

@@ -147,7 +147,6 @@
                     android:maxLength="30"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:text="@{mainViewModel.activityDetailSelectResult.response.location.address}"
                     android:textColorHint="@color/blue_grayscale_bg200"
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="parent"

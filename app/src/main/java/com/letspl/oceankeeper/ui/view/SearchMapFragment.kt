@@ -11,12 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.letspl.oceankeeper.databinding.FragmentSearchMapBinding
 import com.letspl.oceankeeper.ui.viewmodel.ActivityRecruitViewModel
+import com.letspl.oceankeeper.util.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 
 @AndroidEntryPoint
-class SearchMapFragment: Fragment(), BaseActivity.OnBackPressedListener {
+class SearchMapFragment(private val activityId: String = ""): Fragment(), BaseActivity.OnBackPressedListener {
 
     private var _binding: FragmentSearchMapBinding? = null
     private val binding: FragmentSearchMapBinding get() = _binding!!
@@ -53,7 +54,12 @@ class SearchMapFragment: Fragment(), BaseActivity.OnBackPressedListener {
         activityRecruitViewModel?.searchMap?.observe(viewLifecycleOwner) {
             // 위경도 값 가져온 후 저장 
             activityRecruitViewModel!!.findGeoPoint(it)
-            activity.onReplaceFragment(ActivityRecruitFragment())
+
+            if(EntryPoint.searchMapPoint == "edit") {
+                activity.onReplaceFragment(EditActivityRecruitFragment(activityId))
+            } else if(EntryPoint.searchMapPoint == "recruit") {
+                activity.onReplaceFragment(ActivityRecruitFragment())
+            }
         }
     }
 
