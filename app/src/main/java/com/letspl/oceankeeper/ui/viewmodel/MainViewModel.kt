@@ -137,7 +137,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
     // 모집 기간인지 확인
     fun isRecruitmentTerms(startRecruitmentDate: String?, endRecruitmentDate: String?): Boolean {
         return if(startRecruitmentDate != null && endRecruitmentDate != null) {
-            (getDateDiff(startRecruitmentDate) > 0 && getDateDiff(endRecruitmentDate) <= 0)
+            (getDateDiff(startRecruitmentDate) >= 0 && getDateDiff(endRecruitmentDate) <= 0)
         } else {
             false
         }

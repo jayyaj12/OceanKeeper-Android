@@ -42,13 +42,13 @@ data class GetApplicationDetailDto(
 @Serializable
 data class GetApplicationDetailResponse(
     val dayOfBirth: Long,
-    val email: String ?= "",
-    val id1365: String ?= "",
-    val name: String ?= "",
-    val phoneNumber: String ?= "",
-    val question: String ?= "",
-    val startPoint: String ?= "",
-    val transportation: String ?= ""
+    val email: String = "",
+    val id1365: String = "",
+    val name: String = "",
+    val phoneNumber: String = "",
+    val question: String = "",
+    val startPoint: String = "",
+    val transportation: String = ""
 )
 
 
