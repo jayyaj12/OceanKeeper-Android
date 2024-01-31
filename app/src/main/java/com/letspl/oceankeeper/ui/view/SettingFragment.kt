@@ -67,7 +67,7 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private fun setupViewModelObserver() {
         settingViewModel.postLogoutResult.observe(viewLifecycleOwner) {
             if (it) {
-                activity.onReplaceFragment(LoginFragment(), false, false, 1)
+                activity.onReplaceFragment(LoginFragment(), false, false)
             }
         }
         settingViewModel.postNotificationAlarmResult.observe(viewLifecycleOwner) {

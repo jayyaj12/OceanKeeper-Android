@@ -108,6 +108,7 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
 
                         binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.introduceKeeperPhotoTv.visibility = View.GONE
+                        binding.introduceKeeperInfoTv.visibility = View.GONE
                     } catch (e: Exception) {
                         activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
                     }
@@ -142,6 +143,7 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
 
                         binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.activityStoryPhotoTv.visibility = View.GONE
+                        binding.activityStoryInfoTv.visibility = View.GONE
                     } catch (e: Exception) {
                         activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
                     }
@@ -217,6 +219,7 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
 
         // 활동 모집 수정 성공 여부
         activityRecruit2ViewModel.editRecruitActivityIsSuccess.observe(viewLifecycleOwner) {
+            Timber.e("editRecruitActivityIsSuccess ${activityRecruit2ViewModel.editRecruitActivityIsSuccess.value}")
             if(it) {
                 val dialog = RecruitActivityCompleteDialog(requireContext(),
                     "활동 모집 수정 완료",
@@ -226,8 +229,9 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
                         activity.onReplaceFragment(MyActivityFragment(), false, true)
                     },
                     {
+                        Timber.e("check completion")
                         // 확인 버튼
-                        activity.onReplaceFragment(MainFragment(), false, true, 1)
+                        activity.onReplaceFragment(null, false, true, 1)
                     })
 
                 dialog.setCancelable(false)

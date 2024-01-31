@@ -92,7 +92,7 @@ class BaseActivity : AppCompatActivity() {
     }
 
     // fragment 변경
-    fun onReplaceFragment(fragment: Fragment, addToBackStack: Boolean = true, isVisibleBottomNav: Boolean = false, navItem: Int = -1) {
+    fun onReplaceFragment(fragment: Fragment?, addToBackStack: Boolean = true, isVisibleBottomNav: Boolean = false, navItem: Int = -1) {
         if(!::binding.isInitialized) {
             binding = ActivityBaseBinding.inflate(layoutInflater)
         }
@@ -105,12 +105,14 @@ class BaseActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
-                supportFragmentManager.beginTransaction().let {
-                    it.replace(R.id.fragment_container, fragment)
-                    if(addToBackStack) {
-                        it.addToBackStack(null)
+                if(fragment != null) {
+                    supportFragmentManager.beginTransaction().let {
+                        it.replace(R.id.fragment_container, fragment)
+                        if (addToBackStack) {
+                            it.addToBackStack(null)
+                        }
+                        it.commitAllowingStateLoss()
                     }
-                    it.commitAllowingStateLoss()
                 }
             }
 

@@ -59,6 +59,8 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Timber.e("asdadadadadd")
+
         setScreenHeightSize()
         setUpViewModelObservers()
         setupFixScrollView()
@@ -71,7 +73,6 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         /* val display = activity!!.windowManaver.defaultDisplay */ // in case of Fragment
         val size = Point()
         display.getSize(size) // or getSize(size)
-        Timber.e("size.y ${size.y}")
         MainModel.screenHeightSize =  size.y
     }
 
@@ -98,6 +99,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         // 다가오는 일정 조회 완료되면 viewpager 자동 슬라이드 setup
         mainViewModel.getComingScheduleResult.observe(viewLifecycleOwner) {
+            Timber.e("getComingScheduleResult")
             setupViewPager2(it)
         }
 
@@ -112,7 +114,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
             mainViewModel.clearActivityList()
             mainViewModel.setLastActivity(false)
             mainViewModel.initGarbageLocationSelected()
-            mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회
+            mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 10, mainViewModel.getActivityStatus()) // 내 활동 조회
         }
 
         // 지역 모달 값 변경 시 텍스트를 변경해준다.
@@ -235,8 +237,6 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
         binding.activityRv.adapter = activityListAdapter
 
         binding.mainScrollview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            Timber.e("binding.mainScrollview.canScrollVertically(1) ${!binding.mainScrollview.canScrollVertically(1)}")
-
             if(!binding.mainScrollview.canScrollVertically(1)) {
                 Timber.e("최하단")
                 mainViewModel.getMyActivities(mainViewModel.getGarbageCategoryModalClickWordEng(), mainViewModel.getAreaModalClickWordEng(), 4, mainViewModel.getActivityStatus()) // 내 활동 조회

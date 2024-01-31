@@ -1,5 +1,6 @@
 package com.letspl.oceankeeper.ui.view
 
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.letspl.oceankeeper.ui.adapter.ActivityStartCalendarAdapter
 import com.letspl.oceankeeper.ui.adapter.RecruitEndCalendarAdapter
 import com.letspl.oceankeeper.ui.adapter.RecruitStartCalendarAdapter
 import com.letspl.oceankeeper.ui.dialog.ProgressDialog
+import com.letspl.oceankeeper.ui.viewmodel.ActivityRecruit2ViewModel
 import com.letspl.oceankeeper.ui.viewmodel.ActivityRecruitViewModel
 import com.letspl.oceankeeper.ui.viewmodel.MainViewModel
 import com.letspl.oceankeeper.util.EntryPoint
@@ -35,13 +37,13 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     private lateinit var activityStartCalendarAdapter: ActivityStartCalendarAdapter
     private val mainViewModel: MainViewModel by viewModels()
     private val activityRecruitViewModel: ActivityRecruitViewModel by viewModels()
+    private val activityRecruit2ViewModel: ActivityRecruit2ViewModel by viewModels()
     private val activity: BaseActivity by lazy {
         requireActivity() as BaseActivity
     }
 
     override fun onBackPressed() {
-        activityRecruitViewModel.clearTempData()
-        activity.onReplaceFragment(MyActivityFragment(), false, true, 3)
+        onClickBackBtn()
     }
 
     override fun onCreateView(
@@ -121,16 +123,15 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
                 activityRecruitViewModel.getGarbageCategory(it.response.garbageCategory)
                 activityRecruitViewModel.getLocationTag(it.response.locationTag)
                 binding.rewardSwtich.isChecked = it.response.rewards != ""
-                Timber.e("activityRecruitViewModel.getLocationInfo().address -1 ${activityRecruitViewModel.getLocationInfo().address}")
 
                 activityRecruitViewModel.setupEditRecruitValue(it.response)
-                Timber.e("activityRecruitViewModel.getLocationInfo().address 0 ${activityRecruitViewModel.getLocationInfo().address}")
 
                 if(activityRecruitViewModel.getLocationInfo().address != "") {
                     loadAddress()
                 } else {
                     Timber.e("activityLocationEt.setText 2")
                     binding.activityLocationEt.setText(it.response.location.address)
+                    activityRecruitViewModel.editLocationInfo(it.response.location.address, it.response.location.latitude, it.response.location.longitude)
                 }
 
                 val time = it.response.startAt.split(" ")[1].split(":")
@@ -346,14 +347,15 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
         activityRecruitViewModel.clearTempData()
 
         // 임시저장 활성화
-        activityRecruitViewModel.setIsLoadTempData("temp")
-        activity.onReplaceFragment(MyActivityFragment(), false, true, 3)
+        activityRecruitViewModel.setIsLoadTempData("")
+        activityRecruit2ViewModel.clearData()
+        activity.onReplaceFragment(null, false, true, 3)
     }
 
     // 임시저장 버튼 클릭
     fun onClickTempSaveBtn() {
         // 임시저장 활성화
-        activityRecruitViewModel.setIsLoadTempData("temp")
+        activityRecruitViewModel.setIsLoadTempData("")
         activity.onReplaceFragment(MainFragment(), false, true)
     }
 

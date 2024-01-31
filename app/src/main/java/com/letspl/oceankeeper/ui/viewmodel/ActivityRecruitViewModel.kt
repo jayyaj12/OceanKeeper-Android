@@ -321,8 +321,6 @@ class ActivityRecruitViewModel : ViewModel() {
         setOtherGuide(response.etc)
         setTrafficGuideValue(getGuideTrafficValue(response.transportation))
 
-        Timber.e("getLocationInfo().address ${getLocationInfo().address}")
-        Timber.e("response.location.address ${response.location.address}")
         if(getLocationInfo().address != "") {
             if(getLocationInfo().address == response.location.address) {
                 val loc = Location("")
@@ -385,9 +383,21 @@ class ActivityRecruitViewModel : ViewModel() {
 
     // 주소 정보 저장
     private fun setLocationInfo(address: String, location: Location) {
-        ActivityRecruitModel.location.address = address
+        ActivityRecruitModel.location.address = if(address.contains(",")) {
+            address.split(",")[1].trim()
+        } else {
+            address.trim()
+        }
         ActivityRecruitModel.location.latitude = location.latitude
         ActivityRecruitModel.location.longitude = location.longitude
+    }
+
+
+    // 주소 정보 저장
+    fun editLocationInfo(address: String, latitude: Double, longitude: Double) {
+        ActivityRecruitModel.location.address = address.trim()
+        ActivityRecruitModel.location.latitude = latitude
+        ActivityRecruitModel.location.longitude = longitude
     }
 
     // 주소 정보 가져오기
@@ -756,18 +766,21 @@ class ActivityRecruitViewModel : ViewModel() {
 
     // 모집 시작일 캘린더 날짜 선택 시 초기화
     private fun clearRecruitStartDateInfo() {
+        ActivityRecruitModel.recruitStartClickedDate = ""
         setRecruitStartDateClickPosition(-1)
         setRecruitStartDateNowDate(-1)
     }
 
     // 모집 종료일 캘린더 날짜 선택 시 초기화
     private fun clearRecruitEndDateInfo() {
+        ActivityRecruitModel.recruitEndClickedDate = ""
         setRecruitEndDateClickPosition(-1)
         setRecruitEndDateNowDate(-1)
     }
 
     // 활동 시작일 캘린더 날짜 선택 시 초기화
     private fun clearActivityStartDateInfo() {
+        ActivityRecruitModel.activityStartClickedDate = ""
         setActivityStartDateClickPosition(-1)
         setActivityStartDateNowDate(-1)
     }
@@ -781,6 +794,7 @@ class ActivityRecruitViewModel : ViewModel() {
     fun clearTempData() {
         clearRecruitStartDateInfo()
         clearRecruitEndDateInfo()
+        setIsLoadTempData("")
         clearActivityStartDateInfo()
         ActivityRecruitModel.isGiveReward = false
         ActivityRecruitModel.projectName = ""

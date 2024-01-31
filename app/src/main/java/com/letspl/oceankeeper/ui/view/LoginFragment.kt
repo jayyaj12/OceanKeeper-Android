@@ -69,7 +69,7 @@ class LoginFragment : Fragment(), BaseActivity.OnBackPressedListener {
             if (isExistLoginInfo != null) {
                 if (isExistLoginInfo) {
                     // 있으면 메인 페이지로 이동
-                    activity.onReplaceFragment(MainFragment(), false, true)
+                    activity.onReplaceFragment(null, false, true, 1)
                 } else {
                     // 없으면 회원가입 진행
                     activity.onReplaceFragment(JoinFragment())

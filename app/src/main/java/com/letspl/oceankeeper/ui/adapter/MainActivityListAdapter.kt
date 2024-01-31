@@ -16,12 +16,10 @@ class MainActivityListAdapter(private val context: Context, private val onClicke
     companion object {
         val diffUtil = object: DiffUtil.ItemCallback<MyActivityItem>() {
             override fun areItemsTheSame(oldItem: MyActivityItem, newItem: MyActivityItem): Boolean {
-                Timber.e("areItemsTheSame ${oldItem == newItem}")
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(oldItem: MyActivityItem, newItem: MyActivityItem): Boolean {
-                Timber.e("areContentsTheSame ${oldItem.activityId == newItem.activityId}")
                 return oldItem.activityId == newItem.activityId
             }
         }

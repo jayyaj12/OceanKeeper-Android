@@ -71,6 +71,7 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 캘린더 date 셋업
     private fun setupCalendarDate() {
+        Timber.e("activityRecruitViewModel.isLoadTempData() ${activityRecruitViewModel.isLoadTempData()}")
         if(activityRecruitViewModel.isLoadTempData() == "") {
             activityRecruitViewModel.getNowDate()
         } else {
@@ -242,6 +243,7 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
         Timber.e("getRecruitStartDate ${activityRecruitViewModel.getRecruitStartDate()}")
         Timber.e("getRecruitEndDate ${activityRecruitViewModel.getRecruitEndDate()}")
         Timber.e("getActivityStartDate ${activityRecruitViewModel.getActivityStartDate()}")
+        Timber.e("activityRecruitViewModel.isLoadTempData() ${activityRecruitViewModel.isLoadTempData()}")
         if(activityRecruitViewModel.isLoadTempData() != "") {
             if(activityRecruitViewModel.isLoadTempData() == "temp") {
                 binding.recruitStartDateTv.setTextColor(Color.parseColor("#212121"))

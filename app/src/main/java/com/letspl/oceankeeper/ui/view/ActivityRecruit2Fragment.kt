@@ -79,6 +79,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
                         binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.thumbnailPhotoTv.visibility = View.GONE
+                        binding.thumbnailInfoTv.visibility = View.GONE
                     } catch (e: Exception) {
                         activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
                     }
@@ -113,6 +114,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
                         binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.introduceKeeperPhotoTv.visibility = View.GONE
+                        binding.introduceKeeperInfoTv.visibility = View.GONE
                     } catch (e: Exception) {
                         activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
                     }
@@ -147,6 +149,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
                         binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.activityStoryPhotoTv.visibility = View.GONE
+                        binding.activityStoryInfoTv.visibility = View.GONE
                     } catch (e: Exception) {
                         activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
                     }
@@ -245,7 +248,7 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                     },
                     {
                         // 확인 버튼
-                        activity.onReplaceFragment(MainFragment(), false, true, 1)
+                        activity.onReplaceFragment(null, false, true, 1)
                     })
 
                 dialog.setCancelable(false)

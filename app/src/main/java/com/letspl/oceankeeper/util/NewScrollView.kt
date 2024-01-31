@@ -49,7 +49,6 @@ class NewScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListener 
 
         val scrolly = t
 
-        Timber.e("scrolly $scrolly, mHeaderInitPosition $mHeaderInitPosition")
         if (scrolly > mHeaderInitPosition) {
             stickHeader(scrolly - mHeaderInitPosition)
         } else {
