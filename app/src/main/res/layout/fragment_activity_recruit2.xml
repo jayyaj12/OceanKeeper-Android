@@ -116,6 +116,19 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
+                    <TextView
+                        android:id="@+id/thumbnail_info_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이미지 비율은 16:9에 최적화되어 있습니다."
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/thumbnail_photo_tv"
+                        android:textSize="12dp"
+                        android:textColor="#90a4ae"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
@@ -137,20 +150,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="키퍼 소개"
+                    android:text="키퍼 소개 이미지"
                     android:textColor="@color/gray_scale_g900"
                     android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="@id/thumbnail_tv"
                     app:layout_constraintTop_toBottomOf="@id/thumbnail_photo_cl" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:text="*"
-                    android:textColor="@color/primary_color_p500"
-                    app:layout_constraintStart_toEndOf="@+id/introduce_keeper_tv"
-                    app:layout_constraintTop_toTopOf="@id/introduce_keeper_tv" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/introduce_keeper_photo_cl"
@@ -187,6 +191,19 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
+                    <TextView
+                        android:id="@+id/introduce_keeper_info_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이미지 비율은 16:9에 최적화되어 있습니다."
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/introduce_keeper_photo_tv"
+                        android:textSize="12dp"
+                        android:textColor="#90a4ae"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
@@ -198,10 +215,31 @@
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
                     android:background="#000000"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/introduce_keeper_tv" />
+
+                <TextView
+                    android:id="@+id/introduce_keeper_content_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="키퍼 소개"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/thumbnail_tv"
+                    app:layout_constraintTop_toBottomOf="@id/introduce_keeper_iv" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/introduce_keeper_content_tv"
+                    app:layout_constraintTop_toTopOf="@id/introduce_keeper_content_tv" />
 
                 <EditText
                     android:id="@+id/introduce_keeper_et"
@@ -221,7 +259,7 @@
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="@id/introduce_keeper_photo_cl"
                     app:layout_constraintStart_toStartOf="@id/introduce_keeper_photo_cl"
-                    app:layout_constraintTop_toBottomOf="@id/introduce_keeper_photo_cl" />
+                    app:layout_constraintTop_toBottomOf="@id/introduce_keeper_content_tv" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -240,20 +278,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="활동STORY"
+                    android:text="활동 이미지"
                     android:textColor="@color/gray_scale_g900"
                     android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="@id/thumbnail_tv"
                     app:layout_constraintTop_toBottomOf="@id/introduce_keeper_et" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:text="*"
-                    android:textColor="@color/primary_color_p500"
-                    app:layout_constraintStart_toEndOf="@+id/activity_story_tv"
-                    app:layout_constraintTop_toTopOf="@id/activity_story_tv" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/activity_story_photo_cl"
@@ -291,6 +320,19 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
+                    <TextView
+                        android:id="@+id/activity_story_info_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이미지 비율은 16:9에 최적화되어 있습니다."
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/activity_story_photo_tv"
+                        android:textSize="12dp"
+                        android:textColor="#90a4ae"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
@@ -301,10 +343,31 @@
                     android:layout_marginTop="9dp"
                     android:layout_marginEnd="16dp"
                     android:background="#000000"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/activity_story_tv" />
+
+                <TextView
+                    android:id="@+id/activity_story_content_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="활동 내용"
+                    android:textColor="@color/gray_scale_g900"
+                    android:textSize="14dp"
+                    app:layout_constraintStart_toStartOf="@id/thumbnail_tv"
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_iv" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="*"
+                    android:textColor="@color/primary_color_p500"
+                    app:layout_constraintStart_toEndOf="@+id/activity_story_content_tv"
+                    app:layout_constraintTop_toTopOf="@id/activity_story_content_tv" />
 
                 <EditText
                     android:id="@+id/activity_story_et"
@@ -324,7 +387,7 @@
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="@id/activity_story_photo_cl"
                     app:layout_constraintStart_toStartOf="@id/activity_story_photo_cl"
-                    app:layout_constraintTop_toBottomOf="@id/activity_story_photo_cl" />
+                    app:layout_constraintTop_toBottomOf="@id/activity_story_content_tv" />
 
                 <TextView
                     android:layout_width="wrap_content"

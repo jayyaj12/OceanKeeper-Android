@@ -747,7 +747,7 @@
 
                         <ImageView
                             android:id="@+id/recruit_end_previous_ib"
-                            android:layout_width="match_parent"
+                            android:layout_width="20dp"
                             android:layout_height="17dp"
                             android:src="@drawable/calendar_previous_icon" />
 
