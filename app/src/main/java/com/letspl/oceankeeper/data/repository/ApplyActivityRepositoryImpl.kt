@@ -16,6 +16,10 @@ class ApplyActivityRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit p
        return apiService.postRecruitmentApplication(token, activity)
     }
 
+    override suspend fun getLastRecruitmentApplication(): Response<GetLastRecruitmentApplicationDto> {
+        return apiService.getLastRecruitmentApplication("Bearer ${UserModel.userInfo.token.accessToken}")
+    }
+
     override suspend fun getDetailApplication(applicationId: String): Response<GetApplicationDetailDto> {
         return apiService.getDetailApplication("Bearer ${UserModel.userInfo.token.accessToken}", applicationId)
     }

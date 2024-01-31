@@ -72,3 +72,24 @@ data class PatchApplicationDto(
     val timestamp: String,
     val response: String
 )
+
+// 활동 지원하기
+@Serializable
+data class GetLastRecruitmentApplicationDto(
+    val statusCode: Int,
+    val timestamp: String,
+    val response: GetLastRecruitmentApplicationResponseDto
+)
+
+@Serializable
+data class GetLastRecruitmentApplicationResponseDto(
+    val dayOfBirth: String = "",
+    val email: String = "",
+    val id1365: String = "",
+    val name: String = "",
+    val phoneNumber: String = "",
+    val question: String = "",
+    val startPoint: String = "",
+    val transportation: String = ""
+)
+

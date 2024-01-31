@@ -102,6 +102,12 @@ interface ApiService {
         @Body activityBody: PostApplyApplicationBody,
     ): Response<ApplyApplicationDto>
 
+    // 마지막 지원서 불러오기
+    @GET("activity/recruitment/application/last")
+    suspend fun getLastRecruitmentApplication(
+        @Header("Authorization") token: String,
+    ): Response<GetLastRecruitmentApplicationDto>
+
     // 메세지함 확인
     /*
         id: 메세지 아이디

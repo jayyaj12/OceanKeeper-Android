@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.letspl.oceankeeper.data.dto.GetApplicationDetailResponse
+import com.letspl.oceankeeper.data.dto.GetLastRecruitmentApplicationResponseDto
 import com.letspl.oceankeeper.data.dto.PatchApplyApplicationBody
 import com.letspl.oceankeeper.data.dto.PostApplyApplicationBody
 import com.letspl.oceankeeper.data.model.MainModel
@@ -34,6 +35,10 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     // 지원 결과
     private var _applyResult = MutableLiveData<String>()
     val applyResult: LiveData<String> get() = _applyResult
+
+    // 마지막 지원서 불러오기 결과
+    private var _getLastRecruitmentApplicationResult = MutableLiveData<GetLastRecruitmentApplicationResponseDto?>()
+    val getLastRecruitmentApplicationResult: LiveData<GetLastRecruitmentApplicationResponseDto?> get() = _getLastRecruitmentApplicationResult
 
     // 지원 수정 결과
     private var _editApplyResult = MutableLiveData<String>()
@@ -81,6 +86,28 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
                     if (errorJsonObject != null) {
                         val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                         _errorMsg.postValue(errorMsg)
+                    }
+                }
+            }
+        }
+    }
+
+    // 마지막 지원서 불러오기
+    fun getLastRecruitmentApplication() {
+        CoroutineScope(Dispatchers.IO).launch {
+            applyActivityRepositoryImpl.getLastRecruitmentApplication().let {
+                if (it.isSuccessful) {
+                    _getLastRecruitmentApplicationResult.postValue(it.body()?.response)
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                        if(errorMsg == "해당 유저의 활동 지원서가 존재하지 않습니다.") {
+                            _getLastRecruitmentApplicationResult.postValue(null)
+                        } else {
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
                 }
             }

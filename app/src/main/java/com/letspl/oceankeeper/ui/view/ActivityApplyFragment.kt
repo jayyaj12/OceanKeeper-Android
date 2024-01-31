@@ -10,6 +10,7 @@ import com.letspl.oceankeeper.databinding.FragmentActivityApplyBinding
 import com.letspl.oceankeeper.ui.dialog.RecruitActivityCompleteDialog
 import com.letspl.oceankeeper.ui.viewmodel.ApplyActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
@@ -42,6 +43,12 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupViewModelObserver()
+        loadLastRecruitmentApplicationData()
+    }
+
+    // 마지막 지원서 불러오기
+    private fun loadLastRecruitmentApplicationData() {
+        applyActivityViewModel.getLastRecruitmentApplication()
     }
 
     // 확인 버튼 클릭
@@ -53,6 +60,7 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 binding.emailEt.text.toString()
             )
         ) {
+            Timber.e("test")
             // 개인정보 동의시에만 활동 지원 가능
             if (android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.text.toString())
                     .matches()
@@ -68,6 +76,8 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
                             binding.askRecruitKeeperEt.text.toString(),
                             binding.startLocationEt.text.toString()
                         )
+                    } else {
+                        activity.showErrorMsg("개인정보 동의 후에 지원이 가능합니다.")
                     }
                 } else {
                     activity.showErrorMsg("연락처 형식이 올바르지 않습니다.")
@@ -81,6 +91,18 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     private fun setupViewModelObserver() {
+        applyActivityViewModel.getLastRecruitmentApplicationResult.observe(viewLifecycleOwner) {
+            if(it != null) {
+                binding.nameEt.setText(it.name) // 이름
+                binding.emailEt.setText(it.email) // 이메일
+                binding.id1365Et.setText(it.id1365) // 1365아이디
+                binding.birthdayEt.setText(it.dayOfBirth) // 생년월일
+                binding.phonenumberEt.setText(it.phoneNumber) // 연락처
+                binding.startLocationEt.setText(it.startPoint) // 출발 지역명
+                binding.askRecruitKeeperEt.setText(it.question)
+                applyActivityViewModel.onClickedTransport(applyActivityViewModel.getClickedTransportStringToInt(it.transportation))
+            }
+        }
         applyActivityViewModel.errorMsg.observe(viewLifecycleOwner) {
             if(it != "") {
                 activity.showErrorMsg(it)
@@ -97,7 +119,7 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 },
                 {
                     // 확인 버튼
-                    activity.onReplaceFragment(MainFragment(), false, true, 1)
+                    activity.onReplaceFragment(null, false, true, 1)
                 })
 
             dialog.setCancelable(false)
