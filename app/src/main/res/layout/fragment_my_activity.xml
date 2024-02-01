@@ -18,8 +18,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:fillViewport="true"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -79,8 +79,8 @@
                 android:layout_width="16dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="18dp"
-                android:src="@drawable/noti_icon"
                 android:onClick="@{() -> myActivityFragment.onMoveNotification()}"
+                android:src="@drawable/noti_icon"
                 app:layout_constraintBottom_toBottomOf="@id/setting_iv"
                 app:layout_constraintEnd_toStartOf="@+id/setting_iv"
                 app:layout_constraintTop_toTopOf="@id/setting_iv" />
@@ -144,8 +144,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="닉네임 수정"
                 android:onClick="@{() -> myActivityFragment.onClickChangeNickname()}"
+                android:text="닉네임 수정"
                 android:textColor="#757575"
                 android:textSize="14dp"
                 app:layout_constraintStart_toStartOf="@id/nickname_tv"
@@ -154,8 +154,8 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:onClick="@{() -> myActivityFragment.onClickChangeNickname()}"
                 android:layout_marginStart="8dp"
+                android:onClick="@{() -> myActivityFragment.onClickChangeNickname()}"
                 android:src="@drawable/change_nickname_icon"
                 app:layout_constraintBottom_toBottomOf="@id/edit_nickname_tv"
                 app:layout_constraintStart_toEndOf="@id/edit_nickname_tv"
@@ -414,31 +414,55 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/apply_activity_rv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
                 android:background="#ffffff"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_tab"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/apply_activity_rv"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_tab" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/open_activity_rv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
                 android:background="#ffffff"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_tab" />
+
+            <TextView
+                android:id="@+id/not_apply_activity_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="55dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="신청한 활동이 없습니다."
+                android:textColor="#607d8b"
+                android:textSize="14dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_tab"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/open_activity_rv"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_tab" />
 
+            <ImageView
+                android:id="@+id/not_apply_activity_iv"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/not_apply_activity_icon"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/not_apply_activity_tv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

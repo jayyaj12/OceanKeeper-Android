@@ -32,7 +32,9 @@ class NoticeFragment : Fragment(), BaseActivity.OnBackPressedListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNoticeBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = this
         binding.notiecFragment = this
+        binding.noticeViewModel = noticeViewModel
         return binding.root
     }
 

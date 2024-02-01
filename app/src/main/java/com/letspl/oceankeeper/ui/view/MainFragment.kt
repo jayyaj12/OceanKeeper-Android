@@ -105,7 +105,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         // 내 활동 조회 결과 표시
         mainViewModel.getMyActivityResult.observe(viewLifecycleOwner) {
-            Timber.e("getMyActivityResult $it")
+            Timber.e("getMyActivityResult ${it.size}")
             activityListAdapter.submitList(it.toMutableList())
         }
 

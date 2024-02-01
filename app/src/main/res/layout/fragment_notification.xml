@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="notificationFragment"
             type="com.letspl.oceankeeper.ui.view.NotificationFragment" />
+
+        <variable
+            name="settingViewModel"
+            type="com.letspl.oceankeeper.ui.viewmodel.SettingViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,11 +24,11 @@
         <LinearLayout
             android:id="@+id/back_icon_ll"
             android:layout_width="20dp"
-            android:onClick="@{() -> notificationFragment.onClickedCloseBtn()}"
             android:layout_height="20dp"
             android:layout_marginStart="13dp"
             android:layout_marginTop="22dp"
             android:gravity="center"
+            android:onClick="@{() -> notificationFragment.onClickedCloseBtn()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -46,18 +53,42 @@
             app:layout_constraintTop_toTopOf="@+id/back_icon_ll" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notification_rv"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/notification_rv"
-            android:background="@null"
-            android:overScrollMode="never"
             android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:background="@null"
             android:orientation="vertical"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/back_icon_ll"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/back_icon_ll" />
+
+        <TextView
+            android:id="@+id/not_notification_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="알림이 없습니다."
+            android:textColor="#607d8b"
+            android:textSize="14dp"
+            android:visibility="@{settingViewModel.getNotificationListResult.size() > 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/notification_rv" />
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/not_notification_icon"
+            android:visibility="@{settingViewModel.getNotificationListResult.size() > 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/not_notification_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

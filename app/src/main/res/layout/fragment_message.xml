@@ -4,9 +4,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="messageFragment"
             type="com.letspl.oceankeeper.ui.view.MessageFragment" />
+
+        <variable
+            name="messageViewModel"
+            type="com.letspl.oceankeeper.ui.viewmodel.MessageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,8 +36,8 @@
             android:layout_width="16dp"
             android:layout_height="20dp"
             android:layout_marginEnd="18dp"
-            android:src="@drawable/noti_icon"
             android:onClick="@{() -> messageFragment.onMoveNotification()}"
+            android:src="@drawable/noti_icon"
             app:layout_constraintBottom_toBottomOf="@id/setting_iv"
             app:layout_constraintEnd_toStartOf="@+id/setting_iv"
             app:layout_constraintTop_toTopOf="@id/setting_iv" />
@@ -93,6 +99,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_tab" />
+
+        <TextView
+            android:id="@+id/not_notification_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="쪽지가 없습니다."
+            android:textColor="#607d8b"
+            android:textSize="14dp"
+            android:visibility="@{messageViewModel.getMessageResult.size() > 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/message_rv" />
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/not_message_icon"
+            android:visibility="@{messageViewModel.getMessageResult.size() > 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/not_notification_tv" />
 
         <ImageView
             android:layout_width="56dp"

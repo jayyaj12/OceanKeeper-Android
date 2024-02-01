@@ -33,6 +33,8 @@ class NotificationFragment : Fragment(), BaseActivity.OnBackPressedListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNotificationBinding.inflate(layoutInflater)
+        binding.settingViewModel = settingViewModel
+        binding.lifecycleOwner = this
         binding.notificationFragment = this
         return binding.root
     }
@@ -51,7 +53,7 @@ class NotificationFragment : Fragment(), BaseActivity.OnBackPressedListener {
             notificationListAdapter.submitList(it.toMutableList())
         }
         settingViewModel.errorMsg.observe(viewLifecycleOwner) {
-            if(it != "") {
+            if (it != "") {
                 activity.showErrorMsg(it)
             }
         }
@@ -62,7 +64,7 @@ class NotificationFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
         binding.notificationRv.adapter = notificationListAdapter
         binding.notificationRv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if(!binding.notificationRv.canScrollVertically(1)) {
+            if (!binding.notificationRv.canScrollVertically(1)) {
                 Timber.e("최상단")
                 settingViewModel.getNotificationList()
             }
@@ -70,7 +72,7 @@ class NotificationFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     fun onClickedCloseBtn() {
-        when(EntryPoint.notificationPoint) {
+        when (EntryPoint.notificationPoint) {
             "main" -> activity.onReplaceFragment(MainFragment(), false, true)
             "message" -> activity.onReplaceFragment(MessageFragment(), false, true)
             "myActivity" -> activity.onReplaceFragment(MyActivityFragment(), false, true)

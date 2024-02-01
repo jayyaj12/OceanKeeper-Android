@@ -63,15 +63,24 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
                 try {
-                    val path = ImgFileMaker.getFullPathFromUri(requireContext(),
-                        myActivityViewModel.getTakePhotoUri())!!
+                    val path = ImgFileMaker.getFullPathFromUri(
+                        requireContext(),
+                        myActivityViewModel.getTakePhotoUri()
+                    )!!
                     val angle = RotateTransform.getRotationAngle(path)
                     val rotateBitmap =
-                        RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat(), myActivityViewModel.getTakePhotoUri())
+                        RotateTransform.rotateImage(
+                            BitmapFactory.decodeFile(path),
+                            angle.toFloat(),
+                            myActivityViewModel.getTakePhotoUri()
+                        )
 
-                    myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(
-                        rotateBitmap!!,
-                        path))
+                    myActivityViewModel.uploadEditProfileImage(
+                        ImgFileMaker.saveBitmapToFile(
+                            rotateBitmap!!,
+                            path
+                        )
+                    )
 
                     Glide.with(requireContext())
                         .load(myActivityViewModel.getTakePhotoUri())
@@ -99,9 +108,12 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                         it
                     )
 
-                    myActivityViewModel.uploadEditProfileImage(ImgFileMaker.saveBitmapToFile(
-                        rotateBitmap!!,
-                        path))
+                    myActivityViewModel.uploadEditProfileImage(
+                        ImgFileMaker.saveBitmapToFile(
+                            rotateBitmap!!,
+                            path
+                        )
+                    )
 
                     Glide.with(requireContext())
                         .load(it)
@@ -154,31 +166,51 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     private fun setupViewModelObserver() {
         myActivityViewModel.errorMsg.observe(viewLifecycleOwner) {
-            if(it != "") {
+            if (it != "") {
                 activity.showErrorMsg(it)
             }
         }
 
         // 프로필 이미지 수정
         myActivityViewModel.changeProfileImageResult.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 activity.showSuccessMsg("프로필 이미지가 수정되었습니다.")
             }
         }
         // 내활동보기 결과 등록(크루)
         myActivityViewModel.getUserActivityCrew.observe(viewLifecycleOwner) {
             if (it != null) {
+                Timber.e("getUserActivityCrew ${it.size}")
                 binding.openActivityRv.visibility = View.GONE
                 binding.applyActivityRv.visibility = View.VISIBLE
                 applyActivityListAdapter.submitList(it.toMutableList())
+
+                if (it.isNotEmpty()) {
+                    binding.notApplyActivityTv.visibility = View.GONE
+                    binding.notApplyActivityIv.visibility = View.GONE
+                } else {
+                    binding.notApplyActivityTv.text = "신청한 활동이 없습니다."
+                    binding.notApplyActivityTv.visibility = View.VISIBLE
+                    binding.notApplyActivityIv.visibility = View.VISIBLE
+                }
             }
         }
         // 내활동보기 결과 등록(호스트)
         myActivityViewModel.getUserActivityHost.observe(viewLifecycleOwner) {
             if (it != null) {
+                Timber.e("getUserActivityHost ${it.size}")
                 binding.applyActivityRv.visibility = View.GONE
                 binding.openActivityRv.visibility = View.VISIBLE
                 openActivityListAdapter.submitList(it.toMutableList())
+
+                if (it.isNotEmpty()) {
+                    binding.notApplyActivityTv.visibility = View.GONE
+                    binding.notApplyActivityIv.visibility = View.GONE
+                } else {
+                    binding.notApplyActivityTv.text = "오픈한 활동이 없습니다."
+                    binding.notApplyActivityTv.visibility = View.VISIBLE
+                    binding.notApplyActivityIv.visibility = View.VISIBLE
+                }
             }
         }
         // 활동 지원 취소
@@ -235,8 +267,10 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
         binding.applyActivityRv.setOnScrollChangeListener { view, i, i2, i3, i4 ->
             if (!binding.applyActivityRv.canScrollVertically(1)) {
-                myActivityViewModel.getUserActivity("crew",
-                    myActivityViewModel.getLastCrewActivityId())
+                myActivityViewModel.getUserActivity(
+                    "crew",
+                    myActivityViewModel.getLastCrewActivityId()
+                )
             }
         }
     }
@@ -265,8 +299,10 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
         binding.openActivityRv.setOnScrollChangeListener { view, i, i2, i3, i4 ->
             if (!binding.openActivityRv.canScrollVertically(1)) {
-                myActivityViewModel.getUserActivity("host",
-                    myActivityViewModel.getLastHostActivityId())
+                myActivityViewModel.getUserActivity(
+                    "host",
+                    myActivityViewModel.getLastHostActivityId()
+                )
             }
         }
     }
@@ -301,8 +337,10 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
             put(MediaStore.Images.Media.DISPLAY_NAME, "img_$now.jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
         }
-        return requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            content)
+        return requireActivity().contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            content
+        )
     }
 
     // 프로필 수정 아이콘 클릭 시 촬영, 앨범에서 선택 팝업 표시
@@ -330,15 +368,20 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 Timber.e("tab?.position ${tab?.position}")
                 when (tab?.position) {
                     0 -> {
+                        binding.notApplyActivityTv.visibility = View.GONE
+                        binding.notApplyActivityIv.visibility = View.GONE
+
                         binding.applyActivityRv.visibility = View.GONE
                         binding.openActivityRv.visibility = View.GONE
                         myActivityViewModel.setCrewLast(false)
                         myActivityViewModel.setHostLast(false)
                     }
+
                     1 -> {
                         getUserActivity("crew")
                         myActivityViewModel.setHostLast(false)
                     }
+
                     2 -> {
                         getUserActivity("host")
                         myActivityViewModel.setCrewLast(false)

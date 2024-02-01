@@ -68,6 +68,8 @@ class MessageFragment : Fragment(), BaseActivity.OnBackPressedListener {
     ): View? {
         _binding = FragmentMessageBinding.inflate(layoutInflater)
         binding.messageFragment = this
+        binding.messageViewModel = messageViewModel
+        binding.lifecycleOwner = this
         return binding.root
     }
 
@@ -101,7 +103,7 @@ class MessageFragment : Fragment(), BaseActivity.OnBackPressedListener {
             if (it != "") {
                 bottomSheetView.findViewById<AppCompatButton>(R.id.message_content_et).text = ""
                 activity.showErrorMsg(it)
-                if(::bottomSheetView.isInitialized) {
+                if (::bottomSheetView.isInitialized) {
                     showErrorMsg(it)
                 }
             }
@@ -116,7 +118,10 @@ class MessageFragment : Fragment(), BaseActivity.OnBackPressedListener {
         }
 
         messageViewModel.getCrewNicknameList.observe(viewLifecycleOwner) {
-            setupSendMessageBottomSheetDialog(messageViewModel.getActivityNameSaveList(), messageViewModel.getCrewList())
+            setupSendMessageBottomSheetDialog(
+                messageViewModel.getActivityNameSaveList(),
+                messageViewModel.getCrewList()
+            )
         }
 
         messageViewModel.getCrewNicknameList2.observe(viewLifecycleOwner) {
@@ -338,12 +343,20 @@ class MessageFragment : Fragment(), BaseActivity.OnBackPressedListener {
         // 전송 버튼 클릭
         bottomSheetView.findViewById<AppCompatButton>(R.id.send_btn).setOnClickListener {
             Timber.e("send_btn")
-            Timber.e("bottomSheetView.findViewById<EditText>(R.id.message_content_et).text ${bottomSheetView.findViewById<EditText>(R.id.message_content_et).text}")
+            Timber.e(
+                "bottomSheetView.findViewById<EditText>(R.id.message_content_et).text ${
+                    bottomSheetView.findViewById<EditText>(
+                        R.id.message_content_et
+                    ).text
+                }"
+            )
             if (bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString() != "") {
                 Timber.e("messageViewModel.getTypeSpinnerClickedItem() ${messageViewModel.getTypeSpinnerClickedItem()}")
                 when (messageViewModel.getTypeSpinnerClickedItem()) {
                     "NOTICE" -> {
-                        if(messageViewModel.getConvertFromMessageCrewItemToStringForNickname().isNotEmpty()){
+                        if (messageViewModel.getConvertFromMessageCrewItemToStringForNickname()
+                                .isNotEmpty()
+                        ) {
                             messageViewModel.postMessage(
                                 messageViewModel.getActivityNameSpinnerClickActivityId(),
                                 bottomSheetView.findViewById<EditText>(R.id.message_content_et).text.toString(),
