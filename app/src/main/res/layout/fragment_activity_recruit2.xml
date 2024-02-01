@@ -120,14 +120,14 @@
                         android:id="@+id/thumbnail_info_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="이미지 비율은 16:9에 최적화되어 있습니다."
-                        app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/pretendard_medium"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/thumbnail_photo_tv"
+                        android:text="이미지 비율은 16:9에 최적화되어 있습니다."
+                        android:textColor="#90a4ae"
                         android:textSize="12dp"
-                        android:textColor="#90a4ae"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/thumbnail_photo_tv" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -139,6 +139,7 @@
                     android:layout_marginTop="9dp"
                     android:layout_marginEnd="16dp"
                     android:background="#000000"
+                    android:scaleType="centerCrop"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -195,14 +196,14 @@
                         android:id="@+id/introduce_keeper_info_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="이미지 비율은 16:9에 최적화되어 있습니다."
-                        app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/pretendard_medium"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/introduce_keeper_photo_tv"
+                        android:text="이미지 비율은 16:9에 최적화되어 있습니다."
+                        android:textColor="#90a4ae"
                         android:textSize="12dp"
-                        android:textColor="#90a4ae"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/introduce_keeper_photo_tv" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -215,6 +216,7 @@
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
                     android:background="#000000"
+                    android:scaleType="centerCrop"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -324,14 +326,14 @@
                         android:id="@+id/activity_story_info_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="이미지 비율은 16:9에 최적화되어 있습니다."
-                        app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/pretendard_medium"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/activity_story_photo_tv"
+                        android:text="이미지 비율은 16:9에 최적화되어 있습니다."
+                        android:textColor="#90a4ae"
                         android:textSize="12dp"
-                        android:textColor="#90a4ae"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/activity_story_photo_tv" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -343,6 +345,7 @@
                     android:layout_marginTop="9dp"
                     android:layout_marginEnd="16dp"
                     android:background="#000000"
+                    android:scaleType="centerCrop"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

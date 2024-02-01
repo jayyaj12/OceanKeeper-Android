@@ -39,8 +39,8 @@
                     android:id="@+id/thumbnail_iv"
                     android:layout_width="417dp"
                     android:layout_height="270dp"
-                    android:scaleType="fitCenter"
                     android:background="#000000"
+                    android:scaleType="centerCrop"
                     app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.thumbnailUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -270,6 +270,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#000000"
+                        android:scaleType="centerCrop"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.keeperImageUrl}" />
 
                 </androidx.cardview.widget.CardView>
@@ -319,6 +320,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#000000"
+                        android:scaleType="centerCrop"
                         app:backgroundUrl="@{mainViewModel.activityDetailSelectResult.response.storyImageUrl}" />
 
                 </androidx.cardview.widget.CardView>
