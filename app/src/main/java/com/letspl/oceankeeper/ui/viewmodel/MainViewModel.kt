@@ -17,12 +17,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepositoryImpl): ViewModel() {
+class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepositoryImpl) :
+    ViewModel() {
 
     // 다가오는 일정 데이터 조회 결과
     private var _getComingScheduleResult = MutableLiveData<List<ComingScheduleItem>>()
@@ -66,9 +68,11 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                 if (it.isSuccessful) {
                     _getComingScheduleResult.postValue(it.body()?.response?.activities)
                 } else {
-                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if(errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
+                        val errorMsg =
+                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                         _errorMsg.postValue(errorMsg)
                     }
                 }
@@ -77,38 +81,46 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
     }
 
     // 활동 조회 첫 조회
-    fun getMyActivities(garbageCategory: String?, locationTag: String?, size: Int, status: String?) {
+    fun getMyActivities(
+        garbageCategory: String?,
+        locationTag: String?,
+        size: Int,
+        status: String?
+    ) {
+        // 활동 조회 첫 조회시에는 activityId 안 보냄
         CoroutineScope(Dispatchers.IO).launch {
-            // 활동 조회 첫 조회시에는 activityId 안 보냄
-            CoroutineScope(Dispatchers.IO).launch {
-                // 마지막 액티비티가 아닌 경우에만 조회
-                if(!MainModel.lastActivity) {
-                    mainRepositoryImpl.getMyActivity(
-                        "Bearer ${UserModel.userInfo.token.accessToken}",
-                        MainModel.lastActivityId,
-                        garbageCategory,
-                        locationTag,
-                        size,
-                        status
-                    ).let {
-                        if (it.isSuccessful) {
-                            val activities =it.body()?.response?.activities!!
-                            MainModel.activityList.addAll(it.body()?.response?.activities!!)
-                            _getMyActivityResult.postValue(MainModel.activityList)
-                            if (activities.isNotEmpty()) {
-                                MainModel.lastActivity = it.body()?.response?.meta?.last!!
-                                MainModel.lastActivityId =
-                                    activities[activities.size - 1].activityId
-                            } else {
-                                MainModel.lastActivity = false
-                                MainModel.lastActivityId = null
-                            }
+            // 마지막 액티비티가 아닌 경우에만 조회
+            if (!MainModel.lastActivity) {
+                mainRepositoryImpl.getMyActivity(
+                    "Bearer ${UserModel.userInfo.token.accessToken}",
+                    MainModel.lastActivityId,
+                    garbageCategory,
+                    locationTag,
+                    size,
+                    status
+                ).let {
+                    if (it.isSuccessful) {
+                        val activities = it.body()?.response?.activities!!
+                        MainModel.activityList.addAll(it.body()?.response?.activities!!)
+                        _getMyActivityResult.postValue(MainModel.activityList)
+                        if (activities.isNotEmpty()) {
+                            MainModel.lastActivity = it.body()?.response?.meta?.last!!
+                            MainModel.lastActivityId =
+                                activities[activities.size - 1].activityId
                         } else {
-                            val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                            if(errorJsonObject != null) {
-                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                                _errorMsg.postValue(errorMsg)
-                            }
+                            MainModel.lastActivity = false
+                            MainModel.lastActivityId = null
+                        }
+                    } else {
+                        Timber.e("it.message() ${it.message()}")
+
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
                         }
                     }
                 }
@@ -116,16 +128,20 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
         }
     }
 
-    // 활동 조회 첫 조회
+    // 활동 조회 상세 조회
     fun getMyActivityDetail(activityId: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            mainRepositoryImpl.getMyActivityDetail("Bearer ${UserModel.userInfo.token.accessToken}", activityId).let {
-                if(it.isSuccessful) {
+            mainRepositoryImpl.getMyActivityDetail(
+                "Bearer ${UserModel.userInfo.token.accessToken}",
+                activityId
+            ).let {
+                if (it.isSuccessful) {
                     _activityDetailSelectResult.postValue(it.body())
                     setClickedActivityItem(it.body()?.response!!)
-                } else{
-                    val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if(errorJsonObject != null) {
+                } else {
+                    val errorJsonObject =
+                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                    if (errorJsonObject != null) {
                         val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                         _errorMsg.postValue(errorMsg)
                     }
@@ -136,7 +152,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
 
     // 모집 기간인지 확인
     fun isRecruitmentTerms(startRecruitmentDate: String?, endRecruitmentDate: String?): Boolean {
-        return if(startRecruitmentDate != null && endRecruitmentDate != null) {
+        return if (startRecruitmentDate != null && endRecruitmentDate != null) {
             (getDateDiff(startRecruitmentDate) >= 0 && getDateDiff(endRecruitmentDate) <= 0)
         } else {
             false

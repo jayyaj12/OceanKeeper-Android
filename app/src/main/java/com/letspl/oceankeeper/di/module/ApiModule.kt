@@ -13,7 +13,6 @@ import com.letspl.oceankeeper.ui.viewmodel.MessageViewModel
 import com.letspl.oceankeeper.ui.viewmodel.MyActivityViewModel
 import com.letspl.oceankeeper.ui.viewmodel.SettingViewModel
 import com.letspl.oceankeeper.util.ContextUtil
-import com.letspl.oceankeeper.util.loginManager.AppleLoginManager
 import com.letspl.oceankeeper.util.loginManager.KakaoLoginManager
 import dagger.Module
 import dagger.Provides

@@ -75,7 +75,12 @@ class AppleLoginManager @Inject constructor (private val activity: Activity, pri
 
             }.addOnFailureListener { e ->
                 Log.e("TTT", "activitySignIn:onFailure", e)
-                loginViewModel.sendErrorMsg(e.message ?: "")
+                Timber.e("asdasd ${e.message}")
+                if(e.message == "An internal error has occurred.") {
+                    loginViewModel.sendErrorMsg("네트워크에 연결되어 있지 않습니다.\n네트워크 연결 후 다시 시도해주세요." ?: "")
+                } else {
+                    loginViewModel.sendErrorMsg(e.message ?: "")
+                }
             }
     }
 
