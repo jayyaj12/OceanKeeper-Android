@@ -16,6 +16,7 @@ class GarbageCategoryChoiceDialog(context: Context, private val mainViewModel: M
         binding.mainViewModel = mainViewModel
         binding.lifecycleOwner = lifecycleOwner
         setContentView(binding.root)
+        setCancelable(false)
 
         binding.closeBtn.setOnClickListener {
             mainViewModel.closeGarbageCategoryModal()

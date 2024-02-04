@@ -11,12 +11,18 @@ class RecruitCancelDialog(context: Context, private val onClickCancel: () -> Uni
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogCancelRecruitBinding.inflate(layoutInflater)
+        binding.recruitCancelDialog = this
         setContentView(binding.root)
+        setCancelable(false)
 
         binding.cancelBtn.setOnClickListener {
             onClickCancel()
             dismiss()
         }
+    }
+
+    fun onClickClose() {
+        dismiss()
     }
 
 }

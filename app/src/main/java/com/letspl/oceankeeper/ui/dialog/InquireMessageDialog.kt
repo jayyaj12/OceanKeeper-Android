@@ -12,6 +12,7 @@ class InquireMessageDialog(context: Context, private val nickname: String, priva
         super.onCreate(savedInstanceState)
         binding = DialogSendInquireMessageBinding.inflate(layoutInflater)
         binding.inquireMessageDialog = this
+        setCancelable(false)
         setContentView(binding.root)
 
         binding.sendMessageTv.text = "${nickname}님의 활동에 대해 문의가 있으신가요?"

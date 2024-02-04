@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="editNicknameDialog"
+            type="com.letspl.oceankeeper.ui.dialog.EditNicknameDialog" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,6 +34,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/close_icon_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{() -> editNicknameDialog.onClickClose()}"
+                app:layout_constraintTop_toTopOf="@id/complete_tv"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/complete_tv"/>
 
             <EditText
                 android:layout_width="0dp"

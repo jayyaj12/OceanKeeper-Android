@@ -13,6 +13,7 @@ class RecruitActivityCompleteDialog(context: Context, private val title: String,
         super.onCreate(savedInstanceState)
         binding = DialogRecruitActivitiyCompleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setCancelable(false)
 
         binding.completeTv.text = title
         binding.infoTextTv.text = text

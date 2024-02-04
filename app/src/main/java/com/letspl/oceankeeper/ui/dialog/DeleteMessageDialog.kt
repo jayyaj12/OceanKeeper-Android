@@ -12,6 +12,7 @@ class DeleteMessageDialog(context: Context, private val onClickLogout: () -> Uni
         super.onCreate(savedInstanceState)
         binding = DialogDeleteMessageBinding.inflate(layoutInflater)
         binding.deleteMessageDialog = this
+        setCancelable(false)
         setContentView(binding.root)
     }
 

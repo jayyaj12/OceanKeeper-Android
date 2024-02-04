@@ -12,6 +12,7 @@ class ChoiceProfileImageDialog(context: Context, private val onClickTakePhoto: (
         super.onCreate(savedInstanceState)
         binding = DialogChoicePhotoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setCancelable(false)
 
         binding.takePhotoTv.setOnClickListener {
             onClickTakePhoto()
@@ -19,6 +20,9 @@ class ChoiceProfileImageDialog(context: Context, private val onClickTakePhoto: (
         }
         binding.choicePhotoTv.setOnClickListener {
             onClickChoicePhoto()
+            dismiss()
+        }
+        binding.cancelV.setOnClickListener {
             dismiss()
         }
     }

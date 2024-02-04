@@ -12,6 +12,7 @@ class ConnectFailedDialog(context: Context): Dialog(context) {
         super.onCreate(savedInstanceState)
         binding = DialogFailedNotificationAlarmBinding.inflate(layoutInflater)
         binding.connectFailedDialog = this
+        setCancelable(false)
         setContentView(binding.root)
     }
 

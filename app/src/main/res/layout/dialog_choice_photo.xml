@@ -64,6 +64,28 @@
                 android:textSize="16dp"
                 android:id="@+id/choice_photo_tv"
                 android:fontFamily="@font/pretendard_medium"/>
+            
+            <View
+                android:id="@+id/cancel_v"
+                android:layout_width="38dp"
+                android:layout_height="30dp"
+                app:layout_constraintEnd_toEndOf="@id/cancel_tv"
+                app:layout_constraintBottom_toBottomOf="@id/cancel_tv"
+                app:layout_constraintStart_toStartOf="@id/cancel_tv"
+                app:layout_constraintTop_toTopOf="@id/cancel_tv"/>
+
+            <TextView
+                android:id="@+id/cancel_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="취소"
+                android:fontFamily="@font/pretendard_light"
+                android:textSize="14dp"
+                android:textColor="#212121"
+                android:layout_marginBottom="36dp"
+                android:layout_marginEnd="34dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <View
                 android:layout_width="0dp"

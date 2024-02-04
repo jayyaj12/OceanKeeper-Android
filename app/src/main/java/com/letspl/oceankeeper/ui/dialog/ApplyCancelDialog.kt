@@ -11,12 +11,18 @@ class ApplyCancelDialog(context: Context, private val onClickCancel: () -> Unit)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogCancelApplyBinding.inflate(layoutInflater)
+        binding.applyCancelDialog = this
         setContentView(binding.root)
+        setCancelable(false)
 
         binding.cancelBtn.setOnClickListener {
             onClickCancel()
             dismiss()
         }
+    }
+
+    fun onClickClose() {
+        dismiss()
     }
 
 }

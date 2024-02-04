@@ -12,6 +12,7 @@ class NoShowCheckDialog(context: Context, private val onClickNoShow: () -> Unit)
         super.onCreate(savedInstanceState)
         binding = DialogNoShowCheckBinding.inflate(layoutInflater)
         binding.noShowCheckDialog = this
+        setCancelable(false)
         setContentView(binding.root)
     }
 

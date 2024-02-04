@@ -16,6 +16,7 @@ class AreaChoiceDialog(context: Context, private val mainViewModel: MainViewMode
         binding.mainViewModel = mainViewModel
         binding.lifecycleOwner = lifecycleOwner
         setContentView(binding.root)
+        setCancelable(false)
 
         binding.closeBtn.setOnClickListener {
             mainViewModel.closeAreaModal()

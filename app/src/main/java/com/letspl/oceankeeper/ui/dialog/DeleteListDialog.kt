@@ -12,6 +12,7 @@ class DeleteListDialog(context: Context, private val onClickDelete: () -> Unit):
         super.onCreate(savedInstanceState)
         binding = DialogListDeleteBinding.inflate(layoutInflater)
         binding.deleteListDialog = this
+        setCancelable(false)
         setContentView(binding.root)
     }
 

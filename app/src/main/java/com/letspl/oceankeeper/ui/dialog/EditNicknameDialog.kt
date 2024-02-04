@@ -11,12 +11,18 @@ class EditNicknameDialog(context: Context, private val onClickEdit: (String) -> 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogChangeNicknameBinding.inflate(layoutInflater)
+        binding.editNicknameDialog = this
         setContentView(binding.root)
+        setCancelable(false)
 
         binding.editBtn.setOnClickListener {
             onClickEdit(binding.nicknameEt.text.toString())
             dismiss()
         }
+    }
+
+    fun onClickClose() {
+        dismiss()
     }
 
 }
