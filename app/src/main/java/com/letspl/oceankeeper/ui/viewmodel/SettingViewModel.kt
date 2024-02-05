@@ -219,34 +219,34 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
         }
     }
 
-//    // 이용약관 가져오기
-//    fun getPrivacyPolicy() {
-//        if (NetworkUtils.isNetworkConnected()) {
-//            CoroutineScope(Dispatchers.IO).launch {
-//                runCatching {
-//                    privacyRepositoryImpl.getPrivacyPolicy()
-//                }.fold(
-//                    onSuccess = {
-//                        if(it.isSuccessful) {
-//                            _getTermsResult.postValue(it.body()?.response?.contents)
-//                        } else {
-//                            val errorJsonObject =
-//                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-//                            if (errorJsonObject != null) {
-//                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-//                                _errorMsg.postValue(errorMsg)
-//                            }
-//                        }
-//                    },
-//                    onFailure = {
-//                        _errorMsg.postValue(it.message)
-//                    }
-//                )
-//            }
-//        } else {
-//            _errorMsg.postValue("not Connect Network")
-//        }
-//    }
+    // 이용약관 가져오기
+    fun getTerms() {
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    notificationRepositoryImpl.getTerms()
+                }.fold(
+                    onSuccess = {
+                        if(it.isSuccessful) {
+                            _getTermsResult.postValue(it.body()?.response?.contents)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
+                    }
+                )
+            }
+        } else {
+            _errorMsg.postValue("not Connect Network")
+        }
+    }
 
     fun clearLiveData() {
         NotificationModel.lastMemo = false
