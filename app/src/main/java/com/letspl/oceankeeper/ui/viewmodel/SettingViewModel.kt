@@ -11,6 +11,7 @@ import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankeeper.data.repository.NotificationRepositoryImpl
 import com.letspl.oceankeeper.data.repository.PrivacyRepositoryImpl
+import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -45,141 +46,207 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
 
     // 로그아웃
     fun postLogout() {
-        CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
-            loginRepositoryImpl.logoutUser(
-                LoginModel.login.deviceToken,
-                LoginModel.login.provider,
-                LoginModel.login.providerId
-            ).let {
-                if(it.isSuccessful) {
-                    _postLogoutResult.postValue(true)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    loginRepositoryImpl.logoutUser(
+                        LoginModel.login.deviceToken,
+                        LoginModel.login.provider,
+                        LoginModel.login.providerId
+                    )
+                }.fold(
+                    onSuccess = {
+                        if(it.isSuccessful) {
+                            _postLogoutResult.postValue(true)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 탈퇴하기
     fun postWithdraw() {
-        CoroutineScope(Dispatchers.IO).launch {
-            loginRepositoryImpl.withdrawAccount(
-                LoginModel.login.deviceToken,
-                LoginModel.login.provider,
-                LoginModel.login.providerId
-            ).let {
-                if(it.isSuccessful) {
-                    _postWithDrawResult.postValue(true)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    loginRepositoryImpl.withdrawAccount(
+                        LoginModel.login.deviceToken,
+                        LoginModel.login.provider,
+                        LoginModel.login.providerId
+                    )
+                }.fold(
+                    onSuccess = {
+                        if(it.isSuccessful) {
+                            _postWithDrawResult.postValue(true)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 알림 설정
     fun postNotificationAlarm(alarm: Boolean) {
-        CoroutineScope(Dispatchers.IO).launch {
-            notificationRepositoryImpl.postNotificationAlarm(
-                alarm,
-                UserModel.userInfo.user.id
-            ).let {
-                if(it.isSuccessful) {
-                    _postNotificationAlarmResult.postValue(true)
-                } else {
-                    _postNotificationAlarmResult.postValue(false)
-                }
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    notificationRepositoryImpl.postNotificationAlarm(
+                        alarm,
+                        UserModel.userInfo.user.id
+                    )
+                }.fold(
+                    onSuccess = {
+                        if(it.isSuccessful) {
+                            _postNotificationAlarmResult.postValue(true)
+                        } else {
+                            _postNotificationAlarmResult.postValue(false)
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
+                    }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 알림 설정 가져오기
     fun getNotificationAlarm() {
-        CoroutineScope(Dispatchers.IO).launch {
-            notificationRepositoryImpl.getNotificationAlarm(
-                UserModel.userInfo.user.id
-            ).let {
-                if(it.isSuccessful) {
-                    _getNotificationAlarmResult.postValue(it.body()?.response?.alarm)
-                } else {
-                    _getNotificationAlarmResult.postValue(false)
-                }
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    notificationRepositoryImpl.getNotificationAlarm(
+                        UserModel.userInfo.user.id
+                    )
+                }.fold(
+                    onSuccess = {
+                        if(it.isSuccessful) {
+                            _getNotificationAlarmResult.postValue(it.body()?.response?.alarm)
+                        } else {
+                            _getNotificationAlarmResult.postValue(false)
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
+                    }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 알림 리스트  가져오기
     fun getNotificationList() {
-        if (!NotificationModel.lastMemo) {
+        if (NetworkUtils.isNetworkConnected()) {
             CoroutineScope(Dispatchers.IO).launch {
-                notificationRepositoryImpl.getNotificationList(
-                    10,
-                    NotificationModel.lastMemoId,
-                    UserModel.userInfo.user.id
-                ).let {
-                    if (it.isSuccessful) {
-                        val notificationItemArr = arrayListOf<NotificationItemDto>()
-                        val response = it.body()?.response
+                if (!NotificationModel.lastMemo) {
+                    runCatching {
+                        notificationRepositoryImpl.getNotificationList(
+                            10,
+                            NotificationModel.lastMemoId,
+                            UserModel.userInfo.user.id
+                        )
+                    }.fold(
+                        onSuccess = {
+                            if (it.isSuccessful) {
+                                val notificationItemArr = arrayListOf<NotificationItemDto>()
+                                val response = it.body()?.response
 
-                        response?.data?.forEach { item ->
-                            notificationItemArr.add(
-                                NotificationItemDto(
-                                    item.id,
-                                    item.contents,
-                                    item.createdAt,
-                                    item.read
-                                )
-                            )
-                        }
+                                response?.data?.forEach { item ->
+                                    notificationItemArr.add(
+                                        NotificationItemDto(
+                                            item.id,
+                                            item.contents,
+                                            item.createdAt,
+                                            item.read
+                                        )
+                                    )
+                                }
 
-                        if (response?.meta?.last == true) {
-                            NotificationModel.lastMemo = true
-                            if (response.data.isNotEmpty()) {
-                                NotificationModel.lastMemoId =
-                                    response.data[response.data.size - 1].id
+                                if (response?.meta?.last == true) {
+                                    NotificationModel.lastMemo = true
+                                    if (response.data.isNotEmpty()) {
+                                        NotificationModel.lastMemoId =
+                                            response.data[response.data.size - 1].id
+                                    }
+                                }
+
+                                _getNotificationListResult.postValue(notificationItemArr)
+                            } else {
+                                val errorJsonObject =
+                                    ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                                if (errorJsonObject != null) {
+                                    val errorMsg =
+                                        ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                    _errorMsg.postValue(errorMsg)
+                                }
                             }
+                        },
+                        onFailure = {
+                            _errorMsg.postValue(it.message)
                         }
-
-                        _getNotificationListResult.postValue(notificationItemArr)
-                    } else {
-                        val errorJsonObject =
-                            ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                        if (errorJsonObject != null) {
-                            val errorMsg =
-                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                            _errorMsg.postValue(errorMsg)
-                        }
-                    }
+                    )
                 }
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 이용약관 가져오기
     fun getPrivacyPolicy() {
-        CoroutineScope(Dispatchers.IO).launch {
-            privacyRepositoryImpl.getPrivacyPolicy().let {
-                if(it.isSuccessful) {
-                    _getTermsResult.postValue(it.body()?.response?.contents)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    privacyRepositoryImpl.getPrivacyPolicy()
+                }.fold(
+                    onSuccess = {
+                        if(it.isSuccessful) {
+                            _getTermsResult.postValue(it.body()?.response?.contents)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 

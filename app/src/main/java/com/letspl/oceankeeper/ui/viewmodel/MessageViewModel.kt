@@ -10,6 +10,7 @@ import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankeeper.data.repository.MessageRepositoryImpl
 import com.letspl.oceankeeper.util.MessageEnterType
+import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -76,142 +77,260 @@ class MessageViewModel @Inject constructor(
 
     // 활동 프로젝트명 불러오기
     fun getActivityNameList() {
-        CoroutineScope(Dispatchers.IO).launch {
-            activityRepositoryImpl.getActivityProject().let {
-                if (it.isSuccessful) {
-                    val list = arrayListOf<MessageModel.MessageSpinnerProjectNameItem>()
-                    it.body()?.response?.hostActivities.let { projectList ->
-                        projectList?.forEach { data ->
-                            list.add(MessageModel.MessageSpinnerProjectNameItem(
-                                data.activityId, data.title, false
-                            ))
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    activityRepositoryImpl.getActivityProject()
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        val list = arrayListOf<MessageModel.MessageSpinnerProjectNameItem>()
+                        it.body()?.response?.hostActivities.let { projectList ->
+                            projectList?.forEach { data ->
+                                list.add(
+                                    MessageModel.MessageSpinnerProjectNameItem(
+                                        data.activityId, data.title, false
+                                    )
+                                )
+                            }
+                        }
+                        MessageModel.projectNameList = list
+                        Timber.e("getActivityNameList")
+
+                        if (list.isNotEmpty()) {
+                            getCrewNickName(getActivityNameSpinnerClickActivityId())
+                        }
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
                         }
                     }
-                    MessageModel.projectNameList = list
-                    Timber.e("getActivityNameList")
-
-                    if (list.isNotEmpty()) {
-                        getCrewNickName(getActivityNameSpinnerClickActivityId())
-                    }
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
-                    }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 크루원 닉네임 불러오기
     fun getCrewNickName(activityId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            activityRepositoryImpl.getCrewNickname(activityId).let {
-                if (it.isSuccessful) {
-                    val list = arrayListOf<MessageModel.MessageSpinnerCrewNicknameItem>()
-                    it.body()?.response?.crewInformationList?.forEach {
-                        list.add(MessageModel.MessageSpinnerCrewNicknameItem(it.nickname, false))
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    activityRepositoryImpl.getCrewNickname(activityId)
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        val list = arrayListOf<MessageModel.MessageSpinnerCrewNicknameItem>()
+                        it.body()?.response?.crewInformationList?.forEach {
+                            list.add(
+                                MessageModel.MessageSpinnerCrewNicknameItem(
+                                    it.nickname, false
+                                )
+                            )
+                        }
+                        MessageModel.crewNicknameList = list
+                        _getCrewNicknameList.postValue(list)
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                    MessageModel.crewNicknameList = list
-                    _getCrewNicknameList.postValue(list)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
-                    }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 크루원 닉네임 불러오기
     fun getCrewNickName2(activityId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            activityRepositoryImpl.getCrewNickname(activityId).let {
-                if (it.isSuccessful) {
-                    val list = arrayListOf<MessageModel.MessageSpinnerCrewNicknameItem>()
-                    it.body()?.response?.crewInformationList?.forEach {
-                        list.add(MessageModel.MessageSpinnerCrewNicknameItem(it.nickname, false))
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    activityRepositoryImpl.getCrewNickname(activityId)
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        val list = arrayListOf<MessageModel.MessageSpinnerCrewNicknameItem>()
+                        it.body()?.response?.crewInformationList?.forEach {
+                            list.add(
+                                MessageModel.MessageSpinnerCrewNicknameItem(
+                                    it.nickname, false
+                                )
+                            )
+                        }
+                        MessageModel.crewNicknameList = list
+                        _getCrewNicknameList2.postValue(list)
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                    MessageModel.crewNicknameList = list
-                    _getCrewNicknameList2.postValue(list)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
-                    }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 쪽지 보내기
     fun postMessage(activityId: String, content: String, receiveList: List<String>, type: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            messageRepositoryImpl.postMessage(
-                MessageModel.SendMessageRequestBody(
-                    activityId,
-                    content,
-                    receiveList,
-                    type
-                )
-            ).let {
-                if (it.isSuccessful) {
-                    _sendMessageResult.postValue(true)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    messageRepositoryImpl.postMessage(
+                        MessageModel.SendMessageRequestBody(
+                            activityId, content, receiveList, type
+                        )
+                    )
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        _sendMessageResult.postValue(true)
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 쪽지 삭제하기
     fun deleteMessage(messageId: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            messageRepositoryImpl.deleteMessage(messageId).let {
-                if (it.isSuccessful) {
-                    _deleteMessageResult.postValue(true)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    messageRepositoryImpl.deleteMessage(messageId)
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        _deleteMessageResult.postValue(true)
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 쪽지의 읽음 상태를 변경
     fun postMessageDetail(messageId: Long) {
-        CoroutineScope(Dispatchers.IO).launch {
-            messageRepositoryImpl.postMessageRead(
-                PostMessageDetailBodyDto(
-                    messageId,
-                    true
-                )
-            ).let {
-                if (!it.isSuccessful) {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    messageRepositoryImpl.postMessageRead(
+                        PostMessageDetailBodyDto(
+                            messageId, true
+                        )
+                    )
+                }.fold(onSuccess = {
+                    if (!it.isSuccessful) {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
+        }
+    }
+
+    fun getMessage(type: String) {
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    messageRepositoryImpl.getMessage(
+                        "Bearer ${UserModel.userInfo.token.accessToken}",
+                        MessageModel.messageId,
+                        10,
+                        type,
+                        UserModel.userInfo.user.id
+                    )
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
+                            it.body()?.let { item ->
+                                Timber.e("item ${item.response.messages}")
+                                if (item.response.messages.isNotEmpty()) {
+
+                                    MessageModel.messageList.addAll(item.response.messages)
+                                    Timber.e("MessageModel.messageList ${MessageModel.messageList}")
+                                    _getMessageResult.postValue(MessageModel.messageList)
+
+                                    MessageModel.messageId =
+                                        item.response.messages[item.response.messages.size - 1].id
+                                    MessageModel.isLast = item.response.meta.last
+                                } else {
+                                    MessageModel.messageList.clear()
+                                    _getMessageResult.postValue(MessageModel.messageList)
+                                    MessageModel.messageId = null
+                                    MessageModel.isLast = true
+                                }
+                            }
+                        } else {
+                            // 실패 시 토스트 표시
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
+                    }
+                )
+            }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
@@ -235,48 +354,6 @@ class MessageViewModel @Inject constructor(
             "AM"
         }
         return "20${dateStr}$ampm"
-    }
-
-    fun getMessage(type: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            messageRepositoryImpl.getMessage(
-                "Bearer ${UserModel.userInfo.token.accessToken}",
-                MessageModel.messageId,
-                10,
-                type,
-                UserModel.userInfo.user.id
-            ).let {
-                if (it.isSuccessful) {
-                    it.body()?.let { item ->
-                        Timber.e("item ${item.response.messages}")
-                        if (item.response.messages.isNotEmpty()) {
-
-                            MessageModel.messageList.addAll(item.response.messages)
-                            Timber.e("MessageModel.messageList ${MessageModel.messageList}")
-                            _getMessageResult.postValue(MessageModel.messageList)
-
-                            MessageModel.messageId =
-                                item.response.messages[item.response.messages.size - 1].id
-                            MessageModel.isLast = item.response.meta.last
-                        } else {
-                            MessageModel.messageList.clear()
-                            _getMessageResult.postValue(MessageModel.messageList)
-                            MessageModel.messageId = null
-                            MessageModel.isLast = true
-                        }
-                    }
-                } else {
-                    // 실패 시 토스트 표시
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg =
-                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
-                    }
-                }
-            }
-        }
     }
 
     // MessageSpinnerCrewNicknameItem의 nickname만 필터링 하여 list로 반환함

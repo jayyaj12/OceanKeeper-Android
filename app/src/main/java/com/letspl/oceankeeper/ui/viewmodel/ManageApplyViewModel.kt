@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.letspl.oceankeeper.data.model.ManageApplyMemberModel
 import com.letspl.oceankeeper.data.repository.ManageApplyRepositoryImpl
+import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -46,125 +47,169 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
 
     // 신청자 리스트 불러오기
     fun getCrewInfoList(activityId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            manageApplyRepositoryImpl.getCrewInfoList(activityId).let {
-                if (it.isSuccessful) {
-                    it.body()?.response?.crewInfo?.let { crewInfoList ->
-                        withContext(Dispatchers.Default) {
-                            crewInfoList.forEachIndexed { index, getCrewInfoListDto ->
-                                ManageApplyMemberModel.applyCrewList.add(
-                                    ManageApplyMemberModel.CrewInfoDto(
-                                        crewInfoList[index].applicationId,
-                                        crewInfoList[index].crewStatus,
-                                        crewInfoList[index].nickname,
-                                        crewInfoList[index].number,
-                                        crewInfoList[index].username,
-                                        false
-                                    )
-                                )
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    manageApplyRepositoryImpl.getCrewInfoList(activityId)
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
+                            it.body()?.response?.crewInfo?.let { crewInfoList ->
+                                withContext(Dispatchers.Default) {
+                                    crewInfoList.forEachIndexed { index, getCrewInfoListDto ->
+                                        ManageApplyMemberModel.applyCrewList.add(
+                                            ManageApplyMemberModel.CrewInfoDto(
+                                                crewInfoList[index].applicationId,
+                                                crewInfoList[index].crewStatus,
+                                                crewInfoList[index].nickname,
+                                                crewInfoList[index].number,
+                                                crewInfoList[index].username,
+                                                false
+                                            )
+                                        )
+                                    }
+                                }
+
+                                _getCrewInfoList.postValue(ManageApplyMemberModel.applyCrewList)
+                            }
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
                             }
                         }
-
-                        _getCrewInfoList.postValue(ManageApplyMemberModel.applyCrewList)
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg =
-                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
-                    }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 크루원 정보 불러오기
     fun getCrewDetail(applicationId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            manageApplyRepositoryImpl.getCrewDetail(applicationId).let {
-                if (it.isSuccessful) {
-                    it.body()?.response?.let { data ->
-                        _getCrewDetail.postValue(
-                            ManageApplyMemberModel.GetCrewDetailResponse(
-                                ManageApplyMemberModel.GetCrewDetailActivityInfoDto(
-                                    data.activityInfo.activity,
-                                    data.activityInfo.hosting,
-                                    data.activityInfo.noShow
-                                ),
-                                ManageApplyMemberModel.GetCrewDetailApplicationDto(
-                                    data.application.dayOfBirth,
-                                    data.application.email,
-                                    data.application.id1365,
-                                    data.application.name,
-                                    data.application.phoneNumber,
-                                    data.application.question,
-                                    data.application.startPoint,
-                                    data.application.transportation
-                                ),
-                                ManageApplyMemberModel.GetCrewDetailUserInfoDto(
-                                    data.userInfo.nickname, data.userInfo.profile
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    manageApplyRepositoryImpl.getCrewDetail(applicationId)
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
+                            it.body()?.response?.let { data ->
+                                _getCrewDetail.postValue(
+                                    ManageApplyMemberModel.GetCrewDetailResponse(
+                                        ManageApplyMemberModel.GetCrewDetailActivityInfoDto(
+                                            data.activityInfo.activity,
+                                            data.activityInfo.hosting,
+                                            data.activityInfo.noShow
+                                        ),
+                                        ManageApplyMemberModel.GetCrewDetailApplicationDto(
+                                            data.application.dayOfBirth,
+                                            data.application.email,
+                                            data.application.id1365,
+                                            data.application.name,
+                                            data.application.phoneNumber,
+                                            data.application.question,
+                                            data.application.startPoint,
+                                            data.application.transportation
+                                        ),
+                                        ManageApplyMemberModel.GetCrewDetailUserInfoDto(
+                                            data.userInfo.nickname, data.userInfo.profile
+                                        )
+                                    )
                                 )
-                            )
-                        )
+                            }
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg =
-                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
-                    }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 크루원 정보 불러오기
     fun postCrewStatus(applicationId: List<String>, status: String, rejectReason: String? = null) {
-        CoroutineScope(Dispatchers.IO).launch {
-            manageApplyRepositoryImpl.postCrewStatus(
-                ManageApplyMemberModel.PostCrewStatusBody(
-                    applicationId,
-                    rejectReason,
-                    status
-                )
-            ).let {
-                if (it.isSuccessful) {
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    manageApplyRepositoryImpl.postCrewStatus(
+                        ManageApplyMemberModel.PostCrewStatusBody(
+                            applicationId,
+                            rejectReason,
+                            status
+                        )
+                    )
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
 
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg =
-                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 크루원 정보 엑셀 다운로드
     fun getCrewInfoFileDownloadUrl(activityId: String, fileName: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            manageApplyRepositoryImpl.getCrewInfoFileDownloadUrl(activityId).let {
-                if (it.isSuccessful) {
-                    // 파일을 저장할 디렉토리 가져오기
-                    val input = it.body()?.bytes()
-                    makeFile(input, fileName)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg =
-                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    manageApplyRepositoryImpl.getCrewInfoFileDownloadUrl(activityId)
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
+                            // 파일을 저장할 디렉토리 가져오기
+                            val input = it.body()?.bytes()
+                            makeFile(input, fileName)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 

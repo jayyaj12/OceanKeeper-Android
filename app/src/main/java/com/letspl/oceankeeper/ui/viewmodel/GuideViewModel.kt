@@ -8,6 +8,7 @@ import com.letspl.oceankeeper.data.dto.GetGuideListDto
 import com.letspl.oceankeeper.data.model.GuideModel
 import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.GuideRepositoryImpl
+import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +18,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class GuideViewModel @Inject constructor(private val guideRepositoryImpl: GuideRepositoryImpl): ViewModel() {
+class GuideViewModel @Inject constructor(private val guideRepositoryImpl: GuideRepositoryImpl) :
+    ViewModel() {
 
     // 공지사항 조회 결과
     private var _getGuideResult = MutableLiveData<List<GetGuideListDto>>()
@@ -29,33 +31,37 @@ class GuideViewModel @Inject constructor(private val guideRepositoryImpl: GuideR
 
     // 이용 가이드 조회
     fun getGuide(noticeId: Int?, size: Int) {
-        Timber.e("getGuide 1")
-        Timber.e("viewModelScope $viewModelScope")
-        CoroutineScope(Dispatchers.IO).launch {
-            Timber.e("getGuide 2")
-            if(!GuideModel.isLast) {
-                Timber.e("getGuide 3")
-                guideRepositoryImpl.getGuide("Bearer ${UserModel.userInfo.token.accessToken}", noticeId, size).let {
-                    if(it.isSuccessful) {
-                        Timber.e("getGuide 4")
-                        val guides = it.body()?.response?.guides!!
-                        _getGuideResult.postValue(guides)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                if (!GuideModel.isLast) {
+                    runCatching {
+                        guideRepositoryImpl.getGuide(
+                            "Bearer ${UserModel.userInfo.token.accessToken}", noticeId, size
+                        )
+                    }.fold(onSuccess = {
+                        if (it.isSuccessful) {
+                            val guides = it.body()?.response?.guides!!
+                            _getGuideResult.postValue(guides)
 
-                        GuideModel.isLast = it.body()?.response?.meta?.last!!
-                        GuideModel.lastNoticeId = guides[guides.size - 1].id
-                    } else {
-                        Timber.e("getGuide 5")
-                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                        if(errorJsonObject != null) {
-                            val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                            _errorMsg.postValue(errorMsg)
+                            GuideModel.isLast = it.body()?.response?.meta?.last!!
+                            GuideModel.lastNoticeId = guides[guides.size - 1].id
+                        } else {
+                            val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                                it.errorBody()?.string() ?: ""
+                            )
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
                         }
-                    }
+                    }, onFailure = {
+                        _errorMsg.postValue(it.message)
+                    })
                 }
-            } else {
-
-                Timber.e("getGuide 6")
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 

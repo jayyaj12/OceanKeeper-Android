@@ -85,7 +85,7 @@ class NaverLoginManager @Inject constructor(private val loginViewModel: LoginVie
 
             NaverIdLoginSDK.authenticate(ContextUtil.context, oauthLoginCallback)
         } else {
-            loginViewModel.sendErrorMsg("네트워크에 연결되어 있지 않습니다.\n네트워크 연결 후 다시 시도해주세요." ?: "")
+            loginViewModel.sendErrorMsg("not Connected Network")
         }
     }
 

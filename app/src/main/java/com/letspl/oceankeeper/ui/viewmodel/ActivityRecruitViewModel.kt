@@ -330,7 +330,6 @@ class ActivityRecruitViewModel : ViewModel() {
             }
         }
 
-
         setRecruitStartClickedDate(response.recruitStartAt.substring(0, 7))
         setRecruitEndClickedDate(response.recruitEndAt.substring(0, 7))
         setActivityStartClickedDate(response.startAt.substring(0, 7))

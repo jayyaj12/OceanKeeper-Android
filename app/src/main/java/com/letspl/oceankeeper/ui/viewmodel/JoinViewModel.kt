@@ -14,6 +14,7 @@ import com.letspl.oceankeeper.data.model.LoginModel
 import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.JoinRepositoryImpl
 import com.letspl.oceankeeper.util.ContextUtil
+import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -61,7 +62,7 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
         }
     }
 
-    fun onClickedSignup(){
+    fun onClickedSignup() {
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.IO) {
                 uploadImageFile(getProfileImageFile())
@@ -87,57 +88,80 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
 
     // 프로필 이미지 업로드
     private fun uploadImageFile(file: File?) {
-        CoroutineScope(Dispatchers.IO).launch {
-            if(file != null) {
-                joinRepositoryImpl.uploadProfileImage(file).let {
-                    if (it.isSuccessful) {
-                        it.body()?.let { body ->
-                            // 회원가입 진행
-                            signUpUser(body.url)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                if(file != null) {
+                    runCatching {
+                        joinRepositoryImpl.uploadProfileImage(file)
+                    }.fold(
+                        onSuccess = {
+                            if (it.isSuccessful) {
+                                it.body()?.let { body ->
+                                    // 회원가입 진행
+                                    signUpUser(body.url)
+                                }
+                            } else {
+                                val errorJsonObject =
+                                    ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                                errorJsonObject?.let {
+                                    val errorMsg =
+                                        ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                    _errorMsg.postValue(errorMsg)
+                                }
+                            }
+                        },
+                        onFailure = {
+                            _errorMsg.postValue(it.message)
                         }
-                    } else {
-                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                        errorJsonObject?.let {
-                            val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                            _errorMsg.postValue(errorMsg)
-                        }
-                    }
+                    )
                 }
-            } else {
-                _errorMsg.postValue("프로필 이미지를 등록해주세요.")
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 회원가입
     private fun signUpUser(profileUrl: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            LoginModel.login.run {
-                joinRepositoryImpl.signUpUser(
-                    this.deviceToken,
-                    this.provider,
-                    this.providerId,
-                    this.nickname,
-                    this.email,
-                    profileUrl
-                ).let {
-                    Timber.e("response: $it")
-                    if (it.isSuccessful) {
-                        it.body()?.let { body ->
-                            _signUpResult.postValue(true)
-                            // 회원가입 진행
-                            UserModel.userInfo.user.id = body.response.id
-                            UserModel.userInfo.user.nickname = body.response.nickname
-                        }
-                    } else {
-                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                        if(errorJsonObject != null) {
-                            val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                            _errorMsg.postValue(errorMsg)
-                        }
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    LoginModel.login.run {
+                        joinRepositoryImpl.signUpUser(
+                            this.deviceToken,
+                            this.provider,
+                            this.providerId,
+                            this.nickname,
+                            this.email,
+                            profileUrl
+                        )
                     }
-                }
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
+                            it.body()?.let { body ->
+                                _signUpResult.postValue(true)
+                                // 회원가입 진행
+                                UserModel.userInfo.user.id = body.response.id
+                                UserModel.userInfo.user.nickname = body.response.nickname
+                            }
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
+                    }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
@@ -145,12 +169,16 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     fun makeTempProfileFile() {
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.IO) {
-                val bm = BitmapFactory.decodeResource(ContextUtil.context.resources, R.drawable.default_profile)
+                val bm = BitmapFactory.decodeResource(
+                    ContextUtil.context.resources,
+                    R.drawable.default_profile
+                )
 
                 val resizedBitmap = Bitmap.createScaledBitmap(bm, bm.width / 2, bm.height / 2, true)
                 val byteArrayOutputStream = ByteArrayOutputStream()
                 resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
-                val tempFile = File.createTempFile("resized_image", ".jpg", ContextUtil.context.cacheDir)
+                val tempFile =
+                    File.createTempFile("resized_image", ".jpg", ContextUtil.context.cacheDir)
                 val fileOutputStream = FileOutputStream(tempFile)
                 fileOutputStream.write(byteArrayOutputStream.toByteArray())
                 fileOutputStream.close()
@@ -169,12 +197,15 @@ class JoinViewModel @Inject constructor(private val joinRepositoryImpl: JoinRepo
     fun setTakePhotoUri(uri: Uri?) {
         JoinModel.takePhotoUri = uri
     }
+
     fun getTakePhotoUri(): Uri? {
         return JoinModel.takePhotoUri
     }
+
     fun setProfileImageFile(file: File?) {
         JoinModel.profileImageFile = file
     }
+
     private fun getProfileImageFile(): File? {
         return JoinModel.profileImageFile
     }

@@ -11,6 +11,7 @@ import com.letspl.oceankeeper.data.dto.PostApplyApplicationBody
 import com.letspl.oceankeeper.data.model.MainModel
 import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.ApplyActivityRepositoryImpl
+import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -37,7 +38,8 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     val applyResult: LiveData<String> get() = _applyResult
 
     // 마지막 지원서 불러오기 결과
-    private var _getLastRecruitmentApplicationResult = MutableLiveData<GetLastRecruitmentApplicationResponseDto?>()
+    private var _getLastRecruitmentApplicationResult =
+        MutableLiveData<GetLastRecruitmentApplicationResponseDto?>()
     val getLastRecruitmentApplicationResult: LiveData<GetLastRecruitmentApplicationResponseDto?> get() = _getLastRecruitmentApplicationResult
 
     // 지원 수정 결과
@@ -62,73 +64,103 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
         question: String,
         startPoint: String
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            applyActivityRepositoryImpl.postRecruitmentApplication(
-                "Bearer ${UserModel.userInfo.token.accessToken}", PostApplyApplicationBody(
-                    MainModel.clickedActivityId,
-                    dayOfBirth,
-                    email,
-                    id1365,
-                    name,
-                    phoneNumber,
-                    isPrivacyAgreement(),
-                    question,
-                    startPoint,
-                    getClickedTransport(),
-                    UserModel.userInfo.user.id
-                )
-            ).let {
-                if (it.isSuccessful) {
-                    _applyResult.postValue(getRecruitCompleteText(it.body()?.timestamp!!))
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    applyActivityRepositoryImpl.postRecruitmentApplication(
+                        "Bearer ${UserModel.userInfo.token.accessToken}", PostApplyApplicationBody(
+                            MainModel.clickedActivityId,
+                            dayOfBirth,
+                            email,
+                            id1365,
+                            name,
+                            phoneNumber,
+                            isPrivacyAgreement(),
+                            question,
+                            startPoint,
+                            getClickedTransport(),
+                            UserModel.userInfo.user.id
+                        )
+                    )
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        _applyResult.postValue(getRecruitCompleteText(it.body()?.timestamp!!))
+                    } else {
+                        val errorJsonObject =
+                            ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 마지막 지원서 불러오기
     fun getLastRecruitmentApplication() {
-        CoroutineScope(Dispatchers.IO).launch {
-            applyActivityRepositoryImpl.getLastRecruitmentApplication().let {
-                if (it.isSuccessful) {
-                    _getLastRecruitmentApplicationResult.postValue(it.body()?.response)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        if(errorMsg == "해당 유저의 활동 지원서가 존재하지 않습니다.") {
-                            _getLastRecruitmentApplicationResult.postValue(null)
-                        } else {
-                            _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    applyActivityRepositoryImpl.getLastRecruitmentApplication()
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        _getLastRecruitmentApplicationResult.postValue(it.body()?.response)
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            if (errorMsg == "해당 유저의 활동 지원서가 존재하지 않습니다.") {
+                                _getLastRecruitmentApplicationResult.postValue(null)
+                            } else {
+                                _errorMsg.postValue(errorMsg)
+                            }
                         }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
+
     // 특정 활동 지원서 불러오기
     fun getDetailApplication(applicationId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            applyActivityRepositoryImpl.getDetailApplication(applicationId).let {
-                if (it.isSuccessful) {
-                    _getDetailApplication.postValue(it.body()?.response)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    applyActivityRepositoryImpl.getDetailApplication(applicationId)
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        _getDetailApplication.postValue(it.body()?.response)
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
@@ -143,31 +175,41 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
         question: String,
         startPoint: String,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            applyActivityRepositoryImpl.patchApplication(
-                applicationId, PatchApplyApplicationBody(
-                    dayOfBirth.toLong(),
-                    email,
-                    id1365,
-                    name,
-                    privacyAgreement.value!!,
-                    phoneNumber,
-                    question,
-                    startPoint,
-                    getClickedTransport(),
-                )
-            ).let {
-                if(it.isSuccessful) {
-                    _editApplyResult.postValue("활동 지원 수정이 완료되었습니다.")
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    applyActivityRepositoryImpl.patchApplication(
+                        applicationId, PatchApplyApplicationBody(
+                            dayOfBirth.toLong(),
+                            email,
+                            id1365,
+                            name,
+                            privacyAgreement.value!!,
+                            phoneNumber,
+                            question,
+                            startPoint,
+                            getClickedTransport(),
+                        )
+                    )
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        _editApplyResult.postValue("활동 지원 수정이 완료되었습니다.")
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 

@@ -11,6 +11,7 @@ import com.letspl.oceankeeper.data.dto.MyActivityItem
 import com.letspl.oceankeeper.data.model.MainModel
 import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.MainRepositoryImpl
+import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -60,23 +61,34 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
 
     // 다가오는 일정 데이터 조회
     fun getComingSchedule() {
-        CoroutineScope(Dispatchers.IO).launch {
-            mainRepositoryImpl.getComingSchedule(
-                "Bearer ${UserModel.userInfo.token.accessToken}",
-                UserModel.userInfo.user.id
-            ).let {
-                if (it.isSuccessful) {
-                    _getComingScheduleResult.postValue(it.body()?.response?.activities)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg =
-                            ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    mainRepositoryImpl.getComingSchedule(
+                        "Bearer ${UserModel.userInfo.token.accessToken}",
+                        UserModel.userInfo.user.id
+                    )
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
+                            _getComingScheduleResult.postValue(it.body()?.response?.activities)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
@@ -87,66 +99,84 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
         size: Int,
         status: String?
     ) {
-        // 활동 조회 첫 조회시에는 activityId 안 보냄
-        CoroutineScope(Dispatchers.IO).launch {
-            // 마지막 액티비티가 아닌 경우에만 조회
-            if (!MainModel.lastActivity) {
-                mainRepositoryImpl.getMyActivity(
-                    "Bearer ${UserModel.userInfo.token.accessToken}",
-                    MainModel.lastActivityId,
-                    garbageCategory,
-                    locationTag,
-                    size,
-                    status
-                ).let {
-                    if (it.isSuccessful) {
-                        val activities = it.body()?.response?.activities!!
-                        MainModel.activityList.addAll(it.body()?.response?.activities!!)
-                        _getMyActivityResult.postValue(MainModel.activityList)
-                        if (activities.isNotEmpty()) {
-                            MainModel.lastActivity = it.body()?.response?.meta?.last!!
-                            MainModel.lastActivityId =
-                                activities[activities.size - 1].activityId
-                        } else {
-                            MainModel.lastActivity = false
-                            MainModel.lastActivityId = null
-                        }
-                    } else {
-                        Timber.e("it.message() ${it.message()}")
-
-                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
-                            it.errorBody()?.string() ?: ""
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                if (!MainModel.lastActivity) {
+                    runCatching {
+                        mainRepositoryImpl.getMyActivity(
+                            "Bearer ${UserModel.userInfo.token.accessToken}",
+                            MainModel.lastActivityId,
+                            garbageCategory,
+                            locationTag,
+                            size,
+                            status
                         )
-                        if (errorJsonObject != null) {
-                            val errorMsg =
-                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                            _errorMsg.postValue(errorMsg)
+                    }.fold(
+                        onSuccess = {
+                            if (it.isSuccessful) {
+                                val activities = it.body()?.response?.activities!!
+                                MainModel.activityList.addAll(it.body()?.response?.activities!!)
+                                _getMyActivityResult.postValue(MainModel.activityList)
+                                if (activities.isNotEmpty()) {
+                                    MainModel.lastActivity = it.body()?.response?.meta?.last!!
+                                    MainModel.lastActivityId =
+                                        activities[activities.size - 1].activityId
+                                } else {
+                                    MainModel.lastActivity = false
+                                    MainModel.lastActivityId = null
+                                }
+                            } else {
+                                val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                                    it.errorBody()?.string() ?: ""
+                                )
+                                if (errorJsonObject != null) {
+                                    val errorMsg =
+                                        ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                    _errorMsg.postValue(errorMsg)
+                                }
+                            }
+                        },
+                        onFailure = {
+                            _errorMsg.postValue(it.message)
                         }
-                    }
+                    )
                 }
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 활동 조회 상세 조회
     fun getMyActivityDetail(activityId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            mainRepositoryImpl.getMyActivityDetail(
-                "Bearer ${UserModel.userInfo.token.accessToken}",
-                activityId
-            ).let {
-                if (it.isSuccessful) {
-                    _activityDetailSelectResult.postValue(it.body())
-                    setClickedActivityItem(it.body()?.response!!)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    mainRepositoryImpl.getMyActivityDetail(
+                        "Bearer ${UserModel.userInfo.token.accessToken}",
+                        activityId
+                    )
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
+                            _activityDetailSelectResult.postValue(it.body())
+                            setClickedActivityItem(it.body()?.response!!)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 

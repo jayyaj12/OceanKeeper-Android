@@ -13,6 +13,7 @@ import com.letspl.oceankeeper.data.model.ActivityRecruitModel
 import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankeeper.util.ContextUtil
+import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -61,53 +62,63 @@ class ActivityRecruit2ViewModel @Inject constructor(
         title: String,
         transportation: String,
     ) {
-
-        CoroutineScope(Dispatchers.IO).launch {
-            withContext(Dispatchers.IO) {
-                uploadThumbnailImage()
-            }
-            withContext(Dispatchers.IO) {
-                uploadKeeperImage()
-            }
-            withContext(Dispatchers.IO) {
-                uploadStoryImage()
-            }
-            withContext(Dispatchers.IO) {
-                activityRepositoryImpl.activityRegister(
-                    activityStory,
-                    etc,
-                    garbageCategory,
-                    ActivityRecruit2Model.keeperIntroduceImgStr ?: "",
-                    keeperIntroduction,
-                    ActivityRecruitModel.location,
-                    locationTag,
-                    preparation,
-                    programDetails,
-                    quota,
-                    activityRecruitViewModel.getRecruitEndDate(),
-                    activityRecruitViewModel.getRecruitStartDate(),
-                    rewards,
-                    activityRecruitViewModel.getActivityStartDate(),
-                    ActivityRecruit2Model.activityStoryImgStr ?: "",
-                    ActivityRecruit2Model.thumbnailImgStr ?: "",
-                    title,
-                    transportation,
-                    UserModel.userInfo.user.id
-                ).let {
-                    if (it.isSuccessful) {
-                        _recruitActivityIsSuccess.postValue(true)
-                    } else {
-                        val errorJsonObject =
-                            ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                        if (errorJsonObject != null) {
-                            val errorMsg =
-                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                            _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                withContext(Dispatchers.IO) {
+                    uploadThumbnailImage()
+                }
+                withContext(Dispatchers.IO) {
+                    uploadKeeperImage()
+                }
+                withContext(Dispatchers.IO) {
+                    uploadStoryImage()
+                }
+                withContext(Dispatchers.IO) {
+                    runCatching {
+                        activityRepositoryImpl.activityRegister(
+                            activityStory,
+                            etc,
+                            garbageCategory,
+                            ActivityRecruit2Model.keeperIntroduceImgStr ?: "",
+                            keeperIntroduction,
+                            ActivityRecruitModel.location,
+                            locationTag,
+                            preparation,
+                            programDetails,
+                            quota,
+                            activityRecruitViewModel.getRecruitEndDate(),
+                            activityRecruitViewModel.getRecruitStartDate(),
+                            rewards,
+                            activityRecruitViewModel.getActivityStartDate(),
+                            ActivityRecruit2Model.activityStoryImgStr ?: "",
+                            ActivityRecruit2Model.thumbnailImgStr ?: "",
+                            title,
+                            transportation,
+                            UserModel.userInfo.user.id
+                        )
+                    }.fold(onSuccess = {
+                        if (it.isSuccessful) {
+                            _recruitActivityIsSuccess.postValue(true)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(
+                                    it.errorBody()?.string() ?: ""
+                                )
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
                         }
-                    }
+                    }, onFailure = {
+                        _errorMsg.postValue(it.message)
+                    })
                 }
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
+
     }
 
     fun patchActivityRegister(
@@ -124,120 +135,165 @@ class ActivityRecruit2ViewModel @Inject constructor(
         title: String,
         transportation: String,
     ) {
-
-        CoroutineScope(Dispatchers.IO).launch {
-            withContext(Dispatchers.IO) {
-                uploadThumbnailImage()
-            }
-            withContext(Dispatchers.IO) {
-                uploadKeeperImage()
-            }
-            withContext(Dispatchers.IO) {
-                uploadStoryImage()
-            }
-            withContext(Dispatchers.IO) {
-                activityRepositoryImpl.patchActivity(
-                    activityId,
-                    EditActivityRegisterDto(
-                        activityStory,
-                        etc,
-                        garbageCategory,
-                        ActivityRecruit2Model.keeperIntroduceImgStr ?: "",
-                        keeperIntroduction,
-                        ActivityRecruitModel.location,
-                        locationTag,
-                        preparation,
-                        programDetails,
-                        quota,
-                        activityRecruitViewModel.getRecruitEndDate(),
-                        activityRecruitViewModel.getRecruitStartDate(),
-                        rewards,
-                        activityRecruitViewModel.getActivityStartDate(),
-                        ActivityRecruit2Model.activityStoryImgStr ?: "",
-                        ActivityRecruit2Model.thumbnailImgStr ?: "",
-                        title,
-                        transportation
-                    )
-                ).let {
-                    if (it.isSuccessful) {
-                        _editRecruitActivityIsSuccess.postValue(true)
-                    } else {
-                        val errorJsonObject =
-                            ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                        if (errorJsonObject != null) {
-                            val errorMsg =
-                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                            _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                withContext(Dispatchers.IO) {
+                    uploadThumbnailImage()
+                }
+                withContext(Dispatchers.IO) {
+                    uploadKeeperImage()
+                }
+                withContext(Dispatchers.IO) {
+                    uploadStoryImage()
+                }
+                withContext(Dispatchers.IO) {
+                    runCatching {
+                        activityRepositoryImpl.patchActivity(
+                            activityId,
+                            EditActivityRegisterDto(
+                                activityStory,
+                                etc,
+                                garbageCategory,
+                                ActivityRecruit2Model.keeperIntroduceImgStr ?: "",
+                                keeperIntroduction,
+                                ActivityRecruitModel.location,
+                                locationTag,
+                                preparation,
+                                programDetails,
+                                quota,
+                                activityRecruitViewModel.getRecruitEndDate(),
+                                activityRecruitViewModel.getRecruitStartDate(),
+                                rewards,
+                                activityRecruitViewModel.getActivityStartDate(),
+                                ActivityRecruit2Model.activityStoryImgStr ?: "",
+                                ActivityRecruit2Model.thumbnailImgStr ?: "",
+                                title,
+                                transportation
+                            )
+                        )
+                    }.fold(onSuccess = {
+                        if (it.isSuccessful) {
+                            _editRecruitActivityIsSuccess.postValue(true)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(
+                                    it.errorBody()?.string() ?: ""
+                                )
+                            if (errorJsonObject != null) {
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
                         }
-                    }
+                    }, onFailure = {
+                        _errorMsg.postValue(it.message)
+                    })
                 }
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     private suspend fun uploadThumbnailImage() {
-        withContext(Dispatchers.IO) {
-            if (ActivityRecruit2Model.thumbnailImgFile != null) {
-                activityRepositoryImpl.uploadThumbnailImage(ActivityRecruit2Model.thumbnailImgFile)
-                    .let {
-                        if (it.isSuccessful) {
-                            ActivityRecruit2Model.thumbnailImgStr = it.body()?.url.toString()
-                        } else {
-                            val errorJsonObject =
-                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string()
-                                    ?: "")
-                            if (errorJsonObject != null) {
-                                val errorMsg =
-                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                                _errorMsg.postValue(errorMsg)
+        if(NetworkUtils.isNetworkConnected()) {
+            withContext(Dispatchers.IO) {
+                if (ActivityRecruit2Model.thumbnailImgFile != null) {
+                    runCatching {
+                        activityRepositoryImpl.uploadThumbnailImage(ActivityRecruit2Model.thumbnailImgFile)
+                    }.fold(
+                        onSuccess = {
+                            if (it.isSuccessful) {
+                                ActivityRecruit2Model.thumbnailImgStr = it.body()?.url.toString()
+                            } else {
+                                val errorJsonObject =
+                                    ParsingErrorMsg.parsingFromStringToJson(
+                                        it.errorBody()?.string()
+                                            ?: ""
+                                    )
+                                if (errorJsonObject != null) {
+                                    val errorMsg =
+                                        ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                    _errorMsg.postValue(errorMsg)
+                                }
                             }
+                        },
+                        onFailure = {
+                            _errorMsg.postValue(it.message)
                         }
-                    }
+                    )
+                }
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     private suspend fun uploadKeeperImage() {
-        withContext(Dispatchers.IO) {
-            if (ActivityRecruit2Model.keeperIntroduceImgFile != null) {
-                activityRepositoryImpl.uploadThumbnailImage(ActivityRecruit2Model.keeperIntroduceImgFile)
-                    .let {
-                        if (it.isSuccessful) {
-                            ActivityRecruit2Model.keeperIntroduceImgStr = it.body()?.url.toString()
-                        } else {
-                            val errorJsonObject =
-                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string()
-                                    ?: "")
-                            if (errorJsonObject != null) {
-                                val errorMsg =
-                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                                _errorMsg.postValue(errorMsg)
+        if(NetworkUtils.isNetworkConnected()){
+            withContext(Dispatchers.IO) {
+                if (ActivityRecruit2Model.keeperIntroduceImgFile != null) {
+                    runCatching {
+                        activityRepositoryImpl.uploadThumbnailImage(ActivityRecruit2Model.keeperIntroduceImgFile)
+                    }.fold(
+                        onSuccess = {
+                            if (it.isSuccessful) {
+                                ActivityRecruit2Model.keeperIntroduceImgStr = it.body()?.url.toString()
+                            } else {
+                                val errorJsonObject =
+                                    ParsingErrorMsg.parsingFromStringToJson(
+                                        it.errorBody()?.string()
+                                            ?: ""
+                                    )
+                                if (errorJsonObject != null) {
+                                    val errorMsg =
+                                        ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                    _errorMsg.postValue(errorMsg)
+                                }
                             }
+                        },
+                        onFailure = {
+                            _errorMsg.postValue(it.message)
                         }
-                    }
+                    )
+                }
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     private suspend fun uploadStoryImage() {
-        withContext(Dispatchers.IO) {
-            if (ActivityRecruit2Model.activityStoryImgFile != null) {
-                activityRepositoryImpl.uploadStoryImage(ActivityRecruit2Model.activityStoryImgFile)
-                    .let {
-                        if (it.isSuccessful) {
-                            ActivityRecruit2Model.activityStoryImgStr = it.body()?.url.toString()
-                        } else {
-                            val errorJsonObject =
-                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string()
-                                    ?: "")
-                            if (errorJsonObject != null) {
-                                val errorMsg =
-                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                                _errorMsg.postValue(errorMsg)
+        if(NetworkUtils.isNetworkConnected()) {
+            withContext(Dispatchers.IO) {
+                if (ActivityRecruit2Model.activityStoryImgFile != null) {
+                    runCatching {
+                        activityRepositoryImpl.uploadStoryImage(ActivityRecruit2Model.activityStoryImgFile)
+                    }.fold(
+                        onSuccess = {
+                            if (it.isSuccessful) {
+                                ActivityRecruit2Model.activityStoryImgStr = it.body()?.url.toString()
+                            } else {
+                                val errorJsonObject =
+                                    ParsingErrorMsg.parsingFromStringToJson(
+                                        it.errorBody()?.string()
+                                            ?: ""
+                                    )
+                                if (errorJsonObject != null) {
+                                    val errorMsg =
+                                        ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                    _errorMsg.postValue(errorMsg)
+                                }
                             }
+                        },
+                        onFailure = {
+                            _errorMsg.postValue(it.message)
                         }
-                    }
+                    )
+                }
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 

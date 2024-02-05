@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -13,6 +14,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.letspl.oceankeeper.R
 import com.letspl.oceankeeper.databinding.ActivityBaseBinding
+import com.letspl.oceankeeper.ui.dialog.NetworkErrorDialog
+import com.letspl.oceankeeper.ui.dialog.ServerErrorDialog
 import com.letspl.oceankeeper.ui.viewmodel.BaseViewModel
 import com.letspl.oceankeeper.util.ContextUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -128,11 +131,18 @@ class BaseActivity : AppCompatActivity() {
 
     // 에러 메세지 표시
     fun showErrorMsg(msg: String) {
-        binding.errorCl.visibility = View.VISIBLE
-        binding.errorMsgTv.text = msg
-        Handler(Looper.myLooper()!!).postDelayed({
-            binding.errorCl.visibility = View.GONE
-        }, 3000)
+        if(msg == "not Connected Network") {
+            NetworkErrorDialog(this).show()
+        } else if(msg == "Failed to connect to /13.125.91.17:8080") {
+            // 서버 죽었을 때
+            ServerErrorDialog(this).show()
+        } else {
+            binding.errorCl.visibility = View.VISIBLE
+            binding.errorMsgTv.text = msg
+            Handler(Looper.myLooper()!!).postDelayed({
+                binding.errorCl.visibility = View.GONE
+            }, 3000)
+        }
     }
 
     // 성공 메세지 표시

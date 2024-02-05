@@ -12,6 +12,7 @@ import com.letspl.oceankeeper.data.model.MyActivityModel
 import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.ActivityRepositoryImpl
 import com.letspl.oceankeeper.data.repository.UserRepositoryImpl
+import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -61,99 +62,140 @@ class MyActivityViewModel @Inject constructor(
 
     // 닉네임 중복 확인
     fun getDuplicateNickname(nickname: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            userRepositoryImpl.getDuplicateNickname(nickname).let {
-                if (it.isSuccessful) {
-                    putNickname(nickname)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    userRepositoryImpl.getDuplicateNickname(nickname)
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        putNickname(nickname)
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 닉네임 수정
     private fun putNickname(nickname: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            userRepositoryImpl.putNickname(
-                PutNicknameBody(nickname, UserModel.userInfo.user.id)
-            ).let {
-                if (it.isSuccessful) {
-                    _changeNicknameResult.postValue(nickname)
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    userRepositoryImpl.putNickname(
+                        PutNicknameBody(nickname, UserModel.userInfo.user.id)
+                    )
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        _changeNicknameResult.postValue(nickname)
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 나의 오션키퍼 활동정보 조회
     fun getMyActivityInfo() {
-        CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
-            activityViRepositoryImpl.getActivityInfo(UserModel.userInfo.user.id).let {
-                if (it.isSuccessful) {
-                    _getActivityInfoResult.postValue(
-                        GetActivityInfoResponseDto(
-                            it.body()?.response?.activity ?: 0,
-                            it.body()?.response?.hosting ?: 0,
-                            it.body()?.response?.noShow ?: 0,
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    activityViRepositoryImpl.getActivityInfo(UserModel.userInfo.user.id)
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        _getActivityInfoResult.postValue(
+                            GetActivityInfoResponseDto(
+                                it.body()?.response?.activity ?: 0,
+                                it.body()?.response?.hosting ?: 0,
+                                it.body()?.response?.noShow ?: 0,
+                            )
                         )
-                    )
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 수정 프로필 이미지 업로드
     fun uploadEditProfileImage(file: File) {
-        CoroutineScope(Dispatchers.IO).launch {
-            activityViRepositoryImpl.uploadEditProfileImage(file).let {
-                if (it.isSuccessful) {
-                    _changeProfileImageResult.postValue(true)
-                    UserModel.userInfo.user.profile = it.body()?.url!!
-                } else {
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    activityViRepositoryImpl.uploadEditProfileImage(file)
+                }.fold(onSuccess = {
+                    if (it.isSuccessful) {
+                        _changeProfileImageResult.postValue(true)
+                        UserModel.userInfo.user.profile = it.body()?.url!!
+                    } else {
+                        val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                            it.errorBody()?.string() ?: ""
+                        )
+                        if (errorJsonObject != null) {
+                            val errorMsg =
+                                ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                            _errorMsg.postValue(errorMsg)
+                        }
                     }
-                }
+                }, onFailure = {
+                    _errorMsg.postValue(it.message)
+                })
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 내활동 보기
     fun getUserActivity(role: String, activityId: String?) {
-        CoroutineScope(Dispatchers.IO).launch() {
-            Timber.e("checkIsLast(role) ${checkIsLast(role)}")
-            if (!checkIsLast(role))
-                activityViRepositoryImpl.getUserActivity(activityId, 10, role, UserModel.userInfo.user.id)
-                    .let {
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                if (!checkIsLast(role)) {
+                    runCatching {
+                        activityViRepositoryImpl.getUserActivity(
+                            activityId, 10, role, UserModel.userInfo.user.id
+                        )
+                    }.fold(onSuccess = {
                         if (it.isSuccessful) {
                             val activities = it.body()?.response?.activities!!
 
                             if (role == "crew") {
                                 MyActivityModel.crewActivities.addAll(activities)
-
-                                Timber.e("MyActivityModel.crewActivities ${MyActivityModel.crewActivities}")
 
                                 _getUserActivityCrew.postValue(MyActivityModel.crewActivities)
 
@@ -165,7 +207,6 @@ class MyActivityViewModel @Inject constructor(
                             } else {
                                 MyActivityModel.hostActivities.addAll(activities)
 
-                                Timber.e("MyActivityModel.hostActivities ${MyActivityModel.hostActivities}")
                                 _getUserActivityHost.postValue(MyActivityModel.hostActivities)
 
                                 if (activities.isNotEmpty()) {
@@ -175,54 +216,82 @@ class MyActivityViewModel @Inject constructor(
                                 }
                             }
                         } else {
-                            val errorJsonObject =
-                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string()
-                                    ?: "")
+                            val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
+                                it.errorBody()?.string() ?: ""
+                            )
                             if (errorJsonObject != null) {
                                 val errorMsg =
                                     ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                                 _errorMsg.postValue(errorMsg)
                             }
                         }
-                    }
+                    }, onFailure = {
+                        _errorMsg.postValue(it.message)
+                    })
+                }
+            }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 활동 지원 취소
     fun deleteApplyCancel(applicationId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            activityViRepositoryImpl.deleteApplyCancel(applicationId).let {
-                if (it.isSuccessful) {
-                    _deleteApplyCancel.postValue(true)
-                } else {
-                    _deleteApplyCancel.postValue(false)
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    activityViRepositoryImpl.deleteApplyCancel(applicationId)
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
+                            _deleteApplyCancel.postValue(true)
+                        } else {
+                            _deleteApplyCancel.postValue(false)
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
     // 모집 취소
     fun deleteRecruitmentCancel(activityId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            activityViRepositoryImpl.deleteRecruitmentCancel(activityId).let {
-                if (it.isSuccessful) {
-                    _deleteRecruitCancel.postValue(true)
-                } else {
-                    _deleteRecruitCancel.postValue(false)
-                    val errorJsonObject =
-                        ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                    if (errorJsonObject != null) {
-                        val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                        _errorMsg.postValue(errorMsg)
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    activityViRepositoryImpl.deleteRecruitmentCancel(activityId)
+                }.fold(
+                    onSuccess = {
+                        if (it.isSuccessful) {
+                            _deleteRecruitCancel.postValue(true)
+                        } else {
+                            _deleteRecruitCancel.postValue(false)
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
                     }
-                }
+                )
             }
+        } else {
+            _errorMsg.postValue("not Connect Network")
         }
     }
 
@@ -232,9 +301,11 @@ class MyActivityViewModel @Inject constructor(
             "crew" -> {
                 MyActivityModel.crewLast
             }
+
             "host" -> {
                 MyActivityModel.hostLast
             }
+
             else -> false
         }
     }
