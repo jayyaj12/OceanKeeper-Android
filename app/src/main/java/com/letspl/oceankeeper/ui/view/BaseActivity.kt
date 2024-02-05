@@ -16,6 +16,7 @@ import com.letspl.oceankeeper.R
 import com.letspl.oceankeeper.databinding.ActivityBaseBinding
 import com.letspl.oceankeeper.ui.dialog.NetworkErrorDialog
 import com.letspl.oceankeeper.ui.dialog.ServerErrorDialog
+import com.letspl.oceankeeper.ui.dialog.TokenNotExistDialog
 import com.letspl.oceankeeper.ui.viewmodel.BaseViewModel
 import com.letspl.oceankeeper.util.ContextUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -136,6 +137,11 @@ class BaseActivity : AppCompatActivity() {
         } else if(msg == "Failed to connect to /13.125.91.17:8080") {
             // 서버 죽었을 때
             ServerErrorDialog(this).show()
+        } else if(msg == "토큰 없음") {
+            // 서버 죽었을 때
+            TokenNotExistDialog(this){
+              onReplaceFragment(LoginFragment(), false, false)
+            }.show()
         } else {
             binding.errorCl.visibility = View.VISIBLE
             binding.errorMsgTv.text = msg

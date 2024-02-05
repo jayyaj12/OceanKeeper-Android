@@ -65,7 +65,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
             CoroutineScope(Dispatchers.IO).launch {
                 runCatching {
                     mainRepositoryImpl.getComingSchedule(
-                        "Bearer ${UserModel.userInfo.token.accessToken}",
+                        "",
                         UserModel.userInfo.user.id
                     )
                 }.fold(
