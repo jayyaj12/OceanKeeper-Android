@@ -190,9 +190,6 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideMessageRepositoryImpl(@OceanService apiService: ApiService) = MessageRepositoryImpl(apiService)
-    @Singleton
-    @Provides
-    fun providePrivacyRepositoryImpl(@OceanService apiService: ApiService) = PrivacyRepositoryImpl(apiService)
 
     @Singleton
     @Provides
@@ -216,7 +213,7 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideSettingViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = SettingViewModel(LoginRepositoryImpl(apiService, oceanService), NotificationRepositoryImpl(oceanService), PrivacyRepositoryImpl(oceanService))
+    fun provideSettingViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = SettingViewModel(LoginRepositoryImpl(apiService, oceanService), NotificationRepositoryImpl(oceanService))
     @Singleton
     @Provides
     fun provideMessageViewModel(@NaverService apiService: ApiService, @OceanService oceanService: ApiService) = MessageViewModel(MessageRepositoryImpl(oceanService), ActivityRepositoryImpl(oceanService))

@@ -33,6 +33,12 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
     val privacyAgreement: LiveData<Boolean>
         get() = _privacyAgreement
 
+
+    // 개인정보 내용 불러오기
+    private var _getPrivacyResult = MutableLiveData<String>()
+    val getPrivacyResult: LiveData<String>
+        get() = _getPrivacyResult
+
     // 지원 결과
     private var _applyResult = MutableLiveData<String>()
     val applyResult: LiveData<String> get() = _applyResult
@@ -135,7 +141,6 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
         }
     }
 
-
     // 특정 활동 지원서 불러오기
     fun getDetailApplication(applicationId: String) {
         if (NetworkUtils.isNetworkConnected()) {
@@ -158,6 +163,35 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
                 }, onFailure = {
                     _errorMsg.postValue(it.message)
                 })
+            }
+        } else {
+            _errorMsg.postValue("not Connect Network")
+        }
+    }
+
+    // 이용약관 가져오기
+    fun getPrivacyPolicy() {
+        if (NetworkUtils.isNetworkConnected()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                runCatching {
+                    applyActivityRepositoryImpl.getPrivacyPolicy()
+                }.fold(
+                    onSuccess = {
+                        if(it.isSuccessful) {
+                            _getPrivacyResult.postValue(it.body()?.response?.contents)
+                        } else {
+                            val errorJsonObject =
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                            if (errorJsonObject != null) {
+                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                _errorMsg.postValue(errorMsg)
+                            }
+                        }
+                    },
+                    onFailure = {
+                        _errorMsg.postValue(it.message)
+                    }
+                )
             }
         } else {
             _errorMsg.postValue("not Connect Network")

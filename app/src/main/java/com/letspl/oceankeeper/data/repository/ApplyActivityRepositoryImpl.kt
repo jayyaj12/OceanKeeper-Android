@@ -30,4 +30,8 @@ class ApplyActivityRepositoryImpl @Inject constructor(@ApiModule.OceanRetrofit p
     ): Response<PatchApplicationDto> {
         return apiService.patchApplication("Bearer ${UserModel.userInfo.token.accessToken}", applicationId, patchApplicationBody)
     }
+
+    override suspend fun getPrivacyPolicy(): Response<PrivacyDto> {
+        return apiService.getPrivacyPolicy("Bearer ${UserModel.userInfo.token.accessToken}")
+    }
 }

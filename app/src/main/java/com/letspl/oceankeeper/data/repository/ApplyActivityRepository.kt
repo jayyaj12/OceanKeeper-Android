@@ -12,4 +12,7 @@ interface ApplyActivityRepository {
     suspend fun getDetailApplication(applicationId: String): Response<GetApplicationDetailDto>
     // 활동 지원서 수정
     suspend fun patchApplication(applicationId: String, patchApplicationBody: PatchApplyApplicationBody): Response<PatchApplicationDto>
+
+    // PrivacyPolicy 조회
+    suspend fun getPrivacyPolicy(): Response<PrivacyDto>
 }

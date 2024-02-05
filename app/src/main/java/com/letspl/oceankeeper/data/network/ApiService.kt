@@ -293,8 +293,14 @@ interface ApiService {
     ): Response<NotificationListDto>
 
     // 이용약관 가져오기
-    @GET("/terms")
+    @GET("/privacy-policy")
     suspend fun getPrivacyPolicy(
+        @Header("Authorization") token: String
+    ): Response<PrivacyDto>
+
+    // 이용약관 가져오기
+    @GET("/terms")
+    suspend fun getTerms(
         @Header("Authorization") token: String
     ): Response<PrivacyDto>
 

@@ -43,7 +43,7 @@ class RuleFragment : Fragment(), BaseActivity.OnBackPressedListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupViewModelObserver()
-        settingViewModel.getPrivacyPolicy()
+//        settingViewModel.getPrivacyPolicy()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)

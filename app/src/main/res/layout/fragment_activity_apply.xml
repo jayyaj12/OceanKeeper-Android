@@ -48,7 +48,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/back_icon_ll" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="55dp"
@@ -424,28 +424,29 @@
                     app:layout_constraintStart_toEndOf="@+id/privacy_tv"
                     app:layout_constraintTop_toTopOf="@id/privacy_tv" />
 
-                <ScrollView
+                <androidx.core.widget.NestedScrollView
                     android:id="@+id/privacy_sv"
                     android:layout_width="0dp"
                     android:layout_height="104dp"
                     android:layout_marginTop="12dp"
+                    android:scrollbars="vertical"
                     android:background="@color/gray_scale_g300"
+                    app:layout_constraintStart_toStartOf="@id/start_location_tv"
                     app:layout_constraintEnd_toEndOf="@id/ask_recruit_keeper_et"
-                    app:layout_constraintStart_toStartOf="@id/privacy_checkbox_iv"
                     app:layout_constraintTop_toBottomOf="@id/privacy_checkbox_iv">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/pretendard_light"
-                        android:paddingStart="11dp"
-                        android:paddingTop="12dp"
-                        android:paddingEnd="104dp"
-                        android:paddingBottom="12dp"
-                        android:text="테스트"
-                        android:textColor="@color/gray_scale_g500" />
+                        <TextView
+                            android:id="@+id/privacy_text_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/pretendard_light"
+                            android:paddingStart="11dp"
+                            android:paddingTop="12dp"
+                            android:paddingEnd="104dp"
+                            android:paddingBottom="12dp"
+                            android:textColor="@color/gray_scale_g500" />
 
-                </ScrollView>
+                </androidx.core.widget.NestedScrollView>
 
                 <View
                     android:layout_width="match_parent"
@@ -454,7 +455,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/privacy_sv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="64dp"

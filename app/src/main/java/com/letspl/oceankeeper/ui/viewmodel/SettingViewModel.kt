@@ -3,14 +3,12 @@ package com.letspl.oceankeeper.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.letspl.oceankeeper.data.dto.NotificationItemDto
 import com.letspl.oceankeeper.data.model.LoginModel
 import com.letspl.oceankeeper.data.model.NotificationModel
 import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.LoginRepositoryImpl
 import com.letspl.oceankeeper.data.repository.NotificationRepositoryImpl
-import com.letspl.oceankeeper.data.repository.PrivacyRepositoryImpl
 import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl, private val notificationRepositoryImpl: NotificationRepositoryImpl, private val privacyRepositoryImpl: PrivacyRepositoryImpl): ViewModel() {
+class SettingViewModel @Inject constructor(private val loginRepositoryImpl: LoginRepositoryImpl, private val notificationRepositoryImpl: NotificationRepositoryImpl): ViewModel() {
 
     private var _getTermsResult = MutableLiveData<String>()
     val getTermsResult: LiveData<String> get() = _getTermsResult
@@ -221,34 +219,34 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
         }
     }
 
-    // 이용약관 가져오기
-    fun getPrivacyPolicy() {
-        if (NetworkUtils.isNetworkConnected()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                runCatching {
-                    privacyRepositoryImpl.getPrivacyPolicy()
-                }.fold(
-                    onSuccess = {
-                        if(it.isSuccessful) {
-                            _getTermsResult.postValue(it.body()?.response?.contents)
-                        } else {
-                            val errorJsonObject =
-                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
-                            if (errorJsonObject != null) {
-                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
-                                _errorMsg.postValue(errorMsg)
-                            }
-                        }
-                    },
-                    onFailure = {
-                        _errorMsg.postValue(it.message)
-                    }
-                )
-            }
-        } else {
-            _errorMsg.postValue("not Connect Network")
-        }
-    }
+//    // 이용약관 가져오기
+//    fun getPrivacyPolicy() {
+//        if (NetworkUtils.isNetworkConnected()) {
+//            CoroutineScope(Dispatchers.IO).launch {
+//                runCatching {
+//                    privacyRepositoryImpl.getPrivacyPolicy()
+//                }.fold(
+//                    onSuccess = {
+//                        if(it.isSuccessful) {
+//                            _getTermsResult.postValue(it.body()?.response?.contents)
+//                        } else {
+//                            val errorJsonObject =
+//                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+//                            if (errorJsonObject != null) {
+//                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+//                                _errorMsg.postValue(errorMsg)
+//                            }
+//                        }
+//                    },
+//                    onFailure = {
+//                        _errorMsg.postValue(it.message)
+//                    }
+//                )
+//            }
+//        } else {
+//            _errorMsg.postValue("not Connect Network")
+//        }
+//    }
 
     fun clearLiveData() {
         NotificationModel.lastMemo = false

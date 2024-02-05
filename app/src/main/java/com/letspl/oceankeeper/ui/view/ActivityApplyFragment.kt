@@ -1,9 +1,13 @@
 package com.letspl.oceankeeper.ui.view
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.letspl.oceankeeper.databinding.FragmentActivityApplyBinding
@@ -24,7 +28,6 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         _binding = FragmentActivityApplyBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         binding.applyActivityFragment = this
@@ -39,16 +42,23 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupViewModelObserver()
+        getPrivacyContent()
         loadLastRecruitmentApplicationData()
     }
 
     // 마지막 지원서 불러오기
     private fun loadLastRecruitmentApplicationData() {
         applyActivityViewModel.getLastRecruitmentApplication()
+    }
+
+    // 개인정보 동의내용 불러오기
+    private fun getPrivacyContent() {
+        applyActivityViewModel.getPrivacyPolicy()
     }
 
     // 확인 버튼 클릭
@@ -90,7 +100,13 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun setupViewModelObserver() {
+
+        applyActivityViewModel.getPrivacyResult.observe(viewLifecycleOwner) {
+            binding.privacyTextTv.text = Html.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
+
         applyActivityViewModel.getLastRecruitmentApplicationResult.observe(viewLifecycleOwner) {
             if(it != null) {
                 binding.nameEt.setText(it.name) // 이름
