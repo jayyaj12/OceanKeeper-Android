@@ -117,3 +117,11 @@ Lapp/src/main/java/com/letspl/oceankeeper/ui/view/ActivityRecruit2Fragment.kt,7
 Papp/src/main/java/com/letspl/oceankeeper/ui/view/EditActivityRecruit2Fragment.kt,f\2\f23bd9f1312ac00d9eee077a9c6788d3e1018442
 k
 ;app/src/main/java/com/letspl/oceankeeper/util/EntryPoint.kt,3\b\3bc174cf3a36f0137db63f6223d673ec5bd4333d
+
+Oapp/src/main/java/com/letspl/oceankeeper/ui/view/EditActivityRecruitFragment.kt,4\8\480ffb678bda0b49399725cf5d94e23000bb28f8
+}
+Mapp/src/main/java/com/letspl/oceankeeper/ui/view/EditActivityApplyFragment.kt,7\9\796595ae7551346921af4dfa35c83e5ec0afc2d6
+v
+Fapp/src/main/java/com/letspl/oceankeeper/ui/view/MyActivityFragment.kt,5\b\5b9184a4b0d11da01e74de26a3bf027bcac83dae
+
+Oapp/src/main/java/com/letspl/oceankeeper/ui/viewmodel/ApplyActivityViewModel.kt,2\6\26e100176315e3082f715238f1e9a67229488551
