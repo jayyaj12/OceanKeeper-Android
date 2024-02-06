@@ -22,6 +22,7 @@ object MainModel {
     var garbageCategoryPosition = -1
     // 선택된 activityId
     var clickedActivityId = ""
+    var hostNickName = "" // 상세 화면 호스트 닉네임
     // 문의하기 클릭 시 닉네임 표시에 사용
     lateinit var clickedActivityItem: GetMyActivityDetailItem
 }

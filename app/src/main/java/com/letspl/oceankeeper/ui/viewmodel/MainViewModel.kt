@@ -161,6 +161,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                     onSuccess = {
                         if (it.isSuccessful) {
                             _activityDetailSelectResult.postValue(it.body())
+                            MainModel.hostNickName = it.body()?.response?.hostNickName ?: ""
                             setClickedActivityItem(it.body()?.response!!)
                         } else {
                             val errorJsonObject =
@@ -185,8 +186,14 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
 
     // 모집 기간인지 확인
     fun isRecruitmentTerms(startRecruitmentDate: String?, endRecruitmentDate: String?): Boolean {
-        return if (startRecruitmentDate != null && endRecruitmentDate != null) {
-            (getDateDiff(startRecruitmentDate) >= 0 && getDateDiff(endRecruitmentDate) <= 0)
+        Timber.e("MainModel.hostNickName ${MainModel.hostNickName}")
+        Timber.e("UserModel.userInfo.user.nickname ${UserModel.userInfo.user.nickname}")
+        return if(MainModel.hostNickName != UserModel.userInfo.user.nickname) {
+            if (startRecruitmentDate != null && endRecruitmentDate != null) {
+                (getDateDiff(startRecruitmentDate) >= 0 && getDateDiff(endRecruitmentDate) <= 0)
+            } else {
+                false
+            }
         } else {
             false
         }

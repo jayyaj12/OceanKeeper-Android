@@ -65,8 +65,6 @@ v
 Fapp/src/main/java/com/letspl/oceankeeper/ui/viewmodel/JoinViewModel.kt,9\3\936ce6ecb4b141e6bf0f3203fe3e585b3129dcaa
 }
 Mapp/src/main/java/com/letspl/oceankeeper/ui/viewmodel/ManageApplyViewModel.kt,e\e\ee4bd99b70977907614e1491dd3a2275a968fe78
-|
-Lapp/src/main/java/com/letspl/oceankeeper/ui/viewmodel/MyActivityViewModel.kt,5\2\522845503c60a8797d35bc3caf2f7710129069d8
 x
 Happ/src/main/java/com/letspl/oceankeeper/ui/viewmodel/NoticeViewModel.kt,b\3\b3e14f2fa86275fb088dd553598c8243f0dfd802
 y
@@ -85,8 +83,6 @@ p
 @app/src/main/java/com/letspl/oceankeeper/ui/view/MainFragment.kt,a\3\a33bc2ca6afc2925036b3ed6f3b34200fdafb24b
 |
 Lapp/src/main/java/com/letspl/oceankeeper/data/model/ActivityRecruit2Model.kt,d\6\d670cc4848e580d1aba4e2ba80145d07489494f8
-m
-=app/src/main/java/com/letspl/oceankeeper/util/ImgFileMaker.kt,d\5\d54be6e0fa827299b50b5f8bf549ffd23441733e
 r
 Bapp/src/main/java/com/letspl/oceankeeper/ui/view/SplashFragment.kt,2\c\2c08c4720cf98fb4ca5881945278251d62e6a02a
 p
@@ -105,7 +101,3 @@ l
 Rapp/src/main/java/com/letspl/oceankeeper/ui/adapter/RecruitStartCalendarAdapter.kt,6\1\61021437e1a60f0e928b15de64af702e69f98523
 k
 ;app/src/main/java/com/letspl/oceankeeper/util/EntryPoint.kt,3\b\3bc174cf3a36f0137db63f6223d673ec5bd4333d
-v
-Fapp/src/main/java/com/letspl/oceankeeper/ui/view/MyActivityFragment.kt,5\b\5b9184a4b0d11da01e74de26a3bf027bcac83dae
-v
-Fapp/src/main/java/com/letspl/oceankeeper/ui/viewmodel/MainViewModel.kt,8\6\8619279f8d4985a31b2f03b743a520bad43d10ff

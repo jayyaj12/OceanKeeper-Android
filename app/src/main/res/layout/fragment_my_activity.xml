@@ -388,6 +388,7 @@
                     android:gravity="center"
                     android:text="모집하기"
                     android:textColor="#079299"
+                    android:onClick="@{() -> myActivityFragment.onClickRecruit()}"
                     android:textSize="14dp" />
 
             </LinearLayout>

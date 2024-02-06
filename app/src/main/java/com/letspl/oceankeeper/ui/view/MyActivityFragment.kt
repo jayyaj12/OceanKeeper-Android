@@ -1,6 +1,7 @@
 package com.letspl.oceankeeper.ui.view
 
 import android.content.ContentValues
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
@@ -96,34 +97,37 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 사진 가져오기 결과
     @RequiresApi(Build.VERSION_CODES.O)
-    private val choicePhoto = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        lifecycleScope.launch {
-            withContext(Dispatchers.Main) {
-                try {
-                    val path = ImgFileMaker.getFullPathFromUri(requireContext(), it)!!
-                    val angle = RotateTransform.getRotationAngle(path)
-                    val rotateBitmap = RotateTransform.rotateImage(
-                        BitmapFactory.decodeFile(path),
-                        angle.toFloat(),
-                        it
-                    )
-
-                    myActivityViewModel.uploadEditProfileImage(
-                        ImgFileMaker.saveBitmapToFile(
-                            rotateBitmap!!,
-                            path
+    private val choicePhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if(result.resultCode == -1) {
+            lifecycleScope.launch {
+                val imageUri = result.data?.data
+                withContext(Dispatchers.Main) {
+                    try {
+                        val path = ImgFileMaker.getFullPathFromUri(requireContext(), imageUri)!!
+                        val angle = RotateTransform.getRotationAngle(path)
+                        val rotateBitmap = RotateTransform.rotateImage(
+                            BitmapFactory.decodeFile(path),
+                            angle.toFloat(),
+                            imageUri
                         )
-                    )
 
-                    Glide.with(requireContext())
-                        .load(it)
-                        .fitCenter()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(binding.userProfileIv)
+                        myActivityViewModel.uploadEditProfileImage(
+                            ImgFileMaker.saveBitmapToFile(
+                                rotateBitmap!!,
+                                path
+                            )
+                        )
 
-                } catch (e: Exception) {
-                    activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+                        Glide.with(requireContext())
+                            .load(imageUri)
+                            .fitCenter()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(binding.userProfileIv)
+
+                    } catch (e: Exception) {
+                        activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+                    }
                 }
             }
         }
@@ -234,13 +238,15 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 닉네임 변경 버튼 클릭
     fun onClickChangeNickname() {
-        Timber.e("onClickChangeNickname")
         editNicknameDialog = EditNicknameDialog(requireContext()) {
-            Timber.e("onClickChangeNickname click")
-
             myActivityViewModel.getDuplicateNickname(it)
         }
         editNicknameDialog.show()
+    }
+
+    // 모집하기 버튼 클릭
+    fun onClickRecruit() {
+        activity.onReplaceFragment(ActivityRecruitFragment(), false, false)
     }
 
     private fun setupApplyActivityListAdapter() {
@@ -326,7 +332,12 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
             takePhoto.launch(myActivityViewModel.getTakePhotoUri())
         }, {
             // 앨범에서 사진 선택
-            choicePhoto.launch("image/*")
+            val intent = Intent(Intent.ACTION_PICK)
+            // intent와 data와 type을 동시에 설정하는 메서드
+            intent.setDataAndType(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
+            )
+            choicePhoto.launch(intent)
         })
     }
 
