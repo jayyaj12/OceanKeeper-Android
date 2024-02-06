@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
+class ActivityApplyFragment() : Fragment(), BaseActivity.OnBackPressedListener {
 
     private var _binding: FragmentActivityApplyBinding? = null
     private val binding: FragmentActivityApplyBinding get() = _binding!!
@@ -128,7 +128,7 @@ class ActivityApplyFragment : Fragment(), BaseActivity.OnBackPressedListener {
         applyActivityViewModel.applyResult.observe(viewLifecycleOwner) {
             val dialog = RecruitActivityCompleteDialog(requireContext(),
                 "활동 지원 신청 완료",
-                it,
+                applyActivityViewModel.getApplyActivityStartDate(),
                 {
                     // 나의 활동 확인하기
                     activity.onReplaceFragment(MyActivityFragment(), false, true)

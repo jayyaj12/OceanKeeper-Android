@@ -8,6 +8,7 @@ import com.letspl.oceankeeper.data.dto.GetApplicationDetailResponse
 import com.letspl.oceankeeper.data.dto.GetLastRecruitmentApplicationResponseDto
 import com.letspl.oceankeeper.data.dto.PatchApplyApplicationBody
 import com.letspl.oceankeeper.data.dto.PostApplyApplicationBody
+import com.letspl.oceankeeper.data.model.ActivityRecruitModel
 import com.letspl.oceankeeper.data.model.MainModel
 import com.letspl.oceankeeper.data.model.UserModel
 import com.letspl.oceankeeper.data.repository.ApplyActivityRepositoryImpl
@@ -245,6 +246,17 @@ class ApplyActivityViewModel @Inject constructor(private val applyActivityReposi
         } else {
             _errorMsg.postValue("not Connect Network")
         }
+    }
+
+    // 지원한 활동에 대한 활동 시작일 가져오기
+    fun getApplyActivityStartDate(): String {
+        val date = ActivityRecruitModel.applyActivityStartDate.split("-")
+        return "${date[0].substring(2,4)}년 ${date[1]}월 ${date[2].substring(0, 2)}일 활동에 대한 신청 완료!\n최종 선정 여부는 쪽지로 안내됩니다."
+    }
+
+    // 지원한 활동에 대한 활동 시작일 저장하기
+    fun setApplyActivityStartDate(date: String) {
+        ActivityRecruitModel.applyActivityStartDate = date
     }
 
     // 대중교통 선택

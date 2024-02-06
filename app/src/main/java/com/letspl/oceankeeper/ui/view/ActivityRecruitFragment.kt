@@ -324,8 +324,13 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
         if(activityRecruitViewModel.isExistNeedData()) {
             // 임시저장 활성화
-            activityRecruitViewModel.setIsLoadTempData("temp")
-            activity.onReplaceFragment(ActivityRecruit2Fragment())
+            when(val msg = activityRecruitViewModel.isQuotaCorrect()) {
+                "성공" -> {
+                    activityRecruitViewModel.setIsLoadTempData("temp")
+                    activity.onReplaceFragment(ActivityRecruit2Fragment())
+                }
+                else -> activity.showErrorMsg(msg)
+            }
         } else {
             Toast.makeText(requireContext(), "모든 값을 입력해주세요.", Toast.LENGTH_SHORT).show()
         }
