@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:gravity="center"
+                android:fontFamily="@font/pretendard_medium"
                 android:text="에러로 처리되지 않았습니다.\n잠시 후 다시 시도해주세요."
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

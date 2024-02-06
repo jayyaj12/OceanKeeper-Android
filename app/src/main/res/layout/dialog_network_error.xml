@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:gravity="center"
+                android:fontFamily="@font/pretendard_medium"
                 android:text="네트워크에 연결되지 않았습니다.\n네트워크 연결 후 다시 시도해주세요."
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
