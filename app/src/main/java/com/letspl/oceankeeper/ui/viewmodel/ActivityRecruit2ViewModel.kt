@@ -322,7 +322,7 @@ class ActivityRecruit2ViewModel @Inject constructor(
         val year = text.substring(2, 4)
         val month = text.substring(5, 7)
         val date = text.substring(8, 10)
-        return "${year}년 ${month}월 ${date}일 활동에 대한 신청 완료!\n최종 선정 여부는 쪽지로 안내됩니다."
+        return "${year}년 ${month}월 ${date}일 활동이 등록되었습니다."
     }
 
     fun getRecruitEditCompleteText(): String {

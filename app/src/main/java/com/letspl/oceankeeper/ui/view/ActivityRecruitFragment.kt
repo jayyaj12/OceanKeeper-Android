@@ -332,7 +332,7 @@ class ActivityRecruitFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 else -> activity.showErrorMsg(msg)
             }
         } else {
-            Toast.makeText(requireContext(), "모든 값을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            activity.showErrorMsg("모든 값을 입력해주세요.")
         }
     }
 
