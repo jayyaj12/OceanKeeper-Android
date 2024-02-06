@@ -65,7 +65,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
             CoroutineScope(Dispatchers.IO).launch {
                 runCatching {
                     mainRepositoryImpl.getComingSchedule(
-                        "",
+                        "Bearer ${UserModel.userInfo.token.accessToken}",
                         UserModel.userInfo.user.id
                     )
                 }.fold(
@@ -74,7 +74,8 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                             _getComingScheduleResult.postValue(it.body()?.response?.activities)
                         } else {
                             val errorJsonObject =
-                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string()
+                                    ?: "")
                             if (errorJsonObject != null) {
                                 val errorMsg =
                                     ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
@@ -97,7 +98,7 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
         garbageCategory: String?,
         locationTag: String?,
         size: Int,
-        status: String?
+        status: String?,
     ) {
         if (NetworkUtils.isNetworkConnected()) {
             CoroutineScope(Dispatchers.IO).launch {
@@ -163,9 +164,11 @@ class MainViewModel @Inject constructor(private val mainRepositoryImpl: MainRepo
                             setClickedActivityItem(it.body()?.response!!)
                         } else {
                             val errorJsonObject =
-                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string() ?: "")
+                                ParsingErrorMsg.parsingFromStringToJson(it.errorBody()?.string()
+                                    ?: "")
                             if (errorJsonObject != null) {
-                                val errorMsg = ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
+                                val errorMsg =
+                                    ParsingErrorMsg.parsingJsonObjectToErrorMsg(errorJsonObject)
                                 _errorMsg.postValue(errorMsg)
                             }
                         }
