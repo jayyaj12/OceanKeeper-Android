@@ -757,7 +757,6 @@ class ActivityRecruitViewModel : ViewModel() {
     fun setClickedRecruitComponent(value: Int) {
         _clickedRecruitComponent.postValue(value)
     }
-
     // 활동 시작일, 종료일 컵포넌트 선택값
     fun setClickedActivityComponent(value: Int) {
         _clickedActivityComponent.postValue(value)
@@ -787,6 +786,15 @@ class ActivityRecruitViewModel : ViewModel() {
     // 필수 정보가 모두 들어갔는지 여부 체크
     fun isExistNeedData(): Boolean {
         return ActivityRecruitModel.projectName != "" && ActivityRecruitModel.location.address != "" && ActivityRecruitModel.quota != null && ActivityRecruitModel.recruitStartClickedDate != "" && ActivityRecruitModel.recruitEndClickedDate != "" && ActivityRecruitModel.activityStartClickedDate != "" && ActivityRecruitModel.activityStartTimeHour != null && ActivityRecruitModel.activityStartTimeMinute != null && ActivityRecruitModel.guideActivity != "" && ActivityRecruitModel.trafficGuide != 0
+    }
+
+    // 필수 정보가 모두 들어갔는지 여부 체크
+    fun isQuotaCorrect(): String {
+        return if(ActivityRecruitModel.quota!! <= 0){
+            return "모집인원은 1명 이상으로 입력되어야 합니다."
+        } else {
+            return "성공"
+        }
     }
 
     // 활동 모집 데이터 초기화 (필수로 지워줘야 하는거만 포함, 알아서 초기화 되는건 안함)

@@ -330,7 +330,7 @@ class ActivityRecruit2ViewModel @Inject constructor(
         val year = text.substring(2, 4)
         val month = text.substring(5, 7)
         val date = text.substring(8, 10)
-        return "활동 모집이 ${year}년 ${month}월 ${date}일부터 시작\n됩니다."
+        return "활동이 ${year}년 ${month}월 ${date}일에 진행됩니다."
     }
 
     // 썸네일 이미지 파일 저장

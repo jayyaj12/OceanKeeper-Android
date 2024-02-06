@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import com.letspl.oceankeeper.data.dto.GetMyActivityDetailLocation
 import com.letspl.oceankeeper.databinding.FragmentActivityDetailBinding
 import com.letspl.oceankeeper.ui.dialog.InquireMessageDialog
+import com.letspl.oceankeeper.ui.viewmodel.ActivityRecruitViewModel
+import com.letspl.oceankeeper.ui.viewmodel.ApplyActivityViewModel
 import com.letspl.oceankeeper.ui.viewmodel.MainViewModel
 import com.letspl.oceankeeper.ui.viewmodel.MessageViewModel
 import com.letspl.oceankeeper.util.EntryPoint
@@ -26,6 +28,7 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private var _binding: FragmentActivityDetailBinding? = null
     private val binding get() = _binding!!
     private val mainViewModel: MainViewModel by viewModels()
+    private val applyActivityViewModel: ApplyActivityViewModel by viewModels()
     private val messageViewModel: MessageViewModel by viewModels()
 
     override fun onBackPressed() {
@@ -60,6 +63,7 @@ class ActivityDetailFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private fun setupViewModelObserver() {
         mainViewModel.activityDetailSelectResult.observe(viewLifecycleOwner) {
             it?.let {
+                applyActivityViewModel.setApplyActivityStartDate(it.response.startAt)
                 setupKakaoMap(it.response.location)
             }
         }

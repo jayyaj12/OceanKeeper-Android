@@ -34,7 +34,12 @@ class MainActivityListAdapter(private val context: Context, private val onClicke
             binding.recruitmentStatusTv.text = "${item.participants}/${item.quota}명"
             binding.nicknameTv.text = item.hostNickname
             binding.titleTv.text = item.title
-            binding.locationTv.text = item.location
+            binding.locationTv.text = if(item.location.contains(",")) {
+                item.location.split(",")[1].trim()
+            } else {
+                item.location
+            }
+
             binding.periodTv.text = "${item.recruitStartAt}~${item.recruitEndAt}"
             binding.timeTv.text = item.startAt
 
@@ -42,7 +47,6 @@ class MainActivityListAdapter(private val context: Context, private val onClicke
                 onClickedItem(item.activityId)
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainActivityListAdapter.ViewHolder {

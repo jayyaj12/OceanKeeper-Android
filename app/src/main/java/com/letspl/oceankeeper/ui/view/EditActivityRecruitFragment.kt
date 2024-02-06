@@ -26,7 +26,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class EditActivityRecruitFragment(private val activityId: String) : Fragment(), BaseActivity.OnBackPressedListener {
+class EditActivityRecruitFragment(private val activityId: String) : Fragment(),
+    BaseActivity.OnBackPressedListener {
 
     @Inject
     lateinit var progressDialog: ProgressDialog
@@ -49,7 +50,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentEditActivityRecruitBinding.inflate(layoutInflater)
         binding.activityRecruitViewModel = activityRecruitViewModel
@@ -66,6 +67,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
         setUpViewModelObserver()
         setupRewardSwitchListener()
         setUpClickedListener()
+        setUpEditTextListener()
         getActivityData()
     }
 
@@ -118,7 +120,9 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
         // 활동 모집 조회 결과
         mainViewModel.activityDetailSelectResult.observe(viewLifecycleOwner) {
             it?.let {
-                activityRecruitViewModel.getNowDate(it.response.recruitStartAt, it.response.recruitEndAt, it.response.startAt.substring(0, 10))
+                activityRecruitViewModel.getNowDate(it.response.recruitStartAt,
+                    it.response.recruitEndAt,
+                    it.response.startAt.substring(0, 10))
                 binding.quotaEt.setText(it.response.quota.toString())
                 activityRecruitViewModel.getGarbageCategory(it.response.garbageCategory)
                 activityRecruitViewModel.getLocationTag(it.response.locationTag)
@@ -126,16 +130,18 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
                 activityRecruitViewModel.setupEditRecruitValue(it.response)
 
-                if(activityRecruitViewModel.getLocationInfo().address != "") {
+                if (activityRecruitViewModel.getLocationInfo().address != "") {
                     loadAddress()
                 } else {
                     Timber.e("activityLocationEt.setText 2")
                     binding.activityLocationEt.setText(it.response.location.address)
-                    activityRecruitViewModel.editLocationInfo(it.response.location.address, it.response.location.latitude, it.response.location.longitude)
+                    activityRecruitViewModel.editLocationInfo(it.response.location.address,
+                        it.response.location.latitude,
+                        it.response.location.longitude)
                 }
 
                 val time = it.response.startAt.split(" ")[1].split(":")
-                if(time[0].toInt() - 1 > 12) {
+                if (time[0].toInt() - 1 > 12) {
                     setUpActivityTimeSpinner((time[0].toInt() - 13), time[1].toInt(), 1)
                 } else {
                     setUpActivityTimeSpinner(time[0].toInt() - 1, time[1].toInt(), 0)
@@ -150,17 +156,23 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
     // calendarRecyclerview 셋업
     private fun setUpCalendarRecyclerView() {
-        recruitStartCalendarAdapter = RecruitStartCalendarAdapter(activityRecruitViewModel){
-            binding.recruitStartDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
-            binding.recruitStartDateTv.text = activityRecruitViewModel.getRecruitStartDate().substring(0, 10).replace("-", ".")
+        recruitStartCalendarAdapter = RecruitStartCalendarAdapter(activityRecruitViewModel) {
+            binding.recruitStartDateTv.setTextColor(ContextCompat.getColor(requireContext(),
+                R.color.gray_scale_g900))
+            binding.recruitStartDateTv.text =
+                activityRecruitViewModel.getRecruitStartDate().substring(0, 10).replace("-", ".")
         }
-        recruitEndCalendarAdapter = RecruitEndCalendarAdapter(activityRecruitViewModel){
-            binding.recruitEndDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
-            binding.recruitEndDateTv.text = activityRecruitViewModel.getRecruitEndDate().substring(0, 10).replace("-", ".")
+        recruitEndCalendarAdapter = RecruitEndCalendarAdapter(activityRecruitViewModel) {
+            binding.recruitEndDateTv.setTextColor(ContextCompat.getColor(requireContext(),
+                R.color.gray_scale_g900))
+            binding.recruitEndDateTv.text =
+                activityRecruitViewModel.getRecruitEndDate().substring(0, 10).replace("-", ".")
         }
-        activityStartCalendarAdapter = ActivityStartCalendarAdapter(activityRecruitViewModel){
-            binding.activityStartDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
-            binding.activityStartDateTv.text = activityRecruitViewModel.getActivityStartDate().substring(0, 10).replace("-", ".")
+        activityStartCalendarAdapter = ActivityStartCalendarAdapter(activityRecruitViewModel) {
+            binding.activityStartDateTv.setTextColor(ContextCompat.getColor(requireContext(),
+                R.color.gray_scale_g900))
+            binding.activityStartDateTv.text =
+                activityRecruitViewModel.getActivityStartDate().substring(0, 10).replace("-", ".")
         }
 
         recruitStartCalendarAdapter.setDateArr(activityRecruitViewModel.getDayInMonthArray(1))
@@ -190,7 +202,7 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
     // editText Listener 등록
     private fun setUpEditTextListener() {
         binding.quotaEt.addTextChangedListener {
-            if(it.toString().isNotEmpty()) {
+            if (it.toString().isNotEmpty()) {
                 activityRecruitViewModel.setQuota(it.toString().toInt())
             } else {
                 activityRecruitViewModel.setQuota(0)
@@ -254,36 +266,47 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
         hourPicker.value = hour
         minutePicker.value = minute
         // am: 0 pm: 1
-        morningAndAfternoonPicker.value = if(ampm == 0) {
+        morningAndAfternoonPicker.value = if (ampm == 0) {
             0
         } else {
             1
         }
 
-        activityRecruitViewModel.setActivityStartTimeHour(hour + 1, morningAndAfternoonValue[morningAndAfternoonPicker.value])
+        activityRecruitViewModel.setActivityStartTimeHour(hour + 1,
+            morningAndAfternoonValue[morningAndAfternoonPicker.value])
         activityRecruitViewModel.setActivityStartTimeMinute(minuteValues[minutePicker.value].toInt())
 
         hourPicker.setOnValueChangedListener { numberPicker, oldValue, newValue ->
-            activityRecruitViewModel.setActivityStartTimeHour(newValue + 1, morningAndAfternoonValue[morningAndAfternoonPicker.value])
+            activityRecruitViewModel.setActivityStartTimeHour(newValue + 1,
+                morningAndAfternoonValue[morningAndAfternoonPicker.value])
             activityRecruitViewModel.setActivityStartTimeMinute(minuteValues[minutePicker.value].toInt())
-            binding.endDateTv.text = activityRecruitViewModel.getActivityStartDate().substring(11, 16)
-            binding.endDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
+            binding.endDateTv.text =
+                activityRecruitViewModel.getActivityStartDate().substring(11, 16)
+            binding.endDateTv.setTextColor(ContextCompat.getColor(requireContext(),
+                R.color.gray_scale_g900))
         }
 
         minutePicker.setOnValueChangedListener { numberPicker, oldValue, newValue ->
-            activityRecruitViewModel.setActivityStartTimeHour(hourValues[hourPicker.value].toInt(), morningAndAfternoonValue[morningAndAfternoonPicker.value])
+            activityRecruitViewModel.setActivityStartTimeHour(hourValues[hourPicker.value].toInt(),
+                morningAndAfternoonValue[morningAndAfternoonPicker.value])
             activityRecruitViewModel.setActivityStartTimeMinute(newValue)
-            binding.endDateTv.text = activityRecruitViewModel.getActivityStartDate().substring(11, 16)
-            binding.endDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
+            binding.endDateTv.text =
+                activityRecruitViewModel.getActivityStartDate().substring(11, 16)
+            binding.endDateTv.setTextColor(ContextCompat.getColor(requireContext(),
+                R.color.gray_scale_g900))
         }
 
         morningAndAfternoonPicker.setOnValueChangedListener { numberPicker, i, newValue ->
-            activityRecruitViewModel.setActivityStartTimeHour(hourValues[hourPicker.value].toInt(), morningAndAfternoonValue[morningAndAfternoonPicker.value])
+            activityRecruitViewModel.setActivityStartTimeHour(hourValues[hourPicker.value].toInt(),
+                morningAndAfternoonValue[morningAndAfternoonPicker.value])
             activityRecruitViewModel.setActivityStartTimeMinute(minuteValues[minutePicker.value].toInt())
-            binding.endDateTv.text = activityRecruitViewModel.getActivityStartDate().substring(11, 16)
-            binding.endDateTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_scale_g900))
+            binding.endDateTv.text =
+                activityRecruitViewModel.getActivityStartDate().substring(11, 16)
+            binding.endDateTv.setTextColor(ContextCompat.getColor(requireContext(),
+                R.color.gray_scale_g900))
         }
     }
+
     // 임시저장 데이터 불러오기
     private fun loadTempData() {
         // 프로젝트 명
@@ -325,24 +348,29 @@ class EditActivityRecruitFragment(private val activityId: String) : Fragment(), 
 
     // 다음 버튼 클릭
     fun onClickNextBtn() {
-        if(activityRecruitViewModel.isExistNeedData()) {
-            activityRecruitViewModel.setGuideActivity(binding.guideActivityEt.text.toString())
-            activityRecruitViewModel.setQuota(binding.quotaEt.text.toString().toInt())
-            activityRecruitViewModel.setProjectName(binding.projectNameEt.text.toString())
-            activityRecruitViewModel.setMaterial(binding.materialEt.text.toString())
-            activityRecruitViewModel.setGiveReward(binding.giveRewardEt.text.toString())
-            activityRecruitViewModel.setOtherGuide(binding.otherGuideEt.text.toString())
+        if (activityRecruitViewModel.isExistNeedData()) {
+            when (val msg = activityRecruitViewModel.isQuotaCorrect()) {
+                "성공" -> {
+                    activityRecruitViewModel.setGuideActivity(binding.guideActivityEt.text.toString())
+                    activityRecruitViewModel.setQuota(binding.quotaEt.text.toString().toInt())
+                    activityRecruitViewModel.setProjectName(binding.projectNameEt.text.toString())
+                    activityRecruitViewModel.setMaterial(binding.materialEt.text.toString())
+                    activityRecruitViewModel.setGiveReward(binding.giveRewardEt.text.toString())
+                    activityRecruitViewModel.setOtherGuide(binding.otherGuideEt.text.toString())
 
-            // 임시저장 활성화
-            activityRecruitViewModel.setIsLoadTempData("temp")
-            activity.onReplaceFragment(EditActivityRecruit2Fragment(activityId))
+                    // 임시저장 활성화
+                    activityRecruitViewModel.setIsLoadTempData("temp")
+                    activity.onReplaceFragment(EditActivityRecruit2Fragment(activityId))
+                }
+                else -> activity.showErrorMsg(msg)
+            }
         } else {
             Toast.makeText(requireContext(), "모든 값을 입력해주세요.", Toast.LENGTH_SHORT).show()
         }
     }
 
     // 이전 버튼 클릭
-    fun  onClickBackBtn() {
+    fun onClickBackBtn() {
         // 활동 모집 데이터 초기화
         activityRecruitViewModel.clearTempData()
 
