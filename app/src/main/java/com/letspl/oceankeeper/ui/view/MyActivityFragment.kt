@@ -219,13 +219,17 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         }
         // 활동 지원 취소
         myActivityViewModel.deleteApplyCancel.observe(viewLifecycleOwner) {
+            Timber.e("deleteApplyCancel $it")
             if (it) {
+                myActivityViewModel.setCrewLast(false)
                 myActivityViewModel.getUserActivity("crew", null)
             }
         }
         // 모집 취소
         myActivityViewModel.deleteRecruitCancel.observe(viewLifecycleOwner) {
+            Timber.e("deleteRecruitCancel $it")
             if (it) {
+                myActivityViewModel.setHostLast(false)
                 myActivityViewModel.getUserActivity("host", null)
             }
         }
