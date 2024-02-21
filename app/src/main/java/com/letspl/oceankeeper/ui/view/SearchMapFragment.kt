@@ -1,5 +1,8 @@
 package com.letspl.oceankeeper.ui.view
 
+import android.R
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Bundle
@@ -40,7 +43,7 @@ class SearchMapFragment(private val activityId: String = ""): Fragment(), BaseAc
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return binding.root
     }
@@ -74,15 +77,21 @@ class SearchMapFragment(private val activityId: String = ""): Fragment(), BaseAc
             override fun onReceivedSslError(
                 view: WebView?,
                 handler: SslErrorHandler?,
-                error: SslError?
+                error: SslError?,
             ) {
-                Timber.e("onReceivedSslError")
-                handler?.proceed()
+                val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+                builder.setMessage("주소검색을 위해서는 사이트에 접속해야합니다.\n사이트로 진입 진입하시겠습니까 ?")
+                builder.setPositiveButton("continue",
+                    DialogInterface.OnClickListener { dialog, which -> handler!!.proceed() })
+                builder.setNegativeButton("cancel",
+                    DialogInterface.OnClickListener { dialog, which -> handler!!.cancel() })
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
             }
 
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
-                request: WebResourceRequest?
+                request: WebResourceRequest?,
             ): Boolean {
                 Timber.e("shouldOverrideUrlLoading")
                 view?.loadUrl(request?.url.toString())
