@@ -27,7 +27,6 @@
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.OceanKepper"
-        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         tools:replace="android:allowBackup"
         tools:targetApi="31">
