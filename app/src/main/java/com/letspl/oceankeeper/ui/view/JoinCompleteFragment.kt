@@ -35,7 +35,7 @@ class JoinCompleteFragment: Fragment(), BaseActivity.OnBackPressedListener {
 
         // 확인 버튼 클릭
         binding.okBtn.setOnClickListener {
-            activity.onReplaceFragment(LoginFragment(), false, true)
+            activity.onReplaceFragment(LoginFragment(), false, false)
         }
     }
     override fun onBackPressed() {
