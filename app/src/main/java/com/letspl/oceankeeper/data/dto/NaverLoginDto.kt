@@ -15,7 +15,6 @@ data class GetNaverLoginResponseDto(
     val nickname: String,
     @SerialName("profile_image")
     val profileImage: String,
-    val email: String,
-    val name: String,
+    val email: String
 )
 
