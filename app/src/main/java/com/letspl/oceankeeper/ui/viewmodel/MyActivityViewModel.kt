@@ -372,6 +372,7 @@ class MyActivityViewModel @Inject constructor(
         setHostLast(false)
         _getUserActivityCrew.postValue(null)
         _getUserActivityHost.postValue(null)
+        _changeProfileImageResult.postValue(true)
     }
 
     fun clearErrorMsg() {

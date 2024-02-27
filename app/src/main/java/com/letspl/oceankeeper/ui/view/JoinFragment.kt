@@ -56,11 +56,6 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var choiceProfileImageDialog: ChoiceProfileImageDialog
     private val joinViewModel: JoinViewModel by viewModels()
-    private val permissionList = arrayOf(
-        android.Manifest.permission.CAMERA,
-        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        android.Manifest.permission.READ_EXTERNAL_STORAGE
-    )
     private val resizingImage = ResizingImage()
 
     // 사진 찍기 결과
@@ -185,42 +180,19 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
 //    }
 
     private fun checkGalleryPermission(): Boolean {
-        val writePermission = ContextCompat.checkSelfPermission(
-            requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-        val readPermission = ContextCompat.checkSelfPermission(
-            requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
-        )
         val imagePermission = ContextCompat.checkSelfPermission(
             requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
         )
+        return if (imagePermission == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(
+                    android.Manifest.permission.READ_MEDIA_IMAGES
+                ), 2
+            )
 
-        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
-            Timber.e("true")
-            if(imagePermission == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(
-                    requireActivity(), arrayOf(
-                        android.Manifest.permission.READ_MEDIA_IMAGES
-                    ), 1
-                )
-
-                false
-            } else {
-                true
-            }
-        } else{
-            Timber.e("else")
-            if(writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(
-                    requireActivity(), arrayOf(
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE
-                    ), 2
-                )
-                false
-            } else {
-                true
-            }
+            false
+        } else {
+            true
         }
     }
 

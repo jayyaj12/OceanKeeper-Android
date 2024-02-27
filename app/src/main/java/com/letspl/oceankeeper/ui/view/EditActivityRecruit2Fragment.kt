@@ -254,42 +254,19 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
     }
 
     private fun checkGalleryPermission(): Boolean {
-        val writePermission = ContextCompat.checkSelfPermission(
-            requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-        val readPermission = ContextCompat.checkSelfPermission(
-            requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
-        )
         val imagePermission = ContextCompat.checkSelfPermission(
             requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
         )
+        return if (imagePermission == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(
+                    android.Manifest.permission.READ_MEDIA_IMAGES
+                ), REQ_GALLERY
+            )
 
-        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
-            Timber.e("true")
-            if(imagePermission == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(
-                    requireActivity(), arrayOf(
-                        android.Manifest.permission.READ_MEDIA_IMAGES
-                    ), REQ_GALLERY
-                )
-
-                false
-            } else {
-                true
-            }
-        } else{
-            Timber.e("else")
-            if(writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(
-                    requireActivity(), arrayOf(
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE
-                    ), REQ_GALLERY
-                )
-                false
-            } else {
-                true
-            }
+            false
+        } else {
+            true
         }
     }
 

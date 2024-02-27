@@ -2,6 +2,7 @@ package com.letspl.oceankeeper.ui.view
 
 import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
@@ -13,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -158,6 +161,22 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
         setupViewModelObserver()
     }
 
+    private fun checkGalleryPermission(): Boolean {
+        val imagePermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
+        )
+        return if (imagePermission == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(
+                    android.Manifest.permission.READ_MEDIA_IMAGES
+                ), 2
+            )
+
+            false
+        } else {
+            true
+        }
+    }
     // 나의 오션키퍼 활동 정보 불러오기
     private fun getActivityInfo() {
         myActivityViewModel.getMyActivityInfo()
@@ -360,7 +379,9 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
     // 프로필 수정 아이콘 클릭 시 촬영, 앨범에서 선택 팝업 표시
     fun onClickedChoiceProfileImage() {
-        choiceProfileImageDialog.show()
+        if(checkGalleryPermission()) {
+            choiceProfileImageDialog.show()
+        }
     }
 
     // 설정 페이지 이동
