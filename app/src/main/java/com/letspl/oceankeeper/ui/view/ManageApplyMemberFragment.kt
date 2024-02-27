@@ -1,14 +1,17 @@
 package com.letspl.oceankeeper.ui.view
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Environment
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.letspl.oceankeeper.R
 import com.letspl.oceankeeper.data.model.ManageApplyMemberModel
@@ -21,6 +24,7 @@ import com.letspl.oceankeeper.ui.viewmodel.MyActivityViewModel
 import com.letspl.oceankeeper.util.AllClickedStatus
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+
 
 @AndroidEntryPoint
 class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
@@ -56,7 +60,6 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         setupProjectName()
-        checkGalleryPermission()
         setupApplyMemberListAdapter()
         setupViewModelObserver()
         getCrewInfoList()
@@ -96,9 +99,9 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
             }
         }
 
-        manageApplyViewModel.excelMakeResult.observe(viewLifecycleOwner) {
-            if (it) {
-                activity.showSuccessMsg("엑셀 다운로드가 성공하였습니다.\n저장된 위치: 다운로드 폴더/오션키퍼/${myActivityViewModel.getClickItem().title}.xlsx")
+        manageApplyViewModel.excelMakeResult.observe(viewLifecycleOwner) { fileName ->
+            if (fileName != "") {
+                activity.showSuccessMsg("엑셀 다운로드가 성공하였습니다.\n저장된 위치: Download/OceanKeeper/$fileName.xlsx")
             }
         }
 
@@ -204,22 +207,39 @@ class ManageApplyMemberFragment(private val activityId: String) : Fragment(),
         }
     }
 
-    private fun checkGalleryPermission(): Boolean {
-        val imagePermission = ContextCompat.checkSelfPermission(
-            requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
-        )
-        return if (imagePermission == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(
-                    android.Manifest.permission.READ_MEDIA_IMAGES
-                ), 2
-            )
-
-            false
-        } else {
-            true
-        }
-    }
+//    private fun checkGalleryPermission(): Boolean {
+//        val readPermission = ContextCompat.checkSelfPermission(
+//            requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
+//        )
+//        val imagePermission = ContextCompat.checkSelfPermission(
+//            requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
+//        )
+//
+//        return if(imagePermission == PackageManager.PERMISSION_DENIED) {
+//                ActivityCompat.requestPermissions(
+//                    requireActivity(), arrayOf(
+//                        android.Manifest.permission.READ_MEDIA_IMAGES
+//                    ), 1
+//                )
+//
+//                false
+//            } else {
+//                true
+//            }
+////        } else{
+////            if(writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED) {
+////                ActivityCompat.requestPermissions(
+////                    requireActivity(), arrayOf(
+////                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+////                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+////                    ), 2
+////                )
+////                false
+////            } else {
+////                true
+////            }
+////        }
+//    }
 
     // 노쇼 체크 버튼 클릭
     fun onClickedDownloadExcel() {

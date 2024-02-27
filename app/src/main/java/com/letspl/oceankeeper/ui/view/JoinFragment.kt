@@ -180,19 +180,38 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
 //    }
 
     private fun checkGalleryPermission(): Boolean {
+        val readPermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
         val imagePermission = ContextCompat.checkSelfPermission(
             requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
         )
-        return if (imagePermission == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(
-                    android.Manifest.permission.READ_MEDIA_IMAGES
-                ), 2
-            )
 
-            false
-        } else {
-            true
+        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
+            Timber.e("true")
+            if(imagePermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.READ_MEDIA_IMAGES
+                    ), 1
+                )
+
+                false
+            } else {
+                true
+            }
+        } else{
+            Timber.e("else")
+            if(readPermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    ), 2
+                )
+                false
+            } else {
+                true
+            }
         }
     }
 

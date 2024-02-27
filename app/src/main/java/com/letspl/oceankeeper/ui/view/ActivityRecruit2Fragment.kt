@@ -269,21 +269,39 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
             activityRecruit2ViewModel.onChangedActivityStoryEditText(it.toString())
         }
     }
-
     private fun checkGalleryPermission(): Boolean {
+        val readPermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
         val imagePermission = ContextCompat.checkSelfPermission(
             requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES
         )
-        return if (imagePermission == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(
-                    android.Manifest.permission.READ_MEDIA_IMAGES
-                ), REQ_GALLERY
-            )
 
-            false
-        } else {
-            true
+        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
+            Timber.e("true")
+            if(imagePermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.READ_MEDIA_IMAGES
+                    ), REQ_GALLERY
+                )
+
+                false
+            } else {
+                true
+            }
+        } else{
+            Timber.e("else")
+            if(readPermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    ), REQ_GALLERY
+                )
+                false
+            } else {
+                true
+            }
         }
     }
 

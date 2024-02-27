@@ -1,7 +1,13 @@
 package com.letspl.oceankeeper.ui.viewmodel
 
+import android.content.ContentResolver
+import android.content.ContentValues
+import android.database.Cursor
+import android.os.Build
 import android.os.Environment
 import android.os.Environment.DIRECTORY_DOWNLOADS
+import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,11 +16,13 @@ import com.letspl.oceankeeper.data.model.ManageApplyMemberModel
 import com.letspl.oceankeeper.data.repository.ManageApplyRepositoryImpl
 import com.letspl.oceankeeper.util.NetworkUtils
 import com.letspl.oceankeeper.util.ParsingErrorMsg
+import com.navercorp.nid.NaverIdLoginSDK.applicationContext
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -41,9 +49,9 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
     private var _errorMsg = MutableLiveData<String>()
     val errorMsg: LiveData<String> get() = _errorMsg
 
-    // 에러 토스트 메세지 text
-    private var _excelMakeResult = MutableLiveData<Boolean>()
-    val excelMakeResult: LiveData<Boolean> get() = _excelMakeResult
+    // 엑셀 저장 결과
+    private var _excelMakeResult = MutableLiveData<String>()
+    val excelMakeResult: LiveData<String> get() = _excelMakeResult
 
     // 신청자 리스트 불러오기
     fun getCrewInfoList(activityId: String) {
@@ -215,36 +223,119 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
 
     private fun makeFile(byte: ByteArray?, fileName: String) {
         if(byte != null) {
+            val directory = File(
+                Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS),
+                "OceanKeeper"
+            )
+
+            // 디렉토리가 없으면 생성
+            if (!directory.exists()) {
+                directory.mkdirs()
+            }
+
+            val date = Date()
+            val file = File(directory, "${fileName}_${SimpleDateFormat("HH_mm_ss").format(date)}.xlsx")
+
+
+            var fos: FileOutputStream? = null
             try {
-                val directory = File(
-                    Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS),
-                    "OceanKeeper"
-                )
-
-                // 디렉토리가 없으면 생성
-                if (!directory.exists()) {
-                    directory.mkdirs()
-                }
-                var fos: FileOutputStream? = null
-                val file = File(directory, "${fileName}.xlsx")
-
+                Timber.e("file absoluteFile${file.absoluteFile}")
+                Timber.e("file exists ${file.exists()}")
                 if (file.exists()) {
+                    Timber.e("file.delete() ${file.delete()}")
                     file.delete()
                 } else {
+                    Timber.e("file.createNewFile() ${file.createNewFile()}")
                     file.createNewFile()
                 }
+
                 fos = FileOutputStream(file)
+                Timber.e("file ${file.absoluteFile}")
+                Timber.e("byte  ${byte.size}")
                 fos.write(byte)
 
-                _excelMakeResult.postValue(true)
+                // MediaStore에 파일 정보 추가
+                val contentResolver: ContentResolver = applicationContext.contentResolver
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, "${fileName}_${SimpleDateFormat("HH_mm_ss").format(date)}.xlsx")
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/OceanKeeper")
+                }
+
+                val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val cursor: Cursor? = contentResolver.query(
+                        MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                        arrayOf(MediaStore.MediaColumns.DISPLAY_NAME),
+                        "${MediaStore.MediaColumns.DISPLAY_NAME} = ?",
+                        arrayOf("$fileName.xlsx"),
+                        null
+                    )
+
+                    if (cursor != null && cursor.count > 0) {
+                        // 이미 존재하는 파일이므로 추가하지 않음
+                        cursor.close()
+                        null
+                    } else {
+                        // 파일이 존재하지 않는 경우 삽입
+                        cursor?.close()
+                        contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+                    }
+                } else {
+                    null
+                }
+                fos.close()
+
+                // MediaStore에 성공적으로 추가되었는지 확인
+                if (uri != null) {
+                    // 성공적으로 추가되었을 때의 처리
+                    _excelMakeResult.postValue("${fileName}_${SimpleDateFormat("HH_mm_ss").format(date)}.xlsx")
+                } else {
+                    // 추가에 실패했을 때의 처리
+                    _errorMsg.postValue("파일 다운로드에 실패하였습니다.\n휴대전화 소프트웨어 버전을 업데이트 하시거나 잠시 후 시도해주세요.")
+                }
+
             } catch (e: Exception) {
-                e.printStackTrace()
-                _errorMsg.postValue("파일 다운로드에 실패하였습니다. 잠시 후 다시 시도해주세요.")
+                // 파일 생성 및 쓰기 중 예외 처리
+                Timber.e("e.print ${e.message}")
+            } finally {
+                fos?.close()
             }
         } else {
             _errorMsg.postValue("파일 다운로드에 실패하였습니다. 잠시 후 다시 시도해주세요.")
         }
     }
+//    private fun makeFile(byte: ByteArray?, fileName: String) {
+//        if(byte != null) {
+//            try {
+//                val directory = File(
+//                    Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS),
+//                    "OceanKeeper"
+//                )
+//
+//                // 디렉토리가 없으면 생성
+//                if (!directory.exists()) {
+//                    directory.mkdirs()
+//                }
+//                var fos: FileOutputStream? = null
+//                val file = File(directory, "${fileName}.xlsx")
+//
+//                if (file.exists()) {
+//                    file.delete()
+//                } else {
+//                    file.createNewFile()
+//                }
+//                fos = FileOutputStream(file)
+//                fos.write(byte)
+//
+//                _excelMakeResult.postValue(true)
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//                _errorMsg.postValue("파일 다운로드에 실패하였습니다. 잠시 후 다시 시도해주세요.")
+//            }
+//        } else {
+//            _errorMsg.postValue("파일 다운로드에 실패하였습니다. 잠시 후 다시 시도해주세요.")
+//        }
+//    }
 
     // 전체 선택하기 버튼
     fun setAllIsClickedApplyMember(flag: Boolean) {
@@ -355,7 +446,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
     }
 
     fun clearData() {
-        _excelMakeResult.postValue(false)
+        _excelMakeResult.postValue("")
         ManageApplyMemberModel.applyCrewList.clear()
         ManageApplyMemberModel.tempApplyCrewList.clear()
     }
