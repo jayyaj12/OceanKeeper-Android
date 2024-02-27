@@ -20,7 +20,7 @@ android {
         minSdk 23
         targetSdk 34
         versionCode 7
-        versionName "1.2.3"
+        versionName "1.2.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String","NAVER_BASE_URL",properties['naver_base_url']
         buildConfigField "String","KAKAO_NATIVE_APP_KEY",properties['kakao_native_app_key']
