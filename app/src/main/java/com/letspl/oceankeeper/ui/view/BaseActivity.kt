@@ -1,10 +1,12 @@
 package com.letspl.oceankeeper.ui.view
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
+import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -24,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.security.MessageDigest
 
 
 @AndroidEntryPoint
@@ -54,7 +57,6 @@ class BaseActivity : AppCompatActivity() {
         setContentView(binding.root)
         ContextUtil.context = this
         setupSplashFragment()
-
         getRegisterFcmToken()
 
         binding.bottomNav.setOnItemSelectedListener {
