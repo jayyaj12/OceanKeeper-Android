@@ -261,7 +261,7 @@ interface ApiService {
     ): Response<LogoutDto>
 
     // 탈퇴하기
-    @POST("/auth/withdrawal")
+    @HTTP(method = "DELETE", path = "/auth/withdrawal", hasBody = true)
     suspend fun postWithdraw(
         @Header("Authorization") token: String,
         @Body logoutReqDto: LogoutBody,
