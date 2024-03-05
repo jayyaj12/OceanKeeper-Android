@@ -29,8 +29,19 @@ android {
         buildConfigField "String","NAVER_SECRET_CLIEND_ID",properties['naver_serect_client_id']
     }
 
+    signingConfigs {
+        releaseWithSignedKey {
+            storeFile file("C:\\Android\\OceanKeeper-Android\\app\\oceanKey.jks")
+            storePassword "kWndgus9346!#"
+            keyAlias "key0"
+            keyPassword "kWndgus9346!#"
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.releaseWithSignedKey
+            debuggable true //로그 보기
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

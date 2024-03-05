@@ -16,6 +16,7 @@ import com.letspl.oceankeeper.util.EntryPoint
 import com.letspl.oceankeeper.util.loginManager.KakaoLoginManager
 import com.letspl.oceankeeper.util.loginManager.NaverLoginManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -65,7 +66,13 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     private fun setupViewModelObserver() {
+        settingViewModel.postWithDrawResult.observe(viewLifecycleOwner) {
+            if (it) {
+                activity.onReplaceFragment(LoginFragment(), false, false)
+            }
+        }
         settingViewModel.postLogoutResult.observe(viewLifecycleOwner) {
+            Timber.e("postLogoutResult $it")
             if (it) {
                 activity.onReplaceFragment(LoginFragment(), false, false)
             }
@@ -138,7 +145,9 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 if(logoutResult) {
                     settingViewModel.postLogout()
                 } else {
-                    activity.showErrorMsg("로그아웃에 실패하였습니다.\n잠시 후 다시 시도해주세요.")
+                    CoroutineScope(Dispatchers.Main).launch {
+                        activity.showErrorMsg("로그아웃에 실패하였습니다.\n잠시 후 다시 시도해주세요.")
+                    }
                 }
             }
 

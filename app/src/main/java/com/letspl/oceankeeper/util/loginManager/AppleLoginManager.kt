@@ -5,8 +5,10 @@ import android.util.Log
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
+import com.kakao.util.maps.helper.Utility
 import com.letspl.oceankeeper.data.model.LoginModel
 import com.letspl.oceankeeper.ui.viewmodel.LoginViewModel
+import com.letspl.oceankeeper.util.ContextUtil
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,6 +18,9 @@ class AppleLoginManager @Inject constructor (private val activity: Activity, pri
 
     init {
         initAuth()
+        var keyHash = Utility.getKeyHash(ContextUtil.context)
+
+        Timber.e("keyHash $keyHash")
     }
 
     // 1. 인증 API 초기화

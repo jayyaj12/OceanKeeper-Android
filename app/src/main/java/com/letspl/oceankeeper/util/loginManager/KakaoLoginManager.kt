@@ -1,5 +1,8 @@
 package com.letspl.oceankeeper.util.loginManager
 
+import android.content.pm.PackageManager
+import android.util.Base64
+import android.util.Log
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -9,8 +12,15 @@ import com.letspl.oceankeeper.data.model.LoginModel
 import com.letspl.oceankeeper.ui.viewmodel.LoginViewModel
 import com.letspl.oceankeeper.util.ContextUtil
 import com.letspl.oceankeeper.util.NetworkUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.security.MessageDigest
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
 class KakaoLoginManager @Inject constructor(private val loginViewModel: LoginViewModel) {
@@ -18,7 +28,7 @@ class KakaoLoginManager @Inject constructor(private val loginViewModel: LoginVie
 
     fun onClickedKakaoLogin() {
         Timber.e(Utility.getKeyHash(ContextUtil.context))
-        if(NetworkUtils.isNetworkConnected()) {
+        if (NetworkUtils.isNetworkConnected()) {
             val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
                 Timber.e("callback error1 $error")
                 if (error != null) {
@@ -101,11 +111,13 @@ class KakaoLoginManager @Inject constructor(private val loginViewModel: LoginVie
         }
     }
 
-    fun startLogout(): Boolean {
-        var logoutResult = false
-        UserApiClient.instance.logout { error ->
-            logoutResult = error == null
+    suspend fun startLogout(): Boolean {
+        return  suspendCoroutine { continuation ->
+                UserApiClient.instance.logout { error ->
+                    Timber.e("error == null ${error == null}")
+                    val result = error == null
+                    continuation.resume(Result.success(result))
+                }
+            }.getOrElse { false }
         }
-        return logoutResult
     }
-}
