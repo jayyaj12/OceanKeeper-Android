@@ -126,6 +126,7 @@ class SettingFragment : Fragment(), BaseActivity.OnBackPressedListener {
             var logoutResult = true
             lifecycleScope.launch(Dispatchers.IO) {
                 withContext(Dispatchers.IO) {
+                    Timber.e("EntryPoint.login ${EntryPoint.login}")
                     when (EntryPoint.login) {
                         "NAVER" -> naverLoginManager.startNaverLogout()
                         "KAKAO" -> logoutResult = kakaoLoginManager.startLogout()
