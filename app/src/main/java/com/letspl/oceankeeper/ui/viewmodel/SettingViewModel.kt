@@ -255,6 +255,7 @@ class SettingViewModel @Inject constructor(private val loginRepositoryImpl: Logi
         _postLogoutResult.postValue(false)
         _getNotificationAlarmResult.postValue(null)
         _postNotificationAlarmResult.postValue(null)
+        _postWithDrawResult.postValue(false)
     }
 
     fun clearErrorMsg() {

@@ -52,7 +52,6 @@ class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         FirebaseApp.initializeApp(this)
         super.onCreate(savedInstanceState)
-
         binding = ActivityBaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ContextUtil.context = this
