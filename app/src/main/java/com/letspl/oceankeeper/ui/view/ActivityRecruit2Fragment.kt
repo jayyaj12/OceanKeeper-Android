@@ -70,12 +70,16 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                             it
                         )
 
+                        val imgFile = ImgFileMaker.saveBitmapToFile(
+                            rotateBitmap!!
+                        )
+
                         activityRecruit2ViewModel.setThumbnailImageFile(
-                            ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
+                            imgFile
                         )
 
                         binding.thumbnailIv.visibility = View.VISIBLE
-                        Glide.with(requireActivity()).load(imageUri).into(binding.thumbnailIv)
+                        Glide.with(requireActivity()).load(imgFile).into(binding.thumbnailIv)
 
                         binding.thumbnailPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.thumbnailPhotoTv.visibility = View.GONE
@@ -105,12 +109,16 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                             it
                         )
 
+                        val imgFile = ImgFileMaker.saveBitmapToFile(
+                            rotateBitmap!!
+                        )
+
                         activityRecruit2ViewModel.setKeeperIntroduceImageFile(
-                            ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
+                            imgFile
                         )
 
                         binding.introduceKeeperIv.visibility = View.VISIBLE
-                        Glide.with(requireActivity()).load(imageUri).into(binding.introduceKeeperIv)
+                        Glide.with(requireActivity()).load(imgFile).into(binding.introduceKeeperIv)
 
                         binding.introduceKeeperPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.introduceKeeperPhotoTv.visibility = View.GONE
@@ -140,12 +148,16 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
                             it
                         )
 
+                        val imgFile = ImgFileMaker.saveBitmapToFile(
+                            rotateBitmap!!
+                        )
+
                         activityRecruit2ViewModel.setActivityStoryImageFile(
-                            ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
+                            imgFile
                         )
 
                         binding.activityStoryIv.visibility = View.VISIBLE
-                        Glide.with(requireActivity()).load(imageUri).into(binding.activityStoryIv)
+                        Glide.with(requireActivity()).load(imgFile).into(binding.activityStoryIv)
 
                         binding.activityStoryPhotoCl.setBackgroundResource(R.drawable.custom_radius_8_stroke_g300_solid_fff)
                         binding.activityStoryPhotoTv.visibility = View.GONE
@@ -307,12 +319,11 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     fun selectThumbnailGallery() {
         if (checkGalleryPermission()) {
-            // 권한이 있는 경우 갤러리 실행
-            val intent = Intent(Intent.ACTION_PICK)
-            // intent와 data와 type을 동시에 설정하는 메서드
-            intent.setDataAndType(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
-            )
+            // 앨범에서 사진 선택
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
 
             thumbnailImageResult.launch(intent)
         }
@@ -320,12 +331,11 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     fun selectKeeperIntroduceGallery() {
         if (checkGalleryPermission()) {
-            // 권한이 있는 경우 갤러리 실행
-            val intent = Intent(Intent.ACTION_PICK)
-            // intent와 data와 type을 동시에 설정하는 메서드
-            intent.setDataAndType(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
-            )
+            // 앨범에서 사진 선택
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
 
             keeperIntroduceImageResult.launch(intent)
         }
@@ -333,12 +343,11 @@ class ActivityRecruit2Fragment : Fragment(), BaseActivity.OnBackPressedListener 
 
     fun selectActivityStoryGallery() {
         if (checkGalleryPermission()) {
-            // 권한이 있는 경우 갤러리 실행
-            val intent = Intent(Intent.ACTION_PICK)
-            // intent와 data와 type을 동시에 설정하는 메서드
-            intent.setDataAndType(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
-            )
+            // 앨범에서 사진 선택
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
 
             activityStoryImageResult.launch(intent)
         }

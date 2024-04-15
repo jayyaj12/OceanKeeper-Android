@@ -4,9 +4,12 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import timber.log.Timber
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.UUID
 
 object ImgFileMaker {
     // Uri 로부터 실제 파일 경로를 얻어옴
@@ -36,6 +39,7 @@ object ImgFileMaker {
                         arrayOf(document_id),
                         null
                     )
+
                     if (cursor != null) {
                         cursor.moveToFirst()
                         fullPath = cursor.getString(cursor.getColumnIndexOrThrow(column))
@@ -45,20 +49,26 @@ object ImgFileMaker {
                 }
             }
         }
+
         return fullPath
     }
 
     // 비트맵을 파일로 변환함
-    fun saveBitmapToFile(bitmap: Bitmap, fileName: String?): File {
-        val file: File = File(fileName)
+    fun saveBitmapToFile(bitmap: Bitmap): File {
+        var file: File = File(ContextUtil.context.getExternalFilesDir(null), "${UUID.randomUUID()}.jpg")
         try {
-            val fos = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos)
-            fos.flush()
-            fos.close()
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+            byteArrayToFile(baos.toByteArray(), file)
         } catch (e: IOException) {
             e.printStackTrace()
         }
         return file
+    }
+
+    private fun byteArrayToFile(byteArray: ByteArray, file: File) {
+        FileOutputStream(file).use {
+            it.write(byteArray)
+        }
     }
 }

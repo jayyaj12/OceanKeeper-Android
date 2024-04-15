@@ -81,8 +81,7 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
 
                     myActivityViewModel.uploadEditProfileImage(
                         ImgFileMaker.saveBitmapToFile(
-                            rotateBitmap!!,
-                            path
+                            rotateBitmap!!
                         )
                     )
 
@@ -99,39 +98,33 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     // 사진 가져오기 결과
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val choicePhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if(result.resultCode == -1) {
-            lifecycleScope.launch {
-                val imageUri = result.data?.data
-                withContext(Dispatchers.Main) {
-                    try {
-                        val path = ImgFileMaker.getFullPathFromUri(requireContext(), imageUri)!!
-                        val angle = RotateTransform.getRotationAngle(path)
-                        val rotateBitmap = RotateTransform.rotateImage(
-                            BitmapFactory.decodeFile(path),
-                            angle.toFloat(),
-                            imageUri
-                        )
+    private val choicePhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
+        result?.data?.data?.also {uri ->
+            try {
+                val path =
+                    ImgFileMaker.getFullPathFromUri(requireContext(), uri)!!
+                val angle = RotateTransform.getRotationAngle(path)
+                val rotateBitmap =
+                    RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat(), uri)
 
-                        myActivityViewModel.uploadEditProfileImage(
-                            ImgFileMaker.saveBitmapToFile(
-                                rotateBitmap!!,
-                                path
-                            )
-                        )
+                val imgFile = ImgFileMaker.saveBitmapToFile(
+                    rotateBitmap!!
+                )
 
-                        Glide.with(requireContext())
-                            .load(imageUri)
-                            .fitCenter()
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true)
-                            .into(binding.userProfileIv)
+                myActivityViewModel.uploadEditProfileImage(
+                    imgFile
+                )
 
-                    } catch (e: Exception) {
-                        activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
-                    }
-                }
+                Glide.with(requireContext())
+                    .load(imgFile)
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(binding.userProfileIv)
+            } catch (e: Exception) {
+                Timber.e("e.getMessage ${e.message}")
+                e.printStackTrace()
+                activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
             }
         }
     }
@@ -375,12 +368,14 @@ class MyActivityFragment : Fragment(), BaseActivity.OnBackPressedListener {
             takePhoto.launch(myActivityViewModel.getTakePhotoUri())
         }, {
             // 앨범에서 사진 선택
-            val intent = Intent(Intent.ACTION_PICK)
-            // intent와 data와 type을 동시에 설정하는 메서드
-            intent.setDataAndType(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
-            )
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
+
+            // 앨범에서 사진 선택
             choicePhoto.launch(intent)
+
         })
     }
 

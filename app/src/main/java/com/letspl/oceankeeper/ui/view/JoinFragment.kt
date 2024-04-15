@@ -1,6 +1,7 @@
 package com.letspl.oceankeeper.ui.view
 
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -68,41 +69,46 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
                 RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat(), joinViewModel.getTakePhotoUri())
 
             joinViewModel.setProfileImageFile(it?.let { uri ->
-                ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
+                ImgFileMaker.saveBitmapToFile(rotateBitmap!!)
             })
 
             Glide.with(requireContext())
-                .load(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
+                .load(ImgFileMaker.saveBitmapToFile(rotateBitmap!!))
                 .fitCenter()
                 .centerCrop()
                 .into(binding.profileIv)
         } catch (e: Exception) {
-            Timber.e("e.getMessage ${e.message}")
             activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
         }
     }
 
     // 사진 가져오기 결과
-    private val choicePhoto = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        try {
-            val path =
-                ImgFileMaker.getFullPathFromUri(requireContext(), it)!!
-            val angle = RotateTransform.getRotationAngle(path)
-            val rotateBitmap =
-                RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat(), it)
+    private val choicePhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
+        result?.data?.data?.also {uri ->
+            try {
+                val path =
+                    ImgFileMaker.getFullPathFromUri(requireContext(), uri)!!
+                val angle = RotateTransform.getRotationAngle(path)
+                val rotateBitmap =
+                    RotateTransform.rotateImage(BitmapFactory.decodeFile(path), angle.toFloat(), uri)
 
-            joinViewModel.setProfileImageFile(it?.let { uri ->
-                ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path)
-            })
+                val imgFile = ImgFileMaker.saveBitmapToFile(
+                    rotateBitmap!!
+                )
 
-            Glide.with(requireContext())
-                .load(ImgFileMaker.saveBitmapToFile(rotateBitmap!!, path))
-                .fitCenter()
-                .centerCrop()
-                .into(binding.profileIv)
-        } catch (e: Exception) {
-            Timber.e("e.getMessage ${e.message}")
-            activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+                joinViewModel.setProfileImageFile(uri?.let { uri ->
+                    imgFile
+                })
+
+                Glide.with(requireContext())
+                    .load(imgFile)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(binding.profileIv)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                activity.showErrorMsg("해당 이미지는 사용할 수 없습니다.")
+            }
         }
     }
 
@@ -222,8 +228,13 @@ class JoinFragment : Fragment(), BaseActivity.OnBackPressedListener {
             // 사진 촬영
             takePhoto.launch(joinViewModel.getTakePhotoUri())
         }, {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {    // 1
+                addCategory(Intent.CATEGORY_OPENABLE)   // 2
+                type = "image/*"    // 3
+            }
+
             // 앨범에서 사진 선택
-            choicePhoto.launch("image/*")
+            choicePhoto.launch(intent)
         })
     }
 
