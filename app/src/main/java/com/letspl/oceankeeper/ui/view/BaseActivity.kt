@@ -160,4 +160,13 @@ class BaseActivity : AppCompatActivity() {
             binding.sucessCl.visibility = View.GONE
         }, 3000)
     }
+
+    // 정보 메세지 표시
+    fun showInfoMsg(msg: String) {
+        binding.infoCl.visibility = View.VISIBLE
+        binding.infoMsgTv.text = msg
+        Handler(Looper.myLooper()!!).postDelayed({
+            binding.infoCl.visibility = View.GONE
+        }, 2000)
+    }
 }

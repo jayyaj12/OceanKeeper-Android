@@ -39,6 +39,7 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     }
     private lateinit var activityListAdapter: MainActivityListAdapter
     private lateinit var comingScheduleAdapte: MainComingScheduleAdapter
+    private var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -251,6 +252,11 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     }
 
     override fun onBackPressed() {
-        activity.finish()
+        if (System.currentTimeMillis() > backPressedTime + 2000) {
+            backPressedTime = System.currentTimeMillis();
+            activity.showInfoMsg("앱을 종료하려면 뒤로가기 버튼을\n한 번 더 눌러주세요")
+        } else if (System.currentTimeMillis() <= backPressedTime + 2000) {
+            activity.finish();
+        }
     }
 }
