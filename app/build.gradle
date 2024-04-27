@@ -19,8 +19,8 @@ android {
         applicationId "com.letspl.oceankeeper"
         minSdk 23
         targetSdk 34
-        versionCode 17
-        versionName "1.2.8"
+        versionCode 18
+        versionName "1.2.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String","NAVER_BASE_URL",properties['naver_base_url']
         buildConfigField "String","KAKAO_NATIVE_APP_KEY",properties['kakao_native_app_key']

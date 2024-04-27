@@ -43,8 +43,10 @@ class NoticeViewModel @Inject constructor(private val noticeRepositoryImpl: Noti
                             val notices = it.body()?.response?.notices!!
                             _getNoticeResult.postValue(notices)
 
-                            NoticeModel.isLast = it.body()?.response?.meta?.last!!
-                            NoticeModel.lastNoticeId = notices[notices.size - 1].id
+                            if(notices.isNotEmpty()) {
+                                NoticeModel.isLast = it.body()?.response?.meta?.last!!
+                                NoticeModel.lastNoticeId = notices[notices.size - 1].id
+                            }
                         } else {
                             val errorJsonObject = ParsingErrorMsg.parsingFromStringToJson(
                                 it.errorBody()?.string() ?: ""

@@ -22,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.letspl.oceankeeper.R
 import com.letspl.oceankeeper.databinding.FragmentEditActivityRecruit2Binding
+import com.letspl.oceankeeper.ui.dialog.ProgressDialog
 import com.letspl.oceankeeper.ui.dialog.RecruitActivityCompleteDialog
 import com.letspl.oceankeeper.ui.viewmodel.ActivityRecruit2ViewModel
 import com.letspl.oceankeeper.ui.viewmodel.ActivityRecruitViewModel
@@ -48,6 +49,7 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
         requireActivity() as BaseActivity
     }
     private val resizingImage = ResizingImage()
+    lateinit var progressDialog: ProgressDialog
 
     // 썸네일 갤러리 선택 시 결과
     private val thumbnailImageResult = registerForActivityResult(
@@ -191,6 +193,11 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
         setupLoadData()
         setupEditTextListener()
         setupViewModelObserver()
+        setupProgressDialog()
+    }
+
+    private fun setupProgressDialog() {
+        progressDialog = ProgressDialog(requireContext())
     }
 
     // 데이터 불러오기
@@ -226,6 +233,7 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
     private fun setupViewModelObserver() {
         activityRecruit2ViewModel.errorMsg.observe(viewLifecycleOwner) {
             if(it != "") {
+                progressDialog.dismiss()
                 activity.showErrorMsg(it)
             }
         }
@@ -234,6 +242,7 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
         activityRecruit2ViewModel.editRecruitActivityIsSuccess.observe(viewLifecycleOwner) {
             Timber.e("editRecruitActivityIsSuccess ${activityRecruit2ViewModel.editRecruitActivityIsSuccess.value}")
             if(it) {
+                progressDialog.dismiss()
                 val dialog = RecruitActivityCompleteDialog(requireContext(),
                     "활동 모집 수정 완료",
                     activityRecruit2ViewModel.getRecruitEditCompleteText(),
@@ -341,6 +350,7 @@ class EditActivityRecruit2Fragment(private val activityId: String) : Fragment(),
     // 완료 버튼 클릭
     fun onClickedCompleteBtn() {
         if (activityRecruit2ViewModel.isEditExistNeedData()) {
+            progressDialog.show()
             activityRecruit2ViewModel.patchActivityRegister(
                 activityId = activityId,
                 activityStory = binding.activityStoryEt.text.toString(),
