@@ -1,11 +1,15 @@
 package com.letspl.oceankeeper.ui.view
 
 import MarginItemDecoration
+import android.content.pm.PackageManager
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -60,13 +64,33 @@ class MainFragment: Fragment(), BaseActivity.OnBackPressedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Timber.e("asdadadadadd")
+        checkPostNotification()
 
         setScreenHeightSize()
         setUpViewModelObservers()
         setupFixScrollView()
         setupRecyclerview()
         loadData()
+    }
+
+    private fun checkPostNotification() {
+        val readPermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.POST_NOTIFICATIONS
+        )
+
+         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {
+            if(readPermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), arrayOf(
+                        android.Manifest.permission.POST_NOTIFICATIONS
+                    ), 0
+                )
+            }
+
+             if(shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
+                 Timber.e("asdada")
+             }
+        }
     }
 
     private fun setScreenHeightSize() {
