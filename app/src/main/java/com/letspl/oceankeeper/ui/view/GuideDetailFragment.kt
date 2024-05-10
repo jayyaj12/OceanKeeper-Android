@@ -9,6 +9,7 @@ import com.letspl.oceankeeper.databinding.FragmentGuideDetailBinding
 import com.letspl.oceankeeper.ui.adapter.GuideListAdapter
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import timber.log.Timber
 
 class GuideDetailFragment(private val videoId: String, private val videoName: String) : Fragment(), BaseActivity.OnBackPressedListener {
 
@@ -52,7 +53,8 @@ class GuideDetailFragment(private val videoId: String, private val videoName: St
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 super.onReady(youTubePlayer)
 
-                youTubePlayer.loadVideo(videoId, 0f)
+                val tempVideoId = videoId.substring(17).split("?")[0]
+                youTubePlayer.loadVideo(tempVideoId, 0f)
             }
         })
     }
