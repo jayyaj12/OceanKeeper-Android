@@ -495,12 +495,22 @@ class ActivityRecruitViewModel : ViewModel() {
 
     // 활동 시작일 클릭된 시간 저장
     fun setActivityStartTimeHour(hour: Int, amPm: String) {
-        if (amPm == "AM") {
-            // 오전
-            ActivityRecruitModel.activityStartTimeHour = hour
+        if(hour == 12) {
+            if (amPm == "AM") {
+                // 오전
+                ActivityRecruitModel.activityStartTimeHour = 0
+            } else {
+                // 오후
+                ActivityRecruitModel.activityStartTimeHour = 12
+            }
         } else {
-            // 오후
-            ActivityRecruitModel.activityStartTimeHour = hour + 12
+            if (amPm == "AM") {
+                // 오전
+                ActivityRecruitModel.activityStartTimeHour = hour
+            } else {
+                // 오후
+                ActivityRecruitModel.activityStartTimeHour = hour + 12
+            }
         }
     }
 
