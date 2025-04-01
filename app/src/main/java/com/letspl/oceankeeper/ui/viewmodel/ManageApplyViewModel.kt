@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -225,6 +226,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
                 if (!directory.exists()) {
                     directory.mkdirs()
                 }
+
                 var fos: FileOutputStream? = null
                 val file = File(directory, "${fileName}.xlsx")
 
@@ -246,7 +248,7 @@ class ManageApplyViewModel @Inject constructor(private val manageApplyRepository
         }
     }
 
-    // 전체 선택하기 버튼
+    // 전체 선택하기 버튼 12
     fun setAllIsClickedApplyMember(flag: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Default) {
